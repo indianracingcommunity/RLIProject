@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    RLI WEBSITE 
+                    Racing League India
                 </div>
 
                 <div class="links">
