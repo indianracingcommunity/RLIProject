@@ -85,10 +85,10 @@
                 </div>
 
                 <div class="links">
-                    <a href="">Steam</a>
-                    <a href="">Discord</a>
-                    <a href="">News</a>
-                    <a href="">GitHub</a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Steam</a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Discord</a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">News</a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">GitHub</a>
                 </div>
             </div>
         </div>
