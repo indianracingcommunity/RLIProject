@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'WebsiteController@loadhomepage');
+Route::get('joinus', 'WebsiteController@loadjoinus');
+Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
+Route::get('standings', 'WebsiteController@loadstandings');
+Route::get('aboutus', 'WebsiteController@loadaboutus');
+Route::get('login', 'WebsiteController@loadlogin');
