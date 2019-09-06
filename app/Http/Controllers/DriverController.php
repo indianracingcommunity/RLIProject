@@ -12,6 +12,8 @@ class DriverController extends Controller
  {
       return view('admin.create');
  }
+
+ // Function to store data 
    public function store()
    {
        $data= request()->all();
@@ -21,11 +23,13 @@ class DriverController extends Controller
        $driver->discord=$data['discord'];
        $driver->drivernumber=$data['drivernumber'];
        $driver->team=$data['team'];
+       $driver->teammate=$data['teammate'];
+       $driver->retired=false;
        $driver->save();
        return redirect('/home');
        
    }
-
+  // Function to View all data
    public function view(){
          
          return view('admin.view')->with('driver',Driver::all());
@@ -37,5 +41,41 @@ class DriverController extends Controller
      
 
    }
+  // Function showing the categories Active and Retired
+   public function category()
+   {
+       return view('admin.drivercategory');
+   }
+// Only Showing active drivers
+   public function active()
+   {
+    return view('admin.activedrivers')->with('driver',Driver::all());
+   }
+
+   public function retired()
+   {
+    return view('admin.retireddrivers')->with('driver',Driver::all());
+   }
+
+   public function delete(Driver $driver)
+   {
+      $driver->delete();
+      return redirect('/home');
+   }
+
+   public function retire(Driver $driver)
+   {
+      $driver->retired=true;
+      $driver->save();
+      return redirect('/home');
+   }
+
+   public function actived(Driver $driver)
+   {
+      $driver->retired=false;
+      $driver->save();
+      return redirect('/home');
+   }
+
 
 }

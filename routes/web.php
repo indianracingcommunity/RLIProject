@@ -32,3 +32,18 @@ Route::post('/store-data','DriverController@store');
 Route::get('/drivers','DriverController@view'); 
 
 Route::get('/drivers/{driver}','DriverController@viewdetails'); 
+
+Route::get('/category','DriverController@category');
+
+
+Route::get('/active-drivers','DriverController@active');
+
+
+Route::get('/retired-drivers','DriverController@retired');
+
+Route::get('/delete/{driver}','DriverController@delete');
+
+Route::get('/driver-retire/{driver}','DriverController@retire');
+Route::get('/driver-active/{driver}','DriverController@actived');
+
+

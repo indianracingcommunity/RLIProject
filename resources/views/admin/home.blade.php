@@ -12,7 +12,7 @@
              
             
                  <a href="/add-driver" class="btn btn-primary btn float-left ml-1">Add Drivers</a>
-                 <a href="/drivers" class="btn btn-primary btn float-left ml-2">View All Drivers</a>
+                 <a href="/category" class="btn btn-primary btn float-left ml-2">View All Drivers</a>
                  <a href="/update-standings" class="btn btn-primary btn float-left ml-2">Update Standings</a>
 
 

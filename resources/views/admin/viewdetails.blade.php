@@ -14,13 +14,29 @@
                   <p class="font-weight-bold"> Driver Name:</p>   {{$driver->name}}
                   <p class="font-weight-bold">  Driver Number: </p>  {{$driver->drivernumber}}
                   <p class="font-weight-bold">  Driver Team: </p>  {{$driver->team}}
-                        
+                  <p class="font-weight-bold">  Driver Team Mate: </p>  {{$driver->teammate}}
+                  @if($driver->retired==false)
+                  <p class="font-weight-bold">  Retired: No </p>
+                  @else  
+                  <p class="font-weight-bold">  Retired: Yes </p>
+                  @endif
+
                         </div>
                    
                 
         </div>
-        <a href="/driver{{$driver->id}}/edit" class="btn btn-info">Edit</a>
-        <a href="/driver/{{$driver->id}}/delete" class="btn btn-danger my-3">Delete </a>
+        <a href="/edit{{$driver->id}}/" class="btn btn-info">Edit</a>
+        <a href="/delete/{{$driver->id}}/" class="btn btn-danger my-3">Delete </a>
+
+
+
+        @if($driver->retired==false)
+    <a href="/driver-retire/{{$driver->id}}" class="btn btn-danger my-3">Retire</a>
+         @else
+         <a href="/driver-active/{{$driver->id}}" class="btn btn-success my-3">Mark As Active</a>  
+         @endif
+
+
         <a href="#" class="btn btn-default my-3"><img src="{{url('/img/discord2.png')}}" width="30" /> </a>
         <a href="#" class="btn btn-default my-3"><img src="{{url('/img/steam.png')}}" width="30" /> </a>
      

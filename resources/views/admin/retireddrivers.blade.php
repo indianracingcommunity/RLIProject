@@ -1,13 +1,14 @@
 @extends('layouts.app')
 @section('content')
 @auth
-<h1 class="text-center my-5">Drivers List </h1>
+<h1 class="text-center my-5"> Retired Drivers List </h1>
 <div class="row justify-content-center">
     <div class="col-md-8">
             <div class="card default">
                     
                  <div class="card-body">
                             @foreach($driver as $driver)
+                            @if($driver->retired==true)
                             <ul>
                             <li class="list-group-item">
                               {{$driver->name}}
@@ -17,6 +18,7 @@
                                 
                             </li>
                             </ul>
+                            @endif
                             @endforeach
                             
                     </div>
@@ -28,6 +30,7 @@
                     You need to be an admin to View this page 
                 </div>
             
+
             @endguest
                 @endsection
 

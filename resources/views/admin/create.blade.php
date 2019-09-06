@@ -42,6 +42,10 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="team" placeholder="Team Name">
                                       </div> 
+
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" name="teammate" placeholder="Team Mate">
+                                      </div> 
                                         
                                 
                                 <div class="form-group text-center">
