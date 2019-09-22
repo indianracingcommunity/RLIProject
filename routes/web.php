@@ -46,4 +46,6 @@ Route::get('/delete/{driver}','DriverController@delete');
 Route::get('/driver-retire/{driver}','DriverController@retire');
 Route::get('/driver-active/{driver}','DriverController@actived');
 
+Route::get('/teams/ferrari','DriverController@viewferrari');
+
 

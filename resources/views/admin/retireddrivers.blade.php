@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @auth
-<h1 class="text-center my-5"> Retired Drivers List </h1>
+<h1 class="text-center my-5"> Reserve Drivers List </h1>
 <div class="row justify-content-center">
     <div class="col-md-8">
             <div class="card default">

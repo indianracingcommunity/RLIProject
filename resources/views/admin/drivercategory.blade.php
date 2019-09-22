@@ -11,7 +11,7 @@
                 <a href="/active-drivers" type="button" class="btn btn-primary" style="width:500px">View Active Drivers</a><br>
 
 
-                <br> <a href="/retired-drivers" class="btn btn-dark" style="width:500px">View Retired Drivers</a>
+                <br> <a href="/retired-drivers" class="btn btn-dark" style="width:500px">View Reserve Drivers</a>
                 
 
                 @endauth

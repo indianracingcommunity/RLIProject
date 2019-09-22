@@ -76,6 +76,13 @@ class DriverController extends Controller
       $driver->save();
       return redirect('/home');
    }
+   
 
+   public function viewferrari(Driver $driver)
+   {
+      $driver = Driver::where('team' ,'=', 'Ferrari')
+             ->get();
+      return view('driverview.ferraridrivers',compact('driver'));
+   }
 
 }

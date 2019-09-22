@@ -18,7 +18,7 @@
                   @if($driver->retired==false)
                   <p class="font-weight-bold">  Retired: No </p>
                   @else  
-                  <p class="font-weight-bold">  Retired: Yes </p>
+                  <p class="font-weight-bold">  Reserve: Yes </p>
                   @endif
 
                         </div>
