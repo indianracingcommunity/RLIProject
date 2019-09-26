@@ -38,6 +38,9 @@ Route::get('/category','DriverController@category');
 
 Route::get('/active-drivers','DriverController@active');
 
+Route::get('/edit/{driver}','DriverController@edit');
+
+Route::post('/update-data/{driver}','DriverController@update');
 
 Route::get('/retired-drivers','DriverController@retired');
 
@@ -46,6 +49,11 @@ Route::get('/delete/{driver}','DriverController@delete');
 Route::get('/driver-retire/{driver}','DriverController@retire');
 Route::get('/driver-active/{driver}','DriverController@actived');
 
-Route::get('/teams/ferrari','DriverController@viewferrari');
+Route::get('/teams/{key}','DriverController@viewferrari');
 
+Route::get('/api/{driver}','DriverController@api');
+
+Route::get('/api/{driver}','DriverController@api');
+
+Route::get('/report','DriverController@report');
 

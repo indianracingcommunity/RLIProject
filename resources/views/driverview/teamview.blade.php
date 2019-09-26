@@ -8,25 +8,28 @@
           Featured
         </div>
         <div class="card-body">
-          <h1 class="card-title text-center">Ferrari Drivers</h1>
+            
+          <h1 class="card-title text-center">Team Members</h1>
           
           
         </div>
       </div>
-      @foreach ($driver as $drivers)
+     
+      @foreach($driver as $drivers)
+     
       <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="well well-sm">
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
-                                <img src="{{url('/img/avatars/f1-car.png')}}" alt="" class="img-rounded" width="170" />
+                            <img src="{{$drivers->avatar}}" alt="" class="img-rounded" width="170" />
                             </div>
                             <div class="col-sm-6 col-md-8">
                                 
                           
                                
-                           @if($driver== reset($drivers)) @endif
+                           
 
                             <h4>{{$drivers->name}}</h4>
 
@@ -63,5 +66,9 @@
             </div>
         </div>
     <br><br><br>
+  
+
+  
         @endforeach    
+        
 @endsection

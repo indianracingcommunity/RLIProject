@@ -10,7 +10,11 @@
                         <div class="card-header">
                         <b> Details</b>
                         </div>
-                        <div class="card-body">
+                         <img src="{{$driver->avatar}}" id="av" alt="" width="90" style="margin-left:85%; position:absolute; margin-top:10%">
+                         <a href="/api/{{$driver->id}}">     <label for="av" style="margin-left:84%; position:absolute; margin-top:20%">Update Avatar </label>    </a>
+                    <div class="card-body" >
+
+    
                   <p class="font-weight-bold"> Driver Name:</p>   {{$driver->name}}
                   <p class="font-weight-bold">  Driver Number: </p>  {{$driver->drivernumber}}
                   <p class="font-weight-bold">  Driver Team: </p>  {{$driver->team}}
@@ -20,12 +24,13 @@
                   @else  
                   <p class="font-weight-bold">  Reserve: Yes </p>
                   @endif
-
+                 
                         </div>
+                        
                    
                 
         </div>
-        <a href="/edit{{$driver->id}}/" class="btn btn-info">Edit</a>
+        <a href="/edit/{{$driver->id}}/" class="btn btn-info">Edit</a>
         <a href="/delete/{{$driver->id}}/" class="btn btn-danger my-3">Delete </a>
 
 
@@ -37,8 +42,8 @@
          @endif
 
 
-        <a href="#" class="btn btn-default my-3"><img src="{{url('/img/discord2.png')}}" width="30" /> </a>
-        <a href="#" class="btn btn-default my-3"><img src="{{url('/img/steam.png')}}" width="30" /> </a>
+    <a href="#" class="btn btn-default my-3"><img src="{{url('/img/discord2.png')}}" width="30" /> </a>
+        <a href="{{"https://steamcommunity.com/profiles/".$driver->steamid}}" class="btn btn-default my-3"><img src="{{url('/img/steam.png')}}" width="30" /> </a>
      
     </div>
     @endauth

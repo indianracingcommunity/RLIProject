@@ -2,7 +2,7 @@
 @section('content')
     
 @auth
-<h1 class="text-center my-5"> Add a Driver  </h1>
+<h1 class="text-center my-5"> Edit Driver Driver  </h1>
     <div class="row justify-content-center">
         <div class="col-md-8">
         <div class="card card-default">
@@ -21,28 +21,28 @@
                      @endif
               
                        </div>
-                        <form action="/store-data" method="POST">
+                    <form action="/update-data/{{$driver->id}}" method="POST">
                             @csrf
                                 <div class="form-group">
                                     
-                                <input type="text" class="form-control" name="name" placeholder="Name">
+                                <input type="text" class="form-control" name="name" placeholder="Name" value="{{$driver->name}}">
                                                        
                                 </div>   
                                 <div class="form-group">
-                                  <input type="text" class="form-control" name="steamid" placeholder="Steam ID 64">
+                                  <input type="text" class="form-control" name="steamid" placeholder="Steam ID 64" value="{{$driver->steamid}}">
                                 </div>   
                                 <div class="form-group">
-                                  <input type="text" class="form-control" name="discord" placeholder="Discord ID">
+                                  <input type="text" class="form-control" name="discord" placeholder="Discord ID" value="{{$driver->discord}}">
                                 </div> 
                                 
                                 <div class="form-group">
-                                        <input type="text" class="form-control" name="drivernumber" placeholder="Driver Number">
+                                        <input type="text" class="form-control" name="drivernumber" placeholder="Driver Number" value="{{$driver->drivernumber}}">
                                       </div> 
                                       <div class="form-group">
-                                          <input type="text" class="form-control" name="teammate" placeholder="Team Mate">
+                                          <input type="text" class="form-control" name="teammate" placeholder="Team Mate" value="{{$driver->teammate}}">
                                         </div> 
 
-                                      <select name="team" class="custom-select custom-select-lg mb-3">
+                                      <select name="team" class="custom-select custom-select-lg mb-3" >
                                         <option value="" disabled>Team</option>
                                           <option class="dropdown-item" value="mercedes" href="#" name="team" >Mercedes</a>
                                           <option class="dropdown-item" value="ferrari" href="#" name="team" >Ferrari</a>
@@ -61,7 +61,7 @@
                                         
                                 
                                 <div class="form-group text-center">
-                                    <button class="btn btn-success" type="submit">Add Driver</button>
+                                    <button class="btn btn-success" type="submit">Edit Driver</button>
                                 </div>
                                 </form>  
                 </div>

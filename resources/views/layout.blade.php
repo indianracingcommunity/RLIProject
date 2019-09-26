@@ -32,6 +32,9 @@
                 <a class="nav-link" href="/standings">Championship Standings</a>
               </li>
               <li class="nav-item p-3">
+                <a class="nav-link" href="/report">Report</a>
+              </li>
+              <li class="nav-item p-3">
                 <a class="nav-link" href="/aboutus">About Us</a>
               </li>
           </ul>

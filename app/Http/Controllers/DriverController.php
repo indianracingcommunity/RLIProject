@@ -57,6 +57,28 @@ class DriverController extends Controller
     return view('admin.retireddrivers')->with('driver',Driver::all());
    }
 
+   public function edit(Driver $driver){
+
+        return view('admin.edit')->with('driver',$driver);
+   }
+
+   public function update(Driver $driver)
+   {
+     $data = request()->all();
+    $driver->name=$data['name'];
+    $driver->steamid=$data['steamid'];
+    $driver->discord=$data['discord'];
+    $driver->drivernumber=$data['drivernumber'];
+    $driver->teammate=$data['teammate'];
+    $driver->team=$data['team'];
+
+    $driver->save();
+     return redirect('/drivers/'.$driver->id);
+         
+
+   }
+
+
    public function delete(Driver $driver)
    {
       $driver->delete();
@@ -66,6 +88,8 @@ class DriverController extends Controller
    public function retire(Driver $driver)
    {
       $driver->retired=true;
+      $driver->team="";
+      $driver->teammate="";
       $driver->save();
       return redirect('/home');
    }
@@ -78,11 +102,30 @@ class DriverController extends Controller
    }
    
 
-   public function viewferrari(Driver $driver)
+   public function viewferrari(Driver $driver,$key)
    {
-      $driver = Driver::where('team' ,'=', 'Ferrari')
-             ->get();
-      return view('driverview.ferraridrivers',compact('driver'));
+      
+
+    $driver = Driver::where('team' ,'=', $key )
+            ->get();
+    return view('driverview.teamview',compact('driver'));
    }
+
+   public function api(Driver $driver){
+
+       $profile=$driver->steamid;     
+        $str=file_get_contents('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=A858C6BCA92BE79C5483EF2029AD8F66&steamids='.$profile);
+       $json = json_decode($str,true);
+        $avatarurl=$json['response']['players']['0']['avatarfull'];
+      //  echo $avatarurl;
+        $driver->avatar=$avatarurl;
+        $driver->save();
+        return redirect('/active-drivers');
+        
+   }
+     public function report()
+     {
+         return view('report');
+     }
 
 }

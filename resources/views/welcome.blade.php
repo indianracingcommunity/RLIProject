@@ -18,6 +18,8 @@
                 <a href="standings" class="btn btn-dark">Go to Standings</a>
             </div>
         </div>
+        
+ 
     </div><hr>
 </div>
 @endsection
