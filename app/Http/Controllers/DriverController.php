@@ -120,12 +120,36 @@ class DriverController extends Controller
       //  echo $avatarurl;
         $driver->avatar=$avatarurl;
         $driver->save();
-        return redirect('/active-drivers');
+        return redirect('/drivers/'.$driver->id);
         
    }
-     public function report()
-     {
-         return view('report');
-     }
+   public function apidiscord(Driver $driver){
 
+    $opts = array(
+      'http'=>array(
+        'method'=>"GET",
+        'header'=>
+                  "Authorization: Bot NjI1Mjg5MTY5NDUwNjk2NzA0.XY9Aqw.nofcE8ZHJ4ArPoYFlLjBcaQKXhs\r\n"
+      )
+    );
+    
+    $context = stream_context_create($opts);
+    
+    // Open the file using the HTTP headers set above
+    $uid=$driver->discord;
+    $file = file_get_contents('https://discordapp.com/api/users/'.$uid, false, $context);
+
+    $json = json_decode($file,true);
+    $avatarhash=$json['avatar'];
+    $userid=$json['id'];
+    $result= 'https://cdn.discordapp.com/avatars/'.$userid.'/'.$avatarhash;
+   $driver->avatar=$result;
+   $driver->save();
+   return redirect('/drivers/'.$driver->id);
+
+  
+
+
+  
+}
 }
