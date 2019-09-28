@@ -53,7 +53,7 @@ Route::get('/teams/{key}','DriverController@viewferrari');
 
 Route::get('/api/{driver}','DriverController@api');
 
-Route::get('/api/{driver}','DriverController@api');
+Route::get('/discordapi/{driver}','DriverController@apidiscord');
 
 Route::get('/report','DriverController@report');
 

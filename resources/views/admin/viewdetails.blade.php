@@ -11,7 +11,10 @@
                         <b> Details</b>
                         </div>
                          <img src="{{$driver->avatar}}" id="av" alt="" width="90" style="margin-left:85%; position:absolute; margin-top:10%">
-                         <a href="/api/{{$driver->id}}">     <label for="av" style="margin-left:84%; position:absolute; margin-top:20%">Update Avatar </label>    </a>
+                         <a href="/api/{{$driver->id}}">     <label for="av" style="margin-left:84%; position:absolute; margin-top:20%">Steam Avatar</label>    </a>
+                         <br>
+                         <img src="{{$driver->avatar}}" id="av" alt="" width="90" style="margin-left:85%; position:absolute; margin-top:10%">
+                         <a href="/discordapi/{{$driver->id}}">     <label for="av" style="margin-left:84%; position:absolute; margin-top:20%">Discord Avatar</label>    </a>
                     <div class="card-body" >
 
     
@@ -52,6 +55,6 @@
                 <div class="card-header body">
                     You need to be an admin to View this page 
                 </div>
-            
+                   
             @endguest
     @endsection
