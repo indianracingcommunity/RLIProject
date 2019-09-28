@@ -10,32 +10,31 @@
   <script src="/js/bootstrap.min.js"></script>
 </head>
 
-<body class="">
+<body class="bg-dark">
 
-
-  <nav class="navbar navbar-expand-md bg-dark fixed-top navbar-dark">
+  <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-primary">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <div class="collapse  navbar-collapse" id="collapsibleNavbar">
           <ul class="navbar-nav">
-              <li class="nav-item p-3">
-               <a class="nav-link" href="/">Home</a>
+              <li class="nav-item  p-3">
+               <a class="nav-link text-dark text font-weight-bold " href="/">Home</a>
               </li>
               <li class="nav-item p-3">
-                <a class="nav-link" href="/joinus">Join Us</a>
+                <a class="nav-link text-dark text font-weight-bold" href="/joinus">Join Us</a>
               </li>
               <li class="nav-item p-3">
-                <a class="nav-link" href="/teamsanddrivers">Teams And Drivers</a>
+                <a class="nav-link text-dark text font-weight-bold" href="/teamsanddrivers">Teams And Drivers</a>
               </li>
               <li class="nav-item p-3">
-                <a class="nav-link" href="/standings">Championship Standings</a>
+                <a class="nav-link text-dark text font-weight-bold" href="/standings">Championship Standings</a>
               </li>
               <li class="nav-item p-3">
-                <a class="nav-link" href="/report">Report</a>
+                <a class="nav-link text-dark text font-weight-bold" href="/report">Report</a>
               </li>
               <li class="nav-item p-3">
-                <a class="nav-link" href="/aboutus">About Us</a>
+                <a class="nav-link text-dark text font-weight-bold" href="/aboutus">About Us</a>
               </li>
           </ul>
     </div>
