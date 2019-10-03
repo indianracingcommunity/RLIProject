@@ -129,7 +129,7 @@ class DriverController extends Controller
       'http'=>array(
         'method'=>"GET",
         'header'=>
-                  "Authorization: Bot NjI1Mjg5MTY5NDUwNjk2NzA0.XY9Aqw.nofcE8ZHJ4ArPoYFlLjBcaQKXhs\r\n"
+                  "Authorization: Bot NjI1Mjg5MTY5NDUwNjk2NzA0.XY9Aqw.nofcE8ZHJ4ArPoYFlLjBcaQKXhs"
       )
     );
     

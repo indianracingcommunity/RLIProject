@@ -13,15 +13,22 @@
                          <img src="{{$driver->avatar}}" id="av" alt="" width="90" style="margin-left:85%; position:absolute; margin-top:10%">
                          <a href="/api/{{$driver->id}}">     <label for="av" style="margin-left:84%; position:absolute; margin-top:20%">Steam Avatar</label>    </a>
                          <br>
+                         
                          <img src="{{$driver->avatar}}" id="av" alt="" width="90" style="margin-left:85%; position:absolute; margin-top:10%">
+                        
+                        
                          <a href="/discordapi/{{$driver->id}}">     <label for="av" style="margin-left:84%; position:absolute; margin-top:20%">Discord Avatar</label>    </a>
-                    <div class="card-body" >
+                   
+                   
+                   
+                   
+                         <div class="card-body" >
 
     
-                  <p class="font-weight-bold"> Driver Name:</p>   {{$driver->name}}
-                  <p class="font-weight-bold">  Driver Number: </p>  {{$driver->drivernumber}}
-                  <p class="font-weight-bold">  Driver Team: </p>  {{$driver->team}}
-                  <p class="font-weight-bold">  Driver Team Mate: </p>  {{$driver->teammate}}
+                  <p class="font-weight-bold"> Driver Name:  {{$driver->name}} </p> 
+                  <p class="font-weight-bold">  Driver Number:   {{$driver->drivernumber}}</p>
+                  <p class="font-weight-bold">  Driver Team:  {{$driver->team}} </p> 
+                  <p class="font-weight-bold">  Driver Team Mate:  {{$driver->teammate}}</p> 
                   @if($driver->retired==false)
                   <p class="font-weight-bold">  Retired: No </p>
                   @else  
