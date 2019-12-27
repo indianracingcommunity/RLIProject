@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>RLI</title>
+  <title>IRC</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -35,6 +35,9 @@
               </li>
               <li class="nav-item p-3">
                 <a class="nav-link text-dark text font-weight-bold" href="/aboutus">About Us</a>
+              </li>
+              <li class="nav-item p-3" style="">
+                <a class="nav-link text-dark text font-weight-bold" href="/login">Login</a>
               </li>
           </ul>
     </div>

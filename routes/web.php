@@ -22,38 +22,32 @@ Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('login', 'WebsiteController@loadlogin');
 
 Auth::routes();
+// All Admin panel Routes
+Route::group(['middleware' => 'IsAdmin'], function () {
+Route::get('/home/admin', 'DriverController@index')->name('adminhome');
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/add-driver','DriverController@create');
-
-Route::post('/store-data','DriverController@store');
-
-Route::get('/drivers','DriverController@view'); 
-
-Route::get('/drivers/{driver}','DriverController@viewdetails'); 
-
-Route::get('/category','DriverController@category');
+Route::get('/home/admin/users','DriverController@viewusers'); 
+Route::get('/home/admin/user/{user}','DriverController@viewdetails'); 
 
 
-Route::get('/active-drivers','DriverController@active');
+});
 
-Route::get('/edit/{driver}','DriverController@edit');
+Route::get('/home', 'UserPanel@index')->name('home');
+Route::get('/user/profile/{user}', 'UserPanel@viewprofile')->name('home');
+Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
+Route::get('/user/profile/steam/reset/{user}','UserPanel@ResetSteamLink');
 
-Route::post('/update-data/{driver}','DriverController@update');
 
-Route::get('/retired-drivers','DriverController@retired');
 
-Route::get('/delete/{driver}','DriverController@delete');
 
-Route::get('/driver-retire/{driver}','DriverController@retire');
-Route::get('/driver-active/{driver}','DriverController@actived');
+
 
 Route::get('/teams/{key}','DriverController@viewferrari');
 
 Route::get('/api/{driver}','DriverController@api');
-
 Route::get('/discordapi/{driver}','DriverController@apidiscord');
 
-Route::get('/report','DriverController@report');
 
+// Routes Handling the Discord Login
+Route::get('login/discord', 'Auth\LoginController@redirectToProvider')->name('auth');
+Route::get('login/discord/callback', 'Auth\LoginController@handleProviderCallback')->name('callback');
