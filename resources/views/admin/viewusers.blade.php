@@ -24,14 +24,6 @@
                             
                     </div>
                 </div>
-                @endauth
-                @guest 
-            
-                <div class="card-header body">
-                    You need to be an admin to View this page 
-                </div>
-            
-
-            @endguest
+                @endauth     
                 @endsection
 

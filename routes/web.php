@@ -20,23 +20,25 @@ Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
 Route::get('standings', 'WebsiteController@loadstandings');
 Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('login', 'WebsiteController@loadlogin');
-
 Auth::routes();
+
 // All Admin panel Routes
 Route::group(['middleware' => 'IsAdmin'], function () {
 Route::get('/home/admin', 'DriverController@index')->name('adminhome');
-
 Route::get('/home/admin/users','DriverController@viewusers'); 
 Route::get('/home/admin/user/{user}','DriverController@viewdetails'); 
+Route::get('/home/admin/user/edit/{user}','DriverController@viewedit');
+Route::post('/home/admin/user/edit/save/{user}','DriverController@saveedit');
 
 
 });
-
+// MiddleWare For Userlogin
+Route::group(['middleware' => 'auth'], function () {
 Route::get('/home', 'UserPanel@index')->name('home');
 Route::get('/user/profile/{user}', 'UserPanel@viewprofile')->name('home');
 Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
-Route::get('/user/profile/steam/reset/{user}','UserPanel@ResetSteamLink');
 
+});
 
 
 

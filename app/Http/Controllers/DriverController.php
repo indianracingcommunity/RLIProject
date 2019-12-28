@@ -24,6 +24,23 @@ class DriverController extends Controller
        return view('admin.viewdetails')->with('user',$user);
   }
 
+  public function viewedit(User $user)
+  {
+    return view('admin.edit')->with('user',$user);
+  }
+ 
+  public function saveedit(User $user)
+
+  {
+    $data = request()->all();
+    $user->name=$data['name'];
+    $user->discord_discrim=$data['discord_discrim'];
+    $user->team=$data['team'];
+    $user->steam_id=$data['steam_id'];
+    $user->avatar=$data['avatar'];
+    $user->save();
+    return redirect()->back();
+  }
 
 
 

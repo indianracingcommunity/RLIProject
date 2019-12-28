@@ -25,7 +25,12 @@
                          <div class="card-body" >
 
     
-                  <p class="font-weight-bold"> User Name:  {{$user->name}} </p> 
+                  <p class="font-weight-bold"> User Name:  {{$user->name}} </p>
+                  <p class="font-weight-bold">  Discord:  {{$user->name}}#{{$user->discord_discrim}} </p>
+                  <p class="font-weight-bold">  Team:  {{$user->team}} </p>
+                  <p class="font-weight-bold">  TeamMate:  {{$user->teammate}} </p>
+                  <p class="font-weight-bold"> Steam Link:<a href="{{$user->steam_id}}">{{$user->steam_id}} </p>
+                    
                {{--   <p class="font-weight-bold">  User Number:   {{$user->drivernumber}}</p>
                   <p class="font-weight-bold">  User Team:  {{$user->team}} </p>  --}}
                  
@@ -35,9 +40,10 @@
                    
                 
         </div>
-        <a href="/edit/{{$user->id}}/" class="btn btn-info">Edit</a>
-        <a href="/delete/{{$user->id}}/" class="btn btn-danger my-3">Delete </a>
-
+        <a href="edit/{{$user->id}}/" class="btn btn-info">Edit User</a>
+        <a href="#" class="btn btn-default my-3"><img src="{{url('/img/discord2.png')}}" width="30" /> </a>
+        <a href="{{$user->steam_id}}" class="btn btn-default my-3"><img src="{{url('/img/steam.png')}}" width="30" /> </a>
+        <a href="/delete/{{$user->id}}/" class="btn btn-danger my-3">Delete User </a>
 
 
  {{--    @if($driver->retired==false)
@@ -53,10 +59,8 @@
     </div>
     @endauth
     @guest 
-         --}}   
-                <div class="card-header body">
-                    You need to be an admin to View this page 
-                </div>
+              --}}   
+             
                    
             @endguest
     @endsection
