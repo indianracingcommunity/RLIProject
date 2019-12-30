@@ -12,7 +12,8 @@
             
                  <a href="#" class="btn btn-primary btn float-left ml-1">View Standings</a>
                  <a href="#" class="btn btn-primary btn float-left ml-2">View Team Stats</a>
-                 <a href="#" class="btn btn-primary btn float-left ml-2">Create a report</a>
+                 <a href="/home/report/create" class="btn btn-primary btn float-left ml-2">Create a report</a>
+                 <a href="/home/report/category" class="btn btn-primary btn float-left ml-2">View all Reports</a>
                  <br><br><br>
                  @if (Auth::user()->isadmin==1)
                 <p>You are an Admin! Visit the admin area Here:</p> 

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateReportsTable extends Migration
 {
@@ -15,6 +15,16 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('rid');
+            $table->string('reported_by');
+            $table->string('against');
+            $table->string('track');
+            $table->boolean('inquali')->default(0);
+            $table->integer('lap');
+            $table->text('explained');
+            $table->string('proof');
+            $table->boolean('resolved')->default(0);
+            
             $table->timestamps();
         });
     }
