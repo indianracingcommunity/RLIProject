@@ -4,8 +4,8 @@ namespace Illuminate\Support\Facades;
 
 use Closure;
 use Mockery;
-use RuntimeException;
 use Mockery\MockInterface;
+use RuntimeException;
 
 abstract class Facade
 {
@@ -172,7 +172,9 @@ abstract class Facade
             return static::$resolvedInstance[$name];
         }
 
-        return static::$resolvedInstance[$name] = static::$app[$name];
+        if (static::$app) {
+            return static::$resolvedInstance[$name] = static::$app[$name];
+        }
     }
 
     /**

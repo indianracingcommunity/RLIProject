@@ -11,7 +11,7 @@
 namespace Carbon\Traits;
 
 use Carbon\CarbonInterface;
-use DateTimeInterface;
+use Carbon\Exceptions\BadUnitException;
 use InvalidArgumentException;
 
 /**
@@ -115,8 +115,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->gt('2018-07-25 12:45:15'); // true
      * Carbon::parse('2018-07-25 12:45:16')->gt('2018-07-25 12:45:16'); // false
-     * Carbon::parse('2018-07-25 12:45:16')->gt('2018-07-25 12:45:18'); // true
      * Carbon::parse('2018-07-25 12:45:16')->gt('2018-07-25 12:45:17'); // false
      * ```
      *
@@ -136,8 +136,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->greaterThan('2018-07-25 12:45:15'); // true
      * Carbon::parse('2018-07-25 12:45:16')->greaterThan('2018-07-25 12:45:16'); // false
-     * Carbon::parse('2018-07-25 12:45:16')->greaterThan('2018-07-25 12:45:18'); // true
      * Carbon::parse('2018-07-25 12:45:16')->greaterThan('2018-07-25 12:45:17'); // false
      * ```
      *
@@ -155,8 +155,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->isAfter('2018-07-25 12:45:15'); // true
      * Carbon::parse('2018-07-25 12:45:16')->isAfter('2018-07-25 12:45:16'); // false
-     * Carbon::parse('2018-07-25 12:45:16')->isAfter('2018-07-25 12:45:18'); // true
      * Carbon::parse('2018-07-25 12:45:16')->isAfter('2018-07-25 12:45:17'); // false
      * ```
      *
@@ -176,8 +176,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->gte('2018-07-25 12:45:15'); // true
      * Carbon::parse('2018-07-25 12:45:16')->gte('2018-07-25 12:45:16'); // true
-     * Carbon::parse('2018-07-25 12:45:16')->gte('2018-07-25 12:45:18'); // true
      * Carbon::parse('2018-07-25 12:45:16')->gte('2018-07-25 12:45:17'); // false
      * ```
      *
@@ -197,8 +197,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->greaterThanOrEqualTo('2018-07-25 12:45:15'); // true
      * Carbon::parse('2018-07-25 12:45:16')->greaterThanOrEqualTo('2018-07-25 12:45:16'); // true
-     * Carbon::parse('2018-07-25 12:45:16')->greaterThanOrEqualTo('2018-07-25 12:45:18'); // true
      * Carbon::parse('2018-07-25 12:45:16')->greaterThanOrEqualTo('2018-07-25 12:45:17'); // false
      * ```
      *
@@ -216,8 +216,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->lt('2018-07-25 12:45:15'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lt('2018-07-25 12:45:16'); // false
-     * Carbon::parse('2018-07-25 12:45:16')->lt('2018-07-25 12:45:18'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lt('2018-07-25 12:45:17'); // true
      * ```
      *
@@ -237,8 +237,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->lessThan('2018-07-25 12:45:15'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lessThan('2018-07-25 12:45:16'); // false
-     * Carbon::parse('2018-07-25 12:45:16')->lessThan('2018-07-25 12:45:18'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lessThan('2018-07-25 12:45:17'); // true
      * ```
      *
@@ -256,8 +256,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->isBefore('2018-07-25 12:45:15'); // false
      * Carbon::parse('2018-07-25 12:45:16')->isBefore('2018-07-25 12:45:16'); // false
-     * Carbon::parse('2018-07-25 12:45:16')->isBefore('2018-07-25 12:45:18'); // false
      * Carbon::parse('2018-07-25 12:45:16')->isBefore('2018-07-25 12:45:17'); // true
      * ```
      *
@@ -277,8 +277,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->lte('2018-07-25 12:45:15'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lte('2018-07-25 12:45:16'); // true
-     * Carbon::parse('2018-07-25 12:45:16')->lte('2018-07-25 12:45:18'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lte('2018-07-25 12:45:17'); // true
      * ```
      *
@@ -298,8 +298,8 @@ trait Comparison
      *
      * @example
      * ```
+     * Carbon::parse('2018-07-25 12:45:16')->lessThanOrEqualTo('2018-07-25 12:45:15'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lessThanOrEqualTo('2018-07-25 12:45:16'); // true
-     * Carbon::parse('2018-07-25 12:45:16')->lessThanOrEqualTo('2018-07-25 12:45:18'); // false
      * Carbon::parse('2018-07-25 12:45:16')->lessThanOrEqualTo('2018-07-25 12:45:17'); // true
      * ```
      *
@@ -335,9 +335,7 @@ trait Comparison
         $date2 = $this->resolveCarbon($date2);
 
         if ($date1->greaterThan($date2)) {
-            $temp = $date1;
-            $date1 = $date2;
-            $date2 = $temp;
+            [$date1, $date2] = [$date2, $date1];
         }
 
         if ($equal) {
@@ -544,8 +542,8 @@ trait Comparison
      * Carbon::parse('2019-06-13')->isSameAs('Y-d', Carbon::parse('2019-06-14')); // false
      * ```
      *
-     * @param string                                 $format date formats to compare.
-     * @param \Carbon\Carbon|\DateTimeInterface|null $date   instance to compare with or null to use current day.
+     * @param string                                        $format date formats to compare.
+     * @param \Carbon\Carbon|\DateTimeInterface|string|null $date   instance to compare with or null to use current day.
      *
      * @throws \InvalidArgumentException
      *
@@ -553,13 +551,7 @@ trait Comparison
      */
     public function isSameAs($format, $date = null)
     {
-        /** @var DateTimeInterface $date */
-        $date = $date ?: static::now($this->tz);
-
-        static::expectDateTime($date, 'null');
-
-        /* @var CarbonInterface $this */
-        return $this->rawFormat($format) === ($date instanceof self ? $date->rawFormat($format) : $date->format($format));
+        return $this->rawFormat($format) === $this->resolveCarbon($date)->rawFormat($format);
     }
 
     /**
@@ -601,15 +593,11 @@ trait Comparison
 
         if (!isset($units[$unit])) {
             if (isset($this->$unit)) {
-                $date = $date ? static::instance($date) : static::now($this->tz);
-
-                static::expectDateTime($date);
-
-                return $this->$unit === $date->$unit;
+                return $this->$unit === $this->resolveCarbon($date)->$unit;
             }
 
             if ($this->localStrictModeEnabled ?? static::isStrictModeEnabled()) {
-                throw new InvalidArgumentException("Bad comparison unit: '$unit'");
+                throw new BadUnitException($unit);
             }
 
             return false;
@@ -649,16 +637,14 @@ trait Comparison
      * Carbon::parse('2019-01-12')->isSameQuarter(Carbon::parse('2018-03-01'), false); // true
      * ```
      *
-     * @param \Carbon\Carbon|\DateTimeInterface|null $date       The instance to compare with or null to use current day.
-     * @param bool                                   $ofSameYear Check if it is the same month in the same year.
+     * @param \Carbon\Carbon|\DateTimeInterface|string|null $date       The instance to compare with or null to use current day.
+     * @param bool                                          $ofSameYear Check if it is the same month in the same year.
      *
      * @return bool
      */
     public function isSameQuarter($date = null, $ofSameYear = true)
     {
-        $date = $date ? static::instance($date) : static::now($this->tz);
-
-        static::expectDateTime($date, 'null');
+        $date = $this->resolveCarbon($date);
 
         return $this->quarter === $date->quarter && (!$ofSameYear || $this->isSameYear($date));
     }
@@ -879,7 +865,7 @@ trait Comparison
                 $regex .= strtr($quotedFormat[$i], static::$regexFormats);
             }
 
-            return (bool) preg_match('/^'.$regex.'$/', $date);
+            return (bool) preg_match('/^'.str_replace('/', '\\/', $regex).'$/', $date);
         } catch (InvalidArgumentException $e) {
         }
 
