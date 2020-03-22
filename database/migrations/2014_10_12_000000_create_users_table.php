@@ -14,13 +14,21 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->integer('role_id')->default(2);
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('discord_discrim')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('discord_id')->nullable();
+            $table->string('steam_id')->nullable();
+            $table->string('email')->nullable();
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->string('team')->nullable();
+            $table->string('teammate')->nullable();
+            $table->boolean('isadmin')->default(0);
+
         });
     }
 

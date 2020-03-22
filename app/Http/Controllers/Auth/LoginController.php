@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+use Socialite;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -36,4 +39,37 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+// Discord Oauth
+    public function redirectToProvider()
+    {
+        return Socialite::driver('discord')->scopes(['identify', 'email', 'guilds', 'connections'])->redirect();
+    }
+    
+     public function handleProviderCallback()
+     {
+         $userr = Socialite::driver('discord')->user();
+         $authUser = $this->findOrCreateUser($userr);
+         Auth::login($authUser, true);
+
+         return view('home');
+     }
+
+     private function findOrCreateUser($userr){
+       $userAccount = User::where('discord_id', $userr->id)->first();
+       if($userAccount){
+         return $userAccount;
+       }
+       
+       $newUser = User::create([
+        'name' => $userr->name,
+        'avatar' => $userr->avatar,
+        'discord_discrim' => $userr->discriminator,
+        'discord_id' => $userr->id,
+        'email' => $userr->email,
+        'password' => null,
+       ]);
+       return $newUser;
+     }
+
 }
