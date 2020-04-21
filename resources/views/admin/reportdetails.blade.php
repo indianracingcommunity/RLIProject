@@ -1,7 +1,6 @@
 @extends('layouts.app')
-@section('content')
-    
 
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -24,21 +23,31 @@
                   @if ($report->resolved==0)
                 Status:<p>Being Reviewed By stewards</p>
                       @else
-                      Status:   <p class="text-success">Resolved</p>
+              Status:<p class="text-success">Resolved</p>
                   @endif  
-
                   @isset($report->verdict)
-                  <p>{{$report->verdict}}</p>
-                    @endisset
-                    
+                <p>{{$report->verdict}}</p>
+                  @endisset
+                  
             
 
 
                 </div>
             </div>
+<br>
+        <form action="/home/admin/verdict/{{$report->id}}/save" method="POST">
+    @csrf
+<div class="form-group">
+    <label for="verdict">Verdict</label>
+    <textarea class="form-control" id="verdict" rows="4" name="verdict"></textarea>
+    <br>
+    <input type="submit" class="btn btn-primary" value="Submit Verdict">
+  </div>
+</form>
         </div>
+        
     </div>
 </div>
 
-
+    
 @endsection

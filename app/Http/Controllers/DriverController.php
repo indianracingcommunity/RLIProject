@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Driver;
 use Illuminate\Http\Request;
 use App\User;
+use App\Report;
 
 class DriverController extends Controller
 {
@@ -42,6 +43,26 @@ class DriverController extends Controller
     return redirect()->back();
   }
 
+  public function viewreports(Report $report)
+  {
+    return view('admin.reports')->with('report',Report::all());
+  }
+
+  public function reportdetails(Report $report)
+  {
+             return view('admin.reportdetails')->with('report',$report);
+  }
+
+  public function saveverdict(Report $report)
+
+  {
+    $data=request()->all();
+    $report->verdict=$data['verdict'];
+    $report->resolved=1;
+    $report->save();
+    return redirect()->back();
+
+  }
 
 
 

@@ -22,6 +22,7 @@ class CreateReportsTable extends Migration
             $table->boolean('inquali')->default(0);
             $table->integer('lap');
             $table->text('explained');
+            $table->text('verdict')->nullable();
             $table->string('proof');
             $table->boolean('resolved')->default(0);
             

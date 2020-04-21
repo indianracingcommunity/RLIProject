@@ -23,12 +23,16 @@ Route::get('login', 'WebsiteController@loadlogin');
 Auth::routes();
 
 // All Admin panel Routes
+
 Route::group(['middleware' => 'IsAdmin'], function () {
 Route::get('/home/admin', 'DriverController@index')->name('adminhome');
 Route::get('/home/admin/users','DriverController@viewusers'); 
 Route::get('/home/admin/user/{user}','DriverController@viewdetails'); 
 Route::get('/home/admin/user/edit/{user}','DriverController@viewedit');
 Route::post('/home/admin/user/edit/save/{user}','DriverController@saveedit');
+Route::get('/home/admin/report','DriverController@viewreports');
+Route::get('home/admin/report/{report}/details','DriverController@reportdetails');
+Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict');
 
 
 });
