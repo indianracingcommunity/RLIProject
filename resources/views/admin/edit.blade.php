@@ -1,84 +1,58 @@
 @extends('layouts.app')
 @section('content')
-    
-@auth
-<h1 class="text-center my-5"> Edit Driver Driver  </h1>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-body">
-                    @if($errors->any())
-                    <div class="alert alert-danger">
-                     <ul class="list-group">
-                    @foreach ($errors ->all() as $error)
-                         <li class="list-group-item">
-                        {{$error}}
-                         </li>
-                            @endforeach  
+<h1 class="text-center my-5">
+    {{$user->name}}    
+</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+            <div class="card card-default">
+                    <div class="card-header">
+                    <b>Details</b>
+                    </div>
+                     <img src="{{$user->avatar}}" id="av" alt="" width="90" style="margin-left:85%; position:absolute; margin-top:10%">
+                     
+                     <br>
+                     
+                     
                     
-                          </ul> 
-                     @endif
-              
-                       </div>
-                    <form action="/update-data/{{$driver->id}}" method="POST">
-                            @csrf
-                                <div class="form-group">
-                                    
-                                <input type="text" class="form-control" name="name" placeholder="Name" value="{{$driver->name}}">
-                                                       
-                                </div>   
-                                <div class="form-group">
-                                  <input type="text" class="form-control" name="steamid" placeholder="Steam ID 64" value="{{$driver->steamid}}">
-                                </div>   
-                                <div class="form-group">
-                                  <input type="text" class="form-control" name="discord" placeholder="Discord ID" value="{{$driver->discord}}">
-                                </div> 
-                                
-                                <div class="form-group">
-                                        <input type="text" class="form-control" name="drivernumber" placeholder="Driver Number" value="{{$driver->drivernumber}}">
-                                      </div> 
-                                      <div class="form-group">
-                                          <input type="text" class="form-control" name="teammate" placeholder="Team Mate" value="{{$driver->teammate}}">
-                                        </div> 
+                    
+                     
+               
+               
+               
+               
+                     <div class="card-body" >
+                     <form action="save/{{$user->id}}" method="POST">
+                        @csrf
+                    User Name: <input type="text" name="name" value="{{$user->name}}" class="form-control-sm">
+                    <br><br>
+                    DiscordDiscrim: <input type="text" class="form-control-sm" name="discord_discrim" value="{{$user->discord_discrim}}">
+                    <br><br>
+                     Team: <select class="form-control-sm" name="team" value="{{$user->team}}">
+                        <option></option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Ferrari">Ferrari</option>
+                        <option value="Red Bull">Red Bull</option>
+                        <option value="Renault">Renault</option>
+                        <option value="Haas">Haas</option>
+                        <option value="McLaren">McLaren</option>
+                        <option value="Racing Point">Racing Point</option>
+                        <option value="Toro Rosso">Toro Rosso</option>
+                        <option value="Alfa Romeo">Alfa Romeo</option>
+                        <option value="Williams">Williams</option>
+                    </select>
+                    <br><br>
+                    Steam: <input type="text" name="steam_id" value="{{$user->steam_id}}" class="form-control-sm">
+                    <br><br>
+                   Custom Avatar(Must be a valid image link): <input type="text" name="avatar" value="{{$user->avatar}}" class="form-control-sm">
+                    <br><br>
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </form>
 
-                                      <select name="team" class="custom-select custom-select-lg mb-3" >
-                                        <option value="" disabled>Team</option>
-                                          <option class="dropdown-item" value="mercedes" href="#" name="team" >Mercedes</a>
-                                          <option class="dropdown-item" value="ferrari" href="#" name="team" >Ferrari</a>
-                                          <option class="dropdown-item" value="redbull" href="#" name="team" >Redbull</a>
-                                          <option class="dropdown-item" value="mclaren" href="#" name="team" >Mclaren</a>
-                                           <option class="dropdown-item" value="renault" href="#" name="team" >Renault</a>
-                                           <option class="dropdown-item" value="haas" href="#" name="team" >Haas</a>
-                                           <option class="dropdown-item" value="rpoint" href="#" name="team" >Racing Point</a>
-                                           <option class="dropdown-item" value="alfa" href="#" name="team" >Alfa Romeo</a>
-                                           <option class="dropdown-item" value="toro" href="#" name="team" >Toro Rosso</a> 
-                                           <option class="dropdown-item" value="williams" href="#" name="team" >Williams</a>  
-                                        </select>
-                                        
 
-                                      
-                                        
-                                
-                                <div class="form-group text-center">
-                                    <button class="btn btn-success" type="submit">Edit Driver</button>
-                                </div>
-                                </form>  
-                </div>
-            </div>
-        </div>
-         
-        </div>
-    </div>
-    @endauth
-    @guest 
-            
-    <div class="card-header body">
-        You need to be an admin to View this page 
-    </div>
 
-@endguest
+
+           
+
     
 @endsection
-
-

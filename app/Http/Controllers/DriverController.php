@@ -4,103 +4,92 @@ namespace App\Http\Controllers;
 
 use App\Driver;
 use Illuminate\Http\Request;
+use App\User;
+use App\Report;
 
 class DriverController extends Controller
 {
-    public function create()
-
- {
-      return view('admin.create');
- }
-
- // Function to store data 
-   public function store()
-   {
-       $data= request()->all();
-       $driver= new Driver();
-       $driver->name = $data['name'];
-       $driver->steamid=$data['steamid'];
-       $driver->discord=$data['discord'];
-       $driver->drivernumber=$data['drivernumber'];
-       $driver->team=$data['team'];
-       $driver->teammate=$data['teammate'];
-       $driver->retired=false;
-       $driver->save();
-       return redirect('/home');
-       
-   }
-  // Function to View all data
-   public function view(){
-         
-         return view('admin.view')->with('driver',Driver::all());
-       
-   }
-
-   public function viewdetails(Driver $driver){
-       return view('admin.viewdetails')->with('driver',$driver);
-     
-
-   }
-  // Function showing the categories Active and Retired
-   public function category()
-   {
-       return view('admin.drivercategory');
-   }
-// Only Showing active drivers
-   public function active()
-   {
-    return view('admin.activedrivers')->with('driver',Driver::all());
-   }
-
-   public function retired()
-   {
-    return view('admin.retireddrivers')->with('driver',Driver::all());
-   }
-
-   public function edit(Driver $driver){
-
-        return view('admin.edit')->with('driver',$driver);
-   }
-
-   public function update(Driver $driver)
-   {
-     $data = request()->all();
-    $driver->name=$data['name'];
-    $driver->steamid=$data['steamid'];
-    $driver->discord=$data['discord'];
-    $driver->drivernumber=$data['drivernumber'];
-    $driver->teammate=$data['teammate'];
-    $driver->team=$data['team'];
-
-    $driver->save();
-     return redirect('/drivers/'.$driver->id);
-         
-
-   }
 
 
-   public function delete(Driver $driver)
-   {
-      $driver->delete();
-      return redirect('/home');
-   }
+  public function index()
+  {
+      return view('admin.adminhome');
+  }
 
-   public function retire(Driver $driver)
-   {
-      $driver->retired=true;
-      $driver->team="";
-      $driver->teammate="";
-      $driver->save();
-      return redirect('/home');
-   }
+  public function viewusers()
+  {
+       return view('admin.viewusers')->with('user',User::all());
+  }
+  public function viewdetails(User $user)
+  {
+       return view('admin.viewdetails')->with('user',$user);
+  }
 
-   public function actived(Driver $driver)
-   {
-      $driver->retired=false;
-      $driver->save();
-      return redirect('/home');
-   }
-   
+  public function viewedit(User $user)
+  {
+    return view('admin.edit')->with('user',$user);
+  }
+ 
+  public function saveedit(User $user)
+
+  {
+    $data = request()->all();
+    $user->name=$data['name'];
+    $user->discord_discrim=$data['discord_discrim'];
+    $user->team=$data['team'];
+    $user->steam_id=$data['steam_id'];
+    $user->avatar=$data['avatar'];
+    $user->save();
+    return redirect()->back();
+  }
+
+  public function viewreports(Report $report)
+  {
+    return view('admin.reports')->with('report',Report::all());
+  }
+
+  public function reportdetails(Report $report)
+  {
+             return view('admin.reportdetails')->with('report',$report);
+  }
+
+  public function saveverdict(Report $report)
+
+  {
+    $data=request()->all();
+    $report->verdict=$data['verdict'];
+    $report->resolved=1;
+    $report->save();
+    return redirect()->back();
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+// Unused Functions, Only Kept for refrences 
+
 
    public function viewferrari(Driver $driver,$key)
    {
