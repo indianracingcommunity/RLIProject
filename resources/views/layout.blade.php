@@ -18,8 +18,8 @@
          </button>
          <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
-               <li class="nav-item p-3 ">
-                  <a href="/"><img src="/img/IRC_logo/logo_square.png" height="45"></a>
+               <li style="height: 80px; width: 80px;" class="nav-item rounded-lg text-center visible-xs p-3 bg-dark">
+                  <a href="/"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"></a>
                </li>
                <li class="nav-item p-3">
                   <a class="nav-link text-light text font-weight-bold" href="/joinus"><i class='fas fa-handshake' style='color:white'></i>  Join Us</a>

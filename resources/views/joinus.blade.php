@@ -1,14 +1,29 @@
 @extends('layout')
 
 @section('body')
-
-<div class="container bg-dark border text-white border-light jumbotron ">
-	<h2 class="display-1 p-2" >Join Us</h2><hr class="bg-info">
-	<p class="display-4 p-2">Well, to join us you need to fill out this google form first, and then do nothing but wait until we contact you!</p>
-	<p class="text-warning font-weight-bold p-2">Make sure you fill out the details correctly for us to reach out to you</p>
-	<button class="btn btn-success p-2">	
-	<a href="joinus" class="text-white">Fill the Form</a>
-	</button>
+<div class="clearfix">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
+<div class="container text-dark border border-info shadow-lg jumbotron" style="background-color:  #e6fffa;">
+	<h2 class="display-2 p-2 font-weight-bold text-dark" >Join Us</h2><hr class="bg-dark">
+	<p class="font-weight-bold" style="font-size: 25px;">Before You join</p> 
+	<li>
+		<span class="font-weight-bold">This community is only for Indians accross the world.</span>
+	</li>
+	<li>
+		<span class="font-weight-bold">If you are found lying about your identity, you will be banned from the community.</span>
+	</li>
+	<div class="clearfix">&nbsp;</div>
+	<div class="text-center">
+		<hr class="bg-dark">
+		<p class="font-weight-bold">You may join our discord server through the link below</p>
+		<a href="https://discord.gg/dWG2bX6">
+			<i style="font-size: 50px;" class='fab fa-discord'></i>
+		</a>		
+	</div>
 </div>
 
 @endsection
