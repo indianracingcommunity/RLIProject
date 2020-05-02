@@ -24,20 +24,26 @@ Route::get('login', 'WebsiteController@loadlogin');
 
 function two_tone(Intervention\Image\Image $img) {
     $thres = 86;
+    $white = 0;
+    $black = 0;
     for($i = 0; $i < $img->width(); $i++) {
         for($j = 0; $j < $img->height(); $j++) {
             $colorA = $img->pickColor($i, $j);
             if($colorA[0] > $thres && $colorA[1] > $thres && $colorA[2] > $thres) {
             //if($color != 4287993237) {
                 $img->pixel('#000000', $i, $j);
+                $black++;
             }
             else {
                 $img->pixel('#ffffff', $i, $j);
+                $white++;
             }
             //$output->writeln("<info>" . ($i + 1) . ", " . ($j+1) . ": " . $color . "</info>");
         }
     }
 
+    if($black > $white)
+        return $img->invert();
     return $img;
 }
 
@@ -224,7 +230,7 @@ Route::get('raceprep', function()
     $img->save('img/RRSuzukaResults.png');
     */
 
-    //race_prep('img/RRRussia.png');
+    //race_prep('img/RRMexico.png');
 
     //echo ("Henlo");
     $olid = new TesseractOCR();
@@ -232,12 +238,12 @@ Route::get('raceprep', function()
     $olid->userWords('drivers.txt');
     $output = new Symfony\Component\Console\Output\ConsoleOutput();
 
-    $olid->image('img/race_results/Name.png');
+   /* $olid->image('img/race_results/Name.png');
     $tr = $olid->run();
 
-    $output->writeln("<info>" . $tr . "</info>");
+    $output->writeln("<info>" . $tr . "</info>");*/
 
-    for($i = 3; $i < 14; $i++) {
+    for($i = 0; $i < 14; $i++) {
         $output->writeln("<info>Driver " . ($i + 1) . " : " . "</info>");
 
         $olid->image('img/race_results/pos_' . ($i + 1) . '.png');
