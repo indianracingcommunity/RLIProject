@@ -29,6 +29,10 @@ class ComposerStaticInitbd34c4e362432a39fc5bd828ac05f663
     );
 
     public static $prefixLengthsPsr4 = array (
+        't' => 
+        array (
+            'thiagoalessio\\TesseractOCR\\' => 27,
+        ),
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
@@ -160,6 +164,10 @@ class ComposerStaticInitbd34c4e362432a39fc5bd828ac05f663
     );
 
     public static $prefixDirsPsr4 = array (
+        'thiagoalessio\\TesseractOCR\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src',
+        ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
@@ -4735,6 +4743,17 @@ class ComposerStaticInitbd34c4e362432a39fc5bd828ac05f663
         'phpDocumentor\\Reflection\\Types\\String_' => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src/Types/String_.php',
         'phpDocumentor\\Reflection\\Types\\This' => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src/Types/This.php',
         'phpDocumentor\\Reflection\\Types\\Void_' => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src/Types/Void_.php',
+        'thiagoalessio\\TesseractOCR\\Command' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/Command.php',
+        'thiagoalessio\\TesseractOCR\\FeatureNotAvailableException' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
+        'thiagoalessio\\TesseractOCR\\FriendlyErrors' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
+        'thiagoalessio\\TesseractOCR\\ImageNotFoundException' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
+        'thiagoalessio\\TesseractOCR\\NoWritePermissionsForOutputFile' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
+        'thiagoalessio\\TesseractOCR\\Option' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/Option.php',
+        'thiagoalessio\\TesseractOCR\\Process' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/Process.php',
+        'thiagoalessio\\TesseractOCR\\TesseractNotFoundException' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
+        'thiagoalessio\\TesseractOCR\\TesseractOCR' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/TesseractOCR.php',
+        'thiagoalessio\\TesseractOCR\\TesseractOcrException' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
+        'thiagoalessio\\TesseractOCR\\UnsuccessfulCommandException' => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src/FriendlyErrors.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

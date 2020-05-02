@@ -5568,6 +5568,53 @@
         "description": "A small library for converting tokenized PHP source code into XML and potentially other formats"
     },
     {
+        "name": "thiagoalessio/tesseract_ocr",
+        "version": "2.9.3",
+        "version_normalized": "2.9.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thiagoalessio/tesseract-ocr-for-php.git",
+            "reference": "e932f7410e753434b26b214f3f322933efafa0f0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thiagoalessio/tesseract-ocr-for-php/zipball/e932f7410e753434b26b214f3f322933efafa0f0",
+            "reference": "e932f7410e753434b26b214f3f322933efafa0f0",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.4 || ^7.0"
+        },
+        "require-dev": {
+            "codacy/coverage": "dev-master",
+            "phpunit/php-code-coverage": "^2.2.4"
+        },
+        "time": "2020-01-27T19:53:35+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "thiagoalessio\\TesseractOCR\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "thiagoalessio",
+                "email": "thiagoalessio@me.com"
+            }
+        ],
+        "description": "A wrapper to work with Tesseract OCR inside PHP.",
+        "keywords": [
+            "OCR",
+            "Tesseract",
+            "text recognition"
+        ]
+    },
+    {
         "name": "tijsverkoyen/css-to-inline-styles",
         "version": "2.2.2",
         "version_normalized": "2.2.2.0",
