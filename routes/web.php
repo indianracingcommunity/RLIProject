@@ -20,6 +20,14 @@ Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
 Route::get('standings', 'WebsiteController@loadstandings');
 Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('login', 'WebsiteController@loadlogin');
+
+Route::get('image', function()
+{
+    $img = Image::make('img/RRSuzuka.png')->resize(1920, 1080);
+
+    return $img->response('png');
+});
+
 Auth::routes();
 
 // All Admin panel Routes
