@@ -20,6 +20,7 @@ Route::get('login', 'WebsiteController@loadlogin');
 
 Route::get('/image/raceprep', 'ImageController@raceprep');
 Route::get('/image/name', 'ImageController@race_name');
+Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
 
 Auth::routes();
 
