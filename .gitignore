@@ -1,3 +1,4 @@
 
 *.log
 public/img/race_results/*.png
+.env

@@ -18,6 +18,8 @@ class CreateCircuitsTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('country');
+            $table->string('official');
+            $table->string('display');
             $table->timestamps();
         });
     }

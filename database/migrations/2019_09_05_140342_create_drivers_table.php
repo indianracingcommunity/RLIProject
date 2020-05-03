@@ -21,6 +21,7 @@ class CreateDriversTable extends Migration
             $table->string('team')->nullable();
             $table->string('teammate')->nullable();
             $table->boolean('retired');
+            $table->string('alias');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
