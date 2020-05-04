@@ -16,8 +16,8 @@ class CreateConstructorsTable extends Migration
         Schema::create('constructors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('logo'); //Logo File Location
-            $table->string('car');  //Car Pic File Location
+            $table->string('logo')->nullable(); //Logo File Location
+            $table->string('car')->nullable();  //Car Pic File Location
             $table->timestamps();
         });
     }

@@ -17,10 +17,10 @@ class CreateDriversTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
             $table->string('name');
-            $table->integer('drivernumber');
+            $table->integer('drivernumber')->nullable();
             $table->string('team')->nullable();
             $table->string('teammate')->nullable();
-            $table->boolean('retired');
+            $table->boolean('retired')->default(false);
             $table->string('alias');
             $table->timestamps();
 
