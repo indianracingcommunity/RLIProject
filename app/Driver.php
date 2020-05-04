@@ -20,7 +20,7 @@ class Driver extends Model
     }
 
     static public function getNames() {
-        $name_list = Driver::select('id', 'name')->get();
+        $name_list = Driver::select('id', 'name', 'alias')->get();
         return json_decode(json_encode($name_list), true);
     }
 }

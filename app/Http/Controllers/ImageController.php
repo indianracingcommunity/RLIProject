@@ -201,7 +201,18 @@ class ImageController extends Controller
                 $shortest = $lev;
             }
         }
-        return $index;
+
+        $res = array($index, $closest);
+        return $res;
+    }
+
+    protected function array_flatten(array $array) {
+        $return = array();
+        array_walk_recursive($array,
+            function($a, $b) use (&$return) {
+                $return[$b] = $a;
+            });
+        return $return;
     }
     
     public function raceprep() {
@@ -216,6 +227,7 @@ class ImageController extends Controller
 
         $drivers = Driver::getNames();
         $constructors = Constructor::getTeams();
+        $flat_drivers = $this->array_flatten($drivers);
 
         //$kar = levenshtein($input, $word);
         $results = array();
@@ -237,9 +249,23 @@ class ImageController extends Controller
 
             $name = array_column($drivers, 'name');
             $index = $this->closest_match($tr, $name);
-            $row["driver_id"] = $drivers[$index]['id'];
-            $row["matched_driver"] = $drivers[$index]['name'];
-    
+            if($index[1] != 0) {
+                $fname = array_column($flat_drivers, 'alias');
+                $findex = $this->closest_match($tr, $fname);
+
+                if($findex[1] < $index[1]) {
+                    $row["driver_id"] = $flat_drivers[$findex[0]]['id'];
+                    $row["matched_driver"] = $flat_drivers[$findex[0]]['name'];
+                } else {
+                    $row["driver_id"] = $drivers[$index[0]]['id'];
+                    $row["matched_driver"] = $drivers[$index[0]]['name'];
+                }
+            }
+            else {
+                $row["driver_id"] = $drivers[$index[0]]['id'];
+                $row["matched_driver"] = $drivers[$index[0]]['name'];
+            }
+
             //Team
             $this->olid->image('img/race_results/team_' . ($i + 1) . '.png');
             $tr = $this->olid->run();
@@ -248,8 +274,8 @@ class ImageController extends Controller
 
             $name = array_column($constructors, 'name');
             $index = $this->closest_match($tr, $name);
-            $row["constructor_id"] = $constructors[$index]['id'];
-            $row["matched_team"] = $constructors[$index]['name'];
+            $row["constructor_id"] = $constructors[$index[0]]['id'];
+            $row["matched_team"] = $constructors[$index[0]]['name'];
 
             //Grid
             $this->olid->image('img/race_results/grid_' . ($i + 1) . '.png');
@@ -302,7 +328,7 @@ class ImageController extends Controller
         $official = array_column($circuits, 'official');
         $index = $this->closest_match($track[1], $official);
         return response()->json([
-            'id' => $circuits[$index]['id'],
+            'id' => $circuits[$index[0]]['id'],
             'official' => $track[1],
             'display' => $track[0]]);
     }
