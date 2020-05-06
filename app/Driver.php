@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Driver extends Model
 {
+    const delimiter = "~$~";
     static public function getAliases() {
         $alias_list = Driver::pluck('alias');
 
         foreach($alias_list as $i => $alias) {
             $arr = array();
-            $arr = explode("~$~", $alias);
+            $arr = explode(delimiter, $alias);
 
             $alias_list[$i] = $arr;
         }
@@ -27,5 +28,14 @@ class Driver extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function insertAlias(String $newAlias) {
+        $aliases = explode(delimiter, $this->alias);
+        if(!in_array($newAlias, $aliases)) {
+            $this->alias = $this->alias . delimiter . $newAlias;
+            $this->save();
+        }
+        return 0;
     }
 }
