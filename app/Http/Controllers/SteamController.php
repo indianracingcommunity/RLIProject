@@ -13,7 +13,7 @@ class SteamController extends Controller
     {
         //Get all Users from DB
         $query = Driver::select('*')
-                ->get()->load('user')->toArray();
+                ->get()->load('user');
 
         $count = count($query);
         $key = env('STEAM_API_KEY');
