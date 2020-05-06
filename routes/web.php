@@ -21,6 +21,9 @@ Route::get('login', 'WebsiteController@loadlogin');
 Route::get('/image/raceprep', 'ImageController@raceprep');
 Route::get('/image/name', 'ImageController@race_name');
 
+Route::get('/image/upload', 'ImageController@index');
+Route::post('/image/uploadfile', 'ImageController@pos');
+
 Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
 Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');
 Route::get('/store-results', 'StandingsController@fetchCircuit');

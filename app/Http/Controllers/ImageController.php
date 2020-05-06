@@ -3,26 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Image as Img;
 
 use App\Driver;
 use App\Circuit;
 use App\Constructor;
+use App\User;
 
 class ImageController extends Controller
 {
     private $output;
-    private $olid;
     public function __construct() {
         $this->output = new ConsoleOutput();
-
-        $this->olid = new TesseractOCR();
-        $this->olid->lang('eng')
-                   ->psm(7);
     }
 
     protected function thicken(Img $img) {
@@ -72,98 +71,116 @@ class ImageController extends Controller
             $img->invert();
 
         //$this->thicken($img);
+        $img->save('img/race_results/' . microtime(). '.png');
         return $img;
     }
 
-    protected function race_prep(String $src) {    
-        //Name
-        $img = Image::make($src)
-                    ->resize(1920, 1080)
-                    ->crop(1000, 90, 90, 215);
+    protected function getImage(String $src, String $sec, Int $pos=0) {
 
-        $this->two_tone($img);
-        $img->save('img/race_results/Name.png');
-    
-        //Standings
+        //Name
+        if($sec == "name") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1000, 90, 90, 215);
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+
+        /*//Standings
         $img = Image::make($src)
              ->resize(1920, 1080)
              ->crop(1290, 570, 530, 360)
              ->save('img/race_results/Standings.png');
-    
+
         $img = Image::make('img/race_results/Standings.png')
              ->crop(150, 33, 150, 7)
-             ->save('img/race_results/SD.png');
-    
+             ->save('img/race_results/SD.png');*/
+
         //$img->crop(1, 10, 5, 9);
         //$img->save('img/race_results/SDI.png');
         //    $this->two_tone($img);
         //  $img->save('img/race_results/SDI.png');
-    
-    
+
         $row_width = 40.2142;
+
         //Position
-        for($i = 0; $i < 14; $i++) {
-            $pos = Image::make('img/race_results/Standings.png');
-            $pos->crop(50, 33, 10, 7 + (int)($i * $row_width));
-            $this->two_tone($pos);
-            $pos->save('img/race_results/pos_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/pos_' . ($i + 1) . '.png<info>');
+        if($sec == "pos") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(50, 33, 10, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
     
         //Driver
-        for($i = 0; $i < 14; $i++) {
-            $driver = Image::make('img/race_results/Standings.png');
-            $driver->crop(150, 33, 150, 7 + (int)($i * $row_width));
-            $this->two_tone($driver);
-            $driver->save('img/race_results/driver_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/driver_' . ($i + 1) . '.png<info>');
+        if($sec == "driver") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(150, 33, 150, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
     
         //Team
-        for($i = 0; $i < 14; $i++) {
-            $team = Image::make('img/race_results/Standings.png');
-            $team->crop(240, 33, 555, 7 + (int)($i * $row_width));
-            $this->two_tone($team);
-            $team->save('img/race_results/team_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/team_' . ($i + 1) . '.png<info>');
+        if($sec == "team") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(240, 33, 555, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
-    
+
         //Grid
-        for($i = 0; $i < 14; $i++) {
-            $grid = Image::make('img/race_results/Standings.png');
-            $grid->crop(50, 33, 821, 7 + (int)($i * $row_width));
-            $this->two_tone($grid);
-            $grid->save('img/race_results/grid_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/grid_' . ($i + 1) . '.png<info>');
+        if($sec == "grid") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(50, 33, 821, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
-    
+
         //Stops
-        for($i = 0; $i < 14; $i++) {
-            $stops = Image::make('img/race_results/Standings.png');
-            $stops->crop(50, 33, 910, 7 + (int)($i * $row_width));
-            $this->two_tone($stops);
-            $stops->save('img/race_results/stops_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/stops_' . ($i + 1) . '.png<info>');
+        if($sec == "stops") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(50, 33, 910, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
-    
+
         //Fastest Lap
-        for($i = 0; $i < 14; $i++) {
-            $best = Image::make('img/race_results/Standings.png');
-            $best->crop(150, 33, 1000, 7 + (int)($i * $row_width));
-            $this->two_tone($best);
-            $best->save('img/race_results/best_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/best_' . ($i + 1) . '.png<info>');
+        if($sec == "best") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(150, 33, 1000, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
-    
+
         //Finishing Time
-        for($i = 0; $i < 14; $i++) {
-            $time = Image::make('img/race_results/Standings.png');
-            $time->crop(140, 33, 1140, 7 + (int)($i * $row_width));
-            $this->two_tone($time);
-            $time->save('img/race_results/time_' . ($i + 1) . '.png');
-            $this->output->writeln('<info>img/race_results/time_' . ($i + 1) . '.png<info>');
+        if($sec == "time") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(140, 33, 1140, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
         }
-    
         return 0;
     }
 
@@ -202,7 +219,7 @@ class ImageController extends Controller
             }
         }
 
-        $res = array($index, $closest);
+        $res = array($index, $shortest);
         return $res;
     }
 
@@ -215,60 +232,62 @@ class ImageController extends Controller
         return $return;
     }
     
-    public function raceprep() {
-        //$this->race_prep('img/RRSuzuka.png');
-    
-        /*$this->olid->image('img/race_results/Name.png');
-        $this->olid->psm(1);
-        $tr = $this->olid->run();
-        $this->output->writeln("<info>" . $tr . "</info>");
-
-        $this->olid->psm(7);*/
+    public function raceprep(String $src) {
+        $tess = new TesseractOCR();
+        $tess->lang('eng')->psm(7);
 
         $drivers = Driver::getNames();
         $constructors = Constructor::getTeams();
-        $flat_drivers = $this->array_flatten($drivers);
+        //$flat_drivers = $this->array_flatten($drivers);
 
-        //$kar = levenshtein($input, $word);
         $results = array();
         for($i = 0; $i < 14; $i++) {
             $row = array();
             $this->output->writeln("<info>Driver " . ($i + 1) . " : " . "</info>");
     
             //Position
-            $this->olid->image('img/race_results/pos_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "pos", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["pos"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
-    
+
             //Driver
-            $this->olid->image('img/race_results/driver_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "driver", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["driver"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            $name = array_column($drivers, 'name');
+            $name = array_column($drivers, 'name', $i);
             $index = $this->closest_match($tr, $name);
-            if($index[1] != 0) {
+            $used = true;
+            /*if($index[1] != 0) {
                 $fname = array_column($flat_drivers, 'alias');
                 $findex = $this->closest_match($tr, $fname);
 
                 if($findex[1] < $index[1]) {
                     $row["driver_id"] = $flat_drivers[$findex[0]]['id'];
                     $row["matched_driver"] = $flat_drivers[$findex[0]]['name'];
-                } else {
-                    $row["driver_id"] = $drivers[$index[0]]['id'];
-                    $row["matched_driver"] = $drivers[$index[0]]['name'];
+                    $used = false;
                 }
-            }
-            else {
+            }*/
+
+            if($used) {
                 $row["driver_id"] = $drivers[$index[0]]['id'];
                 $row["matched_driver"] = $drivers[$index[0]]['name'];
             }
 
             //Team
-            $this->olid->image('img/race_results/team_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "team", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["team"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
@@ -278,43 +297,56 @@ class ImageController extends Controller
             $row["matched_team"] = $constructors[$index[0]]['name'];
 
             //Grid
-            $this->olid->image('img/race_results/grid_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "grid", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["grid"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
             //Stops
-            $this->olid->image('img/race_results/stops_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "stops", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["stops"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
             //Best
-            $this->olid->image('img/race_results/best_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "best", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["best"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
             //Time
-            $this->olid->image('img/race_results/time_' . ($i + 1) . '.png');
-            $tr = $this->olid->run();
+            $img = $this->getImage($src, "time", $i);
+            $tess->image($img->dirname . '/' . $img->basename);
+            $tr = $tess->run();
+            unlink($img->dirname . '/' . $img->basename);
+
             $row["time"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
             array_push($results, $row);
         }
     
-        $this->olid->image('img/race_results/Standings.png');
-        return response()->json($results); //$this->olid->response('png');
+        //$tess->image('img/race_results/Standings.png');
+        return $results; //$tess->response('png');
     }
 
-    public function race_name() {
-        $this->race_prep('img/RRSuzuka.png');
-    
-        $this->olid->image('img/race_results/Name.png');
-        $this->olid->psm(1);
-        $tr = $this->olid->run();
-        $this->olid->psm(7);
+    public function race_name(String $src) {
+        $tess = new TesseractOCR();
+        $tess->lang('eng')->psm(1);
+
+        $imag = $this->getImage($src, "name");
+        $tess->image($imag->dirname . '/' . $imag->basename);
+        $tr = $tess->run();
+        unlink($imag->dirname . '/' . $imag->basename);
 
         //Replace Series of '\n' with a single '$'
         $tri = preg_replace('/\n+/', '$', $tr);
@@ -327,9 +359,29 @@ class ImageController extends Controller
 
         $official = array_column($circuits, 'official');
         $index = $this->closest_match($track[1], $official);
-        return response()->json([
+        return array(
             'id' => $circuits[$index[0]]['id'],
             'official' => $track[1],
-            'display' => $track[0]]);
+            'display' => $track[0]);
+    }
+
+    public function index() {
+        return view('image');
+    }
+    public function pos(Request $request) {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg',
+        ]);
+
+        //$this->race_prep($request->photo->path());
+        $track = $this->race_name($request->photo->path());
+        //$img = Image::make($request->photo->path());
+        //return $img->response();
+        $results = $this->raceprep($request->photo->path());
+
+        return response()->json([
+            "track" => $track,
+            "results" => $results
+        ]);
     }
 }

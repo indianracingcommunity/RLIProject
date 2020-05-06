@@ -10,6 +10,15 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    static public function updateAlias() {
+        $user = User::all();
+        return $user;
+    }
+
+    public function driver() {
+        return $this->hasOne('App\Driver');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
