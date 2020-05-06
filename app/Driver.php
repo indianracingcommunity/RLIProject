@@ -23,4 +23,9 @@ class Driver extends Model
         $name_list = Driver::select('id', 'name', 'alias')->get();
         return json_decode(json_encode($name_list), true);
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

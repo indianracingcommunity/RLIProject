@@ -16,7 +16,8 @@
                 <p>Discord : {{$user->name}}#{{$user->discord_discrim}}</p>
                 <form method="POST" action="setsteam/{{$user->id}}">
                     @csrf
-                    Steam Profile Link : <input type="text" name="steamid">
+                    Steam Profile Link : <input type="url" name="steamid" placeholder="https://steamcommunity.com/id/Freeman" style="width: 50%">
+                    <br><br>
                     <input type="submit" value="Set Your Steamlink" class="btn btn-primary">
                 </form>
                 <br>

@@ -28,6 +28,10 @@ Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
 Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');
 Route::get('/store-results', 'StandingsController@fetchCircuit');
 
+Route::get('/steam/check', 'SteamController@check');
+
+
+
 Auth::routes();
 
 // All Admin panel Routes
@@ -41,6 +45,8 @@ Route::post('/home/admin/user/edit/save/{user}','DriverController@saveedit');
 Route::get('/home/admin/report','DriverController@viewreports');
 Route::get('home/admin/report/{report}/details','DriverController@reportdetails');
 Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict');
+Route::get('/home/admin/user-allot/{id}','DriverController@allotuser');
+Route::POST('/home/admin/user-allot/submit','DriverController@saveallotment');
 
 
 });
@@ -54,6 +60,7 @@ Route::get('/home/report/create','ReportsController@view');
 Route::post('/home/report/submit','ReportsController@create');
 Route::get('/home/report/category','ReportsController@category');
 Route::get('/home/view/report/{report}/details','ReportsController@details');
+
 
 });
 
