@@ -15,7 +15,7 @@
                               {{$user->name}}
                               
                             <a href="/home/admin/user/{{$user->id}}" class="btn btn-primary btn-sm float-right ml-2 ">View Details</a>
-                
+                            <a href="/home/admin/user-allot/{{$user->id}}" class="btn btn-warning btn-sm float-right ml-2 ">Allot Driver</a> 
                                 
                             </li>
                             </ul>

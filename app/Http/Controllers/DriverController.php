@@ -6,7 +6,7 @@ use App\Driver;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
-
+use App\Constructor;
 class DriverController extends Controller
 {
 
@@ -64,7 +64,35 @@ class DriverController extends Controller
 
   }
 
+public function allotuser(User $id)
 
+     {
+       return view('admin.allot')
+       ->with('user',$id)
+       ->with('team',Constructor::all());
+
+     }
+
+     public function saveallotment()
+     {
+       $data = request()->all();
+       
+     $userinfo = User::select('*')
+       ->where('id',$data['user_id'])
+       ->get()->toArray();
+
+      // dd($userinfo);
+
+       $driver = new Driver();
+       $driver -> user_id = $data['user_id']; 
+       $driver -> name = $userinfo['0']['name']; 
+       $driver -> team = $data['constructor']; 
+       $driver -> drivernumber = 5;
+       $driver -> retired = 0;
+       $driver -> alias = "";
+       $driver->save();
+       return redirect()->back();
+     }
 
 
 
