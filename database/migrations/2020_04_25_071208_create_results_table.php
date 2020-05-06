@@ -18,7 +18,9 @@ class CreateResultsTable extends Migration
             $table->bigInteger('race_id')->unsigned();
             $table->integer('constructor_id')->unsigned();
             $table->bigInteger('driver_id')->unsigned();
-            $table->integer('grid');
+            $table->integer('grid')->nullable();
+            $table->string('time')->nullable();
+            $table->integer('stops')->nullable();
             $table->integer('points')->default(0);
             $table->boolean('fastestlap')->default(false);
             $table->string('fastestlaptime')->nullable();

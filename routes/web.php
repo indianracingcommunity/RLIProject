@@ -23,6 +23,7 @@ Route::get('/image/name', 'ImageController@race_name');
 
 Route::get('/image/upload', 'ImageController@index');
 Route::post('/image/uploadfile', 'ImageController@pos');
+Route::post('/results/race', 'ImageController@storeResults');
 
 Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
 Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');

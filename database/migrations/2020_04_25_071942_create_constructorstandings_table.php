@@ -16,7 +16,7 @@ class CreateConstructorstandingsTable extends Migration
         Schema::create('constructorstandings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('race_id')->unsigned();
-            $table->string('drivers');      //Contains the Driver IDs as an Array
+            $table->string('drivers')->nullable();      //Contains the Driver IDs as an Array
             $table->integer('points')->default(0);
             $table->timestamps();
 

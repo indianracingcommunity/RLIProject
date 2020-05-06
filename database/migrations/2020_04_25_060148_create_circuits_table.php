@@ -15,11 +15,11 @@ class CreateCircuitsTable extends Migration
     {
         Schema::create('circuits', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('location');
-            $table->string('country');
+            $table->string('name')->nullable();
+            $table->string('location')->nullable();
+            $table->string('country')->nullable();
             $table->string('official');
-            $table->string('display');
+            $table->string('display')->nullable();
             $table->timestamps();
         });
     }

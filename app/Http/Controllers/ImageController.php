@@ -12,10 +12,15 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\Image as Img;
 
+use App\Http\Requests\RaceResults;
+
 use App\Driver;
 use App\Circuit;
 use App\Constructor;
 use App\User;
+use App\Season;
+use App\Race;
+use App\Result;
 
 class ImageController extends Controller
 {
@@ -251,7 +256,7 @@ class ImageController extends Controller
             $tr = $tess->run();
             unlink($img->dirname . '/' . $img->basename);
 
-            $row["pos"] = (int)$tr;
+            $row["position"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
             //Driver
@@ -266,7 +271,7 @@ class ImageController extends Controller
             $name = array_column($drivers, 'name', $i);
             $index = $this->closest_match($tr, $name);
             $used = true;
-            /*if($index[1] != 0) {
+            if($index[1] != 0) {
                 $fname = array_column($flat_drivers, 'alias');
                 $findex = $this->closest_match($tr, $fname);
 
@@ -275,7 +280,7 @@ class ImageController extends Controller
                     $row["matched_driver"] = $flat_drivers[$findex[0]]['name'];
                     $used = false;
                 }
-            }*/
+            }
 
             if($used) {
                 $row["driver_id"] = $drivers[$index[0]]['id'];
@@ -320,7 +325,7 @@ class ImageController extends Controller
             $tr = $tess->run();
             unlink($img->dirname . '/' . $img->basename);
 
-            $row["best"] = $tr;
+            $row["fastestlaptime"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
             //Time
@@ -360,7 +365,7 @@ class ImageController extends Controller
         $official = array_column($circuits, 'official');
         $index = $this->closest_match($track[1], $official);
         return array(
-            'id' => $circuits[$index[0]]['id'],
+            'circuit_id' => $circuits[$index[0]]['id'],
             'official' => $track[1],
             'display' => $track[0]);
     }
@@ -368,15 +373,29 @@ class ImageController extends Controller
     public function index() {
         return view('image');
     }
+
+    public function storeResults(RaceResults $request) {
+        $race = new Race($request->validated()['track']);
+        $race->save();
+
+        $res = $request->validated()['results'];
+        $res['race_id'] = $race['id'];
+
+        $result = new Result($res);
+        $result->save();
+
+        return response()->json([
+            "race" => $race,
+            "result" => $result
+        ]);
+    }
+
     public function pos(Request $request) {
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
-        //$this->race_prep($request->photo->path());
         $track = $this->race_name($request->photo->path());
-        //$img = Image::make($request->photo->path());
-        //return $img->response();
         $results = $this->raceprep($request->photo->path());
 
         return response()->json([
