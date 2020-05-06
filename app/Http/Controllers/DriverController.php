@@ -89,7 +89,7 @@ public function allotuser(User $id)
        $driver -> team = $data['constructor']; 
        $driver -> drivernumber = 5;
        $driver -> retired = 0;
-       $driver -> alias = "";
+       $driver -> alias = $userinfo['0']['name'];
        $driver->save();
        return redirect()->back();
      }
