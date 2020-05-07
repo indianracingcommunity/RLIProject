@@ -29,6 +29,13 @@ class ImageController extends Controller
         $this->output = new ConsoleOutput();
     }
 
+    public function raceIndex() {
+        return view('raceimage');
+    }
+    public function qualiIndex() {
+        return view('qualiimage');
+    }
+
     protected function thicken(Img $img) {
         $black_arr = array();
         for($i = 0; $i < $img->width(); $i++) {
@@ -243,7 +250,7 @@ class ImageController extends Controller
         return $res;
     }
     
-    public function raceprep(String $src) {
+    public function raceprep(String $src, Bool $pub=false) {
         $tess = new TesseractOCR();
         $tess->lang('eng')->psm(7);
 
@@ -263,7 +270,7 @@ class ImageController extends Controller
             unlink($img->dirname . '/' . $img->basename);
 
             //If No More Results
-            if(tr == "") break;
+            if($tr == "") break;
 
             $row["position"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
@@ -277,23 +284,25 @@ class ImageController extends Controller
             $row["driver"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            $name = array_column($drivers, 'name', $i);
-            $index = $this->closest_match($tr, $name);
-            $used = true;
-            if($index[1] != 0) {
-                $fname = array_column($flat_drivers, 'alias');
-                $findex = $this->closest_match($tr, $fname);
+            if(!$pub) {
+                $name = array_column($drivers, 'name', $i);
+                $index = $this->closest_match($tr, $name);
+                $used = true;
+                if($index[1] != 0) {
+                    $fname = array_column($flat_drivers, 'alias');
+                    $findex = $this->closest_match($tr, $fname);
 
-                if($findex[1] < $index[1]) {
-                    $row["driver_id"] = $flat_drivers[$findex[0]]['id'];
-                    $row["matched_driver"] = $flat_drivers[$findex[0]]['alias'];
-                    $used = false;
+                    if($findex[1] < $index[1]) {
+                        $row["driver_id"] = $flat_drivers[$findex[0]]['id'];
+                        $row["matched_driver"] = $flat_drivers[$findex[0]]['alias'];
+                        $used = false;
+                    }
                 }
-            }
 
-            if($used) {
-                $row["driver_id"] = $drivers[$index[0]]['id'];
-                $row["matched_driver"] = $drivers[$index[0]]['name'];
+                if($used) {
+                    $row["driver_id"] = $drivers[$index[0]]['id'];
+                    $row["matched_driver"] = $drivers[$index[0]]['name'];
+                }
             }
 
             //Team
@@ -305,10 +314,12 @@ class ImageController extends Controller
             $row["team"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            $name = array_column($constructors, 'name');
-            $index = $this->closest_match($tr, $name);
-            $row["constructor_id"] = $constructors[$index[0]]['id'];
-            $row["matched_team"] = $constructors[$index[0]]['name'];
+            if(!$pub) {
+                $name = array_column($constructors, 'name');
+                $index = $this->closest_match($tr, $name);
+                $row["constructor_id"] = $constructors[$index[0]]['id'];
+                $row["matched_team"] = $constructors[$index[0]]['name'];
+            }
 
             //Grid
             $img = $this->getImage($src, "grid", $i);
@@ -353,7 +364,7 @@ class ImageController extends Controller
         return $results; //$tess->response('png');
     }
 
-    public function race_name(String $src) {
+    public function race_name(String $src, Bool $pub=false) {
         $tess = new TesseractOCR();
         $tess->lang('eng')->psm(1);
 
@@ -371,19 +382,20 @@ class ImageController extends Controller
 
         $circuits = Circuit::getOfficial();
 
+        if($pub) {
+            return array(
+                'official' => $track[1],
+                'display' => $track[0]
+            );
+        }
+
         $official = array_column($circuits, 'official');
         $index = $this->closest_match($track[1], $official);
         return array(
             'circuit_id' => $circuits[$index[0]]['id'],
             'official' => $track[1],
-            'display' => $track[0]);
-    }
-
-    public function raceIndex() {
-        return view('raceimage');
-    }
-    public function qualiIndex() {
-        return view('qualiimage');
+            'display' => $track[0]
+        );
     }
 
     public function ocrRace(Request $request) {
@@ -393,6 +405,19 @@ class ImageController extends Controller
 
         $track = $this->race_name($request->photo->path());
         $results = $this->raceprep($request->photo->path());
+
+        return response()->json([
+            "track" => $track,
+            "results" => $results
+        ]);
+    }
+    public function pubRace(Request $request) {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg',
+        ]);
+
+        $track = $this->race_name($request->photo->path(), true);
+        $results = $this->raceprep($request->photo->path(), true);
 
         return response()->json([
             "track" => $track,

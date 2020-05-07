@@ -19,8 +19,8 @@ Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('login', 'WebsiteController@loadlogin');
 
 /* Exposing Image Manipulation API for Public
-Route::get('/image/raceprep', 'ImageController@raceprep');
-Route::get('/image/name', 'ImageController@race_name');
+Route::get('/public/image/race', 'ImageController@pubRace');
+Route::get('/public/image/quali', 'ImageController@pubQuali');
 */
 
 Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
