@@ -228,13 +228,19 @@ class ImageController extends Controller
         return $res;
     }
 
-    protected function array_flatten(array $array) {
-        $return = array();
-        array_walk_recursive($array,
-            function($a, $b) use (&$return) {
-                $return[$b] = $a;
-            });
-        return $return;
+    protected function crude_flatten($array) {
+        $res = array();
+        for($i = 0; $i < count($array); $i++) {
+            $ires = array();
+            $ires['id'] = $array[$i]['id'];
+            $ires['name'] = $array[$i]['name'];
+
+            foreach($array[$i]['alias'] as $j => $alias) {
+                $ires['alias'] = $alias;
+                array_push($res, $ires);
+            }
+        }
+        return $res;
     }
     
     public function raceprep(String $src) {
@@ -243,18 +249,21 @@ class ImageController extends Controller
 
         $drivers = Driver::getNames();
         $constructors = Constructor::getTeams();
-        //$flat_drivers = $this->array_flatten($drivers);
+        $flat_drivers = $this->crude_flatten((array)$drivers);
 
         $results = array();
         for($i = 0; $i < 14; $i++) {
             $row = array();
             $this->output->writeln("<info>Driver " . ($i + 1) . " : " . "</info>");
-    
+
             //Position
             $img = $this->getImage($src, "pos", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
             unlink($img->dirname . '/' . $img->basename);
+
+            //If No More Results
+            if(tr == "") break;
 
             $row["position"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
@@ -277,7 +286,7 @@ class ImageController extends Controller
 
                 if($findex[1] < $index[1]) {
                     $row["driver_id"] = $flat_drivers[$findex[0]]['id'];
-                    $row["matched_driver"] = $flat_drivers[$findex[0]]['name'];
+                    $row["matched_driver"] = $flat_drivers[$findex[0]]['alias'];
                     $used = false;
                 }
             }
@@ -370,27 +379,14 @@ class ImageController extends Controller
             'display' => $track[0]);
     }
 
-    public function index() {
-        return view('image');
+    public function raceIndex() {
+        return view('raceimage');
+    }
+    public function qualiIndex() {
+        return view('qualiimage');
     }
 
-    public function storeResults(RaceResults $request) {
-        $race = new Race($request->validated()['track']);
-        $race->save();
-
-        $res = $request->validated()['results'];
-        $res['race_id'] = $race['id'];
-
-        $result = new Result($res);
-        $result->save();
-
-        return response()->json([
-            "race" => $race,
-            "result" => $result
-        ]);
-    }
-
-    public function pos(Request $request) {
+    public function ocrRace(Request $request) {
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg',
         ]);

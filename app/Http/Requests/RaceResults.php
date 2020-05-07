@@ -29,9 +29,7 @@ class RaceResults extends FormRequest
             'track.season_id' => 'required',
             'track.round' => 'required',
             
-            'results' => 'required',
-            'results.constructor_id' => 'required',
-            'results.driver_id' => 'required'
+            'results' => 'required'
         ];
     }
 }

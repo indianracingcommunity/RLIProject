@@ -18,12 +18,10 @@ Route::get('standings', 'WebsiteController@loadstandings');
 Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('login', 'WebsiteController@loadlogin');
 
+/* Exposing Image Manipulation API for Public
 Route::get('/image/raceprep', 'ImageController@raceprep');
 Route::get('/image/name', 'ImageController@race_name');
-
-Route::get('/image/upload', 'ImageController@index');
-Route::post('/image/uploadfile', 'ImageController@pos');
-Route::post('/results/race', 'ImageController@storeResults');
+*/
 
 Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
 Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');
@@ -31,7 +29,8 @@ Route::get('/store-results', 'StandingsController@fetchCircuit');
 
 Route::get('/steam/check', 'SteamController@check');
 
-
+Route::post('/results/race', 'ResultsController@saveRaceResults');
+//Route::post('/results/quali', 'ResultsController@saveQualiResults');
 
 Auth::routes();
 
@@ -43,13 +42,19 @@ Route::get('/home/admin/users','DriverController@viewusers');
 Route::get('/home/admin/user/{user}','DriverController@viewdetails'); 
 Route::get('/home/admin/user/edit/{user}','DriverController@viewedit');
 Route::post('/home/admin/user/edit/save/{user}','DriverController@saveedit');
+
 Route::get('/home/admin/report','DriverController@viewreports');
 Route::get('home/admin/report/{report}/details','DriverController@reportdetails');
 Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict');
+
 Route::get('/home/admin/user-allot/{id}','DriverController@allotuser');
 Route::POST('/home/admin/user-allot/submit','DriverController@saveallotment');
 
+Route::get('/image/quali', 'ImageController@qualiIndex');
+//Route::post('/image/quali', 'ImageController@ocrQuali');
 
+Route::get('/image/race', 'ImageController@raceIndex');
+Route::post('/image/race', 'ImageController@ocrRace');
 });
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {

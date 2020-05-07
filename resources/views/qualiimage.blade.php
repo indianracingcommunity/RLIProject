@@ -11,7 +11,7 @@
   <br />
   
   <div class="container">
-   <h3 align="center">File Uploading in Laravel</h3>
+   <h3 align="center">Quali Results Upload</h3>
    <br />
    @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -30,7 +30,7 @@
    </div>
    <img src="/images/{{ Session::get('path') }}" width="300" />
    @endif
-   <form method="post" action="{{url('/image/uploadfile')}}" enctype="multipart/form-data">
+   <form method="post" action="{{url('/image/quali')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
      <table class="table">

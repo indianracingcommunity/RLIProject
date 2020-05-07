@@ -12,7 +12,7 @@ class Driver extends Model
 
         foreach($alias_list as $i => $alias) {
             $arr = array();
-            $arr = explode(delimiter, $alias);
+            $arr = explode(self::delimiter, $alias);
 
             $alias_list[$i] = $arr;
         }
@@ -21,8 +21,14 @@ class Driver extends Model
     }
 
     static public function getNames() {
-        $name_list = Driver::select('id', 'name', 'alias')->get();
-        return json_decode(json_encode($name_list), true);
+        $driver_list = Driver::select('id', 'name', 'alias')->get();
+        foreach($driver_list as $i => $driver) {
+            $arr = array();
+            $arr = explode(self::delimiter, $driver['alias']);
+
+            $driver_list[$i]['alias'] = $arr;
+        }
+        return json_decode(json_encode($driver_list), true);
     }
 
     public function user()
@@ -31,9 +37,9 @@ class Driver extends Model
     }
 
     public function insertAlias(String $newAlias) {
-        $aliases = explode("~$~", $this->alias);
+        $aliases = explode(self::delimiter, $this->alias);
         if(!in_array($newAlias, $aliases)) {
-            $this->alias = $this->alias . "~$~" . $newAlias;
+            $this->alias = $this->alias . self::delimiter . $newAlias;
             $this->save();
         }
         return 0;
