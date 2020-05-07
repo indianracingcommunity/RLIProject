@@ -11,6 +11,7 @@ use App\Http\Requests\RaceResults;
 
 use App\Race;
 use App\Result;
+use App\Driver;
 
 class ResultsController extends Controller
 {
@@ -27,6 +28,8 @@ class ResultsController extends Controller
         //Result Storing
         $results = $request->validated()['results'];
         foreach($results as $res) {
+            Driver::selfLearn($res['driver'], $res['driver_id']);
+
             $res['race_id'] = $race['id'];
             $result = new Result($res);
             $result->storeResult();

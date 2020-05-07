@@ -20,6 +20,12 @@ class Driver extends Model
         return $alias_list;
     }
 
+    static public function selfLearn(String $predicted, Int $id) {
+        $driver = Driver::find($id);
+        $driver->insertAlias($predicted);
+        return 0;
+    }
+
     static public function getNames() {
         $driver_list = Driver::select('id', 'name', 'alias')->get();
         foreach($driver_list as $i => $driver) {
@@ -41,6 +47,7 @@ class Driver extends Model
         if(!in_array($newAlias, $aliases)) {
             $this->alias = $this->alias . self::delimiter . $newAlias;
             $this->save();
+            return 1;
         }
         return 0;
     }
