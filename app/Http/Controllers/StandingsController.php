@@ -55,8 +55,8 @@ class StandingsController extends Controller
                      ->pluck("id");
 
         $results = Result::whereIn('race_id', $races)
-                         ->orderBy('position')
                          ->orderBy('driver_id')
+                         ->orderBy('position')
                          ->get()->load('driver:id,name')->toArray();
 
         if(!count($results))
