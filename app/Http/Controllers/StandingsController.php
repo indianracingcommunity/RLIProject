@@ -94,7 +94,7 @@ class StandingsController extends Controller
         $res[count($res) - 1]['points'] = $points;
         $res[count($res) - 1]['end'] = count($results);
 
-        usort($res, function($a, $b) {
+        usort($res, function($a, $b) use ($results) {
             if ($a['points'] < $b['points'])
                 return 1;
             elseif ($a['points'] > $b['points'])
