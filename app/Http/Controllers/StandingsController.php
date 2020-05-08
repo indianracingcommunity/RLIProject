@@ -26,44 +26,60 @@ class StandingsController extends Controller
 
     public function fetchRaces($tier, $season) {
         $season = Season::where([
-            ['tier', '=', $tier],
-            ['season', '=', $season]
+            ['tier', $tier],
+            ['season', $season]
         ])->firstOrFail();
-        
 
         $races = Race::where('season_id', $season['id'])
-                         /*(['race_id' => function ($query) {
-                          $query->where('season_id', '=', $season['id']);
-                         }])*/
-                       ->orderBy('round', 'asc')
-                       ->get()->load('season','circuit');
+                     ->orderBy('round', 'asc')
+                     ->get()->load('season','circuit');
+
+                       //whereHas('season', function (Builder $query) use ($tier, $season) {
+                       //     $query->where([
+                       //         ['tier', $tier],
+                       //         ['season', $season]
+                       //     ]);
+                       //})
+                       //->orderBy('round', 'asc')
+                       //->get()->load('season','circuit');
         return $races;
     }
 
-    public function fetchStandings($tier, $season, $round) {
+    public function fetchStandings($tier, $season) {
         $season = Season::where([
-            ['tier', '=', $tier],
-            ['season', '=', $season]
+            ['tier', $tier],
+            ['season', $season]
         ])->firstOrFail();
-        $race = Race::where([
-            ['season_id', '=', $season['id']],
-            ['round', '=', $round]
-        ])->firstOrFail();
+        
+        $races = Race::where('season_id', $season['id'])
+                     ->pluck("id");
 
-        $results = Result::where('race_id', $race['id'])
-                       /*(['race_id' => function ($query) {
-                        $query->where('season_id', '=', $season['id']);
-                       }])*/
-                         ->orderBy('position', 'asc')
-                         ->get()->toArray();
+        $results = Result::whereIn('race_id', $races)
+                         ->distinct('driver_id')
+                         ->orderBy('driver_id')
+                         ->get()->load('driver:id,name')->toArray();
 
-        foreach($results as $i => $res) {
-            $pos = $res['position'];
-            if($pos > 10 || $pos < 1)
-                $pos = 11;
+        foreach($results as $k => $driver) {
+            $positions = Result::whereIn('race_id', $races)
+                            ->where('driver_id', $driver['driver']['id'])
+                            ->pluck('position');
 
-            $results[$i]['points'] = self::POINTS[$pos - 1];
+            $points = 0;
+            foreach($positions as $position) {
+                $pos = $position;
+                if($pos > 10 || $pos < 1)
+                    $pos = 11;
+
+                $points += self::POINTS[$pos - 1];
+            }
+            $results[$k]['points'] = $points;
         }
+
+        usort($results, function($a, $b) {
+            if ($a['points'] == $b['points']) return 0;
+            return ($a['points'] < $b['points']) ? 1 : -1;
+        });
+
         return $results;
     }
 

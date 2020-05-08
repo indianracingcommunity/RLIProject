@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 use App\Http\Requests\RaceResults;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Race;
 use App\Result;
@@ -16,6 +17,7 @@ use App\Driver;
 class ResultsController extends Controller
 {
     private $output;
+    const POINTS = array(25, 18, 15, 12, 10, 8, 6, 4, 2, 1, 0);
     public function __construct() {
         $this->output = new ConsoleOutput();
     }
@@ -39,5 +41,30 @@ class ResultsController extends Controller
             "race" => $race,
             "result" => $results
         ]);
+    }
+
+    public function fetchRaceResults($tier, $season, $round) {
+        $race = Race::whereHas('season',
+            function (Builder $query) use ($tier, $season) {
+                $query->where([
+                    ['tier', $tier],
+                    ['season', $season]
+                ]);
+            })
+            ->where('round', $round)
+            ->firstOrFail();
+
+        $results = Result::where('race_id', $race['id'])
+                         ->orderBy('position', 'asc')
+                         ->get()->toArray();
+
+        foreach($results as $i => $res) {
+            $pos = $res['position'];
+            if($pos > 10 || $pos < 1)
+                $pos = 11;
+
+            $results[$i]['points'] = self::POINTS[$pos - 1];
+        }
+        return $results;
     }
 }
