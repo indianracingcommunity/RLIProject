@@ -29,6 +29,11 @@ Route::get('/store-results', 'StandingsController@fetchCircuit');
 
 Route::get('/steam/check', 'SteamController@check');
 
+Route::get('/{tier}/{season}/standings', 'StandingsController@fetchRaces')
+->where(['tier' => '[0-9]+', 'season' => '[0-9]+']);
+Route::get('/{tier}/{season}/standings/{round}', 'StandingsController@fetchStandings')
+->where(['tier' => '[0-9]+', 'season' => '[0-9]+', 'season' => '[0-9]+']);
+
 Route::post('/results/race', 'ResultsController@saveRaceResults');
 //Route::post('/results/quali', 'ResultsController@saveQualiResults');
 

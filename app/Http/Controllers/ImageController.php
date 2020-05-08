@@ -270,7 +270,7 @@ class ImageController extends Controller
             unlink($img->dirname . '/' . $img->basename);
 
             //If No More Results
-            if($tr == "") break;
+            if($tr == "-") break;
 
             $row["position"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
