@@ -39,7 +39,7 @@ class ResultsController extends Controller
 
         return response()->json([
             "race" => $race,
-            "result" => $results
+            "result" => $results 
         ]);
     }
 
@@ -56,8 +56,8 @@ class ResultsController extends Controller
 
         $results = Result::where('race_id', $race['id'])
                          ->orderBy('position', 'asc')
-                         ->get()->toArray();
-
+                         ->get()->load('driver','race.circuit')->toArray();
+     
         foreach($results as $i => $res) {
             $pos = $res['position'];
             if($pos > 10 || $pos < 1)
@@ -65,6 +65,10 @@ class ResultsController extends Controller
 
             $results[$i]['points'] = self::POINTS[$pos - 1];
         }
-        return $results;
+        //dd($results);
+        $count = count($results);
+        return view('standings.race')
+        ->with('results',$results)
+        ->with('count',$count);
     }
 }

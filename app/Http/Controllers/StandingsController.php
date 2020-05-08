@@ -42,7 +42,9 @@ class StandingsController extends Controller
                        //})
                        //->orderBy('round', 'asc')
                        //->get()->load('season','circuit');
-        return $races;
+
+       //dd($races);
+       return view('standings.allraces')->with('races',$races);
     }
 
     public function fetchStandings($tier, $season) {
@@ -112,7 +114,10 @@ class StandingsController extends Controller
                 return 1;
             return 0;
         });
-        return $res;
+         $count = count($res);
+        return view('standings.season')
+        ->with('res',$res)
+        ->with('count',$count); 
     }
 
     public function storeResults(Request $request)
