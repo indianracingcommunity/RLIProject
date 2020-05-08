@@ -29,14 +29,14 @@ class StandingsController extends Controller
             ['tier', '=', $tier],
             ['season', '=', $season]
         ])->firstOrFail();
+        
 
         $races = Race::where('season_id', $season['id'])
                          /*(['race_id' => function ($query) {
                           $query->where('season_id', '=', $season['id']);
                          }])*/
                        ->orderBy('round', 'asc')
-                       ->get();
-
+                       ->get()->load('season','circuit');
         return $races;
     }
 

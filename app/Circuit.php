@@ -10,4 +10,10 @@ class Circuit extends Model
         $official_list = Circuit::select('id', 'official')->get();
         return json_decode(json_encode($official_list), true);
     }
+
+
+    public function races()
+      {
+          return $this->hasMany('App\Race');
+      }
 }

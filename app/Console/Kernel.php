@@ -24,10 +24,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            $controller = new \App\Http\Controllers\SteamController();
-            $controller->check();
-        })->everyMinute();
+        $schedule->call('App\Http\Controllers\SteamController@check')
+        ->everyMinute();
+
+        // $schedule->call(function () {
+        //     $controller = new \App\Http\Controllers\SteamController();
+        //     $controller->check();
+        // })->everyMinute();
     }
 
     /**

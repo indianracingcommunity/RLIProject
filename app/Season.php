@@ -14,4 +14,11 @@ class Season extends Model
     protected $fillable = [
         'game', 'season', 'tier', 'year'
     ];
+
+      public function races()
+      {
+          return $this->hasMany('App\Race');
+      }
+
+      
 }

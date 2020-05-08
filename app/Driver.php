@@ -51,4 +51,9 @@ class Driver extends Model
         }
         return 0;
     }
+    
+    public function results()
+    {
+        return $this->hasMany('App\Result');
+    }
 }

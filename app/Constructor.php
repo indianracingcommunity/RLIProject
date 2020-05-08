@@ -10,4 +10,9 @@ class Constructor extends Model
         $team_list = Constructor::select('id', 'name')->get();
         return json_decode(json_encode($team_list), true);
     }
+
+    public function results()
+    {
+        return $this->hasMany('App\Result');
+    }
 }

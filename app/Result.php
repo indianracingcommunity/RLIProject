@@ -23,4 +23,19 @@ class Result extends Model
     protected $fillable = [
         'constructor_id', 'driver_id', 'race_id', 'grid', 'points', 'fastestlaptime', 'position', 'tyres', 'stops', 'time'
     ];
+
+    public function race()
+    {
+        return $this->belongsTo('App\Race');
+    }
+
+    public function constructor()
+    {
+        return $this->belongsTo('App\Constructor');
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo('App\Driver');
+    }
 }

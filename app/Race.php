@@ -23,4 +23,19 @@ class Race extends Model
     protected $fillable = [
         'circuit_id', 'season_id', 'round'
     ];
+
+    public function season()
+      {
+          return $this->belongsTo('App\Season');
+      }
+
+      public function circuit()
+      {
+          return $this->belongsTo('App\Circuit');
+      }
+
+      public function results()
+      {
+          return $this->hasMany('App\Result');
+      }
 }
