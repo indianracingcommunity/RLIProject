@@ -23,6 +23,9 @@ Route::get('/public/image/race', 'ImageController@pubRace');
 Route::get('/public/image/quali', 'ImageController@pubQuali');
 */
 
+Route::get('/test','ImageController@testing');
+Route::post('/test/save','ImageController@testsave');
+
 Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
 Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');
 Route::get('/store-results', 'StandingsController@fetchCircuit');
