@@ -63,7 +63,7 @@ class ResultsController extends Controller
             if($pos > 10 || $pos < 1)
                 $pos = 11;
 
-            $results[$i]['points'] = self::POINTS[$pos - 1];
+            $results[$i]['points'] = self::POINTS[$pos - 1] + $res['fastestlap'];
         }
         //dd($results);
         $count = count($results);
