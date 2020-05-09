@@ -1,13 +1,54 @@
 @extends('layout')
-
-
+<style>
+      body {
+         min-height: 100vh;
+         background-image:url('https://cdn.dribbble.com/users/1568450/screenshots/7880617/media/2b89eb9a9496fba5dc1f7bf7d1418855.png');
+         background-size: 950px;
+         background-repeat:no-repeat;
+         background-position:right bottom;
+      }
+    </style>
 @section('body')
-<div class="col bg-light pt-md-5 embed-responsive container">
+<div class="bgImage">
+    <div class="p-32">
+        <div class="text-5xl font-bold text-gray-900">
+            Welcome to IRC!
+        </div>
+        <div class="text-3xl font-semibold text-gray-700">
+            A place for every Indian Racing Enthusiast.
+        </div>
+        <div class="flex">
+            <div class="mt-16 text-2xl font-semibold px-4 py-2 bg-indigo-600 shadow-lg text-white rounded-md cursor">
+                <a href="/joinus">Join us</a>
+            </div>
+        </div>
+        <div class="mt-10">
+            <div class="text-xl font-semibold text-gray-600">
+                Follow Us
+            </div>
+            <div class="flex">
+                <div class="text-4xl text-red-600">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <div class="text-4xl text-blue-600 ml-4">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <div class="text-4xl text-orange-600 ml-4">
+                    <i class="fab fa-reddit-alien"></i>
+                </div>
+                <div class="text-4xl text-blue-800 ml-4">
+                    <i class="fab fa-steam"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="col bg-light pt-md-5 embed-responsive container"> -->
    <!--  <br>
     <div class=" pt-4 text-center">
         <h1 class="display-3 font-weight-bold font-italic text-success">INDIAN RACING COMMUNITY</h1>
     </div><hr class=" m-3 bg-info"> -->
-
+<!-- 
     <div id="demo" class="carousel slide" data-ride="carousel">
         <ul class="carousel-indicators">
             <li data-target="#demo" data-slide-to="0" class="active"></li>
@@ -43,7 +84,7 @@
         <a class="carousel-control-next" href="#demo" data-slide="next">
             <span class="carousel-control-next-icon"></span>
         </a>
-    </div>
+    </div> -->
 
 
   <!--  <div id="demo" class="carousel slide pt-3" data-ride="carousel">
@@ -113,5 +154,5 @@
       channel: '641545909565390869',
       shard: 'https://disweb.dashflo.net'
     })
-  </script>
+</script>
 @endsection
