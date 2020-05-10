@@ -91,7 +91,7 @@ class StandingsController extends Controller
             if($pos > 10 || $pos < 1)
                 $pos = 11;
 
-            $points += self::POINTS[$pos - 1];
+            $points += self::POINTS[$pos - 1] + $driver['fastestlap'];
         }
         $res[count($res) - 1]['points'] = $points;
         $res[count($res) - 1]['end'] = count($results);

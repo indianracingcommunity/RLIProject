@@ -133,7 +133,7 @@ class ImageController extends Controller
             $img = Image::make($src)
                         ->resize(1920, 1080)
                         ->crop(1290, 570, 530, 360)
-                        ->crop(150, 33, 150, 7 + (int)($pos * $row_width));
+                        ->crop(200, 33, 150, 7 + (int)($pos * $row_width));
 
             $this->two_tone($img);
             return $img;
