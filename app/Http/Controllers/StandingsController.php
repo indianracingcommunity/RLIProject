@@ -8,6 +8,7 @@ use App\Driver;
 use App\Result;
 use App\Season;
 use App\Race;
+use App\Circuit;
 
 class StandingsController extends Controller
 {
@@ -114,26 +115,52 @@ class StandingsController extends Controller
                 return 1;
             return 0;
         });
-         $count = count($res);
+
+        $nextRace = $this->nextRace($season['id']);
+        $count = count($res);
+
         return view('standings.season')
-        ->with('res',$res)
-        ->with('count',$count); 
+               ->with('res', $res)
+               ->with('count', $count)
+               ->with('nextRace', $nextRace);
+    }
+
+    protected function nextRace($seasonid) {
+        //$season = Season::where([
+        //    ['tier', $tier],
+        //    ['season', $season]
+        //])->firstOrFail();
+
+        $round = Race::has('results')
+                      ->where('season_id', $seasonid)
+                      ->max('round');
+
+        $nextRace = Race::where([
+                        ['season_id', $season['id']],
+                        ['round', ($round + 1)]
+                    ])->first();
+
+        if($nextRace) {
+            $circuit = Circuit::find($nextRace['circuit_id']);
+            return $circuit;
+        }
+        return $nextRace;
     }
 
     public function storeResults(Request $request)
     {
-          $result = new Result();
-          $result->race_id = $request['race_id'];
-          $result->constructor_id = $request['constructor_id'];
-          $result->driver_id = $request['driver_id'];
-          $result->grid = $request['grid'];
-          $result->points = $request['points'];
-          $result->fastestlap = $request['fastestlap'];
-          $result->fastestlaptime = $request['fastestlaptime'];
-          $result->tyres = $request['tyres'];
-          $result->position = $request['position'];
-          $result->save();
+        $result = new Result();
+        $result->race_id = $request['race_id'];
+        $result->constructor_id = $request['constructor_id'];
+        $result->driver_id = $request['driver_id'];
+        $result->grid = $request['grid'];
+        $result->points = $request['points'];
+        $result->fastestlap = $request['fastestlap'];
+        $result->fastestlaptime = $request['fastestlaptime'];
+        $result->tyres = $request['tyres'];
+        $result->position = $request['position'];
+        $result->save();
 
-         return redirect('/');
+        return redirect('/');
     }
 }
