@@ -39,6 +39,7 @@ Route::get('/{tier}/{season}/races', 'StandingsController@fetchRaces')
 Route::get('/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceResults')
 ->where(['tier' => '[0-9]+', 'season' => '[0-9]+', 'season' => '[0-9]+']);
 
+Route::put('/position', 'ResultsController@updatePosition');
 Route::post('/results/race', 'ResultsController@saveRaceResults');
 //Route::post('/results/quali', 'ResultsController@saveQualiResults');
 
@@ -58,7 +59,7 @@ Route::get('home/admin/report/{report}/details','DriverController@reportdetails'
 Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict');
 
 Route::get('/home/admin/user-allot/{id}','DriverController@allotuser');
-Route::POST('/home/admin/user-allot/submit','DriverController@saveallotment');
+Route::post('/home/admin/user-allot/submit','DriverController@saveallotment');
 
 Route::get('/image/quali', 'ImageController@qualiIndex');
 //Route::post('/image/quali', 'ImageController@ocrQuali');
@@ -66,6 +67,8 @@ Route::get('/image/quali', 'ImageController@qualiIndex');
 Route::get('/image/race', 'ImageController@raceIndex');
 Route::post('/image/race', 'ImageController@ocrRace');
 });
+
+
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {
 Route::get('/home', 'UserPanel@index')->name('home');

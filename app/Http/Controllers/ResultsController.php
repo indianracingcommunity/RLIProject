@@ -22,6 +22,50 @@ class ResultsController extends Controller
         $this->output = new ConsoleOutput();
     }
 
+    public function updatePosition(Request $request) {
+        $request->validate([
+            'newPos' => 'required|integer|gt:0',
+            'newTime' => 'required',
+
+            'driverid' => 'required|integer|gt:0',
+            'raceid' => 'required|integer|gt:0'
+        ]);
+
+        $newPos = $request->newPos;
+        $results = Result::where('race_id', $request->$raceid)
+                         ->orderBy('position')
+                         ->get();
+
+        if($request->$newPos > count($results))
+            return -1;
+
+        $race_arr = json_decode($results, true);
+        $driver_ind = array_search($request->$driverid, array_column($race_arr, "driver_id"));
+        if($driver_ind == null)
+            return -1;
+
+        $oldPos = $results[$driver_ind]['position'];
+        if($newPos == $oldPos) return $results;
+
+        $results[$oldPos - 1]['position'] = $newPos;
+        $results[$oldPos - 1]['time'] = $request->$newTime;
+        $results[$oldPos - 1]->save();
+        if($newPos > $oldPos) {
+            for($i = $oldPos; $i < $newPos; $i++) {
+                $results[$i]['position'] = $results[$i]['position'] - 1;
+                $results[$i]->save();
+            }
+        }
+        else {
+            for($i = $newPos - 1; $i < $oldPos - 1; $i++) {
+                $results[$i]['position'] = $results[$i]['position'] + 1;
+                $results[$i]->save();
+            }
+        }
+
+        return $results;
+    }
+
     public function saveRaceResults(RaceResults $request) {
         //Race Storing
         $track = new Race($request->validated()['track']);

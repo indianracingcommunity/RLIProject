@@ -136,7 +136,7 @@ class StandingsController extends Controller
                       ->max('round');
 
         $nextRace = Race::where([
-                        ['season_id', $season['id']],
+                        ['season_id', $seasonid],
                         ['round', ($round + 1)]
                     ])->first();
 
