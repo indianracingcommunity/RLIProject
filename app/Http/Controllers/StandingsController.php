@@ -92,7 +92,10 @@ class StandingsController extends Controller
             if($pos > 10 || $pos < 1)
                 $pos = 11;
 
-            $points += self::POINTS[$pos - 1] + $driver['fastestlap'];
+            if($driver['status'] >= 0) {
+                $points += self::POINTS[$pos - 1];
+                if((int)$driver['status'] == 1) $points += 1;
+            }
         }
         $res[count($res) - 1]['points'] = $points;
         $res[count($res) - 1]['end'] = count($results);
@@ -155,7 +158,7 @@ class StandingsController extends Controller
         $result->driver_id = $request['driver_id'];
         $result->grid = $request['grid'];
         $result->points = $request['points'];
-        $result->fastestlap = $request['fastestlap'];
+        $result->status = $request['status'];
         $result->fastestlaptime = $request['fastestlaptime'];
         $result->tyres = $request['tyres'];
         $result->position = $request['position'];

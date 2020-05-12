@@ -25,30 +25,32 @@ class ResultsController extends Controller
     public function updatePosition(Request $request) {
         $request->validate([
             'newPos' => 'required|integer|gt:0',
-            'newTime' => 'required',
-
             'driverid' => 'required|integer|gt:0',
             'raceid' => 'required|integer|gt:0'
         ]);
 
         $newPos = $request->newPos;
-        $results = Result::where('race_id', $request->$raceid)
+        $results = Result::where('race_id', $request->raceid)
                          ->orderBy('position')
                          ->get();
 
-        if($request->$newPos > count($results))
+        if($request->newPos > count($results))
             return -1;
 
         $race_arr = json_decode($results, true);
-        $driver_ind = array_search($request->$driverid, array_column($race_arr, "driver_id"));
+        $driver_ind = array_search($request->driverid, array_column($race_arr, "driver_id"));
         if($driver_ind == null)
             return -1;
 
         $oldPos = $results[$driver_ind]['position'];
-        if($newPos == $oldPos) return $results;
+
+        if($request->has('status'))
+            $results[$oldPos - 1]['status'] = $request->status;
+        if($request->has('newTime'))
+            $results[$oldPos - 1]['newTime'] = $request->newTime;
 
         $results[$oldPos - 1]['position'] = $newPos;
-        $results[$oldPos - 1]['time'] = $request->$newTime;
+        //$results[$oldPos - 1]['time'] = $request->newTime;
         $results[$oldPos - 1]->save();
         if($newPos > $oldPos) {
             for($i = $oldPos; $i < $newPos; $i++) {
@@ -56,7 +58,7 @@ class ResultsController extends Controller
                 $results[$i]->save();
             }
         }
-        else {
+        elseif($newPos < $oldPos) {
             for($i = $newPos - 1; $i < $oldPos - 1; $i++) {
                 $results[$i]['position'] = $results[$i]['position'] + 1;
                 $results[$i]->save();
@@ -107,7 +109,12 @@ class ResultsController extends Controller
             if($pos > 10 || $pos < 1)
                 $pos = 11;
 
-            $results[$i]['points'] = self::POINTS[$pos - 1] + $res['fastestlap'];
+            if($res['status'] < 0)
+                $results[$i]['points'] = 0;
+            else {
+                $results[$i]['points'] = self::POINTS[$pos - 1];
+                if((int)$res['status'] == 1) $results[$i]['points'] += 1;
+            }
         }
         //dd($results);
         $count = count($results);

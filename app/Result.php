@@ -21,7 +21,7 @@ class Result extends Model
     }
 
     protected $fillable = [
-        'constructor_id', 'driver_id', 'race_id', 'grid', 'points', 'fastestlaptime', 'position', 'tyres', 'stops', 'time'
+        'constructor_id', 'driver_id', 'race_id', 'grid', 'points', 'status', 'fastestlaptime', 'position', 'tyres', 'stops', 'time'
     ];
 
     public function race()
