@@ -22,7 +22,7 @@ class CreateResultsTable extends Migration
             $table->string('time')->nullable();
             $table->integer('stops')->nullable();
             $table->integer('points')->default(0);
-            $table->float('status')->default(0);
+            $table->boolean('fastestlap')->default(false);
             $table->string('fastestlaptime')->nullable();
             $table->string('tyres')->nullable();
             
