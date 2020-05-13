@@ -22,6 +22,52 @@ class ResultsController extends Controller
         $this->output = new ConsoleOutput();
     }
 
+    public function updatePosition(Request $request) {
+        $request->validate([
+            'newPos' => 'required|integer|gt:0',
+            'driverid' => 'required|integer|gt:0',
+            'raceid' => 'required|integer|gt:0'
+        ]);
+
+        $newPos = $request->newPos;
+        $results = Result::where('race_id', $request->raceid)
+                         ->orderBy('position')
+                         ->get();
+
+        if($request->newPos > count($results))
+            return -1;
+
+        $race_arr = json_decode($results, true);
+        $driver_ind = array_search($request->driverid, array_column($race_arr, "driver_id"));
+        if($driver_ind === false)
+            return -1;
+
+        $oldPos = $results[$driver_ind]['position'];
+
+        if($request->has('status'))
+            $results[$oldPos - 1]['status'] = $request->status;
+        if($request->has('newTime'))
+            $results[$oldPos - 1]['time'] = $request->newTime;
+
+        $results[$oldPos - 1]['position'] = $newPos;
+        //$results[$oldPos - 1]['time'] = $request->newTime;
+        $results[$oldPos - 1]->save();
+        if($newPos > $oldPos) {
+            for($i = $oldPos; $i < $newPos; $i++) {
+                $results[$i]['position'] = $results[$i]['position'] - 1;
+                $results[$i]->save();
+            }
+        }
+        elseif($newPos < $oldPos) {
+            for($i = $newPos - 1; $i < $oldPos - 1; $i++) {
+                $results[$i]['position'] = $results[$i]['position'] + 1;
+                $results[$i]->save();
+            }
+        }
+
+        return $results;
+    }
+
     public function saveRaceResults(RaceResults $request) {
         //Race Storing
         $track = new Race($request->validated()['track']);
@@ -29,12 +75,13 @@ class ResultsController extends Controller
 
         //Result Storing
         $results = $request->validated()['results'];
-        foreach($results as $res) {
+        foreach($results as $k => $res) {
             Driver::selfLearn($res['driver'], $res['driver_id']);
 
             $res['race_id'] = $race['id'];
             $result = new Result($res);
             $result->storeResult();
+            $results[$k] = $result;
         }
 
         return response()->json([
@@ -63,7 +110,12 @@ class ResultsController extends Controller
             if($pos > 10 || $pos < 1)
                 $pos = 11;
 
-            $results[$i]['points'] = self::POINTS[$pos - 1] + $res['fastestlap'];
+            if($res['status'] < 0)
+                $results[$i]['points'] = 0;
+            else {
+                $results[$i]['points'] = self::POINTS[$pos - 1];
+                if((int)$res['status'] == 1) $results[$i]['points'] += 1;
+            }
         }
         //dd($results);
         $count = count($results);

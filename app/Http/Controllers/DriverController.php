@@ -31,14 +31,13 @@ class DriverController extends Controller
   }
  
   public function saveedit(User $user)
-
   {
     $data = request()->all();
-    $user->name=$data['name'];
-    $user->discord_discrim=$data['discord_discrim'];
-    $user->team=$data['team'];
-    $user->steam_id=$data['steam_id'];
-    $user->avatar=$data['avatar'];
+    $user->name = $data['name'];
+    $user->discord_discrim = $data['discord_discrim'];
+    $user->team = $data['team'];
+    $user->steam_id = $data['steam_id'];
+    $user->avatar = $data['avatar'];
     $user->save();
     return redirect()->back();
   }
