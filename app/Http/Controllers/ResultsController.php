@@ -75,12 +75,13 @@ class ResultsController extends Controller
 
         //Result Storing
         $results = $request->validated()['results'];
-        foreach($results as $res) {
+        foreach($results as $k => $res) {
             Driver::selfLearn($res['driver'], $res['driver_id']);
 
             $res['race_id'] = $race['id'];
             $result = new Result($res);
             $result->storeResult();
+            $results[$k] = $result;
         }
 
         return response()->json([
