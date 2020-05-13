@@ -47,7 +47,7 @@ class ResultsController extends Controller
         if($request->has('status'))
             $results[$oldPos - 1]['status'] = $request->status;
         if($request->has('newTime'))
-            $results[$oldPos - 1]['newTime'] = $request->newTime;
+            $results[$oldPos - 1]['time'] = $request->newTime;
 
         $results[$oldPos - 1]['position'] = $newPos;
         //$results[$oldPos - 1]['time'] = $request->newTime;
