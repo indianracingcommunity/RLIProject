@@ -60,71 +60,28 @@ class StandingsController extends Controller
         $results = Result::whereIn('race_id', $races)
                          ->orderBy('driver_id')
                          ->orderBy('position')
-                         ->get()->load('driver:id,name')->toArray();
+                         ->get()
+                         ->load('driver:id,name', 'constructor:id,name')
+                         ->toArray();
 
         if(!count($results))
             return 0;
 
-        $prev = $results[0]['driver_id'];
-        $res = array(array(
-            "id" => $results[0]['driver_id'],
-            "name" => $results[0]['driver']['name'],
-            "start" => 0
-        ));
+        $dres = $this->computePoints($results, 'driver');
+        $dcount = count($dres);
 
-        $points = 0;
-        foreach($results as $k => $driver) {
-            if($prev != $driver['driver_id']) {
-                $cur = array(
-                    "id" => $driver['driver_id'],
-                    "name" => $driver['driver']['name'],
-                    "start" => $k
-                );
-
-                $res[count($res) - 1]['points'] = $points;
-                $res[count($res) - 1]['end'] = $k;
-                $points = 0;
-                array_push($res, $cur);
-            }
-
-            $prev = $driver['driver_id'];
-            $pos = $driver['position'];
-            if($pos > 10 || $pos < 1)
-                $pos = 11;
-
-            if($driver['status'] >= 0) {
-                $points += self::POINTS[$pos - 1];
-                if((int)$driver['status'] == 1) $points += 1;
-            }
-        }
-        $res[count($res) - 1]['points'] = $points;
-        $res[count($res) - 1]['end'] = count($results);
-
-        usort($res, function($a, $b) use ($results) {
-            if ($a['points'] < $b['points'])
-                return 1;
-            elseif ($a['points'] > $b['points'])
-                return -1;
-
-            //Equal Points
-            for($j = 0; $j < min($a['end'] - $a['start'], $b['end'] - $b['start']); $j++) {
-                if($results[$j + $a['start']]['position'] > $results[$j + $b['start']]['position'])
-                    return 1;
-                if($results[$j + $a['start']]['position'] < $results[$j + $b['start']]['position'])
-                    return -1;
-            }
-
-            if(($a['end'] - $a['start']) < ($b['end'] - $b['start']))
-                return 1;
-            return 0;
-        });
+        $cres = $this->computePoints($results, 'constructor');
+        $ccount = count($cres);
 
         $nextRace = $this->nextRace($season['id']);
-        $count = count($res);
 
         return view('standings.season')
-               ->with('res', $res)
-               ->with('count', $count)
+               ->with('res', $dres)
+               ->with('count', $dcount)
+
+               ->with('cres', $cres)
+               ->with('ccount', $ccount)
+
                ->with('nextRace', $nextRace);
     }
 
@@ -148,6 +105,75 @@ class StandingsController extends Controller
             return $circuit;
         }
         return $nextRace;
+    }
+
+    protected function computePoints($results, String $field)
+    {
+        //Sort $results by $field
+        usort($results, function($a, $b) use ($field) {
+            if ($a[$field . '_id'] > $b[$field . '_id'])
+                return 1;
+            elseif ($a[$field . '_id'] < $b[$field . '_id'])
+                return -1;
+            else
+                return 0;
+        });
+
+        $prev = $results[0][$field . '_id'];
+        $dres = array(array(
+            "id" => $results[0][$field . '_id'],
+            "name" => $results[0][$field]['name'],
+            "start" => 0
+        ));
+
+        $points = 0;
+        foreach($results as $k => $driver) {
+            if($prev != $driver[$field . '_id']) {
+                $cur = array(
+                    "id" => $driver[$field . '_id'],
+                    "name" => $driver[$field]['name'],
+                    "start" => $k
+                );
+
+                $dres[count($dres) - 1]['points'] = $points;
+                $dres[count($dres) - 1]['end'] = $k;
+                $points = 0;
+                array_push($dres, $cur);
+            }
+
+            $prev = $driver[$field . '_id'];
+            $pos = $driver['position'];
+            if($pos > 10 || $pos < 1)
+                $pos = 11;
+
+            if($driver['status'] >= 0) {
+                $points += self::POINTS[$pos - 1];
+                if((int)$driver['status'] == 1) $points += 1;
+            }
+        }
+        $dres[count($dres) - 1]['points'] = $points;
+        $dres[count($dres) - 1]['end'] = count($results);
+
+        usort($dres, function($a, $b) use ($results) {
+            if ($a['points'] < $b['points'])
+                return 1;
+            elseif ($a['points'] > $b['points'])
+                return -1;
+
+            //Equal Points
+            for($j = 0; $j < min($a['end'] - $a['start'], $b['end'] - $b['start']); $j++) {
+                if($results[$j + $a['start']]['position'] > $results[$j + $b['start']]['position'])
+                    return 1;
+                if($results[$j + $a['start']]['position'] < $results[$j + $b['start']]['position'])
+                    return -1;
+            }
+
+            if(($a['end'] - $a['start']) < ($b['end'] - $b['start']))
+                return 1;
+            return 0;
+        });
+
+        return $dres;
     }
 
     public function storeResults(Request $request)

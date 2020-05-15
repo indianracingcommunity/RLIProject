@@ -29,14 +29,14 @@ td {
     {{$results[0]['race']['circuit']['name']}}
     </div>
     <div class="mb-4">
-      <img src="https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Australia_Circuit.png.transform/9col/image.png" alt="">
+      <img src={{$results[0]['race']['circuit']['display']}} alt="">
     </div>
     <div class="flex justify-between font-semibold">
       <div>
         Circuit Length
       </div>
       <div class="text-lg text-blue-700">
-        5.303 km
+       {{$results[0]['race']['circuit']['track_length']}}
       </div>
     </div>
     <div class="flex justify-between font-semibold">
@@ -44,7 +44,7 @@ td {
         Number of laps
       </div>
       <div class="text-lg text-blue-700">
-       30
+       {{$results[0]['race']['circuit']['laps']}}
       </div>
     </div>
     </div>

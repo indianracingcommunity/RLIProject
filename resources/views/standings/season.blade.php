@@ -61,13 +61,13 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       </tr>
       </thead>
       <tbody>
-      @for ($i = 0 ; $i < 10; $i++)
+      @for ($i = 0 ; $i < $ccount; $i++)
         <tr class="cursor-pointer">
           <td class="font-semibold rounded-lg border border-white">
-            Haass
+           {{$cres[$i]['name']}}
           </td>
           <td class="font-semibold rounded-lg border border-white">
-            123
+           {{$cres[$i]['points']}}
           </td>
         </tr>
       @endfor 
@@ -75,33 +75,35 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
     </table>
   
   </div>
-  <div class="border rounded-md p-3">
-    <div class="text-xl font-semibold text-gray-600">
-      Next Race
-    </div>
-    <div class="text-4xl font-semibold text-purple-700">
-      Great Britain
-    </div>
-    <div class="mb-4">
-      <img src="https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png.transform/9col/image.png" alt="">
-    </div>
-    <div class="flex justify-between font-semibold">
-      <div>
-        Circuit Length
+  @if($nextRace != null)
+    <div class="border rounded-md p-3">
+      <div class="text-xl font-semibold text-gray-600">
+        Next Race
       </div>
-      <div class="text-lg text-blue-700">
-        5.891 km
+      <div class="text-4xl font-semibold text-purple-700">
+        {{$nextRace['name']}}
+      </div>
+      <div class="mb-4">
+        <img src={{$nextRace['display']}} alt="">
+      </div>
+      <div class="flex justify-between font-semibold">
+        <div>
+          Circuit Length
+        </div>
+        <div class="text-lg text-blue-700">
+          {{$nextRace['track_length']}}
+        </div>
+      </div>
+      <div class="flex justify-between font-semibold">
+        <div>
+          Number of laps
+        </div>
+        <div class="text-lg text-blue-700">
+         {{$nextRace['laps']}}
+        </div>
       </div>
     </div>
-    <div class="flex justify-between font-semibold">
-      <div>
-        Number of laps
-      </div>
-      <div class="text-lg text-blue-700">
-       30
-      </div>
-    </div>
-  </div>
+  @endif
   </div>
   <div class="w-3/4 mx-5">
     <div class="flex mb-6">
@@ -113,7 +115,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           Ferrari
         </div>
         <div class="font-semibold">
-          MaranelloBaby
+         {{$res[0]['name']}}
         </div>
       </div>
 
@@ -125,7 +127,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           Haas
         </div>
         <div class="font-semibold">
-          GeneralPepe
+         {{$res[1]['name']}}
         </div>
       </div>
 
@@ -137,7 +139,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           Ferrari
         </div>
         <div class="font-semibold">
-          dawn29
+         {{$res[2]['name']}}
         </div>
       </div>
     </div>
