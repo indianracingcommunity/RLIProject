@@ -107,6 +107,14 @@ class StandingsController extends Controller
         return $nextRace;
     }
 
+    protected function sortPos($a, $b) {
+        if ($a['position'] > $b['position'])
+            return 1;
+        elseif ($a['position'] < $b['position'])
+            return -1;
+        else
+            return 0;
+    }
     protected function computePoints($results, String $field)
     {
         //Sort $results by $field
@@ -160,19 +168,26 @@ class StandingsController extends Controller
             elseif ($a['points'] > $b['points'])
                 return -1;
 
+            $l = array_slice($results, $a['start'], $a['end'] - $a['start']);
+            $r = array_slice($results, $b['start'], $b['end'] - $b['start']);
+            usort($l, array($this, "sortPos"));
+            usort($r, array($this, "sortPos"));
+
             //Equal Points
-            for($j = 0; $j < min($a['end'] - $a['start'], $b['end'] - $b['start']); $j++) {
-                if($results[$j + $a['start']]['position'] > $results[$j + $b['start']]['position'])
+            for($j = 0; $j < min(count($l), count($r)); $j++) {
+                if($l[$j]['position'] > $r[$j]['position'])
                     return 1;
-                if($results[$j + $a['start']]['position'] < $results[$j + $b['start']]['position'])
+                if($l[$j]['position'] < $r[$j]['position'])
                     return -1;
             }
 
-            if(($a['end'] - $a['start']) < ($b['end'] - $b['start']))
+            if(count($l) < count($r))
                 return 1;
-            return 0;
+            elseif(count($l) < count($r))
+                return -1;
+            else
+                return 0;
         });
-
         return $dres;
     }
 
