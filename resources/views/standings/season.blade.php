@@ -158,13 +158,22 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         </tr>
       </thead>
       <tbody>
-        @for ($i = 0 ; $i < $count; $i++)
+        @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
+            @php
+              $n = (float)$res[$i]['status'];
+              $st = $n - floor($n);
+              if($st == 0.9 || $res[$i]['team'] == 'Reserve')
+              {
+                  $k--;
+                  continue;
+              }
+            @endphp
           <tr class="cursor-pointer">
-            <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
+            <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
             <td class="font-semibold rounded-lg border border-white">
-              <span class="border-l-4 px-2 border-red-600">
-                Ferrari
+              <span>
+                {{$res[$i]['team']}}
               </span>
             </td>
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>

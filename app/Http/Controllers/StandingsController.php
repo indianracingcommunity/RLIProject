@@ -48,6 +48,23 @@ class StandingsController extends Controller
        return view('standings.allraces')->with('races',$races);
     }
 
+    protected function latest_race($array, $start, $end)
+    {
+        $max = $array[$start]['race']['round'];
+        $maxi = $start;
+        for($i = $start + 1; $i < $end; $i++)
+        {
+            $cur = $array[$i]['race']['round'];
+            if($cur > $max)
+            {
+                $max = $cur;
+                $maxi = $i;
+            }
+        }
+
+        return $maxi;
+    }
+
     public function fetchStandings($tier, $season) {
         $season = Season::where([
             ['tier', $tier],
@@ -61,7 +78,7 @@ class StandingsController extends Controller
                          ->orderBy('driver_id')
                          ->orderBy('position')
                          ->get()
-                         ->load('driver:id,name', 'constructor:id,name')
+                         ->load('driver:id,name', 'constructor:id,name', 'race:id,round')
                          ->toArray();
 
         if(!count($results))
@@ -69,12 +86,17 @@ class StandingsController extends Controller
 
         $dres = $this->computePoints($results, 'driver');
         $dcount = count($dres);
+        for($i = 0; $i < count($dres); $i++)
+        {
+            $ind = $this->latest_race($results, $dres[$i]['start'], $dres[$i]['end']);
+            $dres[$i]['team'] = $results[$ind]['constructor']['name'];
+            $dres[$i]['status'] = $results[$ind]['status'];
+        }
 
         $cres = $this->computePoints($results, 'constructor');
         $ccount = count($cres);
 
         $nextRace = $this->nextRace($season['id']);
-
         return view('standings.season')
                ->with('res', $dres)
                ->with('count', $dcount)
