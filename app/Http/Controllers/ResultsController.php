@@ -106,7 +106,7 @@ class ResultsController extends Controller
                          ->get()
                          ->load('driver','race.circuit', 'constructor:id,name')
                          ->toArray();
-     
+
         foreach($results as $i => $res) {
             $pos = $res['position'];
             if($pos > 10 || $pos < 1)

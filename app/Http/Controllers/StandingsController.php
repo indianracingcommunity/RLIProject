@@ -104,6 +104,7 @@ class StandingsController extends Controller
                ->with('cres', $cres)
                ->with('ccount', $ccount)
 
+               ->with('tier', array($tier, $season["season"]))
                ->with('nextRace', $nextRace);
     }
 

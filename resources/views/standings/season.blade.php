@@ -44,10 +44,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
 <div class="container mx-auto flex">
   <div class="w-1/4">
   <div class="text-4xl font-bold text-gray-800">
-    <i class="fas fa-chess-king text-purple-600"></i> Tier 1
+    <i class="fas fa-chess-king text-purple-600"></i> Tier {{$tier[0]}}
   </div>
   <div class="text-2xl font-semibold text-gray-700">
-    Season 4
+    Season {{$tier[1]}}
   </div>
   <div class="bg-gray-100 rounded-md px-4 py-2 my-4">
     <div class="text-sm font-semibold my-2">
@@ -112,7 +112,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           1st
         </div>
         <div class="text-sm font-semibold">
-          Ferrari
+         {{$res[0]['team']}}
         </div>
         <div class="font-semibold">
          {{$res[0]['name']}}
@@ -124,7 +124,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           2nd
         </div>
         <div class="text-sm font-semibold">
-          Haas
+         {{$res[1]['team']}}
         </div>
         <div class="font-semibold">
          {{$res[1]['name']}}
@@ -136,7 +136,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           3rd
         </div>
         <div class="text-sm font-semibold">
-          Ferrari
+         {{$res[2]['team']}}
         </div>
         <div class="font-semibold">
          {{$res[2]['name']}}
@@ -160,9 +160,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       <tbody>
         @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
             @php
-              $n = (float)$res[$i]['status'];
-              $st = $n - floor($n);
-              if($st == 0.9 || $res[$i]['team'] == 'Reserve')
+              $n = (float)abs($res[$i]['status']);
+              $st = $n - floor(abs($n));
+
+              if(abs($st - 0.9) < 0.00001 || $res[$i]['team'] == 'Reserve')
               {
                   $k--;
                   continue;
