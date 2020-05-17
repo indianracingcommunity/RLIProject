@@ -103,7 +103,9 @@ class ResultsController extends Controller
 
         $results = Result::where('race_id', $race['id'])
                          ->orderBy('position', 'asc')
-                         ->get()->load('driver','race.circuit')->toArray();
+                         ->get()
+                         ->load('driver','race.circuit', 'constructor:id,name')
+                         ->toArray();
      
         foreach($results as $i => $res) {
             $pos = $res['position'];

@@ -7,7 +7,7 @@ tr:nth-child(even) td {
   backgroun-color: red !important;
 }
 table {
-  width: 100%
+  width: 110%
 }
 th {
   padding: 10px;
@@ -58,6 +58,7 @@ td {
           <tr>
             <th class="rounded-md bg-gray-300 border-2 border-white w-8">Position</th>
             <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
+            <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
             <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
           </tr>
       </thead>
@@ -69,6 +70,8 @@ td {
         
         <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700">{{$results[$i]['driver']['name']}}</td>
         
+        <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700">{{$results[$i]['constructor']['name']}}</td>
+
         <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700">{{$results[$i]['points']}}</td>
       </tr> 
     @elseif($i%2 != 0)
@@ -76,6 +79,8 @@ td {
         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$i+1}}</td>
         
         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['driver']['name']}}</td>
+
+        <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['constructor']['name']}}</td>
         
         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['points']}}</td>
       </tr> 
@@ -85,6 +90,8 @@ td {
         
         <td class="font-semibold rounded-lg border border-white">{{$results[$i]['driver']['name']}}</td>
         
+        <td class="font-semibold rounded-lg border border-white">{{$results[$i]['constructor']['name']}}</td>
+
         <td class="font-semibold rounded-lg border border-white">{{$results[$i]['points']}}</td>
       </tr> 
     @endif
