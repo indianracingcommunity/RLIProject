@@ -160,10 +160,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       <tbody>
         @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
             @php
-              $n = (float)abs($res[$i]['status']);
-              $st = $n - floor(abs($n));
-
-              if(abs($st - 0.9) < 0.00001 || $res[$i]['team'] == 'Reserve')
+              if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team'] == 'Reserve')
               {
                   $k--;
                   continue;

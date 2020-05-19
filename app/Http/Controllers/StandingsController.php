@@ -32,6 +32,7 @@ class StandingsController extends Controller
         ])->firstOrFail();
 
         $races = Race::where('season_id', $season['id'])
+                     ->has('results')
                      ->orderBy('round', 'asc')
                      ->get()->load('season','circuit');
 
