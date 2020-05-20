@@ -116,7 +116,7 @@ class ResultsController extends Controller
                 $results[$i]['points'] = 0;
             else {
                 $results[$i]['points'] = self::POINTS[$pos - 1];
-                if(((int)abs($res['status']) % 10) == 1) $results[$i]['points'] += 1;
+                if(((int)abs($results[$i]['status']) % 10) == 1) $results[$i]['points'] += 1;
             }
         }
         //dd($results);

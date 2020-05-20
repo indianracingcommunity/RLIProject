@@ -180,7 +180,7 @@ class StandingsController extends Controller
 
             if($driver['status'] >= 0) {
                 $points += self::POINTS[$pos - 1];
-                if(((int)abs($res['status']) % 10) == 1) $points += 1;
+                if(((int)abs($driver['status']) % 10) == 1) $points += 1;
             }
         }
         $dres[count($dres) - 1]['points'] = $points;
