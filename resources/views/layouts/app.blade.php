@@ -79,14 +79,14 @@
             </div>
         </nav> -->
     
-        <nav class="flex justify-between border-b">
+        <nav class="flex justify-between border-b fixed bg-white w-screen">
          <div class="flex py-2">
                <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
                   <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700" ><img src="/img/IRC_logo/logo_square.png"height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
                </div>
          </div>
          @auth
-         <div class="flex">
+         <!-- <div class="flex">
             <div >
             <div class="px-4 flex py-2 m-2 bg-gray-100 rounded font-semibold border cursor-pointer hover:bg-gray-200 hover:shadow-none">
                 <a class="dropdown-item" href="/user/profile/{{Auth::user()->id}}">
@@ -106,19 +106,67 @@
                     {{ csrf_field() }}
                 </form>
             </div>
-         </div>
+         </div> -->
          @endauth
       </nav>
+      <div class="flex">
+      @auth
+          <div class="sidebar fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow mt-16">
+              <a href="/user/profile/{{Auth::user()->id}}" class="flex hover:bg-gray-200 rounded-md py-4 px-2">
+                <img src="{{Auth::user()->avatar}}" class="rounded-full w-16" alt="">
+                <div class="px-4 py-2">
+                    <div class="font-semibold text-indigo-600">
+                        {{Auth::user()->name}}
+                    </div>
+                    <div class="font-semibold text-sm">
+                        #{{Auth::user()->discord_discrim}}
+                    </div>
+                </div>
+              </a>
+            <div class="pt-8 text-sm font-bold text-gray-700">
+                USER CONTROLS
+            </div>
+            <div class="flex flex-col">
+                <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-yellow-500 fas fa-trophy w-8 text-center"></i>View Standings</a>
+                <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-award w-8 text-center"></i>View Team Stats</a>
+                <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i>Create Report</a>
+                <a href="/home/report/category" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
+            </div>
+            <div class="pt-8 text-sm font-bold text-gray-700">
+                ADMIN CONTROLS
+            </div>
+            <div class="flex flex-col">
+                <a href="/home/admin/users" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 fas fa-binoculars w-8 text-center"></i>View/Allot Drivers</a>
+                <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-pen-alt w-8 text-center"></i>Update Standings</a>
+                <a href="/home/admin/report" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
+            </div>
+            <div class="flex flex-col-reverse" style="height:25%">
+                <div class="px-4 py-2 bg-red-200 text-red-700 rounded font-semibold cursor-pointer hover:bg-red-300 text-center">
+                    <a  href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt text-red-600 mr-2 text-center"></i>Logout
+                    </a>
 
-        <main class="py-4">
-           
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden"> 
+                        {{ csrf_field() }}
+                    </form>
+                </div>
+                <!-- <div class=" bg-red-200 py-4 px-2">log</div> -->
+            </div>
+          </div>
+          @endauth
+            <main class="py-20 pl-64">
+               
+                    
                 
-            
-            @yield('content')
-            
+                @yield('content')
+                
+    
+               
+            </main>
+        </div>
 
-           
-        </main>
-    </div>
+      </div>
 </body>
 </html>

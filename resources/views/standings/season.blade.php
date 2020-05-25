@@ -107,38 +107,38 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
   </div>
   <div class="w-3/4 mx-5">
     <div class="flex mb-6">
-      <div class="card1 mr-8 text-white p-4 rounded-md hover:shadow-lg w-1/6">
+      <div class="card1 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-1/3 text-center">
         <div class="text-4xl font-bold">
           1st
         </div>
-        <div class="text-sm font-semibold">
+        <div class="font-semibold">
          {{$res[0]['team']}}
         </div>
-        <div class="font-semibold">
+        <div class="font-semibold text-xl">
          {{$res[0]['name']}}
         </div>
       </div>
 
-      <div class="card2 mr-8 text-white p-4 rounded-md hover:shadow-lg w-1/6">
+      <div class="card2 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-1/3 text-center">
         <div class="text-4xl font-bold">
           2nd
         </div>
-        <div class="text-sm font-semibold">
+        <div class="font-semibold">
          {{$res[1]['team']}}
         </div>
-        <div class="font-semibold">
+        <div class="font-semibold text-xl">
          {{$res[1]['name']}}
         </div>
       </div>
 
-      <div class="card3 mr-8 text-white p-4 rounded-md hover:shadow-lg w-1/6">
+      <div class="card3 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-1/3 text-center">
         <div class="text-4xl font-bold">
           3rd
         </div>
-        <div class="text-sm font-semibold">
+        <div class="font-semibold">
          {{$res[2]['team']}}
         </div>
-        <div class="font-semibold">
+        <div class="font-semibold text-xl">
          {{$res[2]['name']}}
         </div>
       </div>
