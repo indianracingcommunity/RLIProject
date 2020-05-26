@@ -7,22 +7,45 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Report;
 use App\Constructor;
+use App\Result;
+
 class DriverController extends Controller
 {
 
+  public function info(Request $request)
+  {
+    $number = $request->query('number');
+    if($number === false)
+      return response()->json([], 404);
+
+    $driver = Driver::where('drivernumber', $number)
+                    ->select('name', 'drivernumber', 'team')
+                    ->firstOrFail();
+
+    $constructor = Constructor::find($driver['team']);
+
+    unset($driver['team']);
+    unset($constructor['created_at']);
+    unset($constructor['updated_at']);
+
+    return response()->json([
+      "driver" => $driver,
+      "constructor" => $constructor
+    ]);
+  }
 
   public function index()
   {
-      return view('admin.adminhome');
+    return view('admin.adminhome');
   }
 
   public function viewusers()
   {
-       return view('admin.viewusers')->with('user',User::all());
+    return view('admin.viewusers')->with('user',User::all());
   }
   public function viewdetails(User $user)
   {
-       return view('admin.viewdetails')->with('user',$user);
+    return view('admin.viewdetails')->with('user',$user);
   }
 
   public function viewedit(User $user)
@@ -63,35 +86,33 @@ class DriverController extends Controller
 
   }
 
-public function allotuser(User $id)
+  public function allotuser(User $id)
+  {
+    return view('admin.allot')
+    ->with('user',$id)
+    ->with('team',Constructor::all());
+  }
 
-     {
-       return view('admin.allot')
-       ->with('user',$id)
-       ->with('team',Constructor::all());
-
-     }
-
-     public function saveallotment()
-     {
-       $data = request()->all();
+  public function saveallotment()
+  {
+    $data = request()->all();
        
-     $userinfo = User::select('*')
-       ->where('id',$data['user_id'])
-       ->get()->toArray();
+    $userinfo = User::select('*')
+      ->where('id',$data['user_id'])
+      ->get()->toArray();
 
-      // dd($userinfo);
+    // dd($userinfo);
 
-       $driver = new Driver();
-       $driver -> user_id = $data['user_id']; 
-       $driver -> name = $userinfo['0']['name']; 
-       $driver -> team = $data['constructor']; 
-       $driver -> drivernumber = 5;
-       $driver -> retired = 0;
-       $driver -> alias = $userinfo['0']['name'];
-       $driver->save();
-       return redirect()->back();
-     }
+    $driver = new Driver();
+    $driver -> user_id = $data['user_id'];
+    $driver -> name = $userinfo['0']['name'];
+    $driver -> team = $data['constructor'];
+    $driver -> drivernumber = 5;
+    $driver -> retired = 0;
+    $driver -> alias = $userinfo['0']['name'];
+    $driver->save();
+    return redirect()->back();
+  }
 
 
 

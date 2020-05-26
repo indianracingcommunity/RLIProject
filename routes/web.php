@@ -31,6 +31,7 @@ Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');
 Route::get('/store-results', 'StandingsController@fetchCircuit');
 
 Route::get('/steam/check', 'SteamController@check');
+Route::get('/driver', 'DriverController@info');
 
 Route::get('/{tier}/{season}/standings', 'StandingsController@fetchStandings')
 ->where(['tier' => '[0-9]+', 'season' => '[0-9]+']);
