@@ -9,24 +9,71 @@ use App\Report;
 use App\Constructor;
 use App\Result;
 
-class DriverController extends Controller
+class DriverController extends StandingsController
 {
 
   public function info(Request $request)
   {
     $number = $request->query('number');
     if($number === false)
-      return response()->json([], 404);
+      return response()->json([]);
+
+    $tier = $request->query('tier');
+    $season = $request->query('season');
 
     $driver = Driver::where('drivernumber', $number)
-                    ->select('name', 'drivernumber', 'team')
-                    ->firstOrFail();
+                    ->select('id', 'name', 'drivernumber', 'team')
+                    ->first();
+    $constructor = 5;
 
-    $constructor = Constructor::find($driver['team']);
+    if($driver == null)
+      return response()->json([]);
+
+    $points = 0;
+    $cpoints = 0;
+    $dpoints = 0;
+    $dpos = 0;
+    $cpos = 0;
+
+    $found = false;
+    if(!($tier === null || $season === null))
+    {
+      $cs = $this->computeStandings($tier, $season);
+      if($cs['code'] == 200)
+      {
+        $driver_ind = array_search($driver['id'], array_column($cs['drivers'], "id"));
+
+        if($driver_ind !== false)
+        {
+          if((abs($cs['drivers'][$driver_ind]['status']) >= 10 && abs($cs['drivers'][$driver_ind]['status']) < 20))
+            $constructor = Constructor::where('name', 'Reserve')->first();
+          else
+          {
+            $constructor = $cs['drivers'][$driver_ind]['team'];
+            $cons_ind = array_search($constructor['id'], array_column($cs['constructors'], "id"));
+
+            $cpoints = $cs['constructors'][$cons_ind]['points'];
+            $cpos = $cons_ind + 1;
+          }
+
+          $found = true;
+          $dpoints = $cs['drivers'][$driver_ind]['points'];
+          $dpos = $driver_ind + 1;
+        }
+      }
+    }
+
+    if(!$found)
+      $constructor = Constructor::find($driver['team']);
 
     unset($driver['team']);
     unset($constructor['created_at']);
     unset($constructor['updated_at']);
+
+    $driver['points'] = $dpoints;
+    $driver['position'] = $dpos;
+    $constructor['points'] = $cpoints;
+    $constructor['position'] = $cpos;
 
     return response()->json([
       "driver" => $driver,
@@ -72,7 +119,7 @@ class DriverController extends Controller
 
   public function reportdetails(Report $report)
   {
-             return view('admin.reportdetails')->with('report',$report);
+    return view('admin.reportdetails')->with('report',$report);
   }
 
   public function saveverdict(Report $report)

@@ -112,7 +112,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           1st
         </div>
         <div class="font-semibold">
-         {{$res[0]['team']}}
+         {{$res[0]['team']['name']}}
         </div>
         <div class="font-semibold text-xl">
          {{$res[0]['name']}}
@@ -124,7 +124,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           2nd
         </div>
         <div class="font-semibold">
-         {{$res[1]['team']}}
+         {{$res[1]['team']['name']}}
         </div>
         <div class="font-semibold text-xl">
          {{$res[1]['name']}}
@@ -136,7 +136,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           3rd
         </div>
         <div class="font-semibold">
-         {{$res[2]['team']}}
+         {{$res[2]['team']['name']}}
         </div>
         <div class="font-semibold text-xl">
          {{$res[2]['name']}}
@@ -160,7 +160,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       <tbody>
         @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
             @php
-              if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team'] == 'Reserve')
+              if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
               {
                   $k--;
                   continue;
@@ -171,7 +171,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
             <td class="font-semibold rounded-lg border border-white">
               <span>
-                {{$res[$i]['team']}}
+                {{$res[$i]['team']['name']}}
               </span>
             </td>
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>

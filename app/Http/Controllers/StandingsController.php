@@ -66,46 +66,57 @@ class StandingsController extends Controller
         return $maxi;
     }
 
-    public function fetchStandings($tier, $season) {
+    protected function computeStandings($tier, $season) {
         $season = Season::where([
             ['tier', $tier],
             ['season', $season]
-        ])->firstOrFail();
+        ])->first();
+        if($season == null) return array("code" => 404);
 
         $races = Race::where('season_id', $season['id'])
                      ->pluck("id");
+        if(!count($races)) return array("code" => 404);
 
         $results = Result::whereIn('race_id', $races)
                          ->orderBy('driver_id')
                          ->orderBy('position')
                          ->get()
-                         ->load('driver:id,name', 'constructor:id,name', 'race:id,round')
+                         ->load('driver:id,name', 'constructor', 'race:id,round')
                          ->toArray();
-
-        if(!count($results))
-            return 0;
+        if(!count($results)) return array("code" => 404);
 
         $dres = $this->computePoints($results, 'driver');
-        $dcount = count($dres);
         for($i = 0; $i < count($dres); $i++)
         {
             $ind = $this->latest_race($results, $dres[$i]['start'], $dres[$i]['end']);
-            $dres[$i]['team'] = $results[$ind]['constructor']['name'];
+            $dres[$i]['team'] = $results[$ind]['constructor'];
             $dres[$i]['status'] = $results[$ind]['status'];
         }
 
         $cres = $this->computePoints($results, 'constructor');
-        $ccount = count($cres);
+        return array(
+            "code" => 200,
+            "drivers" => $dres,
+            "constructors" => $cres,
+            "season" => $season
+        );
+    }
 
-        $nextRace = $this->nextRace($season['id']);
+    public function fetchStandings($tier, $season) {
+        $cs = $this->computeStandings($tier, $season);
+
+        if($cs['code'] != 200)
+            return abort(404);
+
+        $nextRace = $this->nextRace($cs['season']['id']);
         return view('standings.season')
-               ->with('res', $dres)
-               ->with('count', $dcount)
+               ->with('res', $cs['drivers'])
+               ->with('count', count($cs['drivers']))
 
-               ->with('cres', $cres)
-               ->with('ccount', $ccount)
+               ->with('cres', $cs['constructors'])
+               ->with('ccount', count($cs['constructors']))
 
-               ->with('tier', array($tier, $season["season"]))
+               ->with('tier', array($tier, $cs['season']['season']))
                ->with('nextRace', $nextRace);
     }
 
