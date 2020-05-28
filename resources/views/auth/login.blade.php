@@ -9,7 +9,7 @@
                 <div class="card-body">
                     Login Using Discord
                     <br>
-                    <a href="/login/discord" class="btn btn-dark"><img src={{url('/img/discord2.png')}} alt="" style="width:30%;"></a>
+                    <a href="/login/discord" class="btn btn-dark"><img src={{url('/storage/img/discord2.png')}} alt="" style="width:30%;"></a>
                 </div>
             </div>
         </div>
