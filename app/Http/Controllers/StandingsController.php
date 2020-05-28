@@ -46,7 +46,9 @@ class StandingsController extends Controller
                        //->get()->load('season','circuit');
 
        //dd($races);
-       return view('standings.allraces')->with('races',$races);
+       return view('standings.allraces')
+              ->with('races',$races)
+              ->with('tier', array($tier, $season['season']));
     }
 
     protected function latest_race($array, $start, $end)
