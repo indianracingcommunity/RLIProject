@@ -40,7 +40,7 @@ td {
       <tr>
       <td class="rounded-md border-2 border-white font-semibold">
         <div class="py-2 text-center">
-        {{$value->circuit->round}}
+        {{$value->round}}
         </div>
       </td>
       <td class="rounded-md border-2 border-white font-semibold flex justify-between">
@@ -48,7 +48,7 @@ td {
         {{$value->circuit->name}}
       </div> 
       </tf>  
-      <a href="/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->circuit->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
+      <a href="/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
       </td>
       </tr> 
   @endforeach
