@@ -86,7 +86,7 @@
                </div>
          </div>
          @auth
-         <!-- <div class="flex">
+          <div class="flex">
             <div >
             <div class="px-4 flex py-2 m-2 bg-gray-100 rounded font-semibold border cursor-pointer hover:bg-gray-200 hover:shadow-none">
                 <a class="dropdown-item" href="/user/profile/{{Auth::user()->id}}">

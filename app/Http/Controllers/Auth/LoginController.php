@@ -57,7 +57,16 @@ class LoginController extends Controller
 
      private function findOrCreateUser($userr){
        $userAccount = User::where('discord_id', $userr->id)->first();
-       if($userAccount){
+       if($userAccount)
+       {
+           $userAccount->update([
+            'name' => $userr->name,
+            'avatar' => $userr->avatar,
+            'discord_discrim' => $userr->discriminator,
+            'discord_id' => $userr->id,
+            'email' => $userr->email,
+            'password' => null,
+           ]);
          return $userAccount;
        }
        
