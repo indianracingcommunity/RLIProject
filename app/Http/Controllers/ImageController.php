@@ -83,7 +83,7 @@ class ImageController extends Controller
             $img->invert();
 
         //$this->thicken($img);
-        $img->save('img/race_results/' . microtime(). '.png');
+        $img->save('storage/img/race_results/' . microtime(). '.png');
         return $img;
     }
 
@@ -104,16 +104,16 @@ class ImageController extends Controller
         $img = Image::make($src)
              ->resize(1920, 1080)
              ->crop(1290, 570, 530, 360)
-             ->save('img/race_results/Standings.png');
+             ->save('storage/img/race_results/Standings.png');
 
-        $img = Image::make('img/race_results/Standings.png')
+        $img = Image::make('storage/img/race_results/Standings.png')
              ->crop(150, 33, 150, 7)
-             ->save('img/race_results/SD.png');*/
+             ->save('storage/img/race_results/SD.png');*/
 
         //$img->crop(1, 10, 5, 9);
-        //$img->save('img/race_results/SDI.png');
+        //$img->save('storage/img/race_results/SDI.png');
         //    $this->two_tone($img);
-        //  $img->save('img/race_results/SDI.png');
+        //  $img->save('storage/img/race_results/SDI.png');
 
         $row_width = 40.2142;
 
@@ -360,7 +360,7 @@ class ImageController extends Controller
             array_push($results, $row);
         }
     
-        //$tess->image('img/race_results/Standings.png');
+        //$tess->image('storage/img/race_results/Standings.png');
         return $results; //$tess->response('png');
     }
 
