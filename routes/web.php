@@ -34,11 +34,11 @@ Route::get('/steam/check', 'SteamController@check');
 Route::get('/driver', 'DriverController@info');
 
 Route::get('/{tier}/{season}/standings', 'StandingsController@fetchStandings')
-->where(['tier' => '[0-9]+', 'season' => '[0-9]+']);
+->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
 Route::get('/{tier}/{season}/races', 'StandingsController@fetchRaces')
-->where(['tier' => '[0-9]+', 'season' => '[0-9]+']);
+->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
 Route::get('/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceResults')
-->where(['tier' => '[0-9]+', 'season' => '[0-9]+', 'season' => '[0-9]+']);
+->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$', 'round' => '^[-+]?\d*\.?\d*$']);
 
 Route::put('/position', 'ResultsController@updatePosition');
 Route::post('/results/race', 'ResultsController@saveRaceResults');
