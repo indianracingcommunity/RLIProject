@@ -79,13 +79,13 @@
             </div>
         </nav> -->
     
-        <nav class="flex justify-between border-b fixed bg-white w-screen">
+        <nav class="flex justify-between border-b fixed bg-white w-screen z-10">
          <div class="flex py-2">
                <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                  <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700" ><img src="/storage/img/IRC_logo/logo_square.png"height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
+                  <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/storage/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
                </div>
          </div>
-         @auth
+         <!-- @auth
           <div class="flex">
             <div >
             <div class="px-4 flex py-2 m-2 bg-gray-100 rounded font-semibold border cursor-pointer hover:bg-gray-200 hover:shadow-none">
@@ -106,8 +106,8 @@
                     {{ csrf_field() }}
                 </form>
             </div>
-         </div> -->
-         @endauth
+         </div>
+         @endauth -->
       </nav>
       <div class="flex">
       @auth

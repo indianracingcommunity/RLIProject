@@ -179,6 +179,41 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         @endfor
       </tbody>
     </table>
+
+    <div class="font-semibold mt-8">
+    Reserves` Standings
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
+          <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
+          <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
+          <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
+            @php
+              if(!((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve'))
+              {
+                  $k--;
+                  continue;
+              }
+            @endphp
+          <tr class="cursor-pointer">
+            <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
+            <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
+            <td class="font-semibold rounded-lg border border-white">
+              <span>
+                {{$res[$i]['team']['name']}}
+              </span>
+            </td>
+            <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
+          </tr> 
+        @endfor
+      </tbody>
+    </table>
   </div>
   
 @endsection
