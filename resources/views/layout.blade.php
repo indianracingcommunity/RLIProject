@@ -30,12 +30,7 @@
          </div>
          <div>
             <div class="px-4 flex py-2 m-2 bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
-              @auth
-              <a  href="/home"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
-              @endauth
-               @guest
                <a  href="/login"><i class='far fa-user mr-2'></i>Login</a>
-               @endguest
             </div>
          </div>
       </nav>

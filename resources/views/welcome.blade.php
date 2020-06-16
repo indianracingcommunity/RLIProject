@@ -148,5 +148,11 @@
     </div> -->
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+    new Crate({
+      server: '641545840619683841',
+      channel: '641545909565390869',
+      shard: 'https://disweb.dashflo.net'
+    })
+</script>
 @endsection
