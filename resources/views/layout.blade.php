@@ -34,7 +34,7 @@
                <a  href="/home"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
                @endauth
                 @guest
-                <a  href="/login"><i class='far fa-user mr-2'></i>Login</a>
+                <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>
                 @endguest
          </div>
          </div>
