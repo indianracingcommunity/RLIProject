@@ -28,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->string('team')->nullable();
             $table->string('teammate')->nullable();
             $table->boolean('isadmin')->default(0);
-
         });
     }
 
