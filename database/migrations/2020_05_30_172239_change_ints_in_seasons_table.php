@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeIntsInCircuitsTable extends Migration
+class ChangeIntsInSeasonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -26,7 +26,7 @@ class ChangeIntsInCircuitsTable extends Migration
      */
     public function down()
     {
-        Schema::table('circuits', function (Blueprint $table) {
+        Schema::table('seasons', function (Blueprint $table) {
             $table->integer('season')->change();
             $table->integer('tier')->change();
         });
