@@ -64,7 +64,7 @@ td {
       </thead>
   <tbody>
   @for ($i = 0; $i < $count; $i++)
-  @if($results[$i]['status'] == 1)
+  @if((int)$results[$i]['status'] % 10 == 1)
       <tr>
         <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 fast">{{$i+1}}</td>
         

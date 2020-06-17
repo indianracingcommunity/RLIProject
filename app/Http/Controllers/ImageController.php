@@ -196,6 +196,115 @@ class ImageController extends Controller
         return 0;
     }
 
+    protected function getImage2018(String $src, String $sec, Int $pos=0) {
+
+        //Name
+        if($sec == "name") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1000, 90, 90, 215);
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+
+        /*//Standings
+        $img = Image::make($src)
+             ->resize(1920, 1080)
+             ->crop(1290, 570, 530, 360)
+             ->save('storage/img/race_results/Standings.png');
+
+        $img = Image::make('storage/img/race_results/Standings.png')
+             ->crop(150, 33, 150, 7)
+             ->save('storage/img/race_results/SD.png');*/
+
+        //$img->crop(1, 10, 5, 9);
+        //$img->save('storage/img/race_results/SDI.png');
+        //    $this->two_tone($img);
+        //  $img->save('storage/img/race_results/SDI.png');
+
+        $row_width = 40.2142;
+
+        //Position
+        if($sec == "pos") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(50, 33, 10, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+        //Driver
+        if($sec == "driver") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(200, 33, 117, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+        //Team
+        if($sec == "team") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(275, 33, 495, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+        //Grid
+        if($sec == "grid") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(40, 33, 768, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+        //Stops
+        if($sec == "stops") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(35, 33, 855, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+        //Fastest Lap
+        if($sec == "best") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(100, 33, 960, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+
+        //Finishing Time
+        if($sec == "time") {
+            $img = Image::make($src)
+                        ->resize(1920, 1080)
+                        ->crop(1290, 570, 530, 360)
+                        ->crop(120, 33, 1080, 7 + (int)($pos * $row_width));
+
+            $this->two_tone($img);
+            return $img;
+        }
+        return 0;
+    }
+
     public function closest_match($input, $dic) {
 
         // no shortest distance found, yet

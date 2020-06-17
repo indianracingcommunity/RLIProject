@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeIntsInSeasonsTable extends Migration
+class AddDistanceInRacesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class ChangeIntsInSeasonsTable extends Migration
      */
     public function up()
     {
-        Schema::table('seasons', function (Blueprint $table) {
-            $table->float('tier')->change();
-            $table->float('season')->change();
+        Schema::table('races', function (Blueprint $table) {
+            $table->float('distance')->default(0.5);
         });
     }
 
@@ -26,9 +25,8 @@ class ChangeIntsInSeasonsTable extends Migration
      */
     public function down()
     {
-        Schema::table('seasons', function (Blueprint $table) {
-            $table->integer('season')->change();
-            $table->integer('tier')->change();
+        Schema::table('races', function (Blueprint $table) {
+            $table->dropColumn('flags');
         });
     }
 }

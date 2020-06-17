@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeIntsInSeasonsTable extends Migration
+class AddNameInSeasonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class ChangeIntsInSeasonsTable extends Migration
     public function up()
     {
         Schema::table('seasons', function (Blueprint $table) {
-            $table->float('tier')->change();
-            $table->float('season')->change();
+            $table->string('name')->nullable();
+            $table->integer('series'); //0 - F1, 1 - AC, 2 - ACC
+            $table->boolean('isactive')->default(0);
         });
     }
 
@@ -27,8 +28,9 @@ class ChangeIntsInSeasonsTable extends Migration
     public function down()
     {
         Schema::table('seasons', function (Blueprint $table) {
-            $table->integer('season')->change();
-            $table->integer('tier')->change();
+            $table->dropColumn('flags');
+            $table->dropColumn('series');
+            $table->dropColumn('isactive');
         });
     }
 }

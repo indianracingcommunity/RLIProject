@@ -9,7 +9,8 @@ class Race extends Model
     public function insertRace() {
         $race = Race::where([
             ['circuit_id', '=', $this->circuit_id],
-            ['season_id', '=', $this->season_id]
+            ['season_id', '=', $this->season_id],
+            ['round', '=', $this->round]
         ])->first();
 
         if($race)
