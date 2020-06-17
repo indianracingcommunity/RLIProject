@@ -8,7 +8,7 @@
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" href="/css/custom.css"> -->
+        <link rel="stylesheet" href="/css/custom.css">
     </head>
     <body>
         <nav class="flex justify-between border-b">
@@ -26,17 +26,21 @@
                         <a href="/1/4/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-1 text-blue-500'></i> Tier 2</a>
                     </div>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
+                <!-- <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
                     <a  href="/report"><i class='far fa-edit text-red-500 mx-1'></i>Report</a>
-                </div>
+                </div> -->
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
                     <a  href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
                 </div>
             </div>
             <div>
-                <div class="px-4 flex py-2 m-2 bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
-                    <a  href="/login"><i class='far fa-user mr-2'></i>Login</a>
-                </div>
+            <div class="px-4 flex py-2 m-2 bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
+               @auth
+               <a  href="/home"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
+               @endauth
+                @guest
+                <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>
+                @endguest
             </div>
         </nav>
         @yield('body')
