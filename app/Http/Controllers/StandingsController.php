@@ -83,7 +83,7 @@ class StandingsController extends Controller
                          ->orderBy('driver_id')
                          ->orderBy('position')
                          ->get()
-                         ->load('driver:id,name', 'constructor', 'race:id,round')
+                         ->load('driver:id,name,user_id', 'constructor', 'race:id,round')
                          ->toArray();
         if(!count($results)) return array("code" => 404);
 
@@ -93,6 +93,7 @@ class StandingsController extends Controller
             $ind = $this->latest_race($results, $dres[$i]['start'], $dres[$i]['end']);
             $dres[$i]['team'] = $results[$ind]['constructor'];
             $dres[$i]['status'] = $results[$ind]['status'];
+            $dres[$i]['user'] = $results[$ind]['driver']['user_id'];
         }
 
         $cres = $this->computePoints($results, 'constructor');
