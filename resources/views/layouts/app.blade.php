@@ -83,7 +83,7 @@
         <nav class="flex justify-between border-b fixed bg-white w-screen z-10">
          <div class="flex py-2">
                <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                  <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/storage/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
+                  <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
                </div>
          </div>
          <!-- @auth
