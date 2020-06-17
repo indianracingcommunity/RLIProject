@@ -168,7 +168,12 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             @endphp
           <tr class="cursor-pointer">
             <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
+            @if ($res[$i]['user']==Auth::id())
+            <td class="font-extrabold rounded-lg border border-white">{{$res[$i]['name']}}</td>
+            @else
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
+            @endif
+          
             <td class="font-semibold rounded-lg border border-white">
               <span>
                 {{$res[$i]['team']['name']}}

@@ -77,9 +77,11 @@ td {
     @elseif($i%2 != 0)
     <tr>
         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$i+1}}</td>
-        
-        <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['driver']['name']}}</td>
-
+        @if ($results[$i]['driver']['user_id']==Auth::id())
+        <td class="font-extrabold rounded-lg border border-white ">{{$results[$i]['driver']['name']}}</td>
+        @else 
+        <td class="font-semibold rounded-lg border border-white ">{{$results[$i]['driver']['name']}}</td>
+        @endif
         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['constructor']['name']}}</td>
         
         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['points']}}</td>
@@ -88,7 +90,11 @@ td {
       <tr>
         <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
         
-        <td class="font-semibold rounded-lg border border-white">{{$results[$i]['driver']['name']}}</td>
+        @if ($results[$i]['driver']['user_id']==Auth::id())
+        <td class="font-extrabold rounded-lg border border-white bg-gray-200">{{$results[$i]['driver']['name']}}</td>
+        @else 
+        <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['driver']['name']}}</td>
+        @endif
         
         <td class="font-semibold rounded-lg border border-white">{{$results[$i]['constructor']['name']}}</td>
 
