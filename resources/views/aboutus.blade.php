@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.welcomeLayout')
 
 
 <style>
@@ -19,15 +19,18 @@
 	</div>
 	<div class="my-8">
 		<p class="font-semibold mb-2 text-gray-700">Get in touch with us on:</p>
-		<a href="https://steamcommunity.com/groups/indianracingcommunity">
+		<a href="https://steamcommunity.com/groups/indianracingcommunity" target="_blank">
 			<i style='color:#1f3d7a;' class='fab fa-steam text-3xl '></i> 
 		</a>		
-		<a href="">
+		<a href="https://twitter.com/racing_indian" target="_blank">
 			<i class='fab fa-twitter text-blue-500 text-3xl mx-2'></i> 
 		</a>
-		<a href="https://www.youtube.com/channel/UC2Li3g3zak9gQ6YtE3YThXw">
-			<i style='color:red;' class='fab fa-youtube text-3xl '></i>
+		<a href="https://www.youtube.com/channel/UC2Li3g3zak9gQ6YtE3YThXw" target="_blank">
+			<i style='color:red;' class='fab fa-youtube text-3xl'></i>
 		</a>	
+		 <a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
+            <i class="fab fa-instagram mx-2 text-pink-800 text-3xl"></i>
+        </a>
 	</div>
 </div>
 
