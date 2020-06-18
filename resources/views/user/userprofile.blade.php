@@ -30,12 +30,17 @@
 <div>
 <form method="POST" action="setsteam/{{$user->id}}">
     @csrf
-    <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span> <span class="text-red-600 mr-4">●</span>
-    <input type="url" name="steamid" class="border rounded py-2 px-3" placeholder="https://steamcommunity.com/id/Freeman" style="width: 43%">
+    
     <br><br>
-    <input type="submit" value="Set Your Steamlink" class="bg-blue-600 py-2 rounded-md font-semibold cursor-pointer hover:bg-blue-700 focus:bg-blue-800 px-4 text-white">
+    @if (Auth::user()->steam_id != NULL)
+        
+    
+    @else
+    <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span> <span class="text-red-600 mr-4">●</span>
+   <a href="/login/steam"> <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_02.png" alt=""> </a>
     </div>
         <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700">To verify your account add your Steam profile link</span>
+    @endif
     <div>
 </form>
 

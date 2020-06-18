@@ -1,4 +1,6 @@
 <?php
+use App\Http\Controllers\Auth\SteamLoginController;
+use kanalumaddela\LaravelSteamLogin\Facades\SteamLogin;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +76,7 @@ Route::post('/image/race', 'ImageController@ocrRace');
 Route::group(['middleware' => 'auth'], function () {
      Route::get('/user/profile/{user}', 'UserPanel@viewprofile')->name('home');
      Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
+     SteamLogin::routes(['controller' => SteamLoginController::class]);
 Route::group(['middleware' => 'steam'], function () {
      Route::get('/home', 'UserPanel@index')->name('home');
      
