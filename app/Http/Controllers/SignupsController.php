@@ -30,6 +30,11 @@ class SignupsController extends Controller
         return redirect('/home');
     }
 
+    public function test(Request $request)
+    {
+       dd($request);
+    }
+
 
 
 }

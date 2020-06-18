@@ -72,23 +72,25 @@ Route::post('/image/race', 'ImageController@ocrRace');
 
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {
-
-Route::get('/home', 'UserPanel@index')->name('home');
-Route::get('/user/profile/{user}', 'UserPanel@viewprofile')->name('home');
-Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
-//Report Routes
-Route::get('/home/report/create','ReportsController@view');
-Route::post('/home/report/submit','ReportsController@create');
-Route::get('/home/report/category','ReportsController@category');
-Route::get('/home/view/report/{report}/details','ReportsController@details');
+     Route::get('/user/profile/{user}', 'UserPanel@viewprofile')->name('home');
+     Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
+Route::group(['middleware' => 'steam'], function () {
+     Route::get('/home', 'UserPanel@index')->name('home');
+     
+     //Report Routes
+     Route::get('/home/report/create','ReportsController@view');
+     Route::post('/home/report/submit','ReportsController@create');
+     Route::get('/home/report/category','ReportsController@category');
+     Route::get('/home/view/report/{report}/details','ReportsController@details');
 
 //Signup Routes
 
      Route::get('/f1/signup','SignupsController@view');
+     Route::post('/testform','SignupsController@test');
 
 
 });
-
+});
 
 
 
