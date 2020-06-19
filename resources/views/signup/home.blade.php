@@ -2,7 +2,8 @@
 @section('content')
 
 <div class="w-full">
-  <form class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4">
+  <form class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform">
+    @csrf
     <label class="block text-gray-700 text-xl font-bold mb-2">
         League Sign Up
     </label>
@@ -26,6 +27,7 @@
         Driver Number
       </label>
     </div>
+    <input type="submit">
   </form>
 </div>
 <script>
