@@ -107,6 +107,9 @@ class ResultsController extends Controller
                          ->load('driver','race.circuit', 'constructor:id,name')
                          ->toArray();
 
+        if(count($results) > 0)
+            $results[0]['race']['circuit']['laps'] = ceil($results[0]['race']['circuit']['laps'] * $results[0]['race']['distance']);
+
         foreach($results as $i => $res) {
             $pos = $res['position'];
             if($pos > 10 || $pos < 1)

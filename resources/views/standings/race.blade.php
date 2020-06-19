@@ -41,7 +41,7 @@ td {
     </div>
     <div class="flex justify-between font-semibold">
       <div>
-        Number of laps
+        Number of Laps
       </div>
       <div class="text-lg text-blue-700">
        {{$results[0]['race']['circuit']['laps']}}

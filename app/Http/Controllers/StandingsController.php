@@ -140,6 +140,7 @@ class StandingsController extends Controller
 
         if($nextRace) {
             $circuit = Circuit::find($nextRace['circuit_id']);
+            $circuit['laps'] = ceil($circuit['laps'] * $nextRace['distance']);
             return $circuit;
         }
         return $nextRace;
