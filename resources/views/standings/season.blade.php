@@ -184,7 +184,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         @endfor
       </tbody>
     </table>
-
+@php
+    $reservecount = 1;
+@endphp
+    @if ($reservecount != 0)
     <div class="font-semibold mt-8">
     Reserves` Standings
     </div>
@@ -220,6 +223,8 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       </tbody>
     </table>
   </div>
+  @endif
+  
   
 @endsection
 
