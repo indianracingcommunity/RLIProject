@@ -32,7 +32,7 @@ class SignupsController extends Controller
 
     public function test(Request $request)
     {
-       dd($request);
+       dd($request->request);
     }
 
 
