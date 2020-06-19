@@ -87,6 +87,7 @@ class StandingsController extends Controller
                          ->toArray();
         if(!count($results)) return array("code" => 404);
 
+        $countReserves = 0;
         $dres = $this->computePoints($results, 'driver');
         for($i = 0; $i < count($dres); $i++)
         {
@@ -94,12 +95,16 @@ class StandingsController extends Controller
             $dres[$i]['team'] = $results[$ind]['constructor'];
             $dres[$i]['status'] = $results[$ind]['status'];
             $dres[$i]['user'] = $results[$ind]['driver']['user_id'];
+
+            if((abs($dres[$i]['status']) >= 10 && abs($dres[$i]['status']) < 20) || $dres[$i]['team']['name'] == 'Reserve')
+                $countReserves++;
         }
 
         $cres = $this->computePoints($results, 'constructor');
         return array(
             "code" => 200,
             "drivers" => $dres,
+            "countReserves" => $countReserves,
             "constructors" => $cres,
             "season" => $season
         );
@@ -115,11 +120,12 @@ class StandingsController extends Controller
         return view('standings.season')
                ->with('res', $cs['drivers'])
                ->with('count', count($cs['drivers']))
+               ->with('reservecount', $cs['countReserves'])
 
                ->with('cres', $cs['constructors'])
                ->with('ccount', count($cs['constructors']))
 
-               ->with('tier', array($tier, $cs['season']['season']))
+               ->with('season', $cs['season'])
                ->with('nextRace', $nextRace);
     }
 
