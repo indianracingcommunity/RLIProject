@@ -17,6 +17,7 @@
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/custom.css">
 
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
@@ -80,12 +81,48 @@
             </div>
         </nav> -->
     
-        <nav class="flex justify-between border-b fixed bg-white w-screen z-10">
-         <div class="flex py-2">
-               <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
+        <nav class="flex justify-between border-b fixed bg-white w-screen z-10 py-2">
+         <div class="flex items-center flex-shrink-0">
+               <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
                   <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
                </div>
+               <div class=" mx-2 flex items-center flex-shrink-0">
+                  <a  class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
+               </div>
+               <!-- <div class=" mx-2 flex items-center flex-shrink-0">
+                    <a class="dropbtn px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/standings"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
+                    <div class="dropdown-content mx-5 my-3">
+                        <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right px-1 text-green-500'></i> Tier 1</a>
+                        <a href="/1/4/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-1 text-blue-500'></i> Tier 2</a>
+                    </div>
+               </div> -->
+               <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
+                    <a class="dropbtn" href="/standings"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
+                    <div class="dropdown-content mx-5 my-3">
+                    <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
+                        <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
+                        <a href="/1/4.5/standings" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
+                        <a href="/1/4.75/standings" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
+                    </div>
+                </div>
+               <div class=" mx-2 flex items-center flex-shrink-0">
+                  <a  class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
+               </div>
          </div>
+         <div class="flex items-center flex-shrink-0 mr-8">
+                <div class="px-4 py-2 bg-red-200 text-red-700 rounded font-semibold cursor-pointer hover:bg-red-300 text-center">
+                    <a  href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt text-red-600 mr-2 text-center"></i>Logout
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden"> 
+                        {{ csrf_field() }}
+                    </form>
+                </div>
+                <!-- <div class=" bg-red-200 py-4 px-2">log</div> -->
+            </div>
          <!-- @auth
           <div class="flex">
             <div >
@@ -131,7 +168,7 @@
                 <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-yellow-500 fas fa-trophy w-8 text-center"></i>View Standings</a>
                 <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-award w-8 text-center"></i>View Team Stats</a>
                 <a href="/f1/signup/" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i>Sign Up </a>
-                <a href="/home/report/category" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
+                <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>Create Report</a>
             </div>
             <div class="pt-8 text-sm font-bold text-gray-700">
                 ADMIN CONTROLS
@@ -141,26 +178,15 @@
                 <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-pen-alt w-8 text-center"></i>Update Standings</a>
                 <a href="/home/admin/report" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
             </div>
-            <div class="flex flex-col-reverse" style="height:25%">
-                <div class="px-4 py-2 bg-red-200 text-red-700 rounded font-semibold cursor-pointer hover:bg-red-300 text-center">
-                    <a  href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt text-red-600 mr-2 text-center"></i>Logout
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden"> 
-                        {{ csrf_field() }}
-                    </form>
-                </div>
-                <!-- <div class=" bg-red-200 py-4 px-2">log</div> -->
-            </div>
           </div>
           @endauth
-            <main class="py-20 pl-64">
+            <main class="py-20 ml-64 w-full">
                
                     
-                
+                <!-- <div class="bg-green-200 rounded text-green-800 p-4 mb-3 font-semibold"> -->
+                        <!-- {{session()->get('success')}} -->
+                        <!-- You have logged in! -->
+                <!-- </div> -->
                 @yield('content')
                 
     

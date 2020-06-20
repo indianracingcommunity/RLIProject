@@ -13,7 +13,7 @@ td {
 }
 </style>
 @section('content')
-<div class="container mx-auto w-2/3">
+<div class="container mx-auto w-5/6">
 <div class="flex">
   <div class="w-1/4">
     <div class="text-4xl font-bold text-gray-800">
@@ -26,9 +26,9 @@ td {
       This is the All races page here you can select any race and get details about that particular race
     </div>
   </div>
-  <div class="w-3/4 mx-4">
-      <h2 class="text-3xl font-semibold">All Races </h2>           
-      <table>
+  <div class="w-5/6 mx-4">
+      <h2 class="text-3xl font-semibold ml-20">All Races </h2>           
+      <table class="w-5/6 mx-auto">
         <thead>
           <tr>
             <th class="bg-gray-300 rounded-md w-24 text-center border-2 border-white">Round</th>
@@ -44,11 +44,16 @@ td {
         </div>
       </td>
       <td class="rounded-md border-2 border-white font-semibold flex justify-between">
-      <div class="py-2">
-        {{$value->circuit->name}}
-      </div> 
-      </tf>  
-      <a href="/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
+        <div class="py-2 flex items-center flex-shrink-0">
+        <div class="flex items-center flex-shrink-0">
+          {{$value->circuit->name}}
+        </div class="flex items-center flex-shrink-0">
+        
+      </div>  
+      <div>
+        <a href="/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
+        <img src="{{$value->circuit->flags}}" class="w-12 mr-8 border rounded float-right" alt="">
+      </div>
       </td>
       </tr> 
   @endforeach

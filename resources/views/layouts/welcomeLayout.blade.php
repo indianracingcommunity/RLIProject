@@ -22,8 +22,10 @@
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
                     <a class="dropbtn" href="/standings"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
                     <div class="dropdown-content mx-5 my-3">
-                        <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right px-1 text-green-500'></i> Tier 1</a>
-                        <a href="/1/4/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-1 text-blue-500'></i> Tier 2</a>
+                        <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right px-5 text-green-500'></i> Tier 1</a>
+                        <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-5 text-blue-500'></i> Tier 2</a>
+                        <a href="/1/4.5/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right px-5 text-orange-500'></i> Mini Championship</a>
+                        <a href="/1/4.75/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-5 text-yellow-500'></i> Classic Cars</a>
                     </div>
                 </div>
                 <!-- <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
