@@ -42,14 +42,22 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
 
 @section('content')
 <div class="container mx-auto flex">
-  <div class="w-1/4">
-  <div class="text-4xl font-bold text-gray-800">
-    <i class="fas fa-chess-king text-purple-600"></i> Tier {{$tier[0]}}
-  </div>
-  <div class="text-2xl font-semibold text-gray-700">
-    Season {{$tier[1]}}
-  </div>
-  <div class="bg-gray-100 rounded-md px-4 py-2 my-4">
+ <div class="w-1/4">
+  @if($season['season'] == (int)$season['season'])
+   <div class="text-4xl font-bold text-gray-800">
+     <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
+   </div>
+   <div class="text-2xl font-semibold text-gray-700">
+     Season {{$season['season']}}
+   </div>
+  @else
+   <div class="text-4xl font-bold text-gray-800">
+     <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
+   </div>
+  @endif
+
+  @if($season['season'] - (int)$season['season'] < 0.75)
+   <div class="bg-gray-100 rounded-md px-4 py-2 my-4">
     <div class="text-sm font-semibold my-2">
       Constructor Standings
     </div>
@@ -73,8 +81,9 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       @endfor 
       </tbody>
     </table>
-  
-  </div>
+   </div>
+  @endif
+
   @if($nextRace != null)
     <div class="border rounded-md p-3">
       <div class="text-xl font-semibold text-gray-600">
@@ -84,7 +93,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         {{$nextRace['name']}}
       </div>
       <div class="mb-4">
-        <img src={{$nextRace['display']}} alt="">
+        <img src="{{$nextRace['display']}}" alt="">
       </div>
       <div class="flex justify-between font-semibold">
         <div>
@@ -107,45 +116,56 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
   </div>
   <div class="w-3/4 mx-5">
     <div class="flex mb-6">
+     @if($cres > 0)
       <div class="card1 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-1/3 text-center">
         <div class="text-4xl font-bold">
           1st
         </div>
-        <div class="font-semibold">
-         {{$res[0]['team']['name']}}
-        </div>
+        @if($season['season'] - (int)$season['season'] < 0.75)
+         <div class="font-semibold">
+          {{$res[0]['team']['name']}}
+         </div>
+        @endif
         <div class="font-semibold text-xl">
          {{$res[0]['name']}}
         </div>
       </div>
+     @endif
 
+     @if($cres > 1)
       <div class="card2 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-1/3 text-center">
         <div class="text-4xl font-bold">
           2nd
         </div>
-        <div class="font-semibold">
-         {{$res[1]['team']['name']}}
-        </div>
+        @if($season['season'] - (int)$season['season'] < 0.75)
+         <div class="font-semibold">
+          {{$res[1]['team']['name']}}
+         </div>
+        @endif
         <div class="font-semibold text-xl">
          {{$res[1]['name']}}
         </div>
       </div>
+     @endif
 
+     @if($cres > 2)
       <div class="card3 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-1/3 text-center">
         <div class="text-4xl font-bold">
           3rd
         </div>
-        <div class="font-semibold">
-         {{$res[2]['team']['name']}}
-        </div>
+        @if($season['season'] - (int)$season['season'] < 0.75)
+         <div class="font-semibold">
+          {{$res[2]['team']['name']}}
+         </div>
+        @endif
         <div class="font-semibold text-xl">
          {{$res[2]['name']}}
         </div>
       </div>
+     @endif
     </div>
 
-
-    <div class="text-sm font-semibold">
+    <div class="text-s font-semibold">
     Drivers' Standings
     </div>
     <table class="table">
@@ -153,7 +173,9 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         <tr>
           <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
           <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
-          <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
+          @if($season['season'] - (int)$season['season'] < 0.75)
+           <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
+          @endif
           <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
         </tr>
       </thead>
@@ -168,26 +190,26 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             @endphp
           <tr class="cursor-pointer">
             <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
-            @if ($res[$i]['user']==Auth::id())
-            <td class="font-extrabold rounded-lg border border-white">{{$res[$i]['name']}}</td>
+            @if ($res[$i]['user'] == Auth::id())
+             <td class="font-extrabold rounded-lg border border-white">{{$res[$i]['name']}}</td>
             @else
-            <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
+             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
             @endif
           
-            <td class="font-semibold rounded-lg border border-white">
-              <span>
-                {{$res[$i]['team']['name']}}
-              </span>
-            </td>
+            @if($season['season'] - (int)$season['season'] < 0.75)
+             <td class="font-semibold rounded-lg border border-white">
+               <span>
+                 {{$res[$i]['team']['name']}}
+               </span>
+             </td>
+            @endif
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
           </tr> 
         @endfor
       </tbody>
     </table>
-@php
-    $reservecount = 1;
-@endphp
-    @if ($reservecount != 0)
+
+  @if ($reservecount != 0)
     <div class="font-semibold mt-8">
     Reserves` Standings
     </div>
@@ -196,7 +218,9 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         <tr>
           <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
           <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
-          <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
+          @if($season['season'] - (int)$season['season'] < 0.75)
+           <th class="rounded-md bg-gray-300 border-2 border-white">Last Team Represented</th>
+          @endif
           <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
         </tr>
       </thead>
@@ -212,17 +236,19 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           <tr class="cursor-pointer">
             <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
-            <td class="font-semibold rounded-lg border border-white">
-              <span>
-                {{$res[$i]['team']['name']}}
-              </span>
-            </td>
+            @if($season['season'] - (int)$season['season'] < 0.75)
+             <td class="font-semibold rounded-lg border border-white">
+               <span>
+                 {{$res[$i]['team']['name']}}
+               </span>
+             </td>
+            @endif
             <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
           </tr> 
         @endfor
       </tbody>
     </table>
-  </div>
+   </div>
   @endif
   
   
