@@ -59,10 +59,12 @@ class LoginController extends Controller
        $userAccount = User::where('discord_id', $userr->id)->first();
        if($userAccount)
        {
+         //  dd($userr->user['discriminator']);
+           // dd($userr);
            $userAccount->update([
             'name' => $userr->name,
             'avatar' => $userr->avatar,
-            'discord_discrim' => $userr->discriminator,
+            'discord_discrim' => $userr->user['discriminator'],
             'discord_id' => $userr->id,
             'email' => $userr->email,
             'password' => null,
@@ -73,7 +75,7 @@ class LoginController extends Controller
        $newUser = User::create([
         'name' => $userr->name,
         'avatar' => $userr->avatar,
-        'discord_discrim' => $userr->discriminator,
+        'discord_discrim' => $userr->user['discriminator'],
         'discord_id' => $userr->id,
         'email' => $userr->email,
         'password' => null,
