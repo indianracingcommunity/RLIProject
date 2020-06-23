@@ -19,57 +19,16 @@
   input[type="radio"]:checked + label{
     color: #4c51bf; 
   }
-
-  .result-value{
-    color: #ff3454;
-  }
 </style>
 <div class="w-full">
   <form class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform" enctype="multipart/form-data" onsubmit="return validate()">
     @csrf
-    <div class="w-auto content-center items-center items-baseline">
+    <div id="restform">
       <label class="block text-gray-700 text-xl font-bold mb-2">
         League Sign Up
       </label>
-      <label class="inline-block w-72 text-gray-700 text-base font-bold">Do you own the official F1 2020 game?</label>
-      <div class="inline-block">
-        <div class="inline-flex items-center mr-4 ml-4">
-          <input id="radio1" type="radio" name="gameavailable" class="hidden" onclick="if(this.checked){formyesFunction()}"/>
-          <label for="radio1" class="flex items-center cursor-pointer">
-          <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
-          YES</label>
-        </div>
-
-        <div class="inline-flex items-center mr-4">
-          <input id="radio2" type="radio" name="gameavailable" class="hidden" onclick="if(this.checked){formnoFunction()}"/>
-          <label for="radio2" class="flex items-center cursor-pointer">
-          <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
-          NO</label>
-        </div>
-      </div>
-      <div class="block w-full text-red-600 text-sm italic " id="errorgameavail"><br></div>
       
-    </div>
-    <div id="restform" style="display: none;">
-    <div class="bg-purple-700 w-full h-px mt-2 rounded shadow-2xl"></div>
-      
-      <label class="inline-block w-72 text-gray-700 text-base font-bold mb-2 mt-5">Will you be able to attend 75% of races?</label>
-      <div class="inline-block">
-        <div class="inline-flex items-center mr-4 ml-4">
-          <input id="radio3" type="radio" name="attendance" class="hidden"/>
-          <label for="radio3" class="flex items-center cursor-pointer">
-          <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
-          YES</label>
-        </div>
-
-        <div class="inline-flex items-center mr-10 pr-2">
-          <input id="radio4" type="radio" name="attendance" class="hidden" checked/>
-          <label for="radio4" class="flex items-center cursor-pointer">
-          <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
-          NO</label>
-        </div>
-      </div>
-
+   
       <div class="w-full pl-3 ml-20 mt-5">
         <label class="inline-block text-gray-700 text-base font-bold mb-2">
           Select Season
@@ -86,6 +45,22 @@
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
           </div>
         </div>
+        <label class="inline-block w-72 text-gray-700 text-base font-bold mb-2 mt-5 ml-64">Will you be able to attend 75% of races?</label>
+        <div class="inline-block">
+          <div class="inline-flex items-center mr-4 ml-4">
+            <input id="radio3" type="radio" name="attendance" class="hidden" value="YES"/>
+            <label for="radio3" class="flex items-center cursor-pointer">
+            <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
+            YES</label>
+          </div>
+
+          <div class="inline-flex items-center mr-10 pr-2">
+            <input id="radio4" type="radio" name="attendance" class="hidden" value="NO" checked/>
+            <label for="radio4" class="flex items-center cursor-pointer">
+            <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
+            NO</label>
+          </div>
+        </div>
       </div>
       <div class="block w-full text-red-600 text-sm italic mt-2 pl-48 ml-4" id="errorseason">
         <br><br>
@@ -96,18 +71,32 @@
           Driver Number
         </label>
         <div class="inline-block pl-3">
-          <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-20 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="drivernum" type="number" name="name">
+          <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-20 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="drivernum" type="number" name="drivernumber">
+        </div>
+
+        <label class="inline-block text-gray-700 text-base font-bold ml-64 pl-5">
+          Speed test result link
+        </label>
+        <div class="inline-block pl-3">
+          <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-64 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="speedlinkid" type="link" name="speedtest">
         </div>
       </div>
-      <div class="block w-full text-red-600 text-sm italic mt-2 pl-48 ml-4" id="errordrivernum">
+
+      <div class="text-red-600 text-sm italic mt-2 pl-48 ml-4">
+        <div class="inline-block w-1/3" id="errordrivernum">
         <br><br>
+        </div>
+        <div class="inline-block w-5/12 ml-16 pl-2" id="errorspeed">
+          Enter the link of your speed test performed at "https://www.speedtest.net/"<br> Ensure that the server is set to Bangalore/Mumbai
+        </div>
       </div>
+      
       <div class="bg-purple-700 w-full h-px mt-2 rounded shadow-2xl">
       </div>
       
       <div class="w-full mt-5">
         <label class="inline-block text-gray-700 text-base font-bold ml-10">
-          Time Trial Time USA
+          Time Trial Time 1
         </label>
         <div class="inline-block pl-3">
           <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time1" type="text" name="t1">
@@ -133,15 +122,15 @@
         <div class="inline-block w-1/3" id="errort1">
           <br><br>
         </div> 
-        <div class="inline-block w-5/12 ml-40 pl-5" id="errorimgt1">
+        <div class="inline-block w-5/12 pl-2" id="errorimgt1">
           <br><br>
         </div> 
       </div>
 
       <div class="inline-block w-auto">
         <div class="inline-block mt-5">
-          <label class="inline-block text-gray-700 text-base font-bold ml-5">
-            Time Trial Time Britain
+          <label class="inline-block text-gray-700 text-base font-bold ml-10">
+            Time Trial Time 2
           </label>
           <div class="inline-block pl-3">
             <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time2" type="text" name="t2">
@@ -170,14 +159,14 @@
         <div class="inline-block w-1/3" id="errort2">
           <br><br>
         </div> 
-        <div class="inline-block w-5/12 ml-40 pl-5" id="errorimgt2">
+        <div class="inline-block w-5/12 pl-2" id="errorimgt2">
           <br><br>
         </div> 
       </div>
 
       <div class="w-full mt-5">
-        <label class="inline-block text-gray-700 text-base font-bold ml-2">
-          Time Trial Time Belgium
+        <label class="inline-block text-gray-700 text-base font-bold ml-10">
+          Time Trial Time 3
         </label>
         <div class="inline-block pl-3">
           <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time3" type="text" name="t3">
@@ -204,13 +193,13 @@
         <div class="inline-block w-1/3" id="errort3">
           <br><br>
         </div> 
-        <div class="inline-block w-5/12 ml-40 pl-5" id="errorimgt3">
+        <div class="inline-block w-5/12 pl-2" id="errorimgt3">
           <br><br>
         </div> 
       </div>
       
       <div class="flex justify-between mt-5 mr-20">
-        <div class="inline-block pl-3 ml-10">
+        <div class="inline-block pl-3 ml-5">
           <label class="inline-block text-gray-700 text-base font-bold mb-2">
             Team preference 1
           </label>
@@ -284,7 +273,7 @@
         <br><br>
       </div>
 
-      <iframe width="100%" height="650px" frameborder="0" src="https://freeman.speedtestcustom.com"></iframe>
+      
       <div class="flex w-full mt-5 content-center items-center justify-center">
         <button class="bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
           Submit
@@ -323,6 +312,7 @@
       var imaget2 = document.getElementById("imgt2").value;
       var imaget1 = document.getElementById("imgt1").value;
       var imaget3 = document.getElementById("imgt3").value;
+      var speedlink = document.getElementById("speedlinkid").value;
       
       if (t1 == ""){
         document.getElementById("errort1").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
@@ -456,6 +446,16 @@
         document.getElementById("drivernum").style = "";
       }
       
+      if (speedlink == ""){
+        document.getElementById("errorspeed").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
+        document.getElementById("speedlinkid").style.borderColor = "#f56565";
+        sendform = false;
+      }
+      else{
+        document.getElementById("errorspeed").innerHTML = "<br><br>";
+        document.getElementById("speedlinkid").style = "";
+      }
+
       if (preference1.localeCompare(preference2) == 0 || preference1.localeCompare(preference3) == 0 || preference2.localeCompare(preference3) == 0){
         document.getElementById("errorteam").innerHTML = "We know you love your supporting team but sometimes world is not fair! <br> Enter different preference 1, preference 2 and preference 3";
         document.getElementById("preference1").style.borderColor = "#f56565";
