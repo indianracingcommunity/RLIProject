@@ -13,7 +13,7 @@ class Circuit extends Model
 
 
     public function races()
-      {
-          return $this->hasMany('App\Race');
-      }
+    {
+        return $this->hasMany('App\Race');
+    }
 }

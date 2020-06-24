@@ -26,17 +26,17 @@ class Race extends Model
     ];
 
     public function season()
-      {
-          return $this->belongsTo('App\Season');
-      }
+    {
+        return $this->belongsTo('App\Season');
+    }
 
-      public function circuit()
-      {
-          return $this->belongsTo('App\Circuit');
-      }
+    public function circuit()
+    {
+        return $this->belongsTo('App\Circuit');
+    }
 
-      public function results()
-      {
-          return $this->hasMany('App\Result');
-      }
+    public function results()
+    {
+        return $this->hasMany('App\Result');
+    }
 }
