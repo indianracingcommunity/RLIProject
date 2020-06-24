@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Season;
 
 class SignupsController extends Controller 
 {
     public function view()
     {
-      return view('signup.home');
+      $allseason = Season::all();
+      $seasons = array();
+
+      foreach($allseason as $i => $particular_season) {
+        $status = $particular_season->status;
+        if($status - (int)$status > 0)
+          array_push($seasons, $particular_season);
+      }
+
+      return view('signup.home')->with('seasons', $seasons);
     }
 
     public function store()

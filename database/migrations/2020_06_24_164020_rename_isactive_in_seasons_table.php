@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddConstructorsInSeasonsTable extends Migration
+class RenameIsactiveInSeasonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddConstructorsInSeasonsTable extends Migration
     public function up()
     {
         Schema::table('seasons', function (Blueprint $table) {
-            $table->string('constructors')->nullable();
-            $table->float('isactive')->default(0)->change();
+            $table->renameColumn('isactive', 'status');
         });
     }
 
@@ -27,8 +26,7 @@ class AddConstructorsInSeasonsTable extends Migration
     public function down()
     {
         Schema::table('seasons', function (Blueprint $table) {
-            $table->boolean('isactive')->default(0)->change();
-            $table->dropColumn('constructors');
+            $table->renameColumn('status', 'isactive');
         });
     }
 }
