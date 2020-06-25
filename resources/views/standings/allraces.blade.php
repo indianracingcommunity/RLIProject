@@ -16,14 +16,22 @@ td {
 <div class="container mx-auto w-5/6">
 <div class="flex">
   <div class="w-1/4">
-    <div class="text-4xl font-bold text-gray-800">
-      <i class="fas fa-chess-king text-purple-600"></i> Tier {{$tier[0]}}
-    </div>
-    <div class="text-2xl font-semibold text-gray-700">
-      Season {{$tier[1]}}
-    </div>
+
+    @if($season['season'] == (int)$season['season'])
+     <div class="text-4xl font-bold text-gray-800 leading-none">
+       <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
+     </div>
+     <div class="text-2xl font-semibold text-gray-700 leading-none">
+       Season {{$season['season']}}
+     </div>
+    @else
+     <div class="text-4xl font-bold text-gray-800 leading-none">
+       <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
+     </div>
+    @endif
+
     <div class="bg-indigo-100 font-semibold p-3 rounded-md my-2">
-      This is the All races page here you can select any race and get details about that particular race
+      Welcome to the Results Page of this Season.
     </div>
   </div>
   <div class="w-5/6 mx-4">
@@ -52,7 +60,7 @@ td {
       </div>  
       <div>
         <a href="/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
-        <img src="{{$value->circuit->flags}}" class="w-12 mr-8 border rounded float-right" alt="">
+        <img src="{{$value->circuit->flag}}" class="w-12 mr-8 border rounded float-right" alt="">
       </div>
       </td>
       </tr> 

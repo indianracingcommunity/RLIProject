@@ -48,7 +48,7 @@ class StandingsController extends Controller
        //dd($races);
        return view('standings.allraces')
               ->with('races', $races)
-              ->with('tier', array($tier, $season['season']));
+              ->with('season', $season);
     }
 
     protected function latest_race($array, $start, $end)

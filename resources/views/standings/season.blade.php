@@ -114,53 +114,61 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
     </div>
     <div class="w-3/4 mx-5">
       <div class="flex mb-6 justify-center">
-      @if($cres > 0)
-        <div class="card1 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
-          <div class="text-4xl font-bold">
-            1st
-          </div>
-          @if($season['season'] - (int)$season['season'] < 0.75)
-          <div class="font-semibold">
-            {{$res[0]['team']['name']}}
-          </div>
-          @endif
-          <div class="font-semibold text-xl">
-          {{$res[0]['name']}}
-          </div>
-        </div>
-      @endif
+      @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++)
+       @php
+        if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
+        {
+            $k--;
+            continue;
+        }
+       @endphp
 
-      @if($cres > 1)
-        <div class="card2 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
-          <div class="text-4xl font-bold">
-            2nd
-          </div>
-          @if($season['season'] - (int)$season['season'] < 0.75)
-          <div class="font-semibold">
-            {{$res[1]['team']['name']}}
-          </div>
-          @endif
-          <div class="font-semibold text-xl">
-          {{$res[1]['name']}}
-          </div>
-        </div>
-      @endif
+       @if($k == 0)
+         <div class="card1 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+           <div class="text-4xl font-bold">
+             1st
+           </div>
+           @if($season['season'] - (int)$season['season'] < 0.75)
+           <div class="font-semibold">
+             {{$res[$i]['team']['name']}}
+           </div>
+           @endif
+           <div class="font-semibold text-xl">
+           {{$res[$i]['name']}}
+           </div>
+         </div>
 
-      @if($cres > 2)
-        <div class="card3 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
-          <div class="text-4xl font-bold">
-            3rd
-          </div>
-          @if($season['season'] - (int)$season['season'] < 0.75)
-          <div class="font-semibold">
-            {{$res[2]['team']['name']}}
-          </div>
-          @endif
-          <div class="font-semibold text-xl">
-          {{$res[2]['name']}}
-          </div>
-        </div>
-      @endif
+       @elseif($k == 1)
+         <div class="card2 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+           <div class="text-4xl font-bold">
+             2nd
+           </div>
+           @if($season['season'] - (int)$season['season'] < 0.75)
+           <div class="font-semibold">
+             {{$res[$i]['team']['name']}}
+           </div>
+           @endif
+           <div class="font-semibold text-xl">
+           {{$res[$i]['name']}}
+           </div>
+         </div>
+
+       @elseif($k == 2)
+         <div class="card3 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+           <div class="text-4xl font-bold">
+             3rd
+           </div>
+           @if($season['season'] - (int)$season['season'] < 0.75)
+           <div class="font-semibold">
+             {{$res[$i]['team']['name']}}
+           </div>
+           @endif
+           <div class="font-semibold text-xl">
+           {{$res[$i]['name']}}
+           </div>
+         </div>
+       @endif
+      @endfor
       </div>
 
       <div class="text-s font-semibold">
