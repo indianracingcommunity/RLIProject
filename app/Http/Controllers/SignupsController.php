@@ -46,5 +46,89 @@ class SignupsController extends Controller
     }
 
 
+    public function temp()
+    {
+      $data = '{
+        "track": {
+          "circuit_id": 13,
+          "season_id": 7,
+          "round": 9
+        },
+        "results": [{
+          "position": 1,
+          "driver": "MaranelloBaby",
+          "driver_id": 2,
+          "constructor_id": 18,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "-"
+        }, {
+          "position": 2,
+          "driver": "kapilace6",
+          "driver_id": 3,
+          "constructor_id": 16,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "-"
+        }, {
+          "position": 4,
+          "driver": "gnan20",
+          "driver_id": 40,
+          "constructor_id": 21,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "DNF",
+          "status": -2
+        }, {
+          "position": 7,
+          "driver": "Blacksheep",
+          "driver_id": 19,
+          "constructor_id": 21,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "DNF",
+          "status": -2
+        }, {
+          "position": 3,
+          "driver": "SpeedLust",
+          "driver_id": 4,
+          "constructor_id": 18,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "-"
+        }, {
+          "position": 6,
+          "driver": "vagary",
+          "driver_id": 30,
+          "constructor_id": 14,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "DNF",
+          "status": -2
+        }, {
+          "position": 5,
+          "driver": "Streeter",
+          "driver_id": 7,
+          "constructor_id": 23,
+          "grid": 0,
+          "stops": 0,
+          "fastestlaptime": "-",
+          "time": "DNF",
+          "status": -2
+        }]
+      }
+    ';
+    
+      return view('standings.upload')->with('data',$data);
+
+    }
+
+
 
 }

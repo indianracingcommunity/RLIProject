@@ -91,6 +91,8 @@ Route::group(['middleware' => 'steam'], function () {
      Route::get('/f1/signup','SignupsController@view');
      Route::post('/testform','SignupsController@test');
 
+     Route::get('/upload','SignupsController@temp');
+
 
 });
 });
