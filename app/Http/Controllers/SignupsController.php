@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Season;
-
+use App\Circuit;
+use App\Constructor;
 class SignupsController extends Controller 
 {
     public function view()
@@ -124,8 +125,16 @@ class SignupsController extends Controller
         }]
       }
     ';
-    
-      return view('standings.upload')->with('data',$data);
+
+      $season = Season::where('isactive',1)->get();
+      $tracks = Circuit::select('*')->get();
+      $constructor = Constructor::select('*')->get();
+
+      return view('standings.upload')
+      ->with('data',$data)
+      ->with('season',$season)
+      ->with('tracks',$tracks)
+      ->with('constructor',$constructor);
 
     }
 
