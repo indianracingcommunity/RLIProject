@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Season;
 use App\Circuit;
 use App\Constructor;
+use App\Driver;
 class SignupsController extends Controller 
 {
     public function view()
@@ -129,12 +130,14 @@ class SignupsController extends Controller
       $season = Season::where('isactive',1)->get();
       $tracks = Circuit::select('*')->get();
       $constructor = Constructor::select('*')->get();
-
+      $driver = Driver::select('id','name')->get();
+      
       return view('standings.upload')
       ->with('data',$data)
       ->with('season',$season)
       ->with('tracks',$tracks)
-      ->with('constructor',$constructor);
+      ->with('constructor',$constructor)
+      ->with('driver',$driver);
 
     }
 
