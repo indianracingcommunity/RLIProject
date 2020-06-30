@@ -127,7 +127,10 @@ class SignupsController extends Controller
       }
     ';
 
-      $season = Season::where('isactive',1)->get();
+    
+      $season = Season::where('status','>',0)->get();
+     
+      
       $tracks = Circuit::select('*')->get();
       $constructor = Constructor::select('*')->get();
       $driver = Driver::select('id','name')->get();
