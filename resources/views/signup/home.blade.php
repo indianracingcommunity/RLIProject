@@ -35,11 +35,11 @@
         </label>
         <div class="inline-block relative">
           <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" id="seasonnum" name="seas">
-            <option>Season 1</option>
-            <option>Season 2</option>
-            <option>Season 3</option>
-            <option>Season 4</option>
-            <option>Season 5</option>
+            <option value="1">Season 1</option>
+            <option value="2">Season 2</option>
+            <option value="3">Season 3</option>
+            <option value="4">Season 4</option>
+            <option value="5">Season 5</option>
           </select>
           <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -421,7 +421,7 @@
       }
 
 
-      if (seas.charAt(7) < 5){
+      if (seas == ""){
         document.getElementById("errorseason").innerHTML = "It is fun to go in the past but we dont have time machine! <br> Select Season 5 or later";
         document.getElementById("seasonnum").style.borderColor = "#f56565";
         sendform = false;

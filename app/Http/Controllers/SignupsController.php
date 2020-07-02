@@ -8,6 +8,8 @@ use App\Season;
 use App\Circuit;
 use App\Constructor;
 use App\Driver;
+use App\Signup;
+use Auth;
 class SignupsController extends Controller 
 {
     public function view()
@@ -27,24 +29,41 @@ class SignupsController extends Controller
     public function store()
     {
         $data = request()->all();
-        $sigunup = new Signup();
+        if(isset($data['evidencet1']) & isset($data['evidencet2']) & isset($data['evidencet3'])  )
+           {
+             if($data['evidencet1'] != NULL & $data['evidencet2'] != NULL & $data['evidencet3'] != NULL)
+              $evidence1 = $data['evidencet1']->store('timetrials');
+              $evidence2 = $data['evidencet2']->store('timetrials');
+              $evidence3 = $data['evidencet3']->store('timetrials');
+           }
+           if($data['attendance']=="YES")
+           {
+             $attendance = 1;
+           }
+           else 
+           {
+             $attedance = 0;
+           }
+           $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+        $signup = new Signup();
         $signup->user_id = Auth::user()->id;
+        $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
-        $signup->timetrial1 = $data['timetrial1'];
-        $signup->timetrial2 = $data['timetrial2'];
-        $signup->timetrial3 = $data['timetrial3'];
-        $signup->ttevidence1 = $data['ttevidence1'];
-        $signup->ttevidence2 = $data['ttevidence2'];
-        $signup->ttevidence3 = $data['ttevidence3'];
-        $signup->carprefrence = $data['carprefrence'];
-        $signup->attendance = $data['attendance'];
+        $signup->timetrial1 = $data['t1'];
+        $signup->timetrial2 = $data['t2'];
+        $signup->timetrial3 = $data['t3'];
+        $signup->ttevidence1 = $evidence1;
+        $signup->ttevidence2 = $evidence2;
+        $signup->ttevidence3 = $evidence3;
+        $signup->carprefrence = $prefrence;
+        $signup->attendance = $attendance;
         $signup->save();
         return redirect('/home');
     }
 
     public function test(Request $request)
     {
-       dd($request->request);
+       dd($request);
     }
 
 
