@@ -28,17 +28,19 @@
                 <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Championship/Tier</label>
                 <div class="inline-block relative">
                     <select class="inline-block appearance-none w-auto bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 ml-3 pl-2 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="season_id">
-                     @foreach ($season as $value)
-                    <option value="{{$value->id}}">{{$value->name}}</option>
-                     @endforeach
+                        @foreach ($season as $value)
+                        <option value="{{$value->id}}">{{$value}}</option>
+                        @endforeach
                         
                     </select>
+                    
                     <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                     </div>
                 </div>
             </div>
-
+            
+            
             <div class="w-full mt-16">
                 <label class="inline-block text-gray-700 text-base font-bold">
                 Round number

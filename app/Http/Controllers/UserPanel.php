@@ -15,9 +15,9 @@ class UserPanel extends Controller
         return view('user.userhome',compact('user_id'));
     }
 
-    public function viewprofile(User $user)
+    public function viewprofile()
     {
-        return view('user.userprofile')->with('user',$user);
+        return view('user.userprofile');
     }
 
     public function SetSteam(user $user)

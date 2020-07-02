@@ -9,29 +9,29 @@
 
 <div class="flex my-8">
     <div>
-        <img src="{{$user->avatar}}" class="rounded-md " alt="">
+        <img src="{{Auth::user()->avatar}}" class="rounded-md " alt="">
     </div>
     <div class="py-3">
         <div class="flex">
             <div class="text-xs font-semibold text-gray-600 mx-4 mt-1">USERNAME</div>
-            <div class=" font-semibold text-gray-900">{{$user->name}}</div>
+            <div class=" font-semibold text-gray-900">{{Auth::user()->name}}</div>
         </div>
         <div class="flex">
             <div class="text-xs font-semibold text-gray-600 ml-4 mr-3 mt-1">EMAIL</div>
-            <div class=" font-semibold text-gray-900 ml-8">{{$user->email}}</div>
+            <div class=" font-semibold text-gray-900 ml-8">{{Auth::user()->email}}</div>
         </div>
         <div class="flex">
             <div class="text-xs font-semibold text-gray-600 ml-4 mr-6 mt-1">DISCORD</div>
-            <div class=" font-semibold text-gray-900 ml-1">{{$user->name}}#{{$user->discord_discrim}}</div>
+            <div class=" font-semibold text-gray-900 ml-1">{{Auth::user()->name}}#{{Auth::user()->discord_discrim}}</div>
         </div>
         <div class="flex">
             <div class="text-xs font-semibold text-gray-600 ml-4 mr-6 mt-1">STEAM</div>
-            <div class=" font-semibold text-gray-900 ml-4"><a href= "{{$user->steam_id}}">{{$user->steam_id}} </a></div>
+            <div class=" font-semibold text-gray-900 ml-4"><a href= "{{Auth::user()->steam_id}}">{{Auth::user()->steam_id}} </a></div>
         </div>
     </div>
 </div>
 <div>
-    <form method="POST" action="setsteam/{{$user->id}}">
+    <form method="POST" action="setsteam/{{Auth::user()->id}}">
         @csrf
         <br><br>
 

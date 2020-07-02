@@ -74,7 +74,7 @@ Route::post('/image/race', 'ImageController@ocrRace');
 
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {
-     Route::get('/user/profile/{user}', 'UserPanel@viewprofile')->name('home');
+     Route::get('/user/profile/', 'UserPanel@viewprofile')->name('home');
      Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
      SteamLogin::routes(['controller' => SteamLoginController::class]);
 Route::group(['middleware' => 'steam'], function () {
