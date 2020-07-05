@@ -47,7 +47,7 @@ class Discord
                 $check = 'False';
                 for($i = 0; $i < count($final) ; $i++)
                 {
-                   if($var = $final[$i]['id']==$irc)
+                   if($final[$i]['id']==$irc)
                    {
                        $check = 'True';
                    }
@@ -101,7 +101,7 @@ class Discord
 
     public static function getMemberRoles()
     {
-       //dd($userr['0']['discord_id']);
+       
       
         $userdata = Auth::user()->discord_id;
         
@@ -137,6 +137,7 @@ class Discord
                 else
                 {
                     $final = json_decode($response,true);
+                   // dd($final);
                     if(isset($final['message']))
                     {
                     echo "Invalid Discord ID";

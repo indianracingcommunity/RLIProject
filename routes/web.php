@@ -97,6 +97,10 @@ Route::group(['middleware' => 'steam'], function () {
 
      Route::get('/upload','SignupsController@temp');
 
+     //Profile Routes
+
+     Route::get('/user/profile/view/{user}','HomeController@viewprofile');
+
 
 });
 });

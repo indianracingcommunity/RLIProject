@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\User;
 class HomeController extends Controller
 {
     /**
@@ -24,6 +24,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('admin.adminhome');
+    }
+
+    public function viewprofile(User $user)
+    {
+          return view('user.profiles')->with('user',$user);
     }
 
     
