@@ -45,6 +45,11 @@
                 @endguest
             </div>
         </nav>
+        @if(session()->has('error'))
+        <div class="bg-red-200 rounded text-black-800 p-4 mb-3 font-semibold"> 
+            {{session()->get('error')}} 
+            </div> 
+        @endif    
         @yield('body')
     </body>
 </html>

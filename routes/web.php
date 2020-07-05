@@ -69,6 +69,10 @@ Route::get('/image/quali', 'ImageController@qualiIndex');
 
 Route::get('/image/race', 'ImageController@raceIndex');
 Route::post('/image/race', 'ImageController@ocrRace');
+//Discord 
+Route::get('/discord/fetchroles','DiscordController@getServerRoles');
+Route::get('/discord/fetchroles/users','DiscordController@getMemberRoles');
+
 });
 
 

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use Socialite;
 use App\User;
+use App\Discord;
 
 class LoginController extends Controller
 {
@@ -49,18 +50,35 @@ class LoginController extends Controller
      public function handleProviderCallback()
      {
          $userr = Socialite::driver('discord')->user();
+        // dd($userr);
          $authUser = $this->findOrCreateUser($userr);
+         if($authUser=='false')
+         { 
+          session()->flash('error','Please join the IRC Discord Server server before signing up on the site');
+          return redirect('/');
+         }
+         else
+         {
          Auth::login($authUser, true);
+         $discord = new Discord();
+         $userroles = $discord->getroles();
+         }
 
          return view('home');
      }
 
-     private function findOrCreateUser($userr){
+     private function findOrCreateUser($userr)
+     {
+        
+       $check = Discord::check($userr);
+       //dd($check);
+       if($check == "True")
+       {
        $userAccount = User::where('discord_id', $userr->id)->first();
        if($userAccount)
-       {
+        {
          //  dd($userr->user['discriminator']);
-           // dd($userr);
+            
            $userAccount->update([
             'name' => $userr->name,
             'avatar' => $userr->avatar,
@@ -82,5 +100,11 @@ class LoginController extends Controller
        ]);
        return $newUser;
      }
+     else
+     {
+       return 'false';
+     }
+    }
+    
 
 }
