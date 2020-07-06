@@ -110,6 +110,7 @@
                </div>
          </div>
          <div class="flex items-center flex-shrink-0 mr-8">
+                @auth
                 <div class="px-4 py-2 bg-red-200 text-red-700 rounded font-semibold cursor-pointer hover:bg-red-300 text-center">
                     <a  href="{{ route('logout') }}"
                         onclick="event.preventDefault();
@@ -121,6 +122,12 @@
                         {{ csrf_field() }}
                     </form>
                 </div>
+                @endauth
+                @guest
+                    <div class="px-4 flex py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:shadow-none">
+                        <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>
+                    </div>
+                @endguest
                 <!-- <div class=" bg-red-200 py-4 px-2">log</div> -->
             </div>
          <!-- @auth
@@ -183,6 +190,7 @@
           </div>
           
           @endauth
+          @auth
             <main class="py-20 ml-64 w-full">
                
                     
@@ -195,6 +203,21 @@
     
                
             </main>
+        @endauth
+        @guest
+        <main class="py-20 w-full">
+               
+                    
+                <!-- <div class="bg-green-200 rounded text-green-800 p-4 mb-3 font-semibold"> -->
+                        <!-- {{session()->get('success')}} -->
+                        <!-- You have logged in! -->
+                <!-- </div> -->
+                @yield('content')
+                
+    
+               
+            </main>
+        @endguest
         </div>
 
       </div>
