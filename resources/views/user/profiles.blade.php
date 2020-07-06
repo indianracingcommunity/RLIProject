@@ -64,7 +64,23 @@
             </tr>
             <tr>
                 <td class="font-semibold text-gray-600">STEAM</div>
-                <td class=" font-bold text-gray-800 px-4 py-1"><a href= "{{$user->steam_id}}">{{$user->steam_id}} </a></td>
+                <td class=" font-bold text-gray-800 px-4 py-1"><a href= "https://steamcommunity.com/profiles/{{$user->steam_id}}">{{$user->steam_id}} </a></td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-600">PLATFORM</div>
+                <td class=" font-bold text-gray-800 px-4 py-1">PC</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-600">MOTOSPORTS FOLLOWED</div>
+                <td class=" font-bold text-gray-800 px-4 py-1">F1, MotoGP, Indy Truck</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-600">DRIVER SUPPORTED</div>
+                <td class=" font-bold text-gray-800 px-4 py-1">Lance Stroll</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-600">DEVICE USED</div>
+                <td class=" font-bold text-gray-800 px-4 py-1">XBOX Controller</td>
             </tr>
         </table>
     </div>

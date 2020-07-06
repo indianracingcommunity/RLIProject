@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>RLI Admin Panel</title>
+    <title>Indian Racing Comunity</title>
 
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
@@ -194,10 +194,10 @@
             <main class="py-20 ml-64 w-full">
                
                     
-                <!-- <div class="bg-green-200 rounded text-green-800 p-4 mb-3 font-semibold"> -->
-                        <!-- {{session()->get('success')}} -->
-                        <!-- You have logged in! -->
-                <!-- </div> -->
+                <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
+                        {{session()->get('success')}}
+                        Please complete the profile
+                </div>
                 @yield('content')
                 
     

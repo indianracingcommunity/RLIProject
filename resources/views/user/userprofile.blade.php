@@ -118,7 +118,7 @@
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="MotherToungue" class="font-semibold text-gray-800">What is your Mother Tounge?<span class="text-red-600 ml-2">●</span></label>
+                            <label for="MotherToungue" class="font-semibold text-gray-800">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Hindi/Bengali/Tamil">
                     </div>
@@ -178,6 +178,10 @@
                                 <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
                                 <label for="games" class="mr-2">Grand Tourismo Sports</label>
                             </span>
+                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                <label for="games" class="mr-2">Dirt Rally</label>
+                            </span>
                         </div>
                     </div>
                     <div class="mb-4">
@@ -214,7 +218,17 @@
                             </span>
                         </div>
                     </div>
-                    <div class="font-semibold text-gray-700 mt-6">
+                    <div class="mt-4">
+                        <div>
+                            <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc.">
+                    </div>
+                </div>
+                
+            </div>
+            <div>
+                    <div class="font-semibold text-gray-700 mb-4">
                         <div>
                             <span class="text-red-600 mr-2">●</span>Mandatory Fields
                         </div>
@@ -222,10 +236,6 @@
                             <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
                         </div>
                     </div>
-                </div>
-                
-            </div>
-            <div>
                 <button class="bg-blue-200 rounded text-blue-800 font-semibold px-8 py-2 hover:bg-blue-300">Submit</button>
             </div>
         </form>
