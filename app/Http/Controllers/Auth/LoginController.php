@@ -64,7 +64,7 @@ class LoginController extends Controller
          $userroles = $discord->getroles();
          }
 
-         return view('home');
+         return redirect('/user/profile');
      }
 
      private function findOrCreateUser($userr)

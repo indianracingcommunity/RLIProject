@@ -69,7 +69,7 @@ class Discord
         $curl = curl_init();
         $server = 533143665921622017;
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://discord.com/api/guilds/".$server,
+        CURLOPT_URL => "https://discord.com/api/guilds/".$server."/roles",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -94,8 +94,8 @@ class Discord
                 else
                 {
                     $final = json_decode($response,true);
-                   // dd($final);
-                    return $this->checkRoles($final['roles']);
+                  //  dd($final);
+                    return $this->checkRoles($final);
                 }
     }
 
