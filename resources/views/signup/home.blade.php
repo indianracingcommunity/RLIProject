@@ -20,8 +20,8 @@
     color: #4c51bf; 
   }
 </style>
-<div class="w-full">
-  <form class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform" enctype="multipart/form-data" onsubmit="return validate()">
+<div class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full">
+  <form class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform" enctype="multipart/form-data" onsubmit="return validate()">
     @csrf
     <div id="restform">
       <label class="block text-gray-700 text-xl font-bold mb-2">
@@ -29,23 +29,21 @@
       </label>
       
    
-      <div class="w-full pl-3 ml-20 mt-5">
+      <div class="w-full ml-16 pl-1 mt-5">
         <label class="inline-block text-gray-700 text-base font-bold mb-2">
           Select Season
         </label>
         <div class="inline-block relative">
-          <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" id="seasonnum" name="seas">
-            <option value="1">Season 1</option>
-            <option value="2">Season 2</option>
-            <option value="3">Season 3</option>
-            <option value="4">Season 4</option>
-            <option value="5">Season 5</option>
+          <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" id="seasonnum" name="seas" onchange="javascript:updateconstructor()">
+            @foreach ($seasons as $value)
+              <option value="{{$value->id}}">{{$value->name}}</option>
+            @endforeach
           </select>
           <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
           </div>
         </div>
-        <label class="inline-block w-72 text-gray-700 text-base font-bold mb-2 mt-5 ml-64">Will you be able to attend 75% of races?</label>
+        <label class="inline-block w-72 text-gray-700 text-base font-bold mb-2 mt-5 ml-40 pl-1">Will you be able to attend 75% of races?</label>
         <div class="inline-block">
           <div class="inline-flex items-center mr-4 ml-4">
             <input id="radio3" type="radio" name="attendance" class="hidden" value="YES"/>
@@ -67,14 +65,14 @@
       </div>
 
       <div class="w-full mt-3">
-        <label class="inline-block text-gray-700 text-base font-bold ml-20">
+        <label class="inline-block text-gray-700 text-base font-bold ml-12 pl-3">
           Driver Number
         </label>
         <div class="inline-block pl-3">
           <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-20 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="drivernum" type="number" name="drivernumber">
         </div>
 
-        <label class="inline-block text-gray-700 text-base font-bold ml-64 pl-5">
+        <label class="inline-block text-gray-700 text-base font-bold ml-64 pl-12">
           Speed test result link
         </label>
         <div class="inline-block pl-3">
@@ -82,139 +80,166 @@
         </div>
       </div>
 
-      <div class="text-red-600 text-sm italic mt-2 pl-48 ml-4">
+      <div class="text-red-600 text-sm italic mt-2 pl-48">
         <div class="inline-block w-1/3" id="errordrivernum">
         <br><br>
         </div>
-        <div class="inline-block w-5/12 ml-16 pl-2" id="errorspeed">
+        <div class="inline-block w-5/12 ml-16 pl-8" id="errorspeed">
           Enter the link of your speed test performed at "https://www.speedtest.net/"<br> Ensure that the server is set to Bangalore/Mumbai
         </div>
       </div>
       
       <div class="bg-purple-700 w-full h-px mt-2 rounded shadow-2xl">
       </div>
+
+      <div class="flex w-full">
+        <div class="w-3/4">
+          <div class="w-full mt-5">
+            <label class="inline-block text-gray-700 text-base font-bold ml-10">
+              Time Trial Time 1
+            </label>
+            <div class="inline-block pl-3">
+              <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time1" type="text" name="t1">
+            </div>
+            <div class="inline-block appearance-none bg-grey-lighter">
+              <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
+                Evidence
+              </label>
+              <div class="inline-block" >
+                <label class="w-auto inline-block items-center px-4 py-0 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="imgdivt1">
+                    <svg class="inline-block w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                    </svg>
+                    <span class="inline-block mt-2 text-base leading-normal">Upload</span>
+                    <input type='file' name="evidencet1" accept=".png, .jpg, .jpeg" class="hidden" id="imgt1" onchange="javascript:updatelist1()"/>
+                </label>
+              </div>
+            </div>
+            <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet1"></label>
+          </div>
+
+          <div class="flex w-auto text-red-600 text-sm italic mt-2 pl-48">
+            <div class="inline-block w-1/3" id="errort1">
+              <br><br>
+            </div> 
+            <div class="inline-block w-2/3 pl-56" id="errorimgt1">
+              <br><br>
+            </div> 
+          </div>
+
+          <div class="inline-block w-auto">
+            <div class="inline-block mt-5">
+              <label class="inline-block text-gray-700 text-base font-bold ml-10">
+                Time Trial Time 2
+              </label>
+              <div class="inline-block pl-3">
+                <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time2" type="text" name="t2">
+              </div>
+            </div>
+            
+            <div class="inline-block appearance-none bg-grey-lighter">
+              <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
+                Evidence
+              </label>
+              
+              <div class="inline-block" >
+                <label class="w-auto inline-block items-center px-4 py-0 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="imgdivt2">
+                    <svg class="inline-block w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                    </svg>
+                    <span class="inline-block mt-2 text-base leading-normal">Upload</span>
+                    <input type='file' name="evidencet2" accept=".png, .jpg, .jpeg" class="hidden" id="imgt2" onchange="javascript:updatelist2()"/>
+                </label>
+              </div>
+            </div>
+            <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet2"></label>
+          </div>
+
+          <div class="flex w-auto text-red-600 text-sm italic mt-2 pl-48">
+            <div class="inline-block w-1/3" id="errort2">
+              <br><br>
+            </div> 
+            <div class="inline-block w-2/3 pl-56" id="errorimgt2">
+              <br><br>
+            </div> 
+          </div>
+
+          <div class="w-full mt-5">
+            <label class="inline-block text-gray-700 text-base font-bold ml-10">
+              Time Trial Time 3
+            </label>
+            <div class="inline-block pl-3">
+              <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time3" type="text" name="t3">
+            </div>
+
+            <div class="inline-block appearance-none bg-grey-lighter">
+              <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
+                Evidence
+              </label>
+              <div class="inline-block" >
+                <label class="w-auto inline-block items-center px-4 py-0 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="imgdivt3">
+                    <svg class="inline-block w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                    </svg>
+                    <span class="inline-block mt-2 text-base leading-normal">Upload</span>
+                    <input type='file' name="evidencet3" accept=".png, .jpg, .jpeg" class="hidden" id="imgt3" onchange="javascript:updatelist3()"/>
+                </label>
+              </div>
+            </div>
+            <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet3"></label> 
+          </div>
+
+          <div class="flex w-auto text-red-600 text-sm italic mt-2 pl-48">
+            <div class="inline-block w-1/3" id="errort3">
+              <br><br>
+            </div> 
+            <div class="inline-block w-2/3 pl-56" id="errorimgt3">
+              <br><br>
+            </div> 
+          </div>
+        </div>
+        <div class="inline-flex w-1/4">
+          <label class="flex w-1/4 mt-6 pt-1 mr-5 justify-center">
+            <span class="flex text-gray-700 text-base font-bold">Assists used</span>
+          </label>
+
+          <div class="flex-wrap w-3/4 mt-6 pt-1 items-center justify-left">
+            <label class="flex items-center justify-left">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists1" value="braking">
+              <span class="ml-2 cursor-pointer mr-5">Braking Assist</span>
+            </label>
+            <label class="flex items-center justify-left">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists2" value="steering">
+              <span class="ml-2 cursor-pointer">Steering Assist</span>
+            </label>
+            <label class="flex items-center justify-left">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists3" value="traction">
+              <span class="ml-2 cursor-pointer">Traction Control</span>
+            </label>
+            <label class="flex items-center justify-left">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists4" value="abs">
+              <span class="ml-2 cursor-pointer">Anti lock brakes</span>
+            </label>
+            <label class="flex items-center justify-left">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists5" value="line">
+              <span class="ml-2 cursor-pointer">Racing line</span>
+            </label>
+            <label class="flex items-center justify-left">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists6" value="autogears">
+              <span class="ml-2 cursor-pointer">Auto Transmission</span>
+            </label>
+          </div>
+        </div>
+      </div>
       
-      <div class="w-full mt-5">
-        <label class="inline-block text-gray-700 text-base font-bold ml-10">
-          Time Trial Time 1
-        </label>
-        <div class="inline-block pl-3">
-          <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time1" type="text" name="t1">
-        </div>
-        <div class="inline-block appearance-none bg-grey-lighter">
-          <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
-            Evidence
-          </label>
-          <div class="inline-block" >
-            <label class="w-auto inline-block items-center px-4 py-0 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="imgdivt1">
-                <svg class="inline-block w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                </svg>
-                <span class="inline-block mt-2 text-base leading-normal">Upload</span>
-                <input type='file' name="evidencet1" accept=".png, .jpg, .jpeg" class="hidden" id="imgt1" onchange="javascript:updatelist1()"/>
-            </label>
-          </div>
-        </div>
-        <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet1"></label>
-      </div>
-
-      <div class="block w-auto text-red-600 text-sm italic mt-2 pl-48 ml-4">
-        <div class="inline-block w-1/3" id="errort1">
-          <br><br>
-        </div> 
-        <div class="inline-block w-5/12 pl-2" id="errorimgt1">
-          <br><br>
-        </div> 
-      </div>
-
-      <div class="inline-block w-auto">
-        <div class="inline-block mt-5">
-          <label class="inline-block text-gray-700 text-base font-bold ml-10">
-            Time Trial Time 2
-          </label>
-          <div class="inline-block pl-3">
-            <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time2" type="text" name="t2">
-          </div>
-        </div>
-        
-        <div class="inline-block appearance-none bg-grey-lighter">
-          <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
-            Evidence
-          </label>
-          
-          <div class="inline-block" >
-            <label class="w-auto inline-block items-center px-4 py-0 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="imgdivt2">
-                <svg class="inline-block w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                </svg>
-                <span class="inline-block mt-2 text-base leading-normal">Upload</span>
-                <input type='file' name="evidencet2" accept=".png, .jpg, .jpeg" class="hidden" id="imgt2" onchange="javascript:updatelist2()"/>
-            </label>
-          </div>
-        </div>
-        <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet2"></label>
-      </div>
-
-      <div class="block w-auto text-red-600 text-sm italic mt-2 pl-48 ml-4">
-        <div class="inline-block w-1/3" id="errort2">
-          <br><br>
-        </div> 
-        <div class="inline-block w-5/12 pl-2" id="errorimgt2">
-          <br><br>
-        </div> 
-      </div>
-
-      <div class="w-full mt-5">
-        <label class="inline-block text-gray-700 text-base font-bold ml-10">
-          Time Trial Time 3
-        </label>
-        <div class="inline-block pl-3">
-          <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time3" type="text" name="t3">
-        </div>
-
-        <div class="inline-block appearance-none bg-grey-lighter">
-          <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
-            Evidence
-          </label>
-          <div class="inline-block" >
-            <label class="w-auto inline-block items-center px-4 py-0 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="imgdivt3">
-                <svg class="inline-block w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                </svg>
-                <span class="inline-block mt-2 text-base leading-normal">Upload</span>
-                <input type='file' name="evidencet3" accept=".png, .jpg, .jpeg" class="hidden" id="imgt3" onchange="javascript:updatelist3()"/>
-            </label>
-          </div>
-        </div>
-        <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet3"></label> 
-      </div>
-
-      <div class="block w-auto text-red-600 text-sm italic mt-2 pl-48 ml-4">
-        <div class="inline-block w-1/3" id="errort3">
-          <br><br>
-        </div> 
-        <div class="inline-block w-5/12 pl-2" id="errorimgt3">
-          <br><br>
-        </div> 
-      </div>
-      
-      <div class="flex justify-between mt-5 mr-20">
+      <div class="flex justify-between mt-5 mr-20" id="preferenceid">
         <div class="inline-block pl-3 ml-5">
           <label class="inline-block text-gray-700 text-base font-bold mb-2">
             Team preference 1
           </label>
           <div class="inline-block relative">
             <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" id="preference1" name="pref1">
-              <option>Mercedes</option>
-              <option>Haas</option>
-              <option>McLaren</option>
-              <option>Alfa Romeo</option>
-              <option>Red Bull</option>
-              <option>Renault</option>
-              <option>Ferrari</option>
-              <option>AlphaTauri</option>
-              <option>Williams</option>
-              <option>Racing Point</option>
+              
             </select>
             <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
               <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -228,16 +253,7 @@
           </label>
           <div class="inline-block relative">
             <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" id="preference2" name="pref2">
-              <option>Mercedes</option>
-              <option>Haas</option>
-              <option>McLaren</option>
-              <option>Alfa Romeo</option>
-              <option>Red Bull</option>
-              <option>Renault</option>
-              <option>Ferrari</option>
-              <option>AlphaTauri</option>
-              <option>Williams</option>
-              <option>Racing Point</option>
+              
             </select>
             <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
               <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -251,16 +267,7 @@
           </label>
           <div class="inline-block relative">
             <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" id="preference3" name="pref3">
-              <option>Mercedes</option>
-              <option>Haas</option>
-              <option>McLaren</option>
-              <option>Alfa Romeo</option>
-              <option>Red Bull</option>
-              <option>Renault</option>
-              <option>Ferrari</option>
-              <option>AlphaTauri</option>
-              <option>Williams</option>
-              <option>Racing Point</option>
+              
             </select>
             <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
               <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -282,6 +289,36 @@
     </div>
   </form>
   <script>
+    
+    updateconstructor = function(){
+      var seasonid = document.getElementById("seasonnum").value;
+      var i = 0;
+      var data = <?php echo json_encode($seasons); ?>;
+      var str = "";
+      
+      document.getElementById("preference3").innerHTML = "";
+      for(i=0;i<data.length;i++){
+        
+        if(seasonid == data[i].id){
+          if(data[i].status == 0.2){
+            document.getElementById("preferenceid").style.display = "none";
+            document.getElementById("errorteam").style.display = "none";
+          }
+          else{
+            document.getElementById("preferenceid").style.display = "flex";
+            document.getElementById("errorteam").style.display = "block";
+          }
+          for(j=0;j<data[i].constructors.length;j++){
+            str = '<option value="' + data[i].constructors[j].id + '">' + data[i].constructors[j].name + '</option>' + str;
+          }
+          document.getElementById("preference1").innerHTML = str;
+          document.getElementById("preference2").innerHTML = str;
+          document.getElementById("preference3").innerHTML = str;
+        }
+      }
+      
+    }
+    javascript:updateconstructor();
     updatelist1 = function(){
       document.getElementById("filenamet1").innerHTML = document.getElementById("imgt1").files[0].name;
     }
