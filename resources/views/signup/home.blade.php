@@ -205,27 +205,27 @@
 
           <div class="flex-wrap w-3/4 mt-6 pt-1 items-center justify-left">
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists1" value="braking">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="braking">
               <span class="ml-2 cursor-pointer mr-5">Braking Assist</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists2" value="steering">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="steering">
               <span class="ml-2 cursor-pointer">Steering Assist</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists3" value="traction">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="traction">
               <span class="ml-2 cursor-pointer">Traction Control</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists4" value="abs">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="abs">
               <span class="ml-2 cursor-pointer">Anti lock brakes</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists5" value="line">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="line">
               <span class="ml-2 cursor-pointer">Racing line</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists6" value="autogears">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="autogears">
               <span class="ml-2 cursor-pointer">Auto Transmission</span>
             </label>
           </div>

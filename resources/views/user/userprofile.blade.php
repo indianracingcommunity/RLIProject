@@ -84,10 +84,7 @@
 
             
             <div class="flex w-64 flex-wrap font-semibold text-sm">
-            <!-- @foreach($data as $value)
-            <div class="px-1 border rounded-full mr-1 mb-1 border-orange-600"><i class="fas fa-circle mr-1 text-orange-500"></i>{{$value}}</div>
             
-            @endforeach -->
                 <div class="px-1 border rounded-full mr-1 mb-1 border-orange-600"><i class="fas fa-circle mr-1 text-orange-500"></i>Mclaren</div>
                 <div class="px-1 border rounded-full mr-1 mb-1 border-green-600"><i class="fas fa-circle mr-1 text-green-500"></i>Tier-2</div>
                 <div class="px-1 border rounded-full mr-1 mb-1 border-purple-500"><i class="fas fa-circle mr-1 text-purple-400"></i>IRC Team</div>
@@ -104,7 +101,7 @@
         </div>
         <form action="">
             <div class="flex">
-                <div class="w-1/2">
+                <div class="">
                     <div class="mb-4">
                         <div>
                             <label for="Nationality" class="font-semibold text-gray-800">Are you an Indian?<span class="text-red-600 ml-2">●</span></label>
@@ -147,82 +144,84 @@
                         <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris">
                     </div>
                 </div>
-                <div class="ml-8">
+                <div class="ml-8 w-1/2">
                     
                     <div class="mb-4">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                        <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()">
                         <label for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
                     </div>
-                    <div class="mb-4">
+                    <div id="restfieldsid" style="display : block;">
+                        <div class="mb-4">
+                            <div>
+                                <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            </div>
+                            <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc.">
+                        </div>
+                        <div class="mb-4">
+                            <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <div class="flex flex-wrap">
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="game[]" value="f1">
+                                    <label for="games" class="mr-2">F1</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="game[]" value="Assetto Corsa">
+                                    <label for="games" class="mr-2">Assetto Corsa</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="game[]" value="Asseto Corsa Compitizione">
+                                    <label for="games" class="mr-2">Asseto Corsa Compitizione</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="game[]" value="Grand Tourismo Sports">
+                                    <label for="games" class="mr-2">Grand Tourismo Sports</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="game[]" value="Dirt Rally">
+                                    <label for="games" class="mr-2">Dirt Rally</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <div class="flex flex-wrap">
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PC">
+                                    <label for="games" class="mr-2">PC</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PlayStation">
+                                    <label for="games" class="mr-2">PlayStation</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="XBox">
+                                    <label for="games" class="mr-2">XBox</label>
+                                </span>
+                            </div>
+                        </div>
                         <div>
-                            <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <div>
+                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse">
+                                    <label for="games" class="mr-2">Keyboard/Mouse</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Controller">
+                                    <label for="games" class="mr-2">Controller</label>
+                                </span>
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Wheel">
+                                    <label for="games" class="mr-2">Wheel</label>
+                                </span>
+                            </div>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc.">
-                    </div>
-                    <div class="mb-4">
-                        <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
-                        <div class="flex flex-wrap">
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">F1</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Assetto Corsa</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Asseto Corsa Compitizione</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Grand Tourismo Sports</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Dirt Rally</label>
-                            </span>
+                        <div class="mt-4">
+                            <div>
+                                <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            </div>
+                            <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc.">
                         </div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
-                        <div class="flex flex-wrap">
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">PC</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">PlayStation</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">XBox</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
-                        <div>
-                        <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Keyboard/Mouse</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Controller</label>
-                            </span>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                <label for="games" class="mr-2">Wheel</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <div>
-                            <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
-                        </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc.">
                     </div>
                 </div>
                 
@@ -254,5 +253,16 @@
         @endif
     </form>
 </div>
+<script>
+    document.getElementById('restfieldsid').style.display = "none";
+    showfields = function(){
+        if(document.getElementById('playgameid').checked){
+            document.getElementById('restfieldsid').style.display = "block";
+        }
+        else{
+            document.getElementById('restfieldsid').style.display = "none";
+        }
+    }
+</script>
 
 @endsection
