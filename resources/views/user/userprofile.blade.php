@@ -99,7 +99,8 @@
         <div class="font-semibold text-gray-600 mb-4">
             <i class="fas fa-edit mr-1"></i> More Details
         </div>
-        <form action="">
+        <form action="/user/profile/save/{{Auth::user()->id}}" method="POST">
+            @csrf
             <div class="flex">
                 <div class="">
                     <div class="mb-4">
@@ -115,48 +116,69 @@
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="MotherToungue" class="font-semibold text-gray-800">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
+                            <label for="MotherToungue" class="font-semibold text-gray-800" ">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Hindi/Bengali/Tamil">
+                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="City" class="font-semibold text-gray-800">City<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata">
+                        @php
+                        if(isset(Auth::user()->location))
+                        {
+                            $data = Auth::user()->location;
+                            $city = preg_replace('/^([^,]*).*$/', '$1', $data);  
+                            $state =   preg_replace('/^[^,]*,\s*/', '', $data);
+                        }
+                        else{$city = ""; $state="";}   
+                        @endphp
+                        
+                        <input type="text" name="city" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value = {{$city}} >
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal">
+                        <input type="text" name="state" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1">
+                    <input type="text" name="motorsport" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris">
+                        <input type="text" name="driversupport" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
                     </div>
                 </div>
                 <div class="ml-8 w-1/2">
                     
                     <div class="mb-4">
                         <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()">
-                        <label for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
+                        <label for="games"  class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
                     </div>
                     <div id="restfieldsid" style="display : block;">
                         <div class="mb-4">
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc.">
+                            <input type="text" name="source" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
                         </div>
+                        <?php
+                          if(isset(Auth::user()->games))
+                          {
+                              $games = unserialize(Auth::user()->games);
+                          }
+                          else
+                          {
+                             $games = '';
+                          }
+                          
+                        ?> 
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
@@ -182,6 +204,16 @@
                                 </span>
                             </div>
                         </div>
+                        <?php
+                        if(isset(Auth::user()->platform))
+                        {
+                           $platform = unserialize(Auth::user()->platform);
+                        }
+                        else
+                        {
+                            $platfrom = '';
+                        }  
+                        ?>
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
@@ -202,6 +234,16 @@
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div>
+                                <?php 
+                                  if(isset(Auth::user()->device))
+                                  {
+                                      $device = unserialize(Auth::user()->device);
+                                  }
+                                  else
+                                  {
+                                      $device = '';
+                                  }
+                                ?>
                             <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
                                     <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse">
                                     <label for="games" class="mr-2">Keyboard/Mouse</label>
@@ -220,7 +262,7 @@
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc.">
+                            <input type="text" name="devicename" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
                         </div>
                     </div>
                 </div>

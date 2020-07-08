@@ -16,7 +16,7 @@ class SignupsController extends Controller
     {
       $allseason = Season::all();
       $seasons = array();
-
+      
       foreach($allseason as $i => $particular_season) {
         $status = $particular_season->status;
         if($status - (int)$status > 0)
@@ -29,6 +29,7 @@ class SignupsController extends Controller
     public function store()
     {
         $data = request()->all();
+        //dd($data); 
         if(isset($data['evidencet1']) & isset($data['evidencet2']) & isset($data['evidencet3'])  )
            {
              if($data['evidencet1'] != NULL & $data['evidencet2'] != NULL & $data['evidencet3'] != NULL)
@@ -42,9 +43,13 @@ class SignupsController extends Controller
            }
            else 
            {
-             $attedance = 0;
+             $attendance = 0;
            }
            $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+          $assists = serialize($data['assists']);
+
+          
+           //dd($assists);
         $signup = new Signup();
         $signup->user_id = Auth::user()->id;
         $signup->season = $data['seas'];
@@ -57,6 +62,7 @@ class SignupsController extends Controller
         $signup->ttevidence3 = $evidence3;
         $signup->carprefrence = $prefrence;
         $signup->attendance = $attendance;
+        $signup->assists = $assists;
         $signup->save();
         return redirect('/home');
     }

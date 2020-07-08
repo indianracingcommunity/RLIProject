@@ -31,5 +31,41 @@ class HomeController extends Controller
           return view('user.profiles')->with('user',$user);
     }
 
+    public function savedetails(Request $request,User $user)
+    {
+       // dd($request->request);
+        $location = $request->city.", ".$request->state;
+        if(isset($request->game))
+        {
+            $games = serialize($request->game);
+            $user->games = $games;
+         
+        }
+        if(isset($request->platform))
+        {
+            $platformdata = serialize($request->platform);
+            $user->platform = $platformdata;
+        
+        }
+
+        if(isset($request->device))
+        {
+            $devicedata = serialize($request->device);
+            $user->device = $devicedata;
+          
+        }
+
+        $user-> mothertongue = $request->mothertongue;
+        $user-> location = $location;
+        $user-> motorsport = $request->motorsport;
+        $user-> driversupport = $request->driversupport;
+        $user-> source = $request->source;
+        $user->devicename = $request->devicename; 
+        
+       
+        $user->save();
+        return redirect('/user/profile');
+    }
+
     
 }

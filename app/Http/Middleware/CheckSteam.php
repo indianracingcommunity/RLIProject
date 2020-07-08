@@ -20,6 +20,6 @@ class CheckSteam
                return $next($request);
            }
    
-       return redirect('/user/profile/'.Auth::user()->id);
+       return redirect('/user/profile/');
    }
 }

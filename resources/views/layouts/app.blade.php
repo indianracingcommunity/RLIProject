@@ -193,11 +193,11 @@
           @auth
             <main class="py-20 ml-64 w-full">
                
-                    
+                @if (session()->has('error'))
                 <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
-                        {{session()->get('success')}}
-                        Please complete the profile
+                        {{session()->get('error')}}
                 </div>
+                @endif
                 @yield('content')
                 
     

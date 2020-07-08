@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('/user/profile/', 'UserPanel@viewprofile')->name('home');
      Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
      SteamLogin::routes(['controller' => SteamLoginController::class]);
-Route::group(['middleware' => 'steam'], function () {
+
      Route::get('/home', 'UserPanel@index')->name('home');
      
      //Report Routes
@@ -100,9 +100,10 @@ Route::group(['middleware' => 'steam'], function () {
      //Profile Routes
 
      Route::get('/user/profile/view/{user}','HomeController@viewprofile');
+     Route::post('/user/profile/save/{user}','HomeController@savedetails');
 
 
-});
+
 });
 
 
