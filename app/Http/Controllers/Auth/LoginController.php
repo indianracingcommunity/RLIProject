@@ -60,8 +60,6 @@ class LoginController extends Controller
          else
          {
          Auth::login($authUser, true);
-         $discord = new Discord();
-         $userroles = $discord->getroles();
          }
 
          return redirect('/user/profile');

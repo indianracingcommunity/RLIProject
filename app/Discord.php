@@ -60,7 +60,7 @@ class Discord
     }
 
 
-    public function getroles()
+    public function getroles($id)
     {
         $params =([
             'token' => config('services.discord.bot')
@@ -95,15 +95,52 @@ class Discord
                 {
                     $final = json_decode($response,true);
                   //  dd($final);
-                    return $this->checkRoles($final);
+                    return $this->checkRoles($final,$id);
                 }
     }
 
-    public static function getMemberRoles()
+    
+
+
+    public static function checkRoles($roles,$id)
+    {
+        $data = Discord::getMemberRoles($id);
+        
+        $arr = array();
+
+        //$over=count($roles);
+        $crole=0;
+        for($i=0 ; $i < count($roles) ; $i++)
+        {
+            for($j=0 ; $j < count($data) ; $j++)
+            {
+               if($roles[$i]['id']==$data[$j])
+                {
+                    
+                    array_push($arr,['name'=>$roles[$i]['name'],'color'=>dechex($roles[$i]['color'])]);
+                    
+                    
+                    //echo $roles[$i]['name']; 
+                     $crole++;
+                }
+               
+                
+            }
+            
+        }
+       
+        return $arr;
+
+
+    }
+
+
+
+    public static function getMemberRoles($id)
     {
        
       
-        $userdata = Auth::user()->discord_id;
+        $userdata = $id;
         
         $params =([
             'token' => config('services.discord.bot')
@@ -149,44 +186,6 @@ class Discord
                 }
 
             
-    }
-
-
-    public static function checkRoles($roles)
-    {
-        $data = Discord::getMemberRoles();
-        
-        $arr = array();
-
-        //$over=count($roles);
-        $crole=0;
-        for($i=0 ; $i < count($roles) ; $i++)
-        {
-            for($j=0 ; $j < count($data) ; $j++)
-            {
-               if($roles[$i]['id']==$data[$j])
-                {
-                    
-                    array_push($arr,$roles[$i]['name']);
-                    
-                    
-                    //echo $roles[$i]['name']; 
-                     $crole++;
-                }
-               
-                
-            }
-            
-        }
-       
-        $serialize = serialize($arr);
-        DB::table('users')
-             ->where('id',Auth::user()->id)
-             ->update(['discord_roles'=>$serialize]);
-        
-             return "Done";
-
-
     }
 
 

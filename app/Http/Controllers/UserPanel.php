@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
+use App\Discord;
 
 class UserPanel extends Controller
 {
@@ -16,8 +17,14 @@ class UserPanel extends Controller
     }
 
     public function viewprofile()
-    {
-        return view('user.userprofile');
+    {   $id = Auth::user()->discord_id;
+
+        $discord = new Discord();
+        $userroles = $discord->getroles($id);
+
+      //  dd($userroles);
+
+        return view('user.userprofile')->with('roles',$userroles);
     }
 
     public function SetSteam(user $user)
