@@ -14,6 +14,8 @@ class SignupsController extends Controller
 {
     public function view()
     {
+      $signups = Signup::where('user_id',Auth::user()->id)->get()->toArray();
+    
       $allseason = Season::all();
       $seasons = array();
       
@@ -22,14 +24,16 @@ class SignupsController extends Controller
         if($status - (int)$status > 0)
           array_push($seasons, $particular_season);
       }
-
-      return view('signup.home')->with('seasons', $seasons);
+      
+      return view('signup.home')
+      ->with('seasons', $seasons)
+      ->with('signup',$signups);
     }
 
-    public function store()
+    public function store(Request $request)
     {
         $data = request()->all();
-        //dd($data); 
+        dd($data); 
         if(isset($data['evidencet1']) & isset($data['evidencet2']) & isset($data['evidencet3'])  )
            {
              if($data['evidencet1'] != NULL & $data['evidencet2'] != NULL & $data['evidencet3'] != NULL)
