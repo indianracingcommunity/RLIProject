@@ -78,9 +78,7 @@
             <div class="font-semibold text-gray-600 mb-4">
                 <i class="fas fa-users-cog mr-1"></i> User Roles
             </div>
-            <!-- <?php 
-                $data = unserialize(Auth::user()->discord_roles)
-            ?> -->
+            
 
             
             <div class="flex w-64 flex-wrap font-semibold text-sm">

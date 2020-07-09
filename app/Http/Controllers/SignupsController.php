@@ -33,7 +33,7 @@ class SignupsController extends Controller
     public function store(Request $request)
     {
         $data = request()->all();
-        dd($data); 
+      //  dd($data); 
         if(isset($data['evidencet1']) & isset($data['evidencet2']) & isset($data['evidencet3'])  )
            {
              if($data['evidencet1'] != NULL & $data['evidencet2'] != NULL & $data['evidencet3'] != NULL)
@@ -50,7 +50,17 @@ class SignupsController extends Controller
              $attendance = 0;
            }
            $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
-          $assists = serialize($data['assists']);
+
+           if(isset($data['assists']))
+           {
+            $assists = serialize($data['assists']);
+           }
+           else
+           {
+             $assists = '' ;
+           }
+          
+          
 
           
            //dd($assists);
@@ -67,6 +77,7 @@ class SignupsController extends Controller
         $signup->carprefrence = $prefrence;
         $signup->attendance = $attendance;
         $signup->assists = $assists;
+        $signup->drivernumber = $data['drivernumber'];
         $signup->save();
         return redirect('/home');
     }
