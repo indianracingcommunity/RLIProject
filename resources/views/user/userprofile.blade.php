@@ -108,9 +108,9 @@
                             <label for="Nationality" class="font-semibold text-gray-800">Are you an Indian?<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <div>
-                            <input type="radio" id="Yes" name="Nationality" value="Yes">
+                            <input type="radio" id="Yes" name="Nationality" value="Yes" onclick="javascript:enablebutton()" @if ("{{Auth::user()->mothertongue}}" != "") checked @endif> 
                             <label for="male">Yes</label>
-                            <input type="radio" id="No" name="Nationality" value="No">
+                            <input type="radio" id="No" name="Nationality" value="No" onclick="javascript:enablebutton()">
                             <label for="female">No</label>
                         </div>
                     </div>
@@ -154,20 +154,14 @@
                         </div>
                         <input type="text" name="driversupport" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
                     </div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input type="text" name="source" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                    </div>
                 </div>
                 <div class="ml-8 w-1/2">
-                    
-                    <div class="mb-4">
-                        <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()">
-                        <label for="games"  class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
-                    </div>
-                    <div id="restfieldsid" style="display : block;">
-                        <div class="mb-4">
-                            <div>
-                                <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
-                            </div>
-                            <input type="text" name="source" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
-                        </div>
                         <?php
                           if(isset(Auth::user()->games))
                           {
@@ -179,27 +173,35 @@
                           }
                           
                         ?> 
+                    <div class="mb-4">
+                        <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()" @if ($games != "") checked @endif>
+                        <label for="games"  class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
+                    </div>
+                    <div id="restfieldsid" style="display : block;">
+                        
+                        
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
+                                
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="game[]" value="f1">
+                                    <input type="checkbox" id="gameid" name="game[]" value="f1" @if (in_array("f1", $games)) checked @endif>
                                     <label for="games" class="mr-2">F1</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="game[]" value="Assetto Corsa">
+                                    <input type="checkbox" id="gameid" name="game[]" value="Assetto Corsa" @if (in_array("Assetto Corsa", $games)) checked @endif>
                                     <label for="games" class="mr-2">Assetto Corsa</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="game[]" value="Asseto Corsa Compitizione">
+                                    <input type="checkbox" id="gameid" name="game[]" value="Asseto Corsa Compitizione" @if (in_array("Asseto Corsa Compitizione", $games)) checked @endif>
                                     <label for="games" class="mr-2">Asseto Corsa Compitizione</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="game[]" value="Grand Tourismo Sports">
+                                    <input type="checkbox" id="gameid" name="game[]" value="Grand Tourismo Sports" @if (in_array("Grand Tourismo Sports", $games)) checked @endif>
                                     <label for="games" class="mr-2">Grand Tourismo Sports</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="game[]" value="Dirt Rally">
+                                    <input type="checkbox" id="gameid" name="game[]" value="Dirt Rally" @if (in_array("Dirt Rally", $games)) checked @endif>
                                     <label for="games" class="mr-2">Dirt Rally</label>
                                 </span>
                             </div>
@@ -218,15 +220,15 @@
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PC">
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PC" @if (in_array("PC", $platform)) checked @endif>
                                     <label for="games" class="mr-2">PC</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PlayStation">
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PlayStation" @if (in_array("PlayStation", $platform)) checked @endif>
                                     <label for="games" class="mr-2">PlayStation</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="XBox">
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if (in_array("Xbox", $platform)) checked @endif>
                                     <label for="games" class="mr-2">XBox</label>
                                 </span>
                             </div>
@@ -245,15 +247,15 @@
                                   }
                                 ?>
                             <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse">
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if (in_array("Keyboard/Mouse", $device)) checked @endif>
                                     <label for="games" class="mr-2">Keyboard/Mouse</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Controller">
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Controller" @if (in_array("Controller", $device)) checked @endif>
                                     <label for="games" class="mr-2">Controller</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Wheel">
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Wheel" @if (in_array("Wheel", $device)) checked @endif>
                                     <label for="games" class="mr-2">Wheel</label>
                                 </span>
                             </div>
@@ -277,7 +279,8 @@
                             <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
                         </div>
                     </div>
-                <button class="bg-blue-200 rounded text-blue-800 font-semibold px-8 py-2 hover:bg-blue-300">Submit</button>
+                <button id="enabledbuttonid" class="bg-blue-500 rounded text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
+                <button disabled id="disabledbuttonid" class="bg-blue-500 text-white font-semibold px-8 py-2 rounded opacity-50 cursor-not-allowed" style="display: none;">Submit</button>
             </div>
         </form>
     </div>
@@ -296,7 +299,12 @@
     </form>
 </div>
 <script>
+    var games = <?php echo json_encode($games); ?>;
+    var platform = <?php echo json_encode($platform); ?>;
+    var device = <?php echo json_encode($device); ?>;
+    console.log(games);
     document.getElementById('restfieldsid').style.display = "none";
+
     showfields = function(){
         if(document.getElementById('playgameid').checked){
             document.getElementById('restfieldsid').style.display = "block";
@@ -305,6 +313,18 @@
             document.getElementById('restfieldsid').style.display = "none";
         }
     }
+    enablebutton = function(){
+        if(document.getElementById('No').checked){
+            document.getElementById('disabledbuttonid').style.display = "block";
+            document.getElementById('enabledbuttonid').style.display = "none";
+        }
+        else{
+            document.getElementById('disabledbuttonid').style.display = "none";
+            document.getElementById('enabledbuttonid').style.display = "block";
+        }
+    }
+    showfields();
+    enablebutton();
 </script>
 
 @endsection
