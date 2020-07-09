@@ -44,6 +44,11 @@
         </div>
     </div>
 </div>
+@php
+$platform = unserialize($user->platform);
+$games = unserialize($user->games);
+$device = unserialize($user->device);
+@endphp
 <div class="flex">
     <div>
         <div class="font-semibold text-gray-700 mb-4">
@@ -54,10 +59,7 @@
                 <td class="font-semibold text-gray-600">USERNAME</td>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->name}}</td>
             </tr>
-            <tr>
-                <td class="font-semibold text-gray-600">EMAIL</td>
-                <td class=" font-bold text-gray-800 px-4 py-1">{{$user->email}}</td>
-            </tr>
+            
             <tr>
                 <td class="font-semibold text-gray-600">DISCORD</td>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->name}}#{{$user->discord_discrim}}</td>
@@ -67,8 +69,12 @@
                 <td class=" font-bold text-gray-800 px-4 py-1"><a href= "https://steamcommunity.com/profiles/{{$user->steam_id}}">{{$user->steam_id}} </a></td>
             </tr>
             <tr>
-                <td class="font-semibold text-gray-600">PLATFORM</div>
-                <td class=" font-bold text-gray-800 px-4 py-1">PC</td>
+                <td class="font-semibold text-gray-600">PLATFORM</div>  
+                @for ($i =0 ; $i <count($platform); $i++)
+                <td class=" font-bold text-gray-800 px-4 py-1">{{$platform[$i]}}</td> 
+                @endfor
+                             
+                
             </tr>
             <tr>
                 <td class="font-semibold text-gray-600">MOTOSPORTS FOLLOWED</div>
@@ -89,13 +95,14 @@
             <i class="fas fa-users-cog mr-1"></i> User Roles
         </div>
         <div class="flex w-64 flex-wrap font-semibold text-sm">
-            <div class="px-1 border rounded-full mr-1 mb-1 border-orange-600"><i class="fas fa-circle mr-1 text-orange-500"></i>Mclaren</div>
-            <div class="px-1 border rounded-full mr-1 mb-1 border-green-600"><i class="fas fa-circle mr-1 text-green-500"></i>Tier-2</div>
-            <div class="px-1 border rounded-full mr-1 mb-1 border-purple-500"><i class="fas fa-circle mr-1 text-purple-400"></i>IRC Team</div>
-            <div class="px-1 border rounded-full mr-1 mb-1 border-indigo-800"><i class="fas fa-circle mr-1 text-indigo-700"></i>PS4</div>
-            <div class="px-1 border rounded-full mr-1 mb-1 border-purple-800"><i class="fas fa-circle mr-1 text-purple-700"></i>PC</div>
-            <div class="px-1 border rounded-full mr-1 mb-1 border-red-800"><i class="fas fa-circle mr-1 text-red-700"></i>Member</div>
-            <div class="px-1 border rounded-full mr-1 mb-1 border-yellow-600"><i class="fas fa-circle mr-1 text-yellow-300"></i>Assetto Corsa</div>
+
+            @for ($i= 0; $i < count($roles) ; $i++)
+            @php
+             $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
+            @endphp
+           <div class="px-1 border rounded-full mr-1 mb-1 border-600 bg-gray-400" style="color:#{{$color}}; border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>    
+
+            @endfor
         </div>
     </div>
 </div>

@@ -105,7 +105,9 @@ class Discord
     public static function checkRoles($roles,$id)
     {
         $data = Discord::getMemberRoles($id);
-        
+       // dd($data);
+        if($data!="Invalid")
+        {
         $arr = array();
 
         //$over=count($roles);
@@ -130,7 +132,10 @@ class Discord
         }
        
         return $arr;
-
+    }
+       else{
+           return "Error Fetching Roles";
+       }
 
     }
 
@@ -177,7 +182,7 @@ class Discord
                    // dd($final);
                     if(isset($final['message']))
                     {
-                    echo "Invalid Discord ID";
+                    return "Invalid";
                     }
                     else
                     {

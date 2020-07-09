@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Discord;
 class HomeController extends Controller
 {
     /**
@@ -28,7 +29,12 @@ class HomeController extends Controller
 
     public function viewprofile(User $user)
     {
-          return view('user.profiles')->with('user',$user);
+        $discord = new Discord();
+        $userroles = $discord->getroles($user->discord_id);
+       // dd($userroles);
+          return view('user.profiles')
+          ->with('user',$user)
+          ->with('roles',$userroles);
     }
 
     public function savedetails(Request $request,User $user)
