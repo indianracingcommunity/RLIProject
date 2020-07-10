@@ -28,4 +28,11 @@ class Season extends Model
 
         return $lm;
     }
+    public function getTttracksAttribute($string)
+    {
+        $circuits = array_map('intval', explode(self::cdelim, $string));
+        $lm = Circuit::whereIn('id', $circuits)->get()->toArray();
+
+        return $lm;
+    }
 }
