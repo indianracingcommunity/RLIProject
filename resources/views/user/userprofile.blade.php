@@ -75,26 +75,22 @@
             </tr>
         </table>
         <div class="mt-8">
-            <div class="font-semibold text-gray-600 mb-4">
-                <i class="fas fa-users-cog mr-1"></i> User Roles
-            </div>
-            
+        <div class="font-semibold text-gray-700 mb-4">
+            <i class="fab fa-discord mr-1 text-indigo-500"></i></i> User Roles
+        </div>
+        <div class="flex w-64 flex-wrap font-semibold text-sm bg-gray-800 p-4 rounded-md">
+            @if(is_array($roles))
+            @for ($i= 0; $i < count($roles) ; $i++)
+            @php
+             $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
+            @endphp
+           <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>    
 
-            
-            <div class="flex w-64 flex-wrap font-semibold text-sm">
-               @if(is_array($roles))
-              @for ($i= 0; $i < count($roles) ; $i++)
-              @php
-               $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
-              @endphp
-            <div class="px-1 border rounded-full mr-1 mb-1 border-600 bg-gray-400" style="color:#{{$color}}; border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>    
-              @endfor
-              @else
-              {{$roles}}
-              @endif
-               
-        
-            </div>
+            @endfor
+            @else 
+            {{$roles}}
+            @endif
+        </div>
         </div>
     </div>
     <div class="ml-12 pl-8 border-l">
@@ -104,7 +100,7 @@
         <form action="/user/profile/save/{{Auth::user()->id}}" method="POST">
             @csrf
             <div class="flex">
-                <div class="">
+                <div class="w-1/2">
                     <div class="mb-4">
                         <div>
                             <label for="Nationality" class="font-semibold text-gray-800">Are you an Indian?<span class="text-red-600 ml-2">●</span></label>
@@ -120,7 +116,7 @@
                         <div>
                             <label for="MotherToungue" class="font-semibold text-gray-800" ">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
+                        <input type="text" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
                     </div>
                     <div class="mb-4">
                         <div>
@@ -136,34 +132,60 @@
                         else{$city = ""; $state="";}   
                         @endphp
                         
-                        <input type="text" name="city" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value = {{$city}} >
+                        <input required type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value = {{$city}} >
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" name="state" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
+                        <input required type="text" name="state" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                    <input type="text" name="motorsport" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
+                    <input required type="text" name="motorsport" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="driversupport" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
+                        <input required type="text" name="driversupport" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="source" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                        <input required type="text" name="source" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                    </div>
+                    <div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="youtube" class="font-semibold text-gray-800"><i class="fab fa-youtube text-red-500 mr-1"></i>Youtube<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input required type="text" name="youtube" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700">
+                    </div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="instagram" class="font-semibold text-gray-800"><i class="fab fa-instagram text-indigo-500 mr-1"></i>Instagram<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input required type="text" name="instagram" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700">
+                    </div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="twitch" class="font-semibold text-gray-800"><i class="fab fa-twitch text-purple-700 mr-1"></i>Twitch<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input required type="text" name="twitch" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700">
+                    </div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-600 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input required type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" ">
                     </div>
                 </div>
-                <div class="ml-8 w-1/2">
+                </div>
+                <div class="ml-4">
                         <?php
                           if(isset(Auth::user()->games))
                           {
@@ -237,7 +259,7 @@
                         </div>
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
-                            <div>
+                            <div class="flex flex-wrap">
                                 <?php 
                                   if(isset(Auth::user()->device))
                                   {
@@ -248,7 +270,7 @@
                                       $device = NULL;
                                   }
                                 ?>
-                            <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
                                     <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Keyboard/Mouse</label>
                                 </span>
@@ -266,7 +288,7 @@
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input type="text" name="devicename" class="border shadow-inline px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
+                            <input type="text" name="devicename" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
                         </div>
                     </div>
                 </div>
