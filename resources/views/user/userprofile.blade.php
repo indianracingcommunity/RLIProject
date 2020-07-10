@@ -171,12 +171,12 @@
                           }
                           else
                           {
-                             $games = '';
+                             $games = NULL;
                           }
                           
                         ?> 
                     <div class="mb-4">
-                        <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()" @if ($games != "") checked @endif>
+                        <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()" @if ($games != NULL) checked @endif>
                         <label for="games"  class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
                     </div>
                     <div id="restfieldsid" style="display : block;">
@@ -187,23 +187,23 @@
                             <div class="flex flex-wrap">
                                 
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="f1" @if (in_array("f1", $games)) checked @endif>
+                                    <input type="checkbox" id="gameid" name="game[]" value="f1" @if($games!=NULL) @if (in_array("f1", $games)) checked @endif @endif>
                                     <label for="games" class="mr-2">F1</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Assetto Corsa" @if (in_array("Assetto Corsa", $games)) checked @endif>
+                                    <input type="checkbox" id="gameid" name="game[]" value="Assetto Corsa" @if($games!=NULL) @if (in_array("Assetto Corsa", $games)) checked @endif @endif>
                                     <label for="games" class="mr-2">Assetto Corsa</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Asseto Corsa Compitizione" @if (in_array("Asseto Corsa Compitizione", $games)) checked @endif>
+                                    <input type="checkbox" id="gameid" name="game[]" value="Asseto Corsa Compitizione" @if($games!=NULL) @if (in_array("Asseto Corsa Compitizione", $games)) checked @endif @endif>
                                     <label for="games" class="mr-2">Asseto Corsa Compitizione</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Grand Tourismo Sports" @if (in_array("Grand Tourismo Sports", $games)) checked @endif>
+                                    <input type="checkbox" id="gameid" name="game[]" value="Grand Tourismo Sports" @if($games!=NULL) @if (in_array("Grand Tourismo Sports", $games)) checked @endif @endif>
                                     <label for="games" class="mr-2">Grand Tourismo Sports</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Dirt Rally" @if (in_array("Dirt Rally", $games)) checked @endif>
+                                    <input type="checkbox" id="gameid" name="game[]" value="Dirt Rally" @if($games!=NULL) @if (in_array("Dirt Rally", $games)) checked @endif @endif>
                                     <label for="games" class="mr-2">Dirt Rally</label>
                                 </span>
                             </div>
@@ -215,22 +215,22 @@
                         }
                         else
                         {
-                            $platfrom = '';
+                            $platform = NULL;
                         }  
                         ?>
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PC" @if (in_array("PC", $platform)) checked @endif>
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PC" @if($platform!=NULL) @if (in_array("PC", $platform)) checked @endif @endif>
                                     <label for="games" class="mr-2">PC</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PlayStation" @if (in_array("PlayStation", $platform)) checked @endif>
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PlayStation" @if($platform!=NULL) @if (in_array("PlayStation", $platform)) checked @endif @endif>
                                     <label for="games" class="mr-2">PlayStation</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if (in_array("Xbox", $platform)) checked @endif>
+                                    <input type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if($platform!=NULL) @if (in_array("Xbox", $platform)) checked @endif @endif>
                                     <label for="games" class="mr-2">XBox</label>
                                 </span>
                             </div>
@@ -245,19 +245,19 @@
                                   }
                                   else
                                   {
-                                      $device = '';
+                                      $device = NULL;
                                   }
                                 ?>
                             <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if (in_array("Keyboard/Mouse", $device)) checked @endif>
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Keyboard/Mouse</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Controller" @if (in_array("Controller", $device)) checked @endif>
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Controller" @if($device!=NULL) @if (in_array("Controller", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Controller</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Wheel" @if (in_array("Wheel", $device)) checked @endif>
+                                    <input type="checkbox" id="vehicle1" name="device[]" value="Wheel" @if($device!=NULL)  @if (in_array("Wheel", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Wheel</label>
                                 </span>
                             </div>
