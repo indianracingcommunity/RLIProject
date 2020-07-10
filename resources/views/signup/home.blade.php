@@ -149,7 +149,7 @@
             <div class="inline-block w-1/3" id="errort1">
               <br><br>
             </div> 
-            <div class="inline-block w-2/3 pl-56" id="errorimgt1">
+            <div class="inline-block w-2/3 pl-32 ml-2" id="errorimgt1">
               <br><br>
             </div> 
           </div>
@@ -210,7 +210,7 @@
             <div class="inline-block w-1/3" id="errort2">
               <br><br>
             </div> 
-            <div class="inline-block w-2/3 pl-56" id="errorimgt2">
+            <div class="inline-block w-2/3 pl-32 ml-2" id="errorimgt2">
               <br><br>
             </div> 
           </div>
@@ -269,7 +269,7 @@
             <div class="inline-block w-1/3" id="errort3">
               <br><br>
             </div> 
-            <div class="inline-block w-2/3 pl-56" id="errorimgt3">
+            <div class="inline-block w-2/3 pl-32 ml-2" id="errorimgt3">
               <br><br>
             </div> 
           </div>
@@ -278,26 +278,23 @@
           <label class="flex w-1/4 mt-6 pt-1 mr-5 justify-center">
             <span class="flex text-gray-700 text-base font-bold">Assists</span>
           </label>
-          <?php
-            for($i = 0; $i < count($signup); $i++){
-              $assists = unserialize($signup[$i]['assists']);}
-          ?>
+          
           
           <div class="flex-wrap w-3/4 mt-6 pt-1 items-center justify-left">
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="traction" @if($assists!=NULL) @if (in_array("traction", $assists)) checked @endif @endif>
+              <input id="assist1" type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="traction" >
               <span class="ml-2 cursor-pointer">Traction Control</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="abs" @if($assists!=NULL) @if (in_array("abs", $assists)) checked @endif @endif>
+              <input id="assist2" type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="abs" >
               <span class="ml-2 cursor-pointer">Anti lock brakes</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="line" @if($assists!=NULL) @if (in_array("line", $assists)) checked @endif @endif>
+              <input id="assist3" type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="line">
               <span class="ml-2 cursor-pointer">Racing line</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="autogears" @if($assists!=NULL) @if (in_array("autogears", $assists)) checked @endif @endif>
+              <input id="assist4" type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="autogears" >
               <span class="ml-2 cursor-pointer">Auto Transmission</span>
             </label>
           </div>
@@ -374,6 +371,7 @@
           document.getElementById("preference1").value = signup[i].carprefrence.split(",")[0];
           document.getElementById("preference2").value = signup[i].carprefrence.split(",")[1];
           document.getElementById("preference3").value = signup[i].carprefrence.split(",")[2];
+
           if (signup[i].ttevidence1 !=""){
             document.getElementById("ttevidenceid1").style.display = "inline-block";
             document.getElementById("ttevidenceid2").style.display = "inline-block";
@@ -398,6 +396,28 @@
             document.getElementById("radio3").checked = false;
           }
 
+          if (PHPUnserialize.unserialize(signup[i].assists) != null){
+            var assist = PHPUnserialize.unserialize(signup[i].assists);
+              document.getElementById("assist1").checked = false;
+              document.getElementById("assist2").checked = false;
+              document.getElementById("assist3").checked = false;
+              document.getElementById("assist4").checked = false;
+            for(var j in assist) {
+              
+              if (assist[j] == document.getElementById("assist1").value)
+                document.getElementById("assist1").checked = true;
+              if (assist[j] == document.getElementById("assist2").value)
+                document.getElementById("assist2").checked = true;
+              
+              if (assist[j] == document.getElementById("assist3").value)
+                document.getElementById("assist3").checked = true;
+              
+              if (assist[j] == document.getElementById("assist4").value)
+                document.getElementById("assist4").checked = true;
+              
+            }
+            
+          }
         }
       }
     }
@@ -408,9 +428,7 @@
     else 
       document.getElementById("preference3").value = "update";
 
-    console.log(PHPUnserialize.unserialize(signup[4].assists));
     var season_id_selected;
-    console.log(signup);
     
     if(signup != "")
       javascript:refill();
@@ -485,13 +503,16 @@
       var imaget1 = document.getElementById("imgt1").value;
       var imaget3 = document.getElementById("imgt3").value;
       var speedlink = document.getElementById("speedlinkid").value;
+      var patt = new RegExp("^([0-5]?[0-9]\:)?[0-5]?[0-9][.][0-9]{3}$");;
+      var res;
       
+      res = patt.test(t1);
       if (t1 == ""){
         document.getElementById("errort1").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
         document.getElementById("time1").style.borderColor = "#f56565";
         sendform = false;
       }
-      else if ((t1.length != 8) || ((t1.charAt(1).localeCompare(':')) == 1) || ((t1.charAt(4).localeCompare('.')) == 1)){
+      else if (res == false){
         document.getElementById("errort1").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
         document.getElementById("time1").style.borderColor = "#f56565";
         sendform = false;
@@ -501,12 +522,13 @@
         document.getElementById("time1").style = "";
       }
 
+      res = patt.test(t2);
       if (t2 == ""){
         document.getElementById("errort2").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
         document.getElementById("time2").style.borderColor = "#f56565";
         sendform = false;
       }
-      else if ((t2.length != 8) || ((t2.charAt(1).localeCompare(':')) == 1) || ((t2.charAt(4).localeCompare('.')) == 1)){
+      else if (res == false){
         document.getElementById("errort2").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
         document.getElementById("time2").style.borderColor = "#f56565";
         sendform = false;
@@ -516,12 +538,13 @@
         document.getElementById("time2").style = "";
       }
       
+      res = patt.test(t3);
       if (t3 == ""){
         document.getElementById("errort3").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
         document.getElementById("time3").style.borderColor = "#f56565";
         sendform = false;
       }
-      else if ((t3.length != 8) || ((t3.charAt(1).localeCompare(':')) == 1) || ((t3.charAt(4).localeCompare('.')) == 1)){
+      else if (res == false){
         document.getElementById("errort3").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
         document.getElementById("time3").style.borderColor = "#f56565";
         sendform = false;
