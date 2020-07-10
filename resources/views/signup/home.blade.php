@@ -1,5 +1,7 @@
+<script src="/php-unserialize.js"></script>
 @extends('layouts.app')
 @section('content')
+
 <style>
   input[type="radio"] + label span {
     transition: background .2s,
@@ -94,9 +96,9 @@
 
       <div class="flex w-full">
         <div class="w-3/4">
-          <div class="w-full mt-5">
-            <label class="inline-block text-gray-700 text-base font-bold ml-10">
-              Time Trial Time 1
+          <div class="flex items-center w-full mt-5">
+            <label class="inline-block text-gray-700 text-base font-bold ml-10 capitalize" id="pref1id">
+              Time Trial Time #1 <br> 
             </label>
             <div class="inline-block pl-3">
               <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time1" type="text" name="t1">
@@ -115,7 +117,32 @@
                 </label>
               </div>
             </div>
-            <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet1"></label>
+            
+            <div id="ttevidenceid1" class="inline-block w-10 h-10 ml-3">
+              <a id="imglink1" href="http://rliproject.test/storage/timetrials/R9XEyYD3gzPTgD2T5gAspoFZxDWrdeNmxMPGOVhO.jpeg" target="_blank">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve" fill="currentColor" class="px-2 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500">
+                  <g>
+                    <g>
+                      <path d="M426.667,68.267H51.2c-28.277,0-51.2,22.923-51.2,51.2V358.4c0,28.277,22.923,51.2,51.2,51.2h375.467
+                        c28.277,0,51.2-22.923,51.2-51.2V119.467C477.867,91.19,454.944,68.267,426.667,68.267z M443.733,358.4
+                        c0,9.426-7.641,17.067-17.067,17.067H51.2c-9.426,0-17.067-7.641-17.067-17.067v-10.001l68.267-68.267l56.201,56.201
+                        c6.664,6.663,17.468,6.663,24.132,0l141.534-141.534l119.467,119.467V358.4z M443.733,266.001L336.333,158.601
+                        c-6.664-6.663-17.468-6.663-24.132,0L170.667,300.134l-56.201-56.201c-6.664-6.663-17.468-6.663-24.132,0l-56.201,56.201V119.467
+                        c0-9.426,7.641-17.067,17.067-17.067h375.467c9.426,0,17.067,7.641,17.067,17.067V266.001z"/>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M153.6,136.533c-28.277,0-51.2,22.923-51.2,51.2c0,28.277,22.923,51.2,51.2,51.2s51.2-22.923,51.2-51.2
+                        C204.8,159.456,181.877,136.533,153.6,136.533z M153.6,204.8c-9.426,0-17.067-7.641-17.067-17.067
+                        c0-9.426,7.641-17.067,17.067-17.067s17.067,7.641,17.067,17.067C170.667,197.159,163.026,204.8,153.6,204.8z"/>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+            </div>
+            <label class="inline-block text-gray-700 text-sm font-bold ml-8" id="filenamet1"></label>
           </div>
 
           <div class="flex w-auto text-red-600 text-sm italic mt-2 pl-48">
@@ -127,16 +154,15 @@
             </div> 
           </div>
 
-          <div class="inline-block w-auto">
-            <div class="inline-block mt-5">
-              <label class="inline-block text-gray-700 text-base font-bold ml-10">
-                Time Trial Time 2
-              </label>
-              <div class="inline-block pl-3">
-                <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time2" type="text" name="t2">
-              </div>
-            </div>
+          <div class="flex items-center w-auto mt-5">
             
+            <label class="inline-block text-gray-700 text-base font-bold ml-10" id="pref2id">
+              Time Trial Time #2 <br>
+            </label>
+            <div class="inline-block pl-3">
+              <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time2" type="text" name="t2">
+            </div>
+                        
             <div class="inline-block appearance-none bg-grey-lighter">
               <label class="inline-block text-gray-700 text-base font-bold ml-64 mr-3">
                 Evidence
@@ -152,7 +178,32 @@
                 </label>
               </div>
             </div>
-            <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet2"></label>
+            
+            <div id="ttevidenceid2" class="inline-block w-10 h-10 ml-3">
+              <a id="imglink2" href="http://rliproject.test/storage/timetrials/R9XEyYD3gzPTgD2T5gAspoFZxDWrdeNmxMPGOVhO.jpeg" target="_blank">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve" fill="currentColor" class="px-2 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500">
+                  <g>
+                    <g>
+                      <path d="M426.667,68.267H51.2c-28.277,0-51.2,22.923-51.2,51.2V358.4c0,28.277,22.923,51.2,51.2,51.2h375.467
+                        c28.277,0,51.2-22.923,51.2-51.2V119.467C477.867,91.19,454.944,68.267,426.667,68.267z M443.733,358.4
+                        c0,9.426-7.641,17.067-17.067,17.067H51.2c-9.426,0-17.067-7.641-17.067-17.067v-10.001l68.267-68.267l56.201,56.201
+                        c6.664,6.663,17.468,6.663,24.132,0l141.534-141.534l119.467,119.467V358.4z M443.733,266.001L336.333,158.601
+                        c-6.664-6.663-17.468-6.663-24.132,0L170.667,300.134l-56.201-56.201c-6.664-6.663-17.468-6.663-24.132,0l-56.201,56.201V119.467
+                        c0-9.426,7.641-17.067,17.067-17.067h375.467c9.426,0,17.067,7.641,17.067,17.067V266.001z"/>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M153.6,136.533c-28.277,0-51.2,22.923-51.2,51.2c0,28.277,22.923,51.2,51.2,51.2s51.2-22.923,51.2-51.2
+                        C204.8,159.456,181.877,136.533,153.6,136.533z M153.6,204.8c-9.426,0-17.067-7.641-17.067-17.067
+                        c0-9.426,7.641-17.067,17.067-17.067s17.067,7.641,17.067,17.067C170.667,197.159,163.026,204.8,153.6,204.8z"/>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+            </div>
+            <label class="inline-block text-gray-700 text-sm font-bold ml-8" id="filenamet2"></label>
           </div>
 
           <div class="flex w-auto text-red-600 text-sm italic mt-2 pl-48">
@@ -164,9 +215,9 @@
             </div> 
           </div>
 
-          <div class="w-full mt-5">
-            <label class="inline-block text-gray-700 text-base font-bold ml-10">
-              Time Trial Time 3
+          <div class="flex items-center w-full mt-5">
+            <label class="inline-block text-gray-700 text-base font-bold ml-10" id="pref3id">
+              Time Trial Time #3 <br>
             </label>
             <div class="inline-block pl-3">
               <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="time3" type="text" name="t3">
@@ -186,7 +237,32 @@
                 </label>
               </div>
             </div>
-            <label class="inline-block text-gray-700 text-sm font-bold ml-3" id="filenamet3"></label> 
+             
+            <div id="ttevidenceid3" class="inline-block w-10 h-10 ml-3">
+              <a id="imglink3" href="http://rliproject.test/storage/timetrials/R9XEyYD3gzPTgD2T5gAspoFZxDWrdeNmxMPGOVhO.jpeg" target="_blank">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve" fill="currentColor" class="px-2 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500">
+                  <g>
+                    <g>
+                      <path d="M426.667,68.267H51.2c-28.277,0-51.2,22.923-51.2,51.2V358.4c0,28.277,22.923,51.2,51.2,51.2h375.467
+                        c28.277,0,51.2-22.923,51.2-51.2V119.467C477.867,91.19,454.944,68.267,426.667,68.267z M443.733,358.4
+                        c0,9.426-7.641,17.067-17.067,17.067H51.2c-9.426,0-17.067-7.641-17.067-17.067v-10.001l68.267-68.267l56.201,56.201
+                        c6.664,6.663,17.468,6.663,24.132,0l141.534-141.534l119.467,119.467V358.4z M443.733,266.001L336.333,158.601
+                        c-6.664-6.663-17.468-6.663-24.132,0L170.667,300.134l-56.201-56.201c-6.664-6.663-17.468-6.663-24.132,0l-56.201,56.201V119.467
+                        c0-9.426,7.641-17.067,17.067-17.067h375.467c9.426,0,17.067,7.641,17.067,17.067V266.001z"/>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M153.6,136.533c-28.277,0-51.2,22.923-51.2,51.2c0,28.277,22.923,51.2,51.2,51.2s51.2-22.923,51.2-51.2
+                        C204.8,159.456,181.877,136.533,153.6,136.533z M153.6,204.8c-9.426,0-17.067-7.641-17.067-17.067
+                        c0-9.426,7.641-17.067,17.067-17.067s17.067,7.641,17.067,17.067C170.667,197.159,163.026,204.8,153.6,204.8z"/>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+            </div>
+            <label class="inline-block text-gray-700 text-sm font-bold ml-8" id="filenamet3"></label>
           </div>
 
           <div class="flex w-auto text-red-600 text-sm italic mt-2 pl-48">
@@ -200,32 +276,28 @@
         </div>
         <div class="inline-flex w-1/4">
           <label class="flex w-1/4 mt-6 pt-1 mr-5 justify-center">
-            <span class="flex text-gray-700 text-base font-bold">Assists used</span>
+            <span class="flex text-gray-700 text-base font-bold">Assists</span>
           </label>
-
+          <?php
+            for($i = 0; $i < count($signup); $i++){
+              $assists = unserialize($signup[$i]['assists']);}
+          ?>
+          
           <div class="flex-wrap w-3/4 mt-6 pt-1 items-center justify-left">
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="braking">
-              <span class="ml-2 cursor-pointer mr-5">Braking Assist</span>
-            </label>
-            <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="steering">
-              <span class="ml-2 cursor-pointer">Steering Assist</span>
-            </label>
-            <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="traction">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="traction" @if($assists!=NULL) @if (in_array("traction", $assists)) checked @endif @endif>
               <span class="ml-2 cursor-pointer">Traction Control</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="abs">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="abs" @if($assists!=NULL) @if (in_array("abs", $assists)) checked @endif @endif>
               <span class="ml-2 cursor-pointer">Anti lock brakes</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="line">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="line" @if($assists!=NULL) @if (in_array("line", $assists)) checked @endif @endif>
               <span class="ml-2 cursor-pointer">Racing line</span>
             </label>
             <label class="flex items-center justify-left">
-              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="autogears">
+              <input type="checkbox" class="form-checkbox text-pink-600 h-4 w-4" name="assists[]" value="autogears" @if($assists!=NULL) @if (in_array("autogears", $assists)) checked @endif @endif>
               <span class="ml-2 cursor-pointer">Auto Transmission</span>
             </label>
           </div>
@@ -234,7 +306,7 @@
       
       <div class="flex justify-between mt-5 mr-20" id="preferenceid">
         <div class="inline-block pl-3 ml-5">
-          <label class="inline-block text-gray-700 text-base font-bold mb-2">
+          <label class="inline-block text-gray-700 text-base font-bold mb-2" >
             Team preference 1
           </label>
           <div class="inline-block relative">
@@ -248,7 +320,7 @@
         </div>
 
         <div class="inline-block pl-3 ml-10">
-          <label class="inline-block text-gray-700 text-base font-bold mb-2">
+          <label class="inline-block text-gray-700 text-base font-bold mb-2" >
             Team preference 2
           </label>
           <div class="inline-block relative">
@@ -262,7 +334,7 @@
         </div>
 
         <div class="inline-block pl-3 ml-10">
-          <label class="inline-block text-gray-700 text-base font-bold mb-2">
+          <label class="inline-block text-gray-700 text-base font-bold mb-2" >
             Team preference 3
           </label>
           <div class="inline-block relative">
@@ -282,19 +354,74 @@
 
       
       <div class="flex w-full mt-5 content-center items-center justify-center">
-        <button class="bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+        <button name="action" class="bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" id="submitid">
           Submit
         </button>
       </div>
     </div>
   </form>
   <script>
+
+    refill = function(){
+      var seasonid = document.getElementById("seasonnum").value
+      for(i=0;i<signup.length;i++){
+        if(seasonid == signup[i].season){
+          document.getElementById("time1").value = signup[i].timetrial1;
+          document.getElementById("time2").value = signup[i].timetrial2;
+          document.getElementById("time3").value = signup[i].timetrial3;
+          document.getElementById("drivernum").value = signup[i].drivernumber;
+          document.getElementById("speedlinkid").value = signup[i].speedtest;
+          document.getElementById("preference1").value = signup[i].carprefrence.split(",")[0];
+          document.getElementById("preference2").value = signup[i].carprefrence.split(",")[1];
+          document.getElementById("preference3").value = signup[i].carprefrence.split(",")[2];
+          if (signup[i].ttevidence1 !=""){
+            document.getElementById("ttevidenceid1").style.display = "inline-block";
+            document.getElementById("ttevidenceid2").style.display = "inline-block";
+            document.getElementById("ttevidenceid3").style.display = "inline-block";
+            season_id_selected = i;
+            document.getElementById("imglink1").href = "http://rliproject.test/storage/" + signup[i].ttevidence1;
+            document.getElementById("imglink2").href = "http://rliproject.test/storage/" + signup[i].ttevidence2;
+            document.getElementById("imglink3").href = "http://rliproject.test/storage/" + signup[i].ttevidence3;
+          }
+          else{
+            document.getElementById("ttevidenceid1").style.display = "none";
+            document.getElementById("ttevidenceid2").style.display = "none";
+            document.getElementById("ttevidenceid3").style.display = "none";
+          }
+          
+          if(signup[i].attendance == 1){
+            document.getElementById("radio3").checked = true;
+            document.getElementById("radio4").checked = false;
+          }
+          else{
+            document.getElementById("radio4").checked = true;
+            document.getElementById("radio3").checked = false;
+          }
+
+        }
+      }
+    }
     
+    var signup = <?php echo json_encode($signup); ?>;
+    if (signup == "")
+      document.getElementById("submitid").value = "create";
+    else 
+      document.getElementById("preference3").value = "update";
+
+    console.log(PHPUnserialize.unserialize(signup[4].assists));
+    var season_id_selected;
+    console.log(signup);
+    
+    if(signup != "")
+      javascript:refill();
+
+
     updateconstructor = function(){
       var seasonid = document.getElementById("seasonnum").value;
       var i = 0;
       var data = <?php echo json_encode($seasons); ?>;
       var str = "";
+      
       
       document.getElementById("preference3").innerHTML = "";
       for(i=0;i<data.length;i++){
@@ -314,9 +441,17 @@
           document.getElementById("preference1").innerHTML = str;
           document.getElementById("preference2").innerHTML = str;
           document.getElementById("preference3").innerHTML = str;
+          if(data[i].tttracks.length > 0){
+            document.getElementById("pref1id").innerHTML = "Time Trial Time #1 <br>" + data[i].tttracks[0].official.toLowerCase();
+            document.getElementById("pref1id").style.textTransform = "capitalize";
+            document.getElementById("pref2id").innerHTML = "Time Trial Time #2 <br>" + data[i].tttracks[1].official.toLowerCase();
+            document.getElementById("pref2id").style.textTransform = "capitalize";
+            document.getElementById("pref3id").innerHTML = "Time Trial Time #3 <br>" + data[i].tttracks[2].official.toLowerCase();
+            document.getElementById("pref3id").style.textTransform = "capitalize";
+          }
         }
       }
-      
+      javascript:refill();
     }
     javascript:updateconstructor();
     updatelist1 = function(){
@@ -396,67 +531,71 @@
         document.getElementById("time3").style = "";
       }
       
+      if (signup[season_id_selected].ttevidence1 == ""){
+        if (imaget1 == ""){
+          document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
+          document.getElementById("imgdivt1").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else if(document.getElementById("imgt1").files[0].type != "image/png" && document.getElementById("imgt1").files[0].type != "image/jpg" && document.getElementById("imgt1").files[0].type != "image/jpeg"){
+          document.getElementById("errorimgt1").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
+          document.getElementById("imgdivt1").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else if(document.getElementById("imgt1").files[0].size > 3000000){
+          document.getElementById("errorimgt1").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+          document.getElementById("imgdivt1").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else{
+          document.getElementById("errorimgt1").innerHTML = "<br><br>";
+          document.getElementById("imgdivt1").style = "";
+        }
+      }
 
-      if (imaget1 == ""){
-        document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
-        document.getElementById("imgdivt1").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else if(document.getElementById("imgt1").files[0].type != "image/png" && document.getElementById("imgt1").files[0].type != "image/jpg" && document.getElementById("imgt1").files[0].type != "image/jpeg"){
-        document.getElementById("errorimgt1").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
-        document.getElementById("imgdivt1").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else if(document.getElementById("imgt1").files[0].size > 3000000){
-        document.getElementById("errorimgt1").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
-        document.getElementById("imgdivt1").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else{
-        document.getElementById("errorimgt1").innerHTML = "<br><br>";
-        document.getElementById("imgdivt1").style = "";
-      }
-
-      if (imaget2 == ""){
-        document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
-        document.getElementById("imgdivt2").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else if(document.getElementById("imgt2").files[0].type != "image/png" && document.getElementById("imgt2").files[0].type != "image/jpg" && document.getElementById("imgt2").files[0].type != "image/jpeg"){
-        document.getElementById("errorimgt2").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
-        document.getElementById("imgdivt2").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else if(document.getElementById("imgt2").files[0].size > 3000000){
-        document.getElementById("errorimgt2").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
-        document.getElementById("imgdivt2").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else{
-        document.getElementById("errorimgt2").innerHTML = "<br><br>";
-        document.getElementById("imgdivt2").style = "";
+      if (signup[season_id_selected].ttevidence1 == ""){
+        if (imaget2 == ""){
+          document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
+          document.getElementById("imgdivt2").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else if(document.getElementById("imgt2").files[0].type != "image/png" && document.getElementById("imgt2").files[0].type != "image/jpg" && document.getElementById("imgt2").files[0].type != "image/jpeg"){
+          document.getElementById("errorimgt2").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
+          document.getElementById("imgdivt2").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else if(document.getElementById("imgt2").files[0].size > 3000000){
+          document.getElementById("errorimgt2").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+          document.getElementById("imgdivt2").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else{
+          document.getElementById("errorimgt2").innerHTML = "<br><br>";
+          document.getElementById("imgdivt2").style = "";
+        }
       }
       
-      if (imaget3 == ""){
-        document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
-        document.getElementById("imgdivt3").style.borderColor = "#f56565";
-        sendform = false; 
+      if (signup[season_id_selected].ttevidence1 == ""){
+        if (imaget3 == ""){
+          document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
+          document.getElementById("imgdivt3").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else if(document.getElementById("imgt3").files[0].type != "image/png" && document.getElementById("imgt3").files[0].type != "image/jpg" && document.getElementById("imgt3").files[0].type != "image/jpeg"){
+          document.getElementById("errorimgt3").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
+          document.getElementById("imgdivt3").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else if(document.getElementById("imgt3").files[0].size > 3000000){
+          document.getElementById("errorimgt3").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+          document.getElementById("imgdivt3").style.borderColor = "#f56565";
+          sendform = false; 
+        }
+        else{
+          document.getElementById("errorimgt3").innerHTML = "<br><br>";
+          document.getElementById("imgdivt3").style = "";
+        }
       }
-      else if(document.getElementById("imgt3").files[0].type != "image/png" && document.getElementById("imgt3").files[0].type != "image/jpg" && document.getElementById("imgt3").files[0].type != "image/jpeg"){
-        document.getElementById("errorimgt3").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
-        document.getElementById("imgdivt3").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else if(document.getElementById("imgt3").files[0].size > 3000000){
-        document.getElementById("errorimgt3").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
-        document.getElementById("imgdivt3").style.borderColor = "#f56565";
-        sendform = false; 
-      }
-      else{
-        document.getElementById("errorimgt3").innerHTML = "<br><br>";
-        document.getElementById("imgdivt3").style = "";
-      }
-
 
       if (seas == ""){
         document.getElementById("errorseason").innerHTML = "It is fun to go in the past but we dont have time machine! <br> Select Season 5 or later";
