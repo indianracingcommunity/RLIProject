@@ -82,13 +82,16 @@
 
             
             <div class="flex w-64 flex-wrap font-semibold text-sm">
+               @if(is_array($roles))
               @for ($i= 0; $i < count($roles) ; $i++)
               @php
                $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
               @endphp
             <div class="px-1 border rounded-full mr-1 mb-1 border-600 bg-gray-400" style="color:#{{$color}}; border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>    
               @endfor
-              
+              @else
+              {{$roles}}
+              @endif
                
         
             </div>
