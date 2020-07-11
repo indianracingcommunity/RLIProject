@@ -87,23 +87,41 @@ $device = unserialize($user->device);
                 <td class="font-semibold text-gray-600">USERNAME</td>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->name}}</td>
             </tr>
-            
+
             <tr>
                 <td class="font-semibold text-gray-600">DISCORD</td>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->name}}#{{$user->discord_discrim}}</td>
             </tr>
+            @if ($user->psn != NULL)
+            <tr>
+                <td class="font-semibold text-gray-600">PSN ID</td>
+                <td class=" font-bold text-gray-800 px-4 py-1">{{$user->psn}}</td>
+            </tr>
+            @endif
+            @if ($user->xbox != NULL)
+            <tr>
+                <td class="font-semibold text-gray-600">XBox ID</td>
+                <td class=" font-bold text-gray-800 px-4 py-1">{{$user->xbox}}</td>
+            </tr>
+            @endif
+            @if ($user->motorsport != NULL)
             <tr>
                 <td class="font-semibold text-gray-600">MOTOSPORTS FOLLOWED</div>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->motorsport}}</td>
             </tr>
+            @endif
+            @if ($user->driversupport != NULL)
             <tr>
                 <td class="font-semibold text-gray-600">DRIVER SUPPORTED</div>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->driversupport}}</td>
             </tr>
+            @endif
+            @if ($user->devicename != NULL)
             <tr>
                 <td class="font-semibold text-gray-600">DEVICE USED</div>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->devicename}}</td>
             </tr>
+            @endif
         </table>
     </div>
     <div class="ml-24 pl-4 bg-gray-800 rounded-md p-4 inline-block">
@@ -116,10 +134,10 @@ $device = unserialize($user->device);
             @php
              $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
             @endphp
-           <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>    
+           <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
 
             @endfor
-            @else 
+            @else
             {{$roles}}
             @endif
         </div>

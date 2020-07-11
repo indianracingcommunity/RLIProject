@@ -76,7 +76,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             {{$cres[$i]['points']}}
             </td>
           </tr>
-        @endfor 
+        @endfor
         </tbody>
       </table>
     </div>
@@ -194,35 +194,35 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                     continue;
                 }
               @endphp
-            <tr class="cursor-pointer">
-              @if ($res[$i]['user'] == Auth::id())
-              <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">{{$k+1}}</td>
-              @else
-              <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
-              @endif
-              @if ($res[$i]['user'] == Auth::id())
-                <td class="font-bold rounded border border-white text-white" style="background-color:#2f4353">{{$res[$i]['name']}}</td>
-              @else
-              <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
-              @endif
-            
-              @if($season['season'] - (int)$season['season'] < 0.75)
-                @if ($res[$i]['user'] == Auth::id())
-                <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">
-                    {{$res[$i]['team']['name']}}
-                </td>
-                @else
-                <td class="font-semibold rounded-lg border border-white">
-                    {{$res[$i]['team']['name']}}
-                </td>
-                @endif
-              @endif
-              @if ($res[$i]['user'] == Auth::id())
-              <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">{{$res[$i]['points']}}</td>
-              @else
-              <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
-              @endif
-            </tr> 
+                <tr>
+                  @if ($res[$i]['user'] == Auth::id())
+                  <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">{{$k+1}}</td>
+                  @else
+                  <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
+                  @endif
+                  @if ($res[$i]['user'] == Auth::id())
+                    <td class="font-bold rounded border border-white text-white" style="background-color:#2f4353"><a class="hover:underline" href="http://rliproject.test/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a></td>
+                  @else
+                  <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="http://rliproject.test/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a></td>
+                  @endif
+
+                  @if($season['season'] - (int)$season['season'] < 0.75)
+                    @if ($res[$i]['user'] == Auth::id())
+                    <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">
+                        {{$res[$i]['team']['name']}}
+                    </td>
+                    @else
+                    <td class="font-semibold rounded-lg border border-white">
+                        {{$res[$i]['team']['name']}}
+                    </td>
+                    @endif
+                  @endif
+                  @if ($res[$i]['user'] == Auth::id())
+                  <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">{{$res[$i]['points']}}</td>
+                  @else
+                  <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
+                  @endif
+                </tr>
           @endfor
         </tbody>
       </table>
@@ -253,7 +253,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
               @endphp
             <tr class="cursor-pointer">
               <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
-              <td class="font-semibold rounded-lg border border-white">{{$res[$i]['name']}}</td>
+              <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="http://rliproject.test/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a></td>
               @if($season['season'] - (int)$season['season'] < 0.75)
               <td class="font-semibold rounded-lg border border-white">
                 <span>
@@ -262,18 +262,17 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
               </td>
               @endif
               <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
-            </tr> 
+            </tr>
           @endfor
         </tbody>
       </table>
    </div>
   </div>
   @endif
-  
-  
+
+
 @endsection
 
 
-        
 
-     
+

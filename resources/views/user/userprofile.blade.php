@@ -25,17 +25,9 @@
             <div class="flex">
                 <div class=" font-semibold text-gray-800 mx-4 text-4xl font-bold">{{Auth::user()->name}}</div>
             </div>
-            <div class="flex">
-                <div class="text-xs font-semibold text-gray-600 ml-4 mr-3 mt-1">TEAM</div>
-                <div class=" font-semibold text-gray-800 font-bold text-base">{{Auth::user()->team}}</div>
-            </div>
-            <div class="flex">
-                <div class="text-xs font-semibold text-gray-600 ml-4 mr-3 mt-1">TEAMMATE</div>
-                <div class=" font-semibold text-gray-800 font-bold text-base">{{Auth::user()->teammate}}</div>
-            </div>
         </div>
     </div>
-    <div class="ml-8 leading-none ">
+    <!-- <div class="ml-8 leading-none ">
         <div class="font-semibold text-gray-700 mb-4">
             <i class="fas fa-trophy mr-1"></i> Trophies
         </div>
@@ -58,7 +50,7 @@
             </div>
 
         </div>
-    </div>
+    </div> -->
 </div>
 <div class="flex">
     <div>
@@ -78,44 +70,52 @@
                 <td class="font-semibold text-gray-600">DISCORD</td>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->name}}#{{Auth::user()->discord_discrim}}</td>
             </tr>
-            <tr>
-                <td class="font-semibold text-gray-600">STEAM</td>
-                <td class=" font-bold text-gray-800 px-4 py-1"><a href= "{{Auth::user()->steam_id}}">{{Auth::user()->steam_id}} </a></td>
-            </tr>
         </table>
-        <div class="mt-8">
-        <div class="font-semibold text-gray-700 mb-4">
-            <i class="fab fa-discord mr-1 text-indigo-500"></i></i> User Roles
-        </div>
-        <div class="flex w-64 flex-wrap font-semibold text-sm bg-gray-800 p-4 rounded-md">
-            @if(is_array($roles))
-            @for ($i= 0; $i < count($roles) ; $i++)
-            @php
-             $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
-            @endphp
-           <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>    
+        <div class="pl-4 bg-gray-800 rounded-md p-4 inline-block my-4">
+            <div class="font-semibold text-gray-100 mb-4 border-b border-gray-600 pb-2">
+                <i class="fab fa-discord mr-1 text-gray-100"></i> User Roles
+            </div>
+            <div class="flex w-64 flex-wrap font-semibold text-sm">
+                @if(is_array($roles))
+                    @for ($i= 0; $i < count($roles) ; $i++)
+                        @php
+                        $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
+                        @endphp
+                    <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
 
-            @endfor
-            @else 
-            {{$roles}}
-            @endif
+                    @endfor
+                @else
+                    <!-- {{$roles}} -->
+                @endif
+            </div>
+        </div>
+        <div class="">
+            <form method="POST" action="setsteam/{{Auth::user()->id}}">
+                @csrf
+                @if (Auth::user()->steam_id == NULL)
+                <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
+                <span class="text-red-600 mr-4">●</span>
+                <a href="/login/steam"> <img src="{{url('/img/steam.png')}}" alt=""> </a>
+                <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account</span>
+                @endif
+            </form>
         </div>
         </div>
-    </div>
-    <div class="ml-12 pl-8 border-l">
-        <div class="font-semibold text-gray-600 mb-4">
+
+    <div class="border-l mx-4 px-4 w-full">
+        <div class="font-semibold text-gray-600 mb-4 px-4">
             <i class="fas fa-edit mr-1"></i> More Details
         </div>
         <form action="/user/profile/save/{{Auth::user()->id}}" method="POST" id="submitProfileForm">
             @csrf
             <div class="flex">
-                <div class="w-3/5">
+                <div class="w-1/2 flex-grow-0 px-4">
                     <div class="mb-4">
                         <div>
                             <label for="Nationality" class="font-semibold text-gray-800">Are you an Indian?<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <div>
-                            <input type="radio" id="Yes" name="Nationality" class="nationalityOption" value="Yes" @if ("{{Auth::user()->mothertongue}}" != "") checked @endif> 
+                            <input type="radio" id="Yes" name="Nationality" class="nationalityOption" value="Yes" @if ("{{Auth::user()->mothertongue}}" != "") checked @endif>
                             <label for="male">Yes</label>
                             <input type="radio" id="No" name="Nationality" class="nationalityOption" value="No">
                             <label for="female">No</label>
@@ -136,13 +136,13 @@
                         if(isset(Auth::user()->location))
                         {
                             $data = Auth::user()->location;
-                            $city = preg_replace('/^([^,]*).*$/', '$1', $data);  
+                            $city = preg_replace('/^([^,]*).*$/', '$1', $data);
                             $state =   preg_replace('/^[^,]*,\s*/', '', $data);
                         }
-                        else{$city = ""; $state="";}   
+                        else{$city = ""; $state="";}
                         @endphp
-                        
-                        <input required type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value = {{$city}} >
+
+                        <input required type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value={{$city}} >
                         <span class="errormsg errormsgCity">Please enter your City</span>
                     </div>
                     <div class="mb-4">
@@ -157,21 +157,21 @@
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input required type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
-                        <span class="errormsg errormsgMotersports">Please enter your the details</span>
+                        <span class="errormsg errormsgMotersports">Please enter required details</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input required type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
-                        <span class="errormsg errormsgDriver">Please enter your the details</span>
+                        <span class="errormsg errormsgDriver">Please enter required details</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input required type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
-                        <span class="errormsg errormsgIrc">Please enter your the details</span>
+                        <span class="errormsg errormsgIrc">Please enter required details</span>
                     </div>
                     <div>
                     <div class="mb-4">
@@ -194,13 +194,26 @@
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-600 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-500 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
                     </div>
+
+                    <div class="mb-4">
+                        <div>
+                            <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>Playstation Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input type="text" name="psn" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+                    </div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>XBox Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                        </div>
+                        <input type="text" name="xbox" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                    </div>
                 </div>
                 </div>
-                <div class="ml-4">
+                <div class="flex-grow-0 w-1/2 px-4">
                         <?php
                           if(isset(Auth::user()->games))
                           {
@@ -210,15 +223,15 @@
                           {
                              $games = NULL;
                           }
-                          
-                        ?> 
+
+                        ?>
                     <div class="mb-4">
                         <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
                         <label for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
                     </div>
                     <div id="restfieldsid" style="display : block;">
-                        
-                        
+
+
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
@@ -240,7 +253,7 @@
                         else
                         {
                             $platform = NULL;
-                        }  
+                        }
                         ?>
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
@@ -263,7 +276,7 @@
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
-                                <?php 
+                                <?php
                                   if(isset(Auth::user()->device))
                                   {
                                       $device = unserialize(Auth::user()->device);
@@ -296,10 +309,10 @@
                             <span class="errormsg errormsgDeviceName">Please enter device details</span>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
             <div>
-                <div class="font-semibold text-gray-700 mb-4">
+                <div class="font-semibold text-gray-700 mb-4 ml-4">
                     <div>
                         <span class="text-red-600 mr-2">●</span>Mandatory Fields
                     </div>
@@ -307,24 +320,13 @@
                         <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
                     </div>
                 </div>
-                <button type="button" id="enabledbuttonid" class="bg-blue-500 rounded text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
+                <button type="button" id="enabledbuttonid" class="bg-blue-500 rounded ml-4 text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
                 <span class="errormsg errormsgSubmit">You need to be an Indian to fill this Form.</span>
             </div>
         </form>
     </div>
-</div>
-<div>
-    <form method="POST" action="setsteam/{{Auth::user()->id}}">
-        @csrf
-        <br><br>
-
-        @if (Auth::user()->steam_id == NULL)
-         <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
-         <span class="text-red-600 mr-4">●</span>
-         <a href="/login/steam"> <img src="{{url('/img/steam.png')}}" alt=""> </a>
-         <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700">To verify your account please Sign in with your Steam account</span>
-        @endif
-    </form>
+    </div>
+    </div>
 </div>
 <script>
     var games = <?php echo json_encode($games); ?>;
@@ -358,7 +360,7 @@
         });
 
         $('.nationalityOption').trigger('change');
-        $('#playgameid').trigger('change');        
+        $('#playgameid').trigger('change');
 
         $('#enabledbuttonid').click(function(event) {
             $('.errormsg').hide();

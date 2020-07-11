@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
-        
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -56,19 +56,19 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
-                             
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/user/profile/{{Auth::user()->id}}">
                                         {{ __('Profile') }}
                                     </a>
-                                   
-                                   
+
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                   
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </nav> -->
-    
+
         <nav class="flex justify-between border-b fixed bg-white w-screen z-10 py-2">
          <div class="flex items-center flex-shrink-0">
                <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
@@ -97,12 +97,21 @@
                     </div>
                </div> -->
                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <a class="dropbtn" href="/standings"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
+                    <a class="dropbtn"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
                     <div class="dropdown-content mx-5 my-3">
                     <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
                         <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
                         <a href="/1/4.5/standings" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
                         <a href="/1/4.75/standings" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
+                    </div>
+                </div>
+                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
+                    <a class="dropbtn">🏁 Race Results</a>
+                    <div class="dropdown-content mx-5 my-3">
+                        <a href="/1/4/races" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
+                        <a href="/2/1/races" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
+                        <a href="/1/4.5/races" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
+                        <a href="/1/4.75/races" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
                     </div>
                 </div>
                <div class=" mx-2 flex items-center flex-shrink-0">
@@ -118,7 +127,7 @@
                             <i class="fas fa-sign-out-alt text-red-600 mr-2 text-center"></i>Logout
                     </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden"> 
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                         {{ csrf_field() }}
                     </form>
                 </div>
@@ -172,10 +181,10 @@
                 USER CONTROLS
             </div>
             <div class="flex flex-col">
-                <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-yellow-500 fas fa-trophy w-8 text-center"></i>View Standings</a>
-                <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-award w-8 text-center"></i>View Team Stats</a>
+                <!-- <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-yellow-500 fas fa-trophy w-8 text-center"></i>View Standings</a> -->
+                <!-- <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-award w-8 text-center"></i>View Team Stats</a> -->
                 <a href="/f1/signup/" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i>Sign Up </a>
-                <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>Create Report</a>
+                <!-- <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>Create Report</a> -->
             </div>
             @if(Auth::user()->isadmin==1)
             <div class="pt-8 text-sm font-bold text-gray-700">
@@ -188,34 +197,34 @@
             </div>
             @endif
           </div>
-          
+
           @endauth
           @auth
             <main class="py-20 ml-64 w-full">
-               
+
                 @if (session()->has('error'))
                 <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
                         {{session()->get('error')}}
                 </div>
                 @endif
                 @yield('content')
-                
-    
-               
+
+
+
             </main>
         @endauth
         @guest
         <main class="py-20 w-full">
-               
-                    
+
+
                 <!-- <div class="bg-green-200 rounded text-green-800 p-4 mb-3 font-semibold"> -->
                         <!-- {{session()->get('success')}} -->
                         <!-- You have logged in! -->
                 <!-- </div> -->
                 @yield('content')
-                
-    
-               
+
+
+
             </main>
         @endguest
         </div>

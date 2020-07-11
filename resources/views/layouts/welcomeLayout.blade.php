@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-        
+
         <script src="{{ URL::to('assets/js/jquery3.5.js') }}"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -22,12 +22,21 @@
                     <a  href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                 </div>
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <a class="dropbtn" href="/standings"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
+                    <a class="dropbtn"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
                     <div class="dropdown-content mx-5 my-3">
-                        <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right px-5 text-green-500'></i> Tier 1</a>
-                        <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-5 text-blue-500'></i> Tier 2</a>
-                        <a href="/1/4.5/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right px-5 text-orange-500'></i> Mini Championship</a>
-                        <a href="/1/4.75/standings" class="hover:bg-green-300"><i class='fas fa-caret-right px-5 text-yellow-500'></i> Classic Cars</a>
+                    <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
+                        <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
+                        <a href="/1/4.5/standings" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
+                        <a href="/1/4.75/standings" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
+                    </div>
+                </div>
+                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
+                    <a class="dropbtn">🏁 Race Results</a>
+                    <div class="dropdown-content mx-5 my-3">
+                        <a href="/1/4/races" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
+                        <a href="/2/1/races" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
+                        <a href="/1/4.5/races" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
+                        <a href="/1/4.75/races" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
                     </div>
                 </div>
                 <!-- <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
@@ -48,10 +57,10 @@
             </div>
         </nav>
         @if(session()->has('error'))
-        <div class="bg-red-200 rounded text-black-800 p-4 mb-3 font-semibold"> 
-            {{session()->get('error')}} 
-            </div> 
-        @endif    
+        <div class="bg-red-200 rounded text-black-800 p-4 mb-3 font-semibold">
+            {{session()->get('error')}}
+            </div>
+        @endif
         @yield('body')
     </body>
 </html>
