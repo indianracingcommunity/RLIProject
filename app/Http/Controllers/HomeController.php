@@ -66,6 +66,10 @@ class HomeController extends Controller
         $user-> motorsport = $request->motorsport;
         $user-> driversupport = $request->driversupport;
         $user-> source = $request->source;
+        $user->youtube = $request->youtube;
+        $user->instagram = $request->instagram;
+        $user->twitch = $request->twitch;
+        $user->twitter = $request->twitter;
         $user->devicename = $request->devicename; 
         
        
