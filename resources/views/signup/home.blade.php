@@ -447,7 +447,6 @@
     
     var signup = <?php echo json_encode($signup); ?>;
     var season_id_selected;
-    
     if(signup != "")
       javascript:refill();
     else{
@@ -592,7 +591,7 @@
         document.getElementById("time3").style = "";
       }
       
-      if (signup[season_id_selected].ttevidence1 == ""){
+      if (signup == ""){
         if (imaget1 == ""){
           document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt1").style.borderColor = "#f56565";
@@ -613,8 +612,8 @@
           document.getElementById("imgdivt1").style = "";
         }
       }
-
-      if (signup[season_id_selected].ttevidence1 == ""){
+      
+      if (signup == ""){
         if (imaget2 == ""){
           document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt2").style.borderColor = "#f56565";
@@ -636,7 +635,7 @@
         }
       }
       
-      if (signup[season_id_selected].ttevidence1 == ""){
+      if (signup == ""){
         if (imaget3 == ""){
           document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt3").style.borderColor = "#f56565";
