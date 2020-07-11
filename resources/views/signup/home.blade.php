@@ -431,7 +431,7 @@
           document.getElementById("preference1").value = "";
           document.getElementById("preference2").value = "";
           document.getElementById("preference3").value = "";
-          document.getElementById("formid").action = "/signup/store" + signup[i].id;
+          document.getElementById("formid").action = "/signup/store";
           document.getElementById("ttevidenceid1").style.display = "none";
           document.getElementById("ttevidenceid2").style.display = "none";
           document.getElementById("ttevidenceid3").style.display = "none";
