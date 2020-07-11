@@ -70,6 +70,9 @@ class HomeController extends Controller
         $user->instagram = $request->instagram;
         $user->twitch = $request->twitch;
         $user->twitter = $request->twitter;
+        $user->xbox = $request->xbox;
+        $user->psn = $request->psn;
+        $user->spotify = $request->spotify;
         $user->devicename = $request->devicename; 
         
        
