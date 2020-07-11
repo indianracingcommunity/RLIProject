@@ -119,7 +119,7 @@
             </div>
             
             <div id="ttevidenceid1" class="inline-block w-10 h-10 ml-3">
-              <a id="imglink1" href="http://rliproject.test/storage/timetrials/R9XEyYD3gzPTgD2T5gAspoFZxDWrdeNmxMPGOVhO.jpeg" target="_blank">
+              <a id="imglink1" target="_blank">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve" fill="currentColor" class="px-2 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500">
                   <g>
@@ -180,7 +180,7 @@
             </div>
             
             <div id="ttevidenceid2" class="inline-block w-10 h-10 ml-3">
-              <a id="imglink2" href="http://rliproject.test/storage/timetrials/R9XEyYD3gzPTgD2T5gAspoFZxDWrdeNmxMPGOVhO.jpeg" target="_blank">
+              <a id="imglink2"  target="_blank">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve" fill="currentColor" class="px-2 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500">
                   <g>
@@ -239,7 +239,7 @@
             </div>
              
             <div id="ttevidenceid3" class="inline-block w-10 h-10 ml-3">
-              <a id="imglink3" href="http://rliproject.test/storage/timetrials/R9XEyYD3gzPTgD2T5gAspoFZxDWrdeNmxMPGOVhO.jpeg" target="_blank">
+              <a id="imglink3"  target="_blank">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve" fill="currentColor" class="px-2 bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded text-purple-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500">
                   <g>
