@@ -23,7 +23,7 @@
   }
 </style>
 <div class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full">
-  <form class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform" enctype="multipart/form-data" onsubmit="return validate()">
+  <form id="formid" class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" enctype="multipart/form-data" onsubmit="return validate()">
     @csrf
     <div id="restform">
       <label class="block text-gray-700 text-xl font-bold mb-2">
@@ -371,6 +371,8 @@
           document.getElementById("preference1").value = signup[i].carprefrence.split(",")[0];
           document.getElementById("preference2").value = signup[i].carprefrence.split(",")[1];
           document.getElementById("preference3").value = signup[i].carprefrence.split(",")[2];
+          document.getElementById("formid").action = "/testform/update/" + signup[i].id;
+          
 
           if (signup[i].ttevidence1 !=""){
             document.getElementById("ttevidenceid1").style.display = "inline-block";
@@ -395,7 +397,8 @@
             document.getElementById("radio4").checked = true;
             document.getElementById("radio3").checked = false;
           }
-
+          
+          
           if (PHPUnserialize.unserialize(signup[i].assists) != null){
             var assist = PHPUnserialize.unserialize(signup[i].assists);
               document.getElementById("assist1").checked = false;
@@ -423,10 +426,10 @@
     }
     
     var signup = <?php echo json_encode($signup); ?>;
+    console.log(signup);
     if (signup == "")
-      document.getElementById("submitid").value = "create";
-    else 
-      document.getElementById("preference3").value = "update";
+      document.getElementById("formid").action = "/testform";
+    
 
     var season_id_selected;
     
