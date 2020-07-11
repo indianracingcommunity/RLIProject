@@ -450,6 +450,26 @@
     
     if(signup != "")
       javascript:refill();
+    else{
+      document.getElementById("time1").value = "";
+      document.getElementById("time2").value = "";
+      document.getElementById("time3").value = "";
+      document.getElementById("drivernum").value = "";
+      document.getElementById("speedlinkid").value = "";
+      document.getElementById("preference1").value = "";
+      document.getElementById("preference2").value = "";
+      document.getElementById("preference3").value = "";
+      document.getElementById("formid").action = "/signup/store";
+      document.getElementById("ttevidenceid1").style.display = "none";
+      document.getElementById("ttevidenceid2").style.display = "none";
+      document.getElementById("ttevidenceid3").style.display = "none";
+      document.getElementById("radio4").checked = true;
+      document.getElementById("radio3").checked = false;
+      document.getElementById("assist1").checked = false;
+      document.getElementById("assist2").checked = false;
+      document.getElementById("assist3").checked = false;
+      document.getElementById("assist4").checked = false;
+    }
 
 
     updateconstructor = function(){
