@@ -9,6 +9,7 @@ use App\Circuit;
 use App\Constructor;
 use App\Driver;
 use App\Signup;
+use Storage;
 use Auth;
 class SignupsController extends Controller 
 {
@@ -86,7 +87,7 @@ class SignupsController extends Controller
     {
        $data = request()->all();
 
-
+     // dd($signup);
        if($signup->user_id==Auth::user()->id)
        {
         if($data['attendance']=="YES")
@@ -116,41 +117,35 @@ class SignupsController extends Controller
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
 
-        if(isset($data['evidencet1']) && is_file($data['evidencet1']))
+        if(isset($data['evidencet1']))
         {
           $evidence1 = $data['evidencet1']->store('timetrials');
-          Storage::delete($signup->evidencet1); 
+          Storage::delete($signup->ttevidence1); 
           $signup->ttevidence1 = $evidence1;         
         }
-        else
-        {
-            $signup->ttevidence1 = $data['evidencet1'];
-        } 
 
-        if(isset($data['evidencet2']) && is_file($data['evidencet2']))
+
+        if(isset($data['evidencet2']))
         {
           $evidence1 = $data['evidencet2']->store('timetrials');
-          Storage::delete($signup->evidencet2);
+          Storage::delete($signup->ttevidence2);
           $signup->ttevidence2 = $evidence1;
-          
+  
         }
-        else
-        {
-            $signup->ttevidence2 = $data['evidencet2'];
-        } 
-        if(isset($data['evidencet3']) && is_file($data['evidencet3']))
+
+        if(isset($data['evidencet3']))
         {
           $evidence1 = $data['evidencet3']->store('timetrials');
-          Storage::delete($signup->evidencet3); 
+          Storage::delete($signup->ttevidence3); 
           $signup->ttevidence3 = $evidence1;
           
+          
+          
         }
-        else
-        {
-            $signup->ttevidence3 = $data['evidencet3'];
-        } 
 
-
+          $signup->save();
+          session()->flash('success',"Signup Updated");
+          return redirect('/home');
        }
        else
        {

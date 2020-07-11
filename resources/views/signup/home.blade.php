@@ -371,7 +371,7 @@
           document.getElementById("preference1").value = signup[i].carprefrence.split(",")[0];
           document.getElementById("preference2").value = signup[i].carprefrence.split(",")[1];
           document.getElementById("preference3").value = signup[i].carprefrence.split(",")[2];
-          document.getElementById("formid").action = "/testform/update/" + signup[i].id;
+          document.getElementById("formid").action = "/signup/update/" + signup[i].id;
           
 
           if (signup[i].ttevidence1 !=""){
@@ -428,7 +428,7 @@
     var signup = <?php echo json_encode($signup); ?>;
     console.log(signup);
     if (signup == "")
-      document.getElementById("formid").action = "/testform";
+      document.getElementById("formid").action = "/signup/store";
     
 
     var season_id_selected;

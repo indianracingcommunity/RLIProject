@@ -92,7 +92,8 @@ Route::group(['middleware' => 'auth'], function () {
 
      //Signup Routes
      Route::get('/f1/signup','SignupsController@view');
-     Route::post('/testform','SignupsController@store');
+     Route::post('/signup/store','SignupsController@store');
+     Route::post('/signup/update/{signup}','SignupsController@update');
 
      Route::get('/upload','SignupsController@temp');
 
