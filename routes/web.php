@@ -90,20 +90,15 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('/home/report/category','ReportsController@category');
      Route::get('/home/view/report/{report}/details','ReportsController@details');
 
-//Signup Routes
-
+     //Signup Routes
      Route::get('/f1/signup','SignupsController@view');
      Route::post('/testform','SignupsController@store');
 
      Route::get('/upload','SignupsController@temp');
 
      //Profile Routes
-
      Route::get('/user/profile/view/{user}','HomeController@viewprofile');
      Route::post('/user/profile/save/{user}','HomeController@savedetails');
-
-
-
 });
 
 

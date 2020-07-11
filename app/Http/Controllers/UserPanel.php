@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
 use App\Discord;
+use App\Series;
 
 class UserPanel extends Controller
 {
@@ -18,13 +19,15 @@ class UserPanel extends Controller
 
     public function viewprofile()
     {   $id = Auth::user()->discord_id;
-
+        $series = Series::all();
         $discord = new Discord();
         $userroles = $discord->getroles($id);
 
       //  dd($userroles);
 
-        return view('user.userprofile')->with('roles',$userroles);
+        return view('user.userprofile')
+                ->with('roles', $userroles)
+                ->with('series', $series);
     }
 
     public function SetSteam(user $user)
@@ -33,7 +36,7 @@ class UserPanel extends Controller
         $user->steam_id=$data['steamid'];
         $user->save();
         
-     return redirect('/user/profile/'.$user->id);
+        return redirect('/user/profile/'.$user->id);
     }
 
     public function ResetSteamLink(user $user)
