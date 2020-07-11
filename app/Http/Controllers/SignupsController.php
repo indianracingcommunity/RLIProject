@@ -82,9 +82,80 @@ class SignupsController extends Controller
         return redirect('/home');
     }
 
-    public function test(Request $request)
+    public function update(Signup $signup)
     {
-       dd($request);
+       $data = request()->all();
+
+
+       if($signup->user_id==Auth::user()->id)
+       {
+        if($data['attendance']=="YES")
+        {
+          $attendance = 1;
+        }
+        else 
+        {
+          $attendance = 0;
+        }
+        if(isset($data['assists']))
+           {
+            $assists = serialize($data['assists']);
+           }
+           else
+           {
+             $assists = '' ;
+           }
+        $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+        $signup->season = $data['seas'];
+        $signup->speedtest = $data['speedtest'];
+        $signup->timetrial1 = $data['t1'];
+        $signup->timetrial2 = $data['t2'];
+        $signup->timetrial3 = $data['t3'];
+        $signup->attendance = $attendance;
+        $signup->carprefrence = $prefrence;
+        $signup->assists = $assists;
+        $signup->drivernumber = $data['drivernumber'];
+
+        if(isset($data['evidencet1']) && is_file($data['evidencet1']))
+        {
+          $evidence1 = $data['evidencet1']->store('timetrials');
+          Storage::delete($signup->evidencet1); 
+          $signup->ttevidence1 = $evidence1;         
+        }
+        else
+        {
+            $signup->ttevidence1 = $data['evidencet1'];
+        } 
+
+        if(isset($data['evidencet2']) && is_file($data['evidencet2']))
+        {
+          $evidence1 = $data['evidencet2']->store('timetrials');
+          Storage::delete($signup->evidencet2);
+          $signup->ttevidence2 = $evidence1;
+          
+        }
+        else
+        {
+            $signup->ttevidence2 = $data['evidencet2'];
+        } 
+        if(isset($data['evidencet3']) && is_file($data['evidencet3']))
+        {
+          $evidence1 = $data['evidencet3']->store('timetrials');
+          Storage::delete($signup->evidencet3); 
+          $signup->ttevidence3 = $evidence1;
+          
+        }
+        else
+        {
+            $signup->ttevidence3 = $data['evidencet3'];
+        } 
+
+
+       }
+       else
+       {
+            return redirect('/');
+       }
     }
 
 
