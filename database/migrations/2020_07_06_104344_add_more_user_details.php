@@ -36,6 +36,9 @@ class AddMoreUserDetails extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('team')->nullable();
+            $table->string('teammate')->nullable();
+
             $table->dropColumn('devicename');
             $table->dropColumn('device');
             $table->dropColumn('platform');
@@ -46,8 +49,6 @@ class AddMoreUserDetails extends Migration
             $table->dropColumn('mothertongue');
             $table->dropColumn('location');
             $table->dropColumn('indian');
-
-           
         });
     }
 }

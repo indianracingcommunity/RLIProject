@@ -26,7 +26,7 @@ class RemoveDiscordRolesFromUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->text('discord_roles');
         });
     }
 }

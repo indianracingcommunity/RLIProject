@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Race;
 use App\Result;
 use App\Driver;
+use App\Points;
 
 class ResultsController extends Controller
 {
@@ -91,6 +92,7 @@ class ResultsController extends Controller
     }
 
     public function fetchRaceResults($tier, $season, $round) {
+        $points = Points::all()->toArray();
         $race = Race::whereHas('season',
             function (Builder $query) use ($tier, $season) {
                 $query->where([
@@ -112,13 +114,14 @@ class ResultsController extends Controller
 
         foreach($results as $i => $res) {
             $pos = $res['position'];
-            if($pos > 10 || $pos < 1)
-                $pos = 11;
 
             if($res['status'] < 0)
                 $results[$i]['points'] = 0;
             else {
-                $results[$i]['points'] = self::POINTS[$pos - 1];
+                $ps_ind = array_search($results[$i]['race']['points'], array_column($points, "id"));
+                if(array_key_exists((string)($pos - 1), $points[$ps_ind]))
+                    $results[$i]['points'] = $points[$ps_ind][$pos - 1];
+
                 if(((int)abs($results[$i]['status']) % 10) == 1) $results[$i]['points'] += 1;
             }
         }

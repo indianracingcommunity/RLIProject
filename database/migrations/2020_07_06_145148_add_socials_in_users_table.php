@@ -41,7 +41,6 @@ class AddSocialsInUsersTable extends Migration
             $table->dropColumn('twitter');
             $table->dropColumn('facebook');
             $table->dropColumn('instagram');
-
         });
     }
 }

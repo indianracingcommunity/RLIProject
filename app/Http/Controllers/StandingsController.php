@@ -9,6 +9,7 @@ use App\Result;
 use App\Season;
 use App\Race;
 use App\Circuit;
+use App\Points;
 
 class StandingsController extends Controller
 {
@@ -75,6 +76,7 @@ class StandingsController extends Controller
         ])->first();
         if($season == null) return array("code" => 404);
 
+        $psystem = Points::all()->toArray();
         $races = Race::where('season_id', $season['id'])
                      ->pluck("id");
         if(!count($races)) return array("code" => 404);
@@ -83,12 +85,12 @@ class StandingsController extends Controller
                          ->orderBy('driver_id')
                          ->orderBy('position')
                          ->get()
-                         ->load('driver:id,name,user_id', 'constructor', 'race:id,round')
+                         ->load('driver:id,name,user_id', 'constructor', 'race')
                          ->toArray();
         if(!count($results)) return array("code" => 404);
 
         $countReserves = 0;
-        $dres = $this->computePoints($results, 'driver');
+        $dres = $this->computePoints($results, 'driver', $psystem);
         for($i = 0; $i < count($dres); $i++)
         {
             $ind = $this->latest_race($results, $dres[$i]['start'], $dres[$i]['end']);
@@ -100,7 +102,7 @@ class StandingsController extends Controller
                 $countReserves++;
         }
 
-        $cres = $this->computePoints($results, 'constructor');
+        $cres = $this->computePoints($results, 'constructor', $psystem);
         return array(
             "code" => 200,
             "drivers" => $dres,
@@ -160,7 +162,7 @@ class StandingsController extends Controller
         else
             return 0;
     }
-    protected function computePoints($results, String $field)
+    protected function computePoints($results, String $field, $psystem)
     {
         //Sort $results by $field
         usort($results, function($a, $b) use ($field) {
@@ -196,11 +198,11 @@ class StandingsController extends Controller
 
             $prev = $driver[$field . '_id'];
             $pos = $driver['position'];
-            if($pos > 10 || $pos < 1)
-                $pos = 11;
-
             if($driver['status'] >= 0) {
-                $points += self::POINTS[$pos - 1];
+                $ps_ind = array_search($results[$k]['race']['points'], array_column($psystem, "id"));
+                if(array_key_exists((string)($pos - 1), $psystem[$ps_ind]))
+                    $points += $psystem[$ps_ind][(string)($pos - 1)];
+
                 if(((int)abs($driver['status']) % 10) == 1) $points += 1;
             }
         }
