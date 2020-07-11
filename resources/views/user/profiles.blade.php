@@ -10,7 +10,7 @@ $device = unserialize($user->device);
         <div>
             <img src="{{$user->avatar}}" class="rounded-md " alt="">
         </div>
-        <div class="my-2">
+        <div class="">
             <div class="flex">
                 <div class=" font-semibold text-gray-800 mx-4 text-4xl font-bold">{{$user->name}}</div>
             </div>
@@ -23,10 +23,32 @@ $device = unserialize($user->device);
                     @endforeach
                 @endif
             </div>
-            <div class="flex mx-4">
-                <a href="https://steamcommunity.com/profiles/{{$user->steam_id}}">
-                    <i class="fab fa-steam text-blue-700 text-3xl"></i>
+            <div class="flex mx-4 my-2">
+                @if ($user->steam_id != NULL)
+                <a href="https://steamcommunity.com/profiles/{{$user->steam_id}}" target="_blank">
+                    <i class="fab fa-steam text-blue-700 text-3xl mr-2"></i>
                 </a>
+                @endif
+                @if ($user->youtube != NULL)
+                <a href="{{$user->youtube}}" target="_blank">
+                    <i class="fab fa-youtube text-red-600 text-3xl mr-2"></i>
+                </a>
+                @endif
+                @if ($user->twitch != NULL)
+                <a href="{{$user->twitch}}" target="_blank">
+                    <i class="fab fa-twitch text-purple-700 text-3xl mr-2"></i>
+                </a>
+                @endif
+                @if ($user->twitter != NULL)
+                <a href="{{$user->twitter}}" target="_blank">
+                    <i class="fab fa-twitter text-blue-600 text-3xl mr-2"></i>
+                </a>
+                @endif
+                @if ($user->instagram != NULL)
+                <a href="{{$user->instagram}}" target="_blank">
+                    <i class="fab fa-instagram text-purple-500 text-3xl"></i>
+                </a>
+                @endif
             </div>
         </div>
     </div>

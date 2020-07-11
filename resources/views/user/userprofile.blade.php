@@ -1,12 +1,21 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container">
 @if (Auth::user()->steam_id == NULL)
  <div class="font-semibold text-orange-800 bg-orange-200 rounded-md p-8">
      Welcome to <strong>Indian Racing Comunity!</strong> Your account is created but not yet <strong>verified</strong>. To verify your Account please please Sign in with your <strong>Steam</strong> account
  </div>
 @endif
-
+<style type="text/css">
+    .errormsg{
+        color: red;
+        display: none;
+    }
+    .disabled{
+        background: grey;
+    }
+</style>
 <div class="flex  my-8 ">
     <div class="flex flex-shrink-0">
         <div>
@@ -97,18 +106,18 @@
         <div class="font-semibold text-gray-600 mb-4">
             <i class="fas fa-edit mr-1"></i> More Details
         </div>
-        <form action="/user/profile/save/{{Auth::user()->id}}" method="POST">
+        <form action="/user/profile/save/{{Auth::user()->id}}" method="POST" id="submitProfileForm">
             @csrf
             <div class="flex">
-                <div class="w-1/2">
+                <div class="w-3/5">
                     <div class="mb-4">
                         <div>
                             <label for="Nationality" class="font-semibold text-gray-800">Are you an Indian?<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <div>
-                            <input type="radio" id="Yes" name="Nationality" value="Yes" onclick="javascript:enablebutton()" @if ("{{Auth::user()->mothertongue}}" != "") checked @endif> 
+                            <input type="radio" id="Yes" name="Nationality" class="nationalityOption" value="Yes" @if ("{{Auth::user()->mothertongue}}" != "") checked @endif> 
                             <label for="male">Yes</label>
-                            <input type="radio" id="No" name="Nationality" value="No" onclick="javascript:enablebutton()">
+                            <input type="radio" id="No" name="Nationality" class="nationalityOption" value="No">
                             <label for="female">No</label>
                         </div>
                     </div>
@@ -116,11 +125,12 @@
                         <div>
                             <label for="MotherToungue" class="font-semibold text-gray-800" ">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
+                        <input type="text" class="border shadow-inner px-2 py-1 mt-1 w-full mandatory rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
+                        <span class="errormsg errormsgMothTon">Please enter your Mother Tongue</span>
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="City" class="font-semibold text-gray-800">City<span class="text-red-600 ml-2">●</span></label>
+                            <label for="City" class="font-semibold text-gray-800">City</label>
                         </div>
                         @php
                         if(isset(Auth::user()->location))
@@ -133,55 +143,60 @@
                         @endphp
                         
                         <input required type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value = {{$city}} >
+                        <span class="errormsg errormsgCity">Please enter your City</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input required type="text" name="state" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
+                        <input required type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
+                        <span class="errormsg errormsgState">Please enter your State</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                    <input required type="text" name="motorsport" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
+                        <input required type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
+                        <span class="errormsg errormsgMotersports">Please enter your the details</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="driversupport" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
+                        <input required type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
+                        <span class="errormsg errormsgDriver">Please enter your the details</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="source" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                        <input required type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                        <span class="errormsg errormsgIrc">Please enter your the details</span>
                     </div>
                     <div>
                     <div class="mb-4">
                         <div>
                             <label for="youtube" class="font-semibold text-gray-800"><i class="fab fa-youtube text-red-500 mr-1"></i>Youtube<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="youtube" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700">
+                        <input type="text" name="youtube" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="instagram" class="font-semibold text-gray-800"><i class="fab fa-instagram text-indigo-500 mr-1"></i>Instagram<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="instagram" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700">
+                        <input type="text" name="instagram" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitch" class="font-semibold text-gray-800"><i class="fab fa-twitch text-purple-700 mr-1"></i>Twitch<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="twitch" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700">
+                        <input type="text" name="twitch" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-600 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" ">
+                        <input type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
                     </div>
                 </div>
                 </div>
@@ -198,8 +213,8 @@
                           
                         ?> 
                     <div class="mb-4">
-                        <input type="checkbox" id="playgameid" name="playgame" value="playsgame" onchange="javascript:showfields()" @if ($games != NULL) checked @endif>
-                        <label for="games"  class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
+                        <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
+                        <label for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
                     </div>
                     <div id="restfieldsid" style="display : block;">
                         
@@ -207,28 +222,15 @@
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
-                                
+                                @foreach($series as $gameList)
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="f1" @if($games!=NULL) @if (in_array("f1", $games)) checked @endif @endif>
-                                    <label for="games" class="mr-2">F1</label>
+                                    <input class="gameList" type="checkbox" id="gameid" name="game[]" value="{{$gameList->code}}" @if($games!=NULL) @if (in_array($gameList->code, $games)) checked @endif @endif>
+                                    <label for="games" class="mr-2">{{$gameList->name}}</label>
                                 </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Assetto Corsa" @if($games!=NULL) @if (in_array("Assetto Corsa", $games)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Assetto Corsa</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Asseto Corsa Compitizione" @if($games!=NULL) @if (in_array("Asseto Corsa Compitizione", $games)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Asseto Corsa Compitizione</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Grand Tourismo Sports" @if($games!=NULL) @if (in_array("Grand Tourismo Sports", $games)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Grand Tourismo Sports</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="gameid" name="game[]" value="Dirt Rally" @if($games!=NULL) @if (in_array("Dirt Rally", $games)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Dirt Rally</label>
-                                </span>
+                                @endforeach
                             </div>
+                            <span class="errormsg errormsgGame">Please select atleast 1</span>
+
                         </div>
                         <?php
                         if(isset(Auth::user()->platform))
@@ -244,18 +246,19 @@
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PC" @if($platform!=NULL) @if (in_array("PC", $platform)) checked @endif @endif>
+                                    <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="PC" @if($platform!=NULL) @if (in_array("PC", $platform)) checked @endif @endif>
                                     <label for="games" class="mr-2">PC</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="PlayStation" @if($platform!=NULL) @if (in_array("PlayStation", $platform)) checked @endif @endif>
+                                    <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="PlayStation" @if($platform!=NULL) @if (in_array("PlayStation", $platform)) checked @endif @endif>
                                     <label for="games" class="mr-2">PlayStation</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if($platform!=NULL) @if (in_array("Xbox", $platform)) checked @endif @endif>
+                                    <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if($platform!=NULL) @if (in_array("Xbox", $platform)) checked @endif @endif>
                                     <label for="games" class="mr-2">XBox</label>
                                 </span>
                             </div>
+                            <span class="errormsg errormsgPlatform">Please select atleast 1</span>
                         </div>
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
@@ -271,40 +274,41 @@
                                   }
                                 ?>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
+                                    <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Keyboard/Mouse</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Controller" @if($device!=NULL) @if (in_array("Controller", $device)) checked @endif @endif>
+                                    <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Controller" @if($device!=NULL) @if (in_array("Controller", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Controller</label>
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
-                                    <input type="checkbox" id="vehicle1" name="device[]" value="Wheel" @if($device!=NULL)  @if (in_array("Wheel", $device)) checked @endif @endif>
+                                    <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Wheel" @if($device!=NULL)  @if (in_array("Wheel", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Wheel</label>
                                 </span>
                             </div>
+                            <span class="errormsg errormsgDevice">Please select atleast 1</span>
                         </div>
                         <div class="mt-4">
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input type="text" name="devicename" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
+                            <input type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
+                            <span class="errormsg errormsgDeviceName">Please enter device details</span>
                         </div>
                     </div>
-                </div>
-                
+                </div> 
             </div>
             <div>
-                    <div class="font-semibold text-gray-700 mb-4">
-                        <div>
-                            <span class="text-red-600 mr-2">●</span>Mandatory Fields
-                        </div>
-                        <div>
-                            <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
-                        </div>
+                <div class="font-semibold text-gray-700 mb-4">
+                    <div>
+                        <span class="text-red-600 mr-2">●</span>Mandatory Fields
                     </div>
-                <button id="enabledbuttonid" class="bg-blue-500 rounded text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
-                <button disabled id="disabledbuttonid" class="bg-blue-500 text-white font-semibold px-8 py-2 rounded opacity-50 cursor-not-allowed" style="display: none;">Submit</button>
+                    <div>
+                        <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
+                    </div>
+                </div>
+                <button type="button" id="enabledbuttonid" class="bg-blue-500 rounded text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
+                <span class="errormsg errormsgSubmit">You need to be an Indian to fill this Form.</span>
             </div>
         </form>
     </div>
@@ -327,28 +331,86 @@
     var platform = <?php echo json_encode($platform); ?>;
     var device = <?php echo json_encode($device); ?>;
     console.log(games);
-    document.getElementById('restfieldsid').style.display = "none";
 
-    showfields = function(){
-        if(document.getElementById('playgameid').checked){
-            document.getElementById('restfieldsid').style.display = "block";
-        }
-        else{
-            document.getElementById('restfieldsid').style.display = "none";
-        }
-    }
-    enablebutton = function(){
-        if(document.getElementById('No').checked){
-            document.getElementById('disabledbuttonid').style.display = "block";
-            document.getElementById('enabledbuttonid').style.display = "none";
-        }
-        else{
-            document.getElementById('disabledbuttonid').style.display = "none";
-            document.getElementById('enabledbuttonid').style.display = "block";
-        }
-    }
-    showfields();
-    enablebutton();
+    $( document ).ready(function() {
+        $('#restfieldsid').hide();
+        console.log($('#submitProfileForm'));
+
+        $('.nationalityOption').change(function(event) {
+            $('.errormsgSubmit').hide();
+            $('#enabledbuttonid').removeAttr('disabled');
+            $('#enabledbuttonid').removeClass('disabled');
+            if($('#No').is(':checked')){
+                $('.errormsgSubmit').show();
+                $('#enabledbuttonid').addClass('disabled');
+                $('#enabledbuttonid').attr('disabled', 'disabled');
+            }
+        });
+
+        $('#playgameid').change(function(event) {
+            if( $(this).is(':checked') ){
+                $('#restfieldsid').show('slow/400/fast', function() {});
+                $('#deviceName').addClass('mandatory');
+            }else{
+                $('#restfieldsid').hide('slow/400/fast', function() {});
+                $('#deviceName').removeClass('mandatory');
+            }
+        });
+
+        $('.nationalityOption').trigger('change');
+        $('#playgameid').trigger('change');        
+
+        $('#enabledbuttonid').click(function(event) {
+            $('.errormsg').hide();
+            $('.mandatory').each(function(index, el) {
+                console.log($(this).val());
+                if( $(this).val() == '' ){
+                    $(this).siblings(".errormsg").show('slow/400/fast', function() {});
+                    return false;
+                }
+            });
+            if( $('#playgameid').is(':checked') ){
+                var gameList = false;
+                var platformList = false;
+                var deviceList = false;
+                $('.gameList').each(function(index, el) {
+                    if($(this).is(':checked')){
+                        gameList = true;
+                    }
+                });
+                $('.platformList').each(function(index, el) {
+                    if($(this).is(':checked')){
+                        platformList = true;
+                    }
+                });
+                $('.deviceList').each(function(index, el) {
+                    if($(this).is(':checked')){
+                        deviceList = true;
+                    }
+                });
+                setTimeout(function()
+                {
+                    if(gameList == false){
+                        $('.errormsgGame').show();
+                        return false;
+                    }
+                    if(platformList == false){
+                        $('.errormsgPlatform').show();
+                        return false;
+                    }
+                    if(deviceList == false){
+                        $('.errormsgDevice').show();
+                        return false;
+                    }
+                    if(gameList == true && platformList == true && deviceList == true){
+                        console.log('Perfect');
+                        $('#submitProfileForm').submit();
+                    }
+                }, 500);
+            }
+        });
+    });
+
 </script>
 
 @endsection
