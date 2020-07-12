@@ -79,29 +79,29 @@ Route::get('/discord/fetchroles/users','DiscordController@getMemberRoles');
 Route::group(['middleware' => 'auth'], function () {
      Route::get('/user/profile/', 'UserPanel@viewprofile')->name('home');
      Route::post('/user/profile/save/{user}','HomeController@savedetails');
-  Route::group(['middleware' => 'profile'], function () {
      
-     Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
-     SteamLogin::routes(['controller' => SteamLoginController::class]);
+     Route::group(['middleware' => 'profile'], function () {
 
-     Route::get('/home', 'UserPanel@index')->name('home');
-     
-     //Report Routes
-     Route::get('/home/report/create','ReportsController@view');
-     Route::post('/home/report/submit','ReportsController@create');
-     Route::get('/home/report/category','ReportsController@category');
-     Route::get('/home/view/report/{report}/details','ReportsController@details');
+          Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
+          SteamLogin::routes(['controller' => SteamLoginController::class]);
 
-     //Signup Routes
-     Route::get('/signup','SignupsController@view');
-     Route::post('/signup/store','SignupsController@store');
-     Route::post('/signup/update/{signup}','SignupsController@update');
-     Route::get('/upload','SignupsController@temp');
+          Route::get('/home', 'UserPanel@index')->name('home');
+          
+          //Report Routes
+          Route::get('/home/report/create','ReportsController@view');
+          Route::post('/home/report/submit','ReportsController@create');
+          Route::get('/home/report/category','ReportsController@category');
+          Route::get('/home/view/report/{report}/details','ReportsController@details');
 
-     //Profile Routes
-     Route::get('/user/profile/view/{user}','HomeController@viewprofile');
-     
-});
+          //Signup Routes
+          Route::get('/signup','SignupsController@view');
+          Route::post('/signup/store','SignupsController@store');
+          Route::post('/signup/update/{signup}','SignupsController@update');
+          Route::get('/upload','SignupsController@temp');
+
+          //Profile Routes
+          Route::get('/user/profile/view/{user}','HomeController@viewprofile');     
+     });
 });
 
 Route::get('/teams/{key}','DriverController@viewferrari');
