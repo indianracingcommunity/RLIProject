@@ -77,6 +77,7 @@ class HomeController extends Controller
         
        
         $user->save();
+        session()->flash('savedProfile','Details saved successfully.');
         return redirect('/user/profile');
     }
 
