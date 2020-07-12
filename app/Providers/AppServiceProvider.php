@@ -29,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
     {         
         $all_seasons = Season::where('status', '>=', 1)
                     ->orderBy('series', 'asc')
-                    ->orderBy('tier', 'asc')
                     ->orderBy('season', 'desc')
+                    ->orderBy('tier', 'asc')
                     ->get()
                     ->toArray();
 
@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             for($j = 0; $j < count($seasons[$i]); $j++)
             {
                 $seq = array();
-                while($j < count($seasons[$i]) && $seasons[$i][$j]['tier'] == $seasons[$i][$prev]['tier'])
+                while($j < count($seasons[$i]) && $seasons[$i][$j]['season'] == $seasons[$i][$prev]['season'])
                 {
                     array_push($seq, $seasons[$i][$j]);
                     $j++;
