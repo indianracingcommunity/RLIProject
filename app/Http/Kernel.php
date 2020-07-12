@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'IsAdmin' => \App\Http\Middleware\IsAdmin::class,
         'steam' =>  \App\Http\Middleware\CheckSteam::class,
+        'profile' => \App\Http\Middleware\ProfileCheck::class,
     ];
 
     /**

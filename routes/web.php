@@ -78,6 +78,9 @@ Route::get('/discord/fetchroles/users','DiscordController@getMemberRoles');
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {
      Route::get('/user/profile/', 'UserPanel@viewprofile')->name('home');
+     Route::post('/user/profile/save/{user}','HomeController@savedetails');
+  Route::group(['middleware' => 'profile'], function () {
+     
      Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
      SteamLogin::routes(['controller' => SteamLoginController::class]);
 
@@ -97,7 +100,8 @@ Route::group(['middleware' => 'auth'], function () {
 
      //Profile Routes
      Route::get('/user/profile/view/{user}','HomeController@viewprofile');
-     Route::post('/user/profile/save/{user}','HomeController@savedetails');
+     
+});
 });
 
 Route::get('/teams/{key}','DriverController@viewferrari');
