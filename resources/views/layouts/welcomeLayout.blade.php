@@ -11,36 +11,70 @@
         <script src="{{ asset('js/jquery35.js')}}"></script>
         <link rel="stylesheet" href="/css/custom.css">
     </head>
-    <body>
+    <body class="pageBody" style="display: none;">
+        @php 
+            $topBarSeasons = session('topBarSeasons');
+        @endphp
         <nav class="flex justify-between border-b">
             <div class="flex py-2">
                 <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                    <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png"height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
+                    <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png"height="45" width="45"> <span class="p-3">Indian Racing Community</span> </a>
                 </div>
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
                     <a  href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                 </div>
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <a class="dropbtn"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings </a>
-                    <div class="dropdown-content mx-5 my-3">
-                    <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
-                        <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
-                        <a href="/1/4.5/standings" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
-                        <a href="/1/4.75/standings" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
-                    </div>
+                    <button class="font-semibold px-4 rounded inline-flex items-center">
+                        <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
+                    </button>
+                    <ul class="dropdown-content absolute hidden text-gray-700 pt-1 pl-2">
+                        @foreach($topBarSeasons as $series) 
+                            <li class="dropdown">
+                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
+                                <ul class="dropdown-content absolute hidden text-gray-700 pl-12 ml-24 -mt-10">
+                                    @foreach($series['tier'] as $tier)
+                                    <li class="dropdown">
+                                        <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
+                                        <ul class="dropdown-content absolute hidden text-gray-700 ml-24 -mt-10">
+                                            @foreach($tier as $season)
+                                            <li>
+                                                <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <a class="dropbtn">🏁 Race Results</a>
-                    <div class="dropdown-content mx-5 my-3">
-                        <a href="/1/4/races" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
-                        <a href="/2/1/races" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
-                        <a href="/1/4.5/races" class="hover:bg-yellow-300 "><i class='fas fa-caret-right pr-3 text-orange-500'></i> Mini Championship</a>
-                        <a href="/1/4.75/races" class="hover:bg-orange-300"><i class='fas fa-caret-right pr-3 text-yellow-500'></i> Classic Cars</a>
-                    </div>
+                    <button class="font-semibold px-4 rounded inline-flex items-center">
+                        <span>🏁 Race Results</span>
+                    </button>
+                    <ul class="dropdown-content absolute hidden text-gray-700 pt-1 pl-2">
+                        @foreach($topBarSeasons as $series) 
+                            <li class="dropdown">
+                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
+                                <ul class="dropdown-content absolute hidden text-gray-700 pl-12 ml-24 -mt-10">
+                                    @foreach($series['tier'] as $tier)
+                                    <li class="dropdown">
+                                        <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
+                                        <ul class="dropdown-content absolute hidden text-gray-700 ml-24 -mt-10">
+                                            @foreach($tier as $season)
+                                            <li>
+                                                <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-                <!-- <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
-                    <a  href="/report"><i class='far fa-edit text-red-500 mx-1'></i>Report</a>
-                </div> -->
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
                     <a  href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
                 </div>
@@ -61,5 +95,10 @@
             </div>
         @endif
         @yield('body')
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                $('.pageBody').show('slow', function() {});
+            });
+        </script>
     </body>
 </html>
