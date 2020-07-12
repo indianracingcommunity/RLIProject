@@ -409,6 +409,8 @@
                         $('#submitProfileForm').submit();
                     }
                 }, 500);
+            }else{
+                $('#submitProfileForm').submit();
             }
         });
     });

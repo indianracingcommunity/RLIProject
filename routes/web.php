@@ -49,7 +49,6 @@ Route::post('/results/race', 'ResultsController@saveRaceResults');
 Auth::routes();
 
 // All Admin panel Routes
-
 Route::group(['middleware' => 'IsAdmin'], function () {
 Route::get('/home/admin', 'DriverController@index')->name('adminhome');
 Route::get('/home/admin/users','DriverController@viewusers'); 
@@ -91,10 +90,9 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('/home/view/report/{report}/details','ReportsController@details');
 
      //Signup Routes
-     Route::get('/f1/signup','SignupsController@view');
+     Route::get('/signup','SignupsController@view');
      Route::post('/signup/store','SignupsController@store');
      Route::post('/signup/update/{signup}','SignupsController@update');
-
      Route::get('/upload','SignupsController@temp');
 
      //Profile Routes
@@ -102,14 +100,9 @@ Route::group(['middleware' => 'auth'], function () {
      Route::post('/user/profile/save/{user}','HomeController@savedetails');
 });
 
-
-
-
 Route::get('/teams/{key}','DriverController@viewferrari');
-
 Route::get('/api/{driver}','DriverController@api');
 Route::get('/discordapi/{driver}','DriverController@apidiscord');
-
 
 // Routes Handling the Discord Login
 Route::get('login/discord', 'Auth\LoginController@redirectToProvider')->name('auth');

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        //
+    {         
+        session(['generateActionSession'=>"1"]);
+
     }
 }
