@@ -66,7 +66,7 @@ td {
     @if((int)$results[$i]['status'] % 10 == 1)
       <tr>
         <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 fast">{{$i+1}}</td>
-        <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700">{{$results[$i]['driver']['name']}}</td>
+        <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700">{{$results[$i]['constructor']['name']}}</td>
         <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700">{{$results[$i]['points']}}</td>
       </tr>
@@ -78,9 +78,9 @@ td {
           <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$i+1}}</td>
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
-         <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['driver']['name']}}</td>
+         <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         @else 
-         <td class="font-semibold rounded-lg border border-white bg-gray-200">{{$results[$i]['driver']['name']}}</td>
+         <td class="font-semibold rounded-lg border border-white bg-gray-200"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
           <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['constructor']['name']}}</td>
@@ -98,9 +98,9 @@ td {
           <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
           
           @if ($results[$i]['driver']['user_id'] == Auth::id())
-          <td class="font-extrabold rounded-lg border border-white">{{$results[$i]['driver']['name']}}</td>
+          <td class="font-extrabold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
           @else 
-          <td class="font-semibold rounded-lg border border-white">{{$results[$i]['driver']['name']}}</td>
+          <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
           @endif
           
           <td class="font-semibold rounded-lg border border-white">{{$results[$i]['constructor']['name']}}</td>
@@ -113,9 +113,9 @@ td {
           <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
-         <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['driver']['name']}}</td>
+         <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         @else 
-         <td class="font-semibold rounded-lg border border-white">{{$results[$i]['driver']['name']}}</td>
+         <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
           <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['constructor']['name']}}</td>

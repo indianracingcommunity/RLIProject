@@ -30,15 +30,15 @@
                     <ul class="dropdown-content absolute hidden text-gray-700 pt-1 pl-2">
                         @foreach($topBarSeasons as $series) 
                             <li class="dropdown">
-                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
+                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                 <ul class="dropdown-content absolute hidden text-gray-700 pl-12 ml-24 -mt-10">
                                     @foreach($series['tier'] as $tier)
                                     <li class="dropdown">
-                                        <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
-                                        <ul class="dropdown-content absolute hidden text-gray-700 ml-24 -mt-10">
+                                        <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
+                                        <ul class="dropdown-content absolute hidden text-gray-700 ml-20 pl-4 -mt-10">
                                             @foreach($tier as $season)
                                             <li>
-                                                <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
+                                                <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
                                             </li>
                                             @endforeach
                                         </ul>
@@ -56,15 +56,15 @@
                     <ul class="dropdown-content absolute hidden text-gray-700 pt-1 pl-2">
                         @foreach($topBarSeasons as $series) 
                             <li class="dropdown">
-                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
+                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                 <ul class="dropdown-content absolute hidden text-gray-700 pl-12 ml-24 -mt-10">
                                     @foreach($series['tier'] as $tier)
                                     <li class="dropdown">
-                                        <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
-                                        <ul class="dropdown-content absolute hidden text-gray-700 ml-24 -mt-10">
+                                        <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
+                                        <ul class="dropdown-content absolute hidden text-gray-700 ml-20 pl-4 -mt-10">
                                             @foreach($tier as $season)
                                             <li>
-                                                <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
+                                                <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
                                             </li>
                                             @endforeach
                                         </ul>
@@ -82,7 +82,7 @@
             <div>
             <div class="px-4 flex py-2 m-2 bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
                @auth
-               <a  href="/home"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
+               <a  href="/user/profile"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
                @endauth
                 @guest
                 <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>

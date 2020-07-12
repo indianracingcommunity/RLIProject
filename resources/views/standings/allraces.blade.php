@@ -56,7 +56,7 @@ padding-left:10px;
                         
                      </div>
                      <div>
-                        <a href="/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
+                        <a href="/{{$code}}/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
                         <img src="{{$value->circuit->flag}}" class="w-12 mr-8 border rounded float-right" alt="">
                      </div>
                   </td>

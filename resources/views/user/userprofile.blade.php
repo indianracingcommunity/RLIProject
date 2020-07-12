@@ -2,11 +2,10 @@
 @section('content')
 
 <div class="container">
-@if (Auth::user()->steam_id == NULL)
- <div class="font-semibold text-orange-800 bg-orange-200 rounded-md p-8">
-     Welcome to <strong>Indian Racing Comunity!</strong> Your account is created but not yet <strong>verified</strong>. To verify your Account please please Sign in with your <strong>Steam</strong> account
- </div>
-@endif
+<div class="font-semibold text-center text-orange-800 bg-orange-200 rounded-md p-6 profileAlert" style="display: none;">
+    Welcome to <strong>Indian Racing Comunity!</strong> Please complete your <strong>Profile.</strong>
+</div>
+
 <style type="text/css">
     .errormsg{
         color: red;
@@ -94,9 +93,8 @@
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
                 <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
-                <span class="text-red-600 mr-4">●</span>
                 <a href="/login/steam"> <img src="{{url('/img/steam.png')}}" alt=""> </a>
-                <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account</span>
+                <span class="text-black-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account</span>
                 @endif
             </form>
         </div>
@@ -362,6 +360,11 @@
         $('.nationalityOption').trigger('change');
         $('#playgameid').trigger('change');
 
+        $('.mandatory').each(function(index, el) {
+            if( $(this).val() == '' ){
+                $('.profileAlert').show('slow/400/fast', function() {});
+            }
+        });
         $('#enabledbuttonid').click(function(event) {
             $('.errormsg').hide();
             $('.mandatory').each(function(index, el) {
