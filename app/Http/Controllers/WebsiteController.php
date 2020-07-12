@@ -30,7 +30,4 @@ class WebsiteController extends Controller
      public function loadlogin(){
     	return view('login');
     }
-
-
-
 }

@@ -51,6 +51,7 @@ class StandingsController extends Controller
 
        //dd($races);
        return view('standings.allraces')
+              ->with('code', $code)
               ->with('races', $races)
               ->with('season', $season);
     }
@@ -127,6 +128,7 @@ class StandingsController extends Controller
 
         $nextRace = $this->nextRace($cs['season']['id']);
         return view('standings.season')
+               ->with('code', $code)
                ->with('res', $cs['drivers'])
                ->with('count', count($cs['drivers']))
                ->with('reservecount', $cs['countReserves'])

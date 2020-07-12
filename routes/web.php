@@ -16,7 +16,7 @@ use kanalumaddela\LaravelSteamLogin\Facades\SteamLogin;
 Route::get('/', 'WebsiteController@loadhomepage');
 Route::get('joinus', 'WebsiteController@loadjoinus');
 Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
-Route::get('standings', 'WebsiteController@loadstandings');
+//Route::get('standings', 'WebsiteController@loadstandings');
 Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('login', 'WebsiteController@loadlogin');
 

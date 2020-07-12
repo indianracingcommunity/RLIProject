@@ -131,7 +131,8 @@ class ResultsController extends Controller
         //dd($results);
         $count = count($results);
         return view('standings.race')
-        ->with('results',$results)
-        ->with('count',$count);
+                ->with('code', $code)
+                ->with('results',$results)
+                ->with('count',$count);
     }
 }
