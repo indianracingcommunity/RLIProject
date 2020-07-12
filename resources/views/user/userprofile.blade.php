@@ -123,7 +123,7 @@
                         <div>
                             <label for="MotherToungue" class="font-semibold text-gray-800" ">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input type="text" class="border shadow-inner px-2 py-1 mt-1 w-full mandatory rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
+                        <input maxlength="30" type="text" class="border shadow-inner px-2 py-1 mt-1 w-full mandatory rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}">
                         <span class="errormsg errormsgMothTon">Please enter your Mother Tongue.</span>
                     </div>
                     <div class="mb-4">
@@ -140,35 +140,35 @@
                         else{$city = ""; $state="";}
                         @endphp
 
-                        <input required type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value={{$city}} >
+                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value={{$city}} >
                         <span class="errormsg errormsgCity">Please enter your City.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input required type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
+                        <input maxlength="30" type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
                         <span class="errormsg errormsgState">Please enter your State.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
+                        <input maxlength="30" type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
                         <span class="errormsg errormsgMotersports">Please enter required details.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
+                        <input maxlength="30" type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
                         <span class="errormsg errormsgDriver">Please enter required details.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input required type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                        <input maxlength="30" type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
                         <span class="errormsg errormsgIrc">Please enter required details.</span>
                     </div>
                     <div>
@@ -176,38 +176,38 @@
                         <div>
                             <label for="youtube" class="font-semibold text-gray-800"><i class="fab fa-youtube text-red-500 mr-1"></i>Youtube<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="youtube" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
+                        <input maxlength="40" type="text" name="youtube" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="instagram" class="font-semibold text-gray-800"><i class="fab fa-instagram text-indigo-500 mr-1"></i>Instagram<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="instagram" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
+                        <input maxlength="40" type="text" name="instagram" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitch" class="font-semibold text-gray-800"><i class="fab fa-twitch text-purple-700 mr-1"></i>Twitch<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="twitch" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
+                        <input maxlength="40" type="text" name="twitch" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-500 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
+                        <input maxlength="40" type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
                     </div>
 
                     <div class="mb-4">
                         <div>
                             <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>Playstation Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="psn" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+                        <input maxlength="40" type="text" name="psn" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>XBox Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input type="text" name="xbox" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                        <input maxlength="40" type="text" name="xbox" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
                     </div>
                 </div>
                 </div>
@@ -303,7 +303,7 @@
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
+                            <input maxlength="30" type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
                             <span class="errormsg errormsgDeviceName">Please enter device details.</span>
                         </div>
                     </div>
