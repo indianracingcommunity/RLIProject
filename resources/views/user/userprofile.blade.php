@@ -124,7 +124,7 @@
                             <label for="MotherToungue" class="font-semibold text-gray-800" ">What is your Mother Tongue?<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <input type="text" class="border shadow-inner px-2 py-1 mt-1 w-full mandatory rounded border-gray-700" placeholder="Hindi/Bengali/Tamil" name="mothertongue" value="{{Auth::user()->mothertongue}}" required>
-                        <span class="errormsg errormsgMothTon">Please enter your Mother Tongue</span>
+                        <span class="errormsg errormsgMothTon">Please enter your Mother Tongue.</span>
                     </div>
                     <div class="mb-4">
                         <div>
@@ -141,35 +141,35 @@
                         @endphp
 
                         <input required type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value={{$city}} >
-                        <span class="errormsg errormsgCity">Please enter your City</span>
+                        <span class="errormsg errormsgCity">Please enter your City.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <input required type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
-                        <span class="errormsg errormsgState">Please enter your State</span>
+                        <span class="errormsg errormsgState">Please enter your State.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input required type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
-                        <span class="errormsg errormsgMotersports">Please enter required details</span>
+                        <span class="errormsg errormsgMotersports">Please enter required details.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input required type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
-                        <span class="errormsg errormsgDriver">Please enter required details</span>
+                        <span class="errormsg errormsgDriver">Please enter required details.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input required type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
-                        <span class="errormsg errormsgIrc">Please enter required details</span>
+                        <span class="errormsg errormsgIrc">Please enter required details.</span>
                     </div>
                     <div>
                     <div class="mb-4">
@@ -240,7 +240,7 @@
                                 </span>
                                 @endforeach
                             </div>
-                            <span class="errormsg errormsgGame">Please select atleast 1</span>
+                            <span class="errormsg errormsgGame">Please select atleast 1.</span>
 
                         </div>
                         <?php
@@ -269,7 +269,7 @@
                                     <label for="games" class="mr-2">XBox</label>
                                 </span>
                             </div>
-                            <span class="errormsg errormsgPlatform">Please select atleast 1</span>
+                            <span class="errormsg errormsgPlatform">Please select atleast 1.</span>
                         </div>
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
@@ -297,14 +297,14 @@
                                     <label for="games" class="mr-2">Wheel</label>
                                 </span>
                             </div>
-                            <span class="errormsg errormsgDevice">Please select atleast 1</span>
+                            <span class="errormsg errormsgDevice">Please select atleast 1.</span>
                         </div>
                         <div class="mt-4">
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
                             <input type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
-                            <span class="errormsg errormsgDeviceName">Please enter device details</span>
+                            <span class="errormsg errormsgDeviceName">Please enter device details.</span>
                         </div>
                     </div>
                 </div>
@@ -334,7 +334,6 @@
 
     $( document ).ready(function() {
         $('#restfieldsid').hide();
-        console.log($('#submitProfileForm'));
 
         $('.nationalityOption').change(function(event) {
             $('.errormsgSubmit').hide();
@@ -365,55 +364,58 @@
                 $('.profileAlert').show('slow/400/fast', function() {});
             }
         });
+
         $('#enabledbuttonid').click(function(event) {
             $('.errormsg').hide();
+            var dontSubmit = false;
             $('.mandatory').each(function(index, el) {
-                console.log($(this).val());
                 if( $(this).val() == '' ){
                     $(this).siblings(".errormsg").show('slow/400/fast', function() {});
-                    return false;
+                    dontSubmit = true;
+                    // return false;
                 }
             });
-            if( $('#playgameid').is(':checked') ){
-                var gameList = false;
-                var platformList = false;
-                var deviceList = false;
-                $('.gameList').each(function(index, el) {
-                    if($(this).is(':checked')){
-                        gameList = true;
-                    }
-                });
-                $('.platformList').each(function(index, el) {
-                    if($(this).is(':checked')){
-                        platformList = true;
-                    }
-                });
-                $('.deviceList').each(function(index, el) {
-                    if($(this).is(':checked')){
-                        deviceList = true;
-                    }
-                });
-                setTimeout(function()
-                {
-                    if(gameList == false){
-                        $('.errormsgGame').show();
-                        return false;
-                    }
-                    if(platformList == false){
-                        $('.errormsgPlatform').show();
-                        return false;
-                    }
-                    if(deviceList == false){
-                        $('.errormsgDevice').show();
-                        return false;
-                    }
-                    if(gameList == true && platformList == true && deviceList == true){
-                        console.log('Perfect');
-                        $('#submitProfileForm').submit();
-                    }
-                }, 500);
-            }else{
-                $('#submitProfileForm').submit();
+            if(dontSubmit == false){
+                if( $('#playgameid').is(':checked') ){
+                    var gameList = false;
+                    var platformList = false;
+                    var deviceList = false;
+                    $('.gameList').each(function(index, el) {
+                        if($(this).is(':checked')){
+                            gameList = true;
+                        }
+                    });
+                    $('.platformList').each(function(index, el) {
+                        if($(this).is(':checked')){
+                            platformList = true;
+                        }
+                    });
+                    $('.deviceList').each(function(index, el) {
+                        if($(this).is(':checked')){
+                            deviceList = true;
+                        }
+                    });
+                    setTimeout(function()
+                    {
+                        if(gameList == false){
+                            $('.errormsgGame').show();
+                            return false;
+                        }
+                        if(platformList == false){
+                            $('.errormsgPlatform').show();
+                            return false;
+                        }
+                        if(deviceList == false){
+                            $('.errormsgDevice').show();
+                            return false;
+                        }
+                        if(gameList == true && platformList == true && deviceList == true){
+                            $('#submitProfileForm').submit();
+                        }
+                    }, 500);
+                }else{
+                    $('#submitProfileForm').submit();
+                }
             }
         });
     });
