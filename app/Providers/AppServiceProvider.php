@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Session;
 use App\Season;
 use App\Series;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {

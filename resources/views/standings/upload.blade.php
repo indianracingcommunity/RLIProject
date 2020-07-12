@@ -6,7 +6,7 @@
     <label class="block text-gray-700 text-2xl font-bold mb-2">Standings verification</label>
     <div class="flex w-full">
         <div class="inline-block w-3/4 h-auto mt-5">
-            <img src="http://rliproject.test/storage/try.jpg"></img>
+            <img src="/storage/try.jpg"></img>
         </div>
         <div class="inline-block w-1/4 h-auto mt-5 ml-10" id="page1">
             <label class="block text-gray-700 text-xl font-bold mb-2">Race details</label>

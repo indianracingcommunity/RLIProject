@@ -5,18 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Indian Racing Comunity</title>
+        <title>Indian Racing Community</title>
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-            <link rel="stylesheet" href="/css/custom.css">
-            <script src="{{ asset('js/jquery35.js')}}"></script>
+        <link rel="stylesheet" href="/css/custom.css">
+        <script src="{{ asset('js/jquery35.js')}}"></script>
         </head>
         <body class="w-full">
             <nav class="flex justify-between border-b fixed bg-white w-screen z-10 py-2">
                 <div class="flex items-center flex-shrink-0">
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
-                        <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
+                        <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Community</span> </a>
                     </div>
                     <div class=" mx-2 flex items-center flex-shrink-0">
                         <a  class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>

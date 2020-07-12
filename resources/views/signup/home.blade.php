@@ -379,9 +379,9 @@
             document.getElementById("ttevidenceid2").style.display = "inline-block";
             document.getElementById("ttevidenceid3").style.display = "inline-block";
             season_id_selected = i;
-            document.getElementById("imglink1").href = "http://rliproject.test/storage/" + signup[i].ttevidence1;
-            document.getElementById("imglink2").href = "http://rliproject.test/storage/" + signup[i].ttevidence2;
-            document.getElementById("imglink3").href = "http://rliproject.test/storage/" + signup[i].ttevidence3;
+            document.getElementById("imglink1").href = "/storage/" + signup[i].ttevidence1;
+            document.getElementById("imglink2").href = "/storage/" + signup[i].ttevidence2;
+            document.getElementById("imglink3").href = "/storage/" + signup[i].ttevidence3;
           }
           else{
             document.getElementById("ttevidenceid1").style.display = "none";
