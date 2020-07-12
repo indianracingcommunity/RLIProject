@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Session;
 use App\Season;
+use App\Series;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
             array_push($seasons, $series);
         }
 
+        $res = array();
         for($i = 0; $i < count($seasons); $i++)
         {
             $tier = array();
@@ -67,9 +69,11 @@ class AppServiceProvider extends ServiceProvider
                 $j--;
                 array_push($tier, $seq);
             }
-            $seasons[$i] = $tier;
+
+            $series_n = Series::find($tier[0][0]['series']);
+            array_push($res, array("name" => $series_n, "tier" => $tier));
         }
 
-        session(['topBarSeasons' => $seasons]);
+        session(['topBarSeasons' => $res]);
     }
 }
