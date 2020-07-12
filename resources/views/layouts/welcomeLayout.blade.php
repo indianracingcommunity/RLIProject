@@ -22,7 +22,7 @@
                     <a  href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                 </div>
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <a class="dropbtn"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
+                    <a class="dropbtn"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings </a>
                     <div class="dropdown-content mx-5 my-3">
                     <a href="/1/4/standings" class="hover:bg-blue-300 "><i class='fas fa-caret-right pr-3 text-green-500'></i> Tier 1</a>
                         <a href="/2/1/standings" class="hover:bg-green-300"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier 2</a>
