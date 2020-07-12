@@ -48,7 +48,8 @@ class AppServiceProvider extends ServiceProvider
 
             $prev = $i;
             $i--;
-            array_push($seasons, $series);
+            if(count($series) > 0)
+                array_push($seasons, $series);
         }
 
         $res = array();

@@ -35,11 +35,11 @@ Route::get('/store-results', 'StandingsController@fetchCircuit');
 Route::get('/steam/check', 'SteamController@check');
 Route::get('/driver', 'DriverController@info');
 
-Route::get('/{tier}/{season}/standings', 'StandingsController@fetchStandings')
+Route::get('/{code}/{tier}/{season}/standings', 'StandingsController@fetchStandings')
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
-Route::get('/{tier}/{season}/races', 'StandingsController@fetchRaces')
+Route::get('/{code}/{tier}/{season}/races', 'StandingsController@fetchRaces')
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
-Route::get('/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceResults')
+Route::get('/{code}/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceResults')
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$', 'round' => '^[-+]?\d*\.?\d*$']);
 
 Route::put('/position', 'ResultsController@updatePosition');

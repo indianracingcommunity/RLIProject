@@ -14,6 +14,7 @@ use App\Race;
 use App\Result;
 use App\Driver;
 use App\Points;
+use App\Series;
 
 class ResultsController extends Controller
 {
@@ -91,11 +92,13 @@ class ResultsController extends Controller
         ]);
     }
 
-    public function fetchRaceResults($tier, $season, $round) {
+    public function fetchRaceResults($code, $tier, $season, $round) {
+        $series = Series::where("code", $code)->firstOrFail();
         $points = Points::all()->toArray();
         $race = Race::whereHas('season',
-            function (Builder $query) use ($tier, $season) {
+            function (Builder $query) use ($series, $tier, $season) {
                 $query->where([
+                    ['series', $series['id']],
                     ['tier', $tier],
                     ['season', $season]
                 ]);

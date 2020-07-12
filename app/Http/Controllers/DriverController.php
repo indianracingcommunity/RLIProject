@@ -8,6 +8,7 @@ use App\User;
 use App\Report;
 use App\Constructor;
 use App\Result;
+use App\Series;
 
 class DriverController extends StandingsController
 {
@@ -18,15 +19,17 @@ class DriverController extends StandingsController
     if($number === false)
       return response()->json([]);
 
+    $code = $request->query('code');
     $tier = $request->query('tier');
     $season = $request->query('season');
+    $series = Series::where("code", $code)->first();
 
     $driver = Driver::where('drivernumber', $number)
                     ->select('id', 'name', 'drivernumber', 'team')
                     ->first();
     $constructor = 5;
 
-    if($driver == null)
+    if($driver == null || $series == null)
       return response()->json([]);
 
     $points = 0;
@@ -38,7 +41,7 @@ class DriverController extends StandingsController
     $found = false;
     if(!($tier === null || $season === null))
     {
-      $cs = $this->computeStandings($tier, $season);
+      $cs = $this->computeStandings($series['id'], $tier, $season);
       if($cs['code'] == 200)
       {
         $driver_ind = array_search($driver['id'], array_column($cs['drivers'], "id"));

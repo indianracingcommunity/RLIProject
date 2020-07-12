@@ -10,6 +10,7 @@ use App\Season;
 use App\Race;
 use App\Circuit;
 use App\Points;
+use App\Series;
 
 class StandingsController extends Controller
 {
@@ -26,8 +27,10 @@ class StandingsController extends Controller
         return $query;
     }
 
-    public function fetchRaces($tier, $season) {
+    public function fetchRaces($code, $tier, $season) {
+        $series = Series::where("code", $code)->firstOrFail();
         $season = Season::where([
+            ['series', $series['id']],
             ['tier', $tier],
             ['season', $season]
         ])->firstOrFail();
@@ -69,8 +72,9 @@ class StandingsController extends Controller
         return $maxi;
     }
 
-    protected function computeStandings($tier, $season) {
+    protected function computeStandings($series, $tier, $season) {
         $season = Season::where([
+            ['series', $series],
             ['tier', $tier],
             ['season', $season]
         ])->first();
@@ -112,9 +116,12 @@ class StandingsController extends Controller
         );
     }
 
-    public function fetchStandings($tier, $season) {
-        $cs = $this->computeStandings($tier, $season);
+    public function fetchStandings($code, $tier, $season) {
+        $series = Series::where("code", $code)->first();
+        if($series == null)
+            return abort(404);
 
+        $cs = $this->computeStandings($series['id'], $tier, $season);
         if($cs['code'] != 200)
             return abort(404);
 
