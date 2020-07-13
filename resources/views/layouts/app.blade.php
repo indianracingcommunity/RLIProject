@@ -137,6 +137,11 @@
                         {{session()->get('error')}}
                     </div>
                     @endif
+                    @if (session()->has('success'))
+                    <div class="font-semibold text-center text-green-800 bg-blue-100 rounded-md p-6">
+                        {{session()->get('success')}}
+                    </div>
+                    @endif
                     @yield('content')
                 </main>
                 @endauth

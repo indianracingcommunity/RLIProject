@@ -145,7 +145,7 @@ class SignupsController extends Controller
 
           $signup->save();
           session()->flash('success',"Signup Updated");
-          return redirect('/home');
+          return redirect('/signup');
        }
        else
        {
