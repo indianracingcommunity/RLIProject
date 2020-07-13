@@ -80,7 +80,9 @@ class SignupsController extends Controller
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
         $signup->save();
-        return redirect('/home');
+        
+        session()->flash('success',"Signup Submitted");
+        return redirect('/signup');
     }
 
     public function update(Signup $signup)
