@@ -153,6 +153,17 @@ class SignupsController extends Controller
        }
     }
 
+   public function viewsignups()
+   {
+     $data =  Signup::all()->load('user','season');
+     
+     return view('admin.signups')
+     ->with('data',$data);
+   }
+
+
+
+
 
     public function temp()
     {

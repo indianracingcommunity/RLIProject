@@ -35,4 +35,9 @@ class Season extends Model
 
         return $lm;
     }
+
+    public function signups()
+    {
+        return $this->hasMany('App\Signup');
+    }
 }

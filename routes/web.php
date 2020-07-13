@@ -56,6 +56,9 @@ Route::get('/home/admin/user/{user}','DriverController@viewdetails');
 Route::get('/home/admin/user/edit/{user}','DriverController@viewedit');
 Route::post('/home/admin/user/edit/save/{user}','DriverController@saveedit');
 
+//Signups
+Route::get('/home/admin/view-signups','SignupsController@viewsignups');
+
 Route::get('/home/admin/report','DriverController@viewreports');
 Route::get('home/admin/report/{report}/details','DriverController@reportdetails');
 Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict');

@@ -51,5 +51,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Driver');
     }
 
+    public function signups()
+    {
+        return $this->hasOne('App\Signup');
+    }
+
 
 }
