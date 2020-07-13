@@ -24,7 +24,7 @@ class SteamLoginController extends AbstractSteamLoginController
 
                             ]);
 
-        return redirect('/home');                    
+        return redirect('/user/profile');                    
         
     }
 }
