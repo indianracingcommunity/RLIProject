@@ -20,9 +20,9 @@ td {
 }
 </style>
 @section('content')
-<div class="container w-5/6 mx-auto">
+<div class="w-11/12">
   <div class="flex">
-    <div class="w-1/4"> 
+    <div class="w-1/4">
     <div class="border rounded-md p-3">
     <div class="text-4xl font-semibold text-purple-700 leading-none mb-4">
     {{$results[0]['race']['circuit']['name']}}
@@ -79,7 +79,7 @@ td {
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
          <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
-        @else 
+        @else
          <td class="font-semibold rounded-lg border border-white bg-gray-200"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
@@ -96,13 +96,13 @@ td {
     @else
         <!-- <tr>
           <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
-          
+
           @if ($results[$i]['driver']['user_id'] == Auth::id())
           <td class="font-extrabold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
-          @else 
+          @else
           <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
           @endif
-          
+
           <td class="font-semibold rounded-lg border border-white">{{$results[$i]['constructor']['name']}}</td>
           <td class="font-semibold rounded-lg border border-white">{{$results[$i]['points']}}</td>
         </tr> -->
@@ -114,7 +114,7 @@ td {
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
          <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
-        @else 
+        @else
          <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
         @endif
         @if ($results[$i]['driver']['user_id'] == Auth::id())
@@ -132,12 +132,12 @@ td {
   @endfor
   </tbody>
   </table>
-  </div>          
+  </div>
 </div>
-  
+
 @endsection
 
 
-        
 
-     
+
+

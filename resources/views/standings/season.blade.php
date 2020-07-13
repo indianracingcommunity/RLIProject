@@ -49,7 +49,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       </div>
       @endif
       @if($season['season'] - (int)$season['season'] < 0.75)
-      <div class="bg-gray-100 rounded-md px-4 py-2 my-4 leading-none">
+      <div class="rounded-md py-2 my-4 leading-none">
          <div class="text-sm font-semibold my-2 leading-none">
             Constructor Standings
          </div>
@@ -120,7 +120,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          }
          @endphp
          @if($k == 0)
-         <div class="card1 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+         <div class="card1 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
             <div class="text-4xl font-bold">
                1st
             </div>
@@ -134,7 +134,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             </div>
          </div>
          @elseif($k == 1)
-         <div class="card2 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+         <div class="card2 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
             <div class="text-4xl font-bold">
                2nd
             </div>
@@ -148,7 +148,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             </div>
          </div>
          @elseif($k == 2)
-         <div class="card3 mr-8 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+         <div class="card3 ml-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
             <div class="text-4xl font-bold">
                3rd
             </div>
@@ -164,10 +164,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          @endif
          @endfor
       </div>
-      <div class="text-s font-semibold">
+      <div class="text-s font-semibold mx-2">
          Drivers' Standings
       </div>
-      <table class="table">
+      <table class="table mx-2">
          <thead>
             <tr>
                <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
@@ -219,10 +219,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          </tbody>
       </table>
       @if ($reservecount != 0)
-      <div class="font-semibold mt-8">
+      <div class="font-semibold mt-8 mx-2">
          Reserves` Standings
       </div>
-      <table class="table">
+      <table class="table mx-2">
          <thead>
             <tr>
                <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>

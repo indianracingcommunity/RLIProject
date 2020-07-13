@@ -16,7 +16,7 @@
             <nav class="flex justify-between border-b fixed bg-white w-screen z-10 py-2">
                 <div class="flex items-center flex-shrink-0">
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
-                        <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Community</span> </a>
+                        <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span> </a>
                     </div>
                     <div class=" mx-2 flex items-center flex-shrink-0">
                         <a  class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
@@ -26,7 +26,7 @@
                             <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                         </button>
                         <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 17.1rem;">
-                            @foreach($topBarSeasons as $series) 
+                            @foreach($topBarSeasons as $series)
                                 <li class="dropdown">
                                     <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                     <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 17rem; width: 7.5rem;">
@@ -52,7 +52,7 @@
                             <span>🏁 Race Results</span>
                         </button>
                         <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 11.2rem;">
-                            @foreach($topBarSeasons as $series) 
+                            @foreach($topBarSeasons as $series)
                                 <li class="dropdown">
                                     <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                     <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 11.1rem; width: 7.5rem;">

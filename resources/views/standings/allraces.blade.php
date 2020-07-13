@@ -7,16 +7,17 @@ th {
 padding: 10px;
 text-align: left;
 }
+
 td {
 padding-left:10px;
 }
 </style>
 @section('content')
-<div class="container mx-auto w-5/6">
+<div class="container mx-auto w-11/12">
    <div class="flex">
       <div class="w-1/4">
          @if($season['season'] == (int)$season['season'])
-         <div class="text-4xl font-bold text-gray-800 leading-none">
+         <div class="text-4xl font-bold text-gray-800 leading-tight">
             <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
          </div>
          <div class="text-2xl font-semibold text-gray-700 leading-none">
@@ -53,7 +54,7 @@ padding-left:10px;
                         <div class="flex items-center flex-shrink-0">
                            {{$value->circuit->name}}
                         </div class="flex items-center flex-shrink-0">
-                        
+
                      </div>
                      <div>
                         <a href="/{{$code}}/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
