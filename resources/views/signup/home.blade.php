@@ -434,9 +434,6 @@
           document.getElementById("time3").value = "";
           document.getElementById("drivernum").value = "";
           document.getElementById("speedlinkid").value = "";
-          document.getElementById("preference1").value = "";
-          document.getElementById("preference2").value = "";
-          document.getElementById("preference3").value = "";
           document.getElementById("formid").action = "/signup/store";
           document.getElementById("ttevidenceid1").style.display = "none";
           document.getElementById("ttevidenceid2").style.display = "none";
@@ -465,9 +462,6 @@
       document.getElementById("time3").value = "";
       document.getElementById("drivernum").value = "";
       document.getElementById("speedlinkid").value = "";
-      document.getElementById("preference1").value = "";
-      document.getElementById("preference2").value = "";
-      document.getElementById("preference3").value = "";
       document.getElementById("formid").action = "/signup/store";
       document.getElementById("ttevidenceid1").style.display = "none";
       document.getElementById("ttevidenceid2").style.display = "none";
