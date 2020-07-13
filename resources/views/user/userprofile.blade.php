@@ -140,8 +140,9 @@
                         if(isset(Auth::user()->location))
                         {
                             $data = Auth::user()->location;
-                            $city = preg_replace('/^([^,]*).*$/', '$1', $data);
-                            $state =   preg_replace('/^[^,]*,\s*/', '', $data);
+                            $arr = explode('~', $data);
+                            $city = $arr[0];
+                            $state = $arr[1];
                         }
                         else{$city = ""; $state="";}
                         @endphp

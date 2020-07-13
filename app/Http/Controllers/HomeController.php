@@ -40,7 +40,7 @@ class HomeController extends Controller
     public function savedetails(Request $request,User $user)
     {
        // dd($request->request);
-        $location = $request->city.", ".$request->state;
+        $location = $request->city."~".$request->state;
         if(isset($request->game))
         {
             $games = serialize($request->game);
