@@ -601,11 +601,12 @@
         document.getElementById("time3").style = "";
       }
       
-      var seasonid = document.getElementById("seasonnum").value
+      var seasonid = document.getElementById("seasonnum").value;
       var flag = 0;
       for(i=0;i<signup.length;i++){
         if(seasonid == signup[i].season){
           flag = 1;
+          break;
         }
       }
 
@@ -708,7 +709,14 @@
         document.getElementById("speedlinkid").style = "";
       }
 
-      if (preference1.localeCompare(preference2) == 0 || preference1.localeCompare(preference3) == 0 || preference2.localeCompare(preference3) == 0){
+      var data = <?php echo json_encode($seasons); ?>;
+      flag = 0;
+      for(i=0;i<data.length;i++){ 
+        if(seasonid == data[i].id){
+          if(data[i].status == 0.2){
+            flag = 1;
+        }}}
+      if ((preference1.localeCompare(preference2) == 0 || preference1.localeCompare(preference3) == 0 || preference2.localeCompare(preference3) == 0) && flag != 1){
         document.getElementById("errorteam").innerHTML = "We know you love your supporting team but sometimes world is not fair! <br> Enter different preference 1, preference 2 and preference 3";
         document.getElementById("preference1").style.borderColor = "#f56565";
         document.getElementById("preference2").style.borderColor = "#f56565";
