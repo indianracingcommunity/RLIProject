@@ -398,28 +398,29 @@
             document.getElementById("radio3").checked = false;
           }
           
-          
-          if (PHPUnserialize.unserialize(signup[i].assists) != null){
-            var assist = PHPUnserialize.unserialize(signup[i].assists);
-              document.getElementById("assist1").checked = false;
-              document.getElementById("assist2").checked = false;
-              document.getElementById("assist3").checked = false;
-              document.getElementById("assist4").checked = false;
-            for(var j in assist) {
-              
-              if (assist[j] == document.getElementById("assist1").value)
-                document.getElementById("assist1").checked = true;
-              if (assist[j] == document.getElementById("assist2").value)
-                document.getElementById("assist2").checked = true;
-              
-              if (assist[j] == document.getElementById("assist3").value)
-                document.getElementById("assist3").checked = true;
-              
-              if (assist[j] == document.getElementById("assist4").value)
-                document.getElementById("assist4").checked = true;
+          if (signup[i].assists != ""){
+            if (PHPUnserialize.unserialize(signup[i].assists) != null){
+              var assist = PHPUnserialize.unserialize(signup[i].assists);
+                document.getElementById("assist1").checked = false;
+                document.getElementById("assist2").checked = false;
+                document.getElementById("assist3").checked = false;
+                document.getElementById("assist4").checked = false;
+              for(var j in assist) {
+                
+                if (assist[j] == document.getElementById("assist1").value)
+                  document.getElementById("assist1").checked = true;
+                if (assist[j] == document.getElementById("assist2").value)
+                  document.getElementById("assist2").checked = true;
+                
+                if (assist[j] == document.getElementById("assist3").value)
+                  document.getElementById("assist3").checked = true;
+                
+                if (assist[j] == document.getElementById("assist4").value)
+                  document.getElementById("assist4").checked = true;
+                
+              }
               
             }
-            
           }
         }
         else{
