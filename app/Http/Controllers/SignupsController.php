@@ -77,7 +77,14 @@ class SignupsController extends Controller
         $signup->ttevidence1 = $evidence1;
         $signup->ttevidence2 = $evidence2;
         $signup->ttevidence3 = $evidence3;
+        if(isset($prefrence))
+        {
         $signup->carprefrence = $prefrence;
+        }
+        else
+        {
+        $signup->carprefrence = '';
+        }
         $signup->attendance = $attendance;
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
@@ -113,6 +120,7 @@ class SignupsController extends Controller
            if(isset($data['pref1']))
            {
            $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+           $signup->carprefrence = $prefrence;
            }
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
@@ -120,7 +128,7 @@ class SignupsController extends Controller
         $signup->timetrial2 = $data['t2'];
         $signup->timetrial3 = $data['t3'];
         $signup->attendance = $attendance;
-        $signup->carprefrence = $prefrence;
+       
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
 
