@@ -27,7 +27,8 @@ class MakeSeasonIdForiegnInSignupsTable extends Migration
     public function down()
     {
         Schema::table('signups', function (Blueprint $table) {
-            $table->dropForeign('season');
+            $table->dropForeign('signups_season_foreign');
+            $table->dropIndex('signups_season_foreign');
         });
     }
 }
