@@ -23,11 +23,15 @@
   }
 </style>
 <div class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full">
+  <div class="font-semibold text-left text-blue-800 shadow-lg bg-blue-200 rounded-md px-6 py-4 profileAlert mb-4">
+  <div class="text-2xl">Welcome to League Sign Ups<br></div><i class="fa fa-exclamation-circle" aria-hidden="true"></i>  Your entries are <strong>Editable</strong> until Sign ups close or <i>Thanos snaps his fingers.</i>
+  </div>
   <form id="formid" class="w-1/2 sm:w-auto md:w-full lg:w-full xl:w-full bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" enctype="multipart/form-data" onsubmit="return validate()">
     @csrf
+    
     <div id="restform">
       <label class="block text-gray-700 text-xl font-bold mb-2">
-        League Sign Up
+        Sign Up Details
       </label>
       
    
