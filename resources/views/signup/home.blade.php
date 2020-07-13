@@ -365,7 +365,7 @@
 
     refill = function(){
       var seasonid = document.getElementById("seasonnum").value
-      for(i=0;i<signup.length;i++){
+      for(var i=0;i<signup.length;i++){
         season_id_selected = i;
         if(seasonid == signup[i].season){
           document.getElementById("time1").value = signup[i].timetrial1;
@@ -426,6 +426,7 @@
               
             }
           }
+          break;
         }
         else{
           document.getElementById("time1").value = "";
@@ -452,8 +453,12 @@
     
     var signup = <?php echo json_encode($signup); ?>;
     var season_id_selected = 0;
+    
     if(signup != "")
-      javascript:refill();
+      {
+        javascript:refill();
+        console.log(signup);
+      }
     else{
       document.getElementById("time1").value = "";
       document.getElementById("time2").value = "";
