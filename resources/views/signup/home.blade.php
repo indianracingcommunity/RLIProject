@@ -366,6 +366,7 @@
     refill = function(){
       var seasonid = document.getElementById("seasonnum").value
       for(i=0;i<signup.length;i++){
+        season_id_selected = i;
         if(seasonid == signup[i].season){
           document.getElementById("time1").value = signup[i].timetrial1;
           document.getElementById("time2").value = signup[i].timetrial2;
@@ -382,7 +383,6 @@
             document.getElementById("ttevidenceid1").style.display = "inline-block";
             document.getElementById("ttevidenceid2").style.display = "inline-block";
             document.getElementById("ttevidenceid3").style.display = "inline-block";
-            season_id_selected = i;
             document.getElementById("imglink1").href = "/storage/" + signup[i].ttevidence1;
             document.getElementById("imglink2").href = "/storage/" + signup[i].ttevidence2;
             document.getElementById("imglink3").href = "/storage/" + signup[i].ttevidence3;
@@ -451,7 +451,7 @@
     }
     
     var signup = <?php echo json_encode($signup); ?>;
-    var season_id_selected;
+    var season_id_selected = 0;
     if(signup != "")
       javascript:refill();
     else{
@@ -596,7 +596,15 @@
         document.getElementById("time3").style = "";
       }
       
-      if (signup == ""){
+      var seasonid = document.getElementById("seasonnum").value
+      var flag = 0;
+      for(i=0;i<signup.length;i++){
+        if(seasonid == signup[i].season){
+          flag = 1;
+        }
+      }
+
+      if (flag == 0){
         if (imaget1 == ""){
           document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt1").style.borderColor = "#f56565";
@@ -616,9 +624,8 @@
           document.getElementById("errorimgt1").innerHTML = "<br><br>";
           document.getElementById("imgdivt1").style = "";
         }
-      }
       
-      if (signup == ""){
+      
         if (imaget2 == ""){
           document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt2").style.borderColor = "#f56565";
@@ -638,9 +645,7 @@
           document.getElementById("errorimgt2").innerHTML = "<br><br>";
           document.getElementById("imgdivt2").style = "";
         }
-      }
       
-      if (signup == ""){
         if (imaget3 == ""){
           document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt3").style.borderColor = "#f56565";
@@ -661,6 +666,7 @@
           document.getElementById("imgdivt3").style = "";
         }
       }
+      
 
       if (seas == ""){
         document.getElementById("errorseason").innerHTML = "It is fun to go in the past but we dont have time machine! <br> Select Season 5 or later";
