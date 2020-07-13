@@ -50,8 +50,10 @@ class SignupsController extends Controller
            {
              $attendance = 0;
            }
+           if(isset($data['pref1']))
+           {
            $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
-
+           }
            if(isset($data['assists']))
            {
             $assists = serialize($data['assists']);
@@ -108,7 +110,10 @@ class SignupsController extends Controller
            {
              $assists = '' ;
            }
-        $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+           if(isset($data['pref1']))
+           {
+           $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+           }
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
         $signup->timetrial1 = $data['t1'];
