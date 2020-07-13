@@ -90,7 +90,7 @@ class SignupsController extends Controller
         $signup->drivernumber = $data['drivernumber'];
         $signup->save();
         
-        session()->flash('success',"Signup Submitted");
+        session()->flash('success',"Signup Submitted Successfully");
         return redirect('/signup');
     }
 
@@ -159,7 +159,7 @@ class SignupsController extends Controller
         }
 
           $signup->save();
-          session()->flash('success',"Signup Updated");
+          session()->flash('success',"Signup Updated Successfully");
           return redirect('/signup');
        }
        else
