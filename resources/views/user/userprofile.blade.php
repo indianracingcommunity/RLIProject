@@ -278,7 +278,7 @@
                             <span class="errormsg errormsgPlatform">Please select atleast 1.</span>
                         </div>
                         <div>
-                            <label for="games" class="font-semibold text-gray-800">What Controler do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="games" class="font-semibold text-gray-800">What Controller do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 <?php
                                   if(isset(Auth::user()->device))

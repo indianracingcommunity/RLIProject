@@ -106,7 +106,7 @@ $device = unserialize($user->device);
             @endif
             @if ($user->motorsport != NULL)
             <tr>
-                <td class="font-semibold text-gray-600">MOTOSPORTS FOLLOWED</div>
+                <td class="font-semibold text-gray-600">MOTORSPORTS FOLLOWED</div>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->motorsport}}</td>
             </tr>
             @endif
