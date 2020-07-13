@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Session;
 use App\Season;
 use App\Series;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +30,8 @@ class AppServiceProvider extends ServiceProvider
     {         
         $all_seasons = Season::where('status', '>=', 1)
                     ->orderBy('series', 'asc')
-                    ->orderBy('season', 'desc')
                     ->orderBy('tier', 'asc')
+                    ->orderBy('season', 'desc')
                     ->get()
                     ->toArray();
 
@@ -61,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
             for($j = 0; $j < count($seasons[$i]); $j++)
             {
                 $seq = array();
-                while($j < count($seasons[$i]) && $seasons[$i][$j]['season'] == $seasons[$i][$prev]['season'])
+                while($j < count($seasons[$i]) && $seasons[$i][$j]['tier'] == $seasons[$i][$prev]['tier'])
                 {
                     array_push($seq, $seasons[$i][$j]);
                     $j++;
@@ -76,6 +77,9 @@ class AppServiceProvider extends ServiceProvider
             array_push($res, array("name" => $series_n, "tier" => $tier));
         }
 
-        session(['topBarSeasons' => $res]);
+        //session(['topBarSeasons' => $res]);
+        view()->composer('*', function(View $view) use ($res) {
+            $view->with('topBarSeasons', $res);
+        });
     }
 }
