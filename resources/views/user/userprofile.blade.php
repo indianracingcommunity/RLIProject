@@ -182,38 +182,42 @@
                         <div>
                             <label for="youtube" class="font-semibold text-gray-800"><i class="fab fa-youtube text-red-500 mr-1"></i>Youtube<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="youtube" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
+                        <input maxlength="40" type="text" name="youtube" placeholder="https://www.youtube.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 youtubeLink" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
+                        <span class="errormsg">Enter a valid link</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="instagram" class="font-semibold text-gray-800"><i class="fab fa-instagram text-indigo-500 mr-1"></i>Instagram<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="instagram" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
+                        <input maxlength="40" type="text" name="instagram" placeholder="https://www.instagram.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 instaLink" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
+                        <span class="errormsg">Enter a valid link</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitch" class="font-semibold text-gray-800"><i class="fab fa-twitch text-purple-700 mr-1"></i>Twitch<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="twitch" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
+                        <input maxlength="40" type="text" name="twitch" placeholder="https://www.twitch.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitchLink" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
+                        <span class="errormsg">Enter a valid link</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-500 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="twitter" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
+                        <input maxlength="40" type="text" name="twitter" placeholder="https://www.twitter.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitterLink" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
+                        <span class="errormsg">Enter a valid link</span>
                     </div>
 
                     <div class="mb-4">
                         <div>
                             <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>Playstation Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="psn" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+                        <input maxlength="40" type="text" name="psn" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>XBox Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="xbox" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                        <input maxlength="40" type="text" name="xbox" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
                     </div>
                 </div>
                 </div>
@@ -340,6 +344,44 @@
 
     $( document ).ready(function() {
         $('#restfieldsid').hide();
+
+        $('.youtubeLink').change(function(event) {
+            $(this).siblings(".errormsg").hide();
+
+            var linkCheck = new RegExp(/^https:\/\/www.youtube.com\/.+/);
+            var linkValid = linkCheck.test($(this).val());
+            if(linkValid == false){
+                $(this).val('');
+                $(this).siblings(".errormsg").show('slow/400/fast', function() {});
+            }
+        });
+        $('.instaLink').change(function(event) {
+            $(this).siblings(".errormsg").hide();
+            var linkCheck = new RegExp(/^https:\/\/www.instagram.com\/.+/);
+            var linkValid = linkCheck.test($(this).val());
+            if(linkValid == false){
+                $(this).val('');
+                $(this).siblings(".errormsg").show('slow/400/fast', function() {});
+            }
+        });
+        $('.twitterLink').change(function(event) {
+            $(this).siblings(".errormsg").hide();
+            var linkCheck = new RegExp(/^https:\/\/www.twitter.com\/.+/);
+            var linkValid = linkCheck.test($(this).val());
+            if(linkValid == false){
+                $(this).val('');
+                $(this).siblings(".errormsg").show('slow/400/fast', function() {});
+            }
+        });
+        $('.twitchLink').change(function(event) {
+            $(this).siblings(".errormsg").hide();
+            var linkCheck = new RegExp(/^https:\/\/www.twitch.com\/.+/);
+            var linkValid = linkCheck.test($(this).val());
+            if(linkValid == false){
+                $(this).val('');
+                $(this).siblings(".errormsg").show('slow/400/fast', function() {});
+            }
+        });
 
         $('.nationalityOption').change(function(event) {
             $('.errormsgSubmit').hide();
