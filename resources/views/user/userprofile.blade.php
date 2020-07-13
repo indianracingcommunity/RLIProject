@@ -140,18 +140,19 @@
                         if(isset(Auth::user()->location))
                         {
                             $data = Auth::user()->location;
-                            $city = preg_replace('/^([^,]*).*$/', '$1', $data);
-                            $state =   preg_replace('/^[^,]*,\s*/', '', $data);
+                            $arr = explode('~', $data);
+                            $city = $arr[0];
+                            $state = $arr[1];
                         }
                         else{$city = ""; $state="";}
                         @endphp
 
-                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value="{{$city}}" >
+                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value={{$city}} >
                         <span class="errormsg errormsgCity">Please enter your City.</span>
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
+                            <label for="State" class="font-semibold text-gray-800">State/Country<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <input maxlength="30" type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
                         <span class="errormsg errormsgState">Please enter your State.</span>
@@ -182,28 +183,28 @@
                         <div>
                             <label for="youtube" class="font-semibold text-gray-800"><i class="fab fa-youtube text-red-500 mr-1"></i>Youtube<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="youtube" placeholder="https://www.youtube.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 youtubeLink" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
+                        <input type="text" name="youtube" placeholder="https://www.youtube.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 youtubeLink" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
                         <span class="errormsg">Enter a valid link</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="instagram" class="font-semibold text-gray-800"><i class="fab fa-instagram text-indigo-500 mr-1"></i>Instagram<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="instagram" placeholder="https://www.instagram.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 instaLink" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
+                        <input maxlength="100" type="text" name="instagram" placeholder="https://www.instagram.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 instaLink" value='@if(isset(Auth::user()->instagram)) {{Auth::user()->instagram}} @endif'>
                         <span class="errormsg">Enter a valid link</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitch" class="font-semibold text-gray-800"><i class="fab fa-twitch text-purple-700 mr-1"></i>Twitch<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="twitch" placeholder="https://www.twitch.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitchLink" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
+                        <input maxlength="100" type="text" name="twitch" placeholder="https://www.twitch.tv/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitchLink" value='@if(isset(Auth::user()->twitch)) {{Auth::user()->twitch}} @endif'>
                         <span class="errormsg">Enter a valid link</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="twitter" class="font-semibold text-gray-800"><i class="fab fa-twitter text-blue-500 mr-1"></i>Twitter<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="twitter" placeholder="https://www.twitter.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitterLink" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
+                        <input maxlength="100" type="text" name="twitter" placeholder="https://www.twitter.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitterLink" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
                         <span class="errormsg">Enter a valid link</span>
                     </div>
 
@@ -313,7 +314,7 @@
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input maxlength="30" type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
+                            <input maxlength="100" type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
                             <span class="errormsg errormsgDeviceName">Please enter device details.</span>
                         </div>
                     </div>
@@ -375,7 +376,7 @@
         });
         $('.twitchLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
-            var linkCheck = new RegExp(/^https:\/\/www.twitch.com\/.+/);
+            var linkCheck = new RegExp(/^https:\/\/www.twitch.tv\/.+/);
             var linkValid = linkCheck.test($(this).val());
             if(linkValid == false){
                 $(this).val('');
