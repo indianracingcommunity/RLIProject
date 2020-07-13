@@ -138,7 +138,7 @@
                     </div>
                     @endif
                     @if (session()->has('success'))
-                    <div class="font-semibold text-center text-green-800 bg-blue-100 rounded-md p-6">
+                    <div class="font-semibold text-center text-green-800 bg-green-200 rounded-md px-6 py-3 mb-3">
                         {{session()->get('success')}}
                     </div>
                     @endif
