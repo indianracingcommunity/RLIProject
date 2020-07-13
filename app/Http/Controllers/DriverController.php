@@ -122,7 +122,7 @@ class DriverController extends StandingsController
 
   public function reportdetails(Report $report)
   {
-    return view('admin.reportdetails')->with('report',$report);
+    return view('admin.reportdetails')->with('report', $report);
   }
 
   public function saveverdict(Report $report)
@@ -133,14 +133,13 @@ class DriverController extends StandingsController
     $report->resolved=1;
     $report->save();
     return redirect()->back();
-
   }
 
   public function allotuser(User $id)
   {
     return view('admin.allot')
-    ->with('user',$id)
-    ->with('team',Constructor::all());
+            ->with('user',$id)
+            ->with('team',Constructor::all());
   }
 
   public function saveallotment()

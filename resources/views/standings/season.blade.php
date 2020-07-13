@@ -61,15 +61,19 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                </tr>
             </thead>
             <tbody>
-               @for ($i = 0 ; $i < $ccount; $i++)
-               <tr class="cursor-pointer">
-                  <td class="font-semibold rounded-lg border border-white">
-                     {{$cres[$i]['name']}}
-                  </td>
-                  <td class="font-semibold rounded-lg border border-white">
-                     {{$cres[$i]['points']}}
-                  </td>
-               </tr>
+               @for ($i = 0; $i < $ccount; $i++)
+                  @php
+                     if($cres[$i]['name'] == 'Reserve')
+                        continue;
+                  @endphp
+                  <tr class="cursor-pointer">
+                     <td class="font-semibold rounded-lg border border-white">
+                        {{$cres[$i]['name']}}
+                     </td>
+                     <td class="font-semibold rounded-lg border border-white">
+                        {{$cres[$i]['points']}}
+                     </td>
+                  </tr>
                @endfor
             </tbody>
          </table>
