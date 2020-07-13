@@ -151,7 +151,7 @@
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="State" class="font-semibold text-gray-800">State<span class="text-red-600 ml-2">●</span></label>
+                            <label for="State" class="font-semibold text-gray-800">State/Country<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <input maxlength="30" type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
                         <span class="errormsg errormsgState">Please enter your State.</span>
@@ -313,7 +313,7 @@
                             <div>
                                 <label for="State" class="font-semibold text-gray-800">Device name of controller or wheel<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             </div>
-                            <input maxlength="30" type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
+                            <input maxlength="100" type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
                             <span class="errormsg errormsgDeviceName">Please enter device details.</span>
                         </div>
                     </div>
