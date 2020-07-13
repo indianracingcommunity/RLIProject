@@ -147,7 +147,7 @@
                         else{$city = ""; $state="";}
                         @endphp
 
-                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value={{$city}} >
+                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value="{{$city}}" >
                         <span class="errormsg errormsgCity">Please enter your City.</span>
                     </div>
                     <div class="mb-4">
