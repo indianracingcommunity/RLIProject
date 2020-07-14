@@ -171,9 +171,11 @@ class SignupsController extends Controller
    public function viewsignups()
    {
      $data =  Signup::all()->load('user','season')->toArray();
-    // dd($data);
+    $season = Season::all();
+  
      return view('admin.signups')
-     ->with('data',$data);
+     ->with('data',$data)
+     ->with('season',$season);
    }
 
 
