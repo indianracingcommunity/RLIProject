@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Discord;
+use App\Series;
+use Illuminate\Support\Facades\Log;
+
 class HomeController extends Controller
 {
     /**
@@ -32,9 +35,11 @@ class HomeController extends Controller
         $discord = new Discord();
         $userroles = $discord->getroles($user->discord_id);
        // dd($userroles);
-          return view('user.profiles')
+        $series = Series::all();
+        return view('user.profiles')
           ->with('user',$user)
-          ->with('roles',$userroles);
+          ->with('roles',$userroles)
+          ->with('series', $series);
     }
 
     public function savedetails(Request $request,User $user)
@@ -45,20 +50,29 @@ class HomeController extends Controller
         {
             $games = serialize($request->game);
             $user->games = $games;
-         
+        }
+        else
+        {
+            $user->games = '';
         }
         if(isset($request->platform))
         {
             $platformdata = serialize($request->platform);
-            $user->platform = $platformdata;
-        
+            $user->platform = $platformdata;        
+        }
+        else
+        {
+            $user->platform = '';
         }
 
         if(isset($request->device))
         {
             $devicedata = serialize($request->device);
-            $user->device = $devicedata;
-          
+            $user->device = $devicedata; 
+        }
+        else
+        {
+            $user->device = '';
         }
 
         $user-> mothertongue = $request->mothertongue;

@@ -1,9 +1,17 @@
 @extends('layouts.app')
 @section('content')
 @php
-$platform = unserialize($user->platform);
-$games = unserialize($user->games);
-$device = unserialize($user->device);
+    $platform = isset($user->platform) && $user->platform != '' ? unserialize($user->platform) : NULL;
+    $games = isset($user->games) && $user->games != '' ? unserialize($user->games) : NULL;
+    $userGames = [];
+    if($games != NULL){
+        foreach($series as $gameList){
+            if(in_array($gameList->code, $games)){
+                array_push($userGames,$gameList->name);
+            }
+        }
+    }
+    $device = isset($user->device) && $user->device != '' ? unserialize($user->device) : NULL;
 @endphp
 <div class="flex  my-8 ">
     <div class="flex flex-shrink-0">
@@ -116,10 +124,20 @@ $device = unserialize($user->device);
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->driversupport}}</td>
             </tr>
             @endif
-            @if ($user->devicename != NULL)
+            @if ($device != NULL)
             <tr>
                 <td class="font-semibold text-gray-600">DEVICE USED</div>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->devicename}}</td>
+            </tr>
+            @endif
+            @if ($games != NULL)
+            <tr>
+                <td class="font-semibold text-gray-600">GAMES</div>
+                <td class=" font-bold text-gray-800 px-4 py-1">
+                    @for($i=0;$i<count($userGames);$i++)
+                        {{$userGames[$i]}}@if($i<count($userGames)-1), @endif
+                    @endfor
+                </td>
             </tr>
             @endif
         </table>

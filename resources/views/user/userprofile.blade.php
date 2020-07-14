@@ -1,5 +1,27 @@
 @extends('layouts.app')
 @section('content')
+@php
+    $platform = isset(Auth::user()->platform) ? unserialize(Auth::user()->platform) : NULL;
+    $games = isset(Auth::user()->games) ? unserialize(Auth::user()->games) : NULL;
+    $device = isset(Auth::user()->device) ? unserialize(Auth::user()->device) : NULL;
+    
+    if(isset(Auth::user()->location))
+    {
+        $data = Auth::user()->location;
+        $arr = explode('~', $data);
+        if(count($arr)>1){
+            $city = $arr[0];
+            $state = $arr[1];
+        }else{
+            $city = $arr[0];
+            $state = '';
+        }
+    }
+    else{
+        $city = ""; $state="";
+    }
+
+@endphp
 
 <div class="container">
 <div class="font-semibold text-center text-orange-800 bg-orange-200 rounded-md p-6 profileAlert" style="display: none;">
@@ -35,6 +57,15 @@
         <div class="my-2">
             <div class="flex">
                 <div class=" font-semibold text-gray-800 mx-4 text-4xl font-bold">{{Auth::user()->name}}</div>
+            </div>
+            <div class="flex mb-1 mx-4">
+                @if($platform != NULL)
+                    @foreach ($platform as $value)
+                        <div class="border-2 border-black rounded font-semibold px-1 mr-1">
+                            {{$value}}
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -92,8 +123,7 @@
                         @php
                         $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
                         @endphp
-                    <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
-
+                        <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
                     @endfor
                 @else
                     <!-- {{$roles}} -->
@@ -144,22 +174,6 @@
                         <div>
                             <label for="City" class="font-semibold text-gray-800">City</label>
                         </div>
-                        @php
-                        if(isset(Auth::user()->location))
-                        {
-                            $data = Auth::user()->location;
-                            $arr = explode('~', $data);
-                            if(count($arr)>1){
-                                $city = $arr[0];
-                                $state = $arr[1];
-                            }else{
-                                $city = $arr[0];
-                                $state = '';
-                            }
-                        }
-                        else{$city = ""; $state="";}
-                        @endphp
-
                         <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 tildeNotValid" placeholder="Kolkata" value="{{$city}}" >
                         <span class="errormsg errormsgCity">Please enter your City.</span>
                     </div>
@@ -236,24 +250,11 @@
                 </div>
                 </div>
                 <div class="flex-grow-0 w-1/2 px-4">
-                        <?php
-                          if(isset(Auth::user()->games))
-                          {
-                              $games = unserialize(Auth::user()->games);
-                          }
-                          else
-                          {
-                             $games = NULL;
-                          }
-
-                        ?>
                     <div class="mb-4">
                         <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
                         <label for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
                     </div>
                     <div id="restfieldsid" style="display : block;">
-
-
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
@@ -265,18 +266,7 @@
                                 @endforeach
                             </div>
                             <span class="errormsg errormsgGame">Please select atleast 1.</span>
-
                         </div>
-                        <?php
-                        if(isset(Auth::user()->platform))
-                        {
-                           $platform = unserialize(Auth::user()->platform);
-                        }
-                        else
-                        {
-                            $platform = NULL;
-                        }
-                        ?>
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
@@ -298,16 +288,6 @@
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controller do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
-                                <?php
-                                    if(isset(Auth::user()->device))
-                                    {
-                                        $device = unserialize(Auth::user()->device);
-                                    }
-                                    else
-                                    {
-                                        $device = NULL;
-                                    }
-                                ?>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
                                     <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
                                     <label for="games" class="mr-2">Keyboard/Mouse</label>
@@ -419,6 +399,10 @@
                 $('#restfieldsid').show('slow/400/fast', function() {});
                 $('#deviceName').addClass('mandatory');
             }else{
+                $('.gameList').removeAttr('checked');
+                $('.platformList').removeAttr('checked');
+                $('.deviceList').removeAttr('checked');
+                $('#deviceName').val('');
                 $('#restfieldsid').hide('slow/400/fast', function() {});
                 $('#deviceName').removeClass('mandatory');
             }
