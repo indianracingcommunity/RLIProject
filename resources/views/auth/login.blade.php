@@ -4,7 +4,7 @@
 <div class="container mx-auto">
     <div class="w-1/3 mx-auto bg-gray-200 rounded-md p-8">
     <div class="px-3 bg-gray-800 mx-2 text-center text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
-                <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
+            <a href="/" class="flex ml-10 px-2 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
     </div>
     <div class="p-3 bg-red-200 text-center font-semibold rounded mx-2 my-4 text-red-700">
         Acess Denied!
