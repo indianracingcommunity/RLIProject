@@ -383,8 +383,7 @@
          var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi; 
          var regex = new RegExp(expression); 
          var speedTestUrl = $(this).val(); 
-         if (speedTestUrl.match(regex)) { 
-            $(this).val(''); 
+         if (speedTestUrl.match(regex)) {  
          } else { 
             $(this).val(''); 
          } 
