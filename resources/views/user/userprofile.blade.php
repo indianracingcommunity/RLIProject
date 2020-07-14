@@ -152,35 +152,35 @@
                         else{$city = ""; $state="";}
                         @endphp
 
-                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Kolkata" value="{{$city}}" >
+                        <input maxlength="30" type="text" name="city" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 tildeNotValid" placeholder="Kolkata" value="{{$city}}" >
                         <span class="errormsg errormsgCity">Please enter your City.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">State/Country<span class="text-red-600 ml-2">●</span></label>
                         </div>
-                        <input maxlength="30" type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="West Bengal" value="{{$state}}">
+                        <input maxlength="30" type="text" name="state" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700 tildeNotValid" placeholder="West Bengal" value="{{$state}}">
                         <span class="errormsg errormsgState">Please enter your State.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which motorsport do you follow?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="30" type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
+                        <input maxlength="100" type="text" name="motorsport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="F1" value="{{Auth::user()->motorsport}}">
                         <span class="errormsg errormsgMotersports">Please enter required details.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Which driver do you support?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="30" type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
+                        <input maxlength="100" type="text" name="driversupport" class="border mandatory shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Lando Norris" value="{{Auth::user()->driversupport}}">
                         <span class="errormsg errormsgDriver">Please enter required details.</span>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="30" type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
+                        <input maxlength="100" type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
                         <span class="errormsg errormsgIrc">Please enter required details.</span>
                     </div>
                     <div>
@@ -346,10 +346,16 @@
     var games = <?php echo json_encode($games); ?>;
     var platform = <?php echo json_encode($platform); ?>;
     var device = <?php echo json_encode($device); ?>;
-    console.log(games);
 
     $( document ).ready(function() {
         $('#restfieldsid').hide();
+
+        $('.tildeNotValid').keydown(function(event) {
+            var keyCode = (event.which) ? event.which : event.keyCode;
+            if(keyCode == 192){
+                return false;
+            }
+        });
 
         $('.youtubeLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
