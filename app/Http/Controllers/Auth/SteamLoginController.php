@@ -23,6 +23,8 @@ class SteamLoginController extends AbstractSteamLoginController
                        "steam_id" => $steamUser->steamId
 
                             ]);
+        
+        session()->flash('steamSuccess','Steam Profile Linked Successfully.');
 
         return redirect('/user/profile');                    
         

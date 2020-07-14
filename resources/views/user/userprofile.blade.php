@@ -11,6 +11,12 @@
     @php Session::forget('savedProfile'); @endphp
 </div>
 @endif
+@if(SESSION('steamSuccess'))
+<div class="font-semibold text-center text-green-800 bg-blue-100 rounded-md p-6" >
+    <i class="fa fa-check-circle" aria-hidden="true"></i> {{session('steamSuccess')}}
+    @php Session::forget('steamSuccess'); @endphp
+</div>
+@endif
 
 <style type="text/css">
     .errormsg{
@@ -95,12 +101,14 @@
             </div>
         </div>
         <div class="">
-            <form method="POST" action="setsteam/{{Auth::user()->id}}">
+            <form method="POST" @if ("{{Auth::user()->mothertongue}}" != "") action="setsteam/{{Auth::user()->id}}" @endif>
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
                 <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
-                <a href="/login/steam"> <img src="{{url('/img/steam.png')}}" alt=""> </a>
-                <span class="text-black-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account</span>
+                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" alt=""> </a>
+                <span class="text-black-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account.</span></br>
+                @if ("{{Auth::user()->mothertongue}}" == "")
+                <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>@endif
                 @endif
             </form>
         </div>

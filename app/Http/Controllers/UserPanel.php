@@ -35,7 +35,6 @@ class UserPanel extends Controller
         $data = request()->all();
         $user->steam_id=$data['steamid'];
         $user->save();
-        
         return redirect('/user/profile/'.$user->id);
     }
 
