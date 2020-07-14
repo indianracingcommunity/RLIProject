@@ -18,6 +18,7 @@ Route::get('joinus', 'WebsiteController@loadjoinus');
 Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
 //Route::get('standings', 'WebsiteController@loadstandings');
 Route::get('aboutus', 'WebsiteController@loadaboutus');
+Route::get('faq', 'WebsiteController@loadfaq');
 Route::get('login', 'WebsiteController@loadlogin');
 
 /* Exposing Image Manipulation API for Public

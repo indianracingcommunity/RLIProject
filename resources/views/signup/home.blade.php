@@ -388,9 +388,7 @@
          } else { 
             $(this).val(''); 
          } 
-
       });
-
    });
 
     refill = function(){
