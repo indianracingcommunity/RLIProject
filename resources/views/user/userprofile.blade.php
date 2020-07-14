@@ -291,14 +291,14 @@
                             <label for="games" class="font-semibold text-gray-800">What Controller do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 <?php
-                                  if(isset(Auth::user()->device))
-                                  {
-                                      $device = unserialize(Auth::user()->device);
-                                  }
-                                  else
-                                  {
-                                      $device = NULL;
-                                  }
+                                    if(isset(Auth::user()->device))
+                                    {
+                                        $device = unserialize(Auth::user()->device);
+                                    }
+                                    else
+                                    {
+                                        $device = NULL;
+                                    }
                                 ?>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
                                     <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
