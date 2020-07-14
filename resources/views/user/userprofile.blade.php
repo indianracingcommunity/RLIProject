@@ -141,8 +141,13 @@
                         {
                             $data = Auth::user()->location;
                             $arr = explode('~', $data);
-                            $city = $arr[0];
-                            $state = $arr[1];
+                            if(count($arr)>1){
+                                $city = $arr[0];
+                                $state = $arr[1];
+                            }else{
+                                $city = $arr[0];
+                                $state = '';
+                            }
                         }
                         else{$city = ""; $state="";}
                         @endphp
