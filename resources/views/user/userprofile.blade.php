@@ -383,6 +383,10 @@
             }
         });
 
+        $('#deviceName').change(function(event) {
+            $(this).val($.trim($(this).val()));
+        });
+
         $('.nationalityOption').change(function(event) {
             $('.errormsgSubmit').hide();
             $('#enabledbuttonid').removeAttr('disabled');

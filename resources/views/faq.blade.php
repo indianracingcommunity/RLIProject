@@ -5,24 +5,31 @@
          background-image:url('https://cdn.dribbble.com/users/1189560/screenshots/5795496/alfa-romeo-f1_4x.png?compress=1&resize=800x600');
          background-size: 950px;
          background-repeat:no-repeat;
-         background-position:right bottom;
+         background-position:top right;
       }
     </style>
 @section('body')
 <div class="px-32 py-16">
-	<h2 class="text-4xl font-bold text-gray-900 mb-4">Join Us</h2>
-	<p class="font-semibold text-2xl text-gray-800 mb-2">Before You join</p> 
+	<h2 class="text-4xl font-bold text-gray-900 mb-10">Frequently Asked Questions</h2>
+	<p class="font-semibold text-2xl text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> What are the pre-requisites to join?</p> 
 	<div class="flex">
-		<div class="font-semibold bg-red-100 rounded-md p-2 my-1 text-red-800">This community is only for Indians across the world.</div>
+		<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">There is only one criterion to join us: You need to be an Indian racing enthusiast. That's it.</div>
 	</div>
+	<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> How do I join IRC?</p> 
 	<div class="flex">
-		<div class="font-semibold bg-red-100 rounded-md p-2 my-1 text-red-800">If you are found lying about your identity, you will be banned from the community.</div>
+		<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">You can head to the our <a href="/joinus" class="hover:underline text-red-800">Join Us</a> Page to become a permanent member.</br>Joining our Discord Server is <span style="color: red;">mandatory</span> to be an IRC member.</div>
 	</div>
-	<div class="my-8">
-		<p class="font-semibold mb-2 text-gray-700">You may join our discord server through the link below</p>
-		<a href="https://discord.gg/dWG2bX6">
-			<img class="rounded mt-3" style="position: absolute;width:16%;" src="https://discord.com/api/guilds/533143665921622017/widget.png?style=banner1">
-		</a>	
+	<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> Do I need to be a gamer to join?</p> 
+	<div class="flex">
+		<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">No. Any avid motorsports fan are more than welcome to join us. </br>We also engage in real life motorsport chatter, memes, and everything in between.</div>
+	</div>
+	<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> Do you have an Xbox or PS4 leagues right now?</p> 
+	<div class="flex">
+		<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">Not currently. However we have a dedicated space for members on PS4 and XBOX console platforms to interact with each other and host online races.</br>The console community is still growing and with enough engagement we can start a league in the future.</div>
+	</div>
+	<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> How difficult is the league on the latest official F1 PC game?</p> 
+	<div class="flex">
+		<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">This community is open for all people of any skill level to join. This community lets you improve your skills by giving valuable experience racing side-by-side with our members. You can start as a lower tier driver, gain some experience and skills throughout the season, and eventually compete in Tier-1, if your performance is promising.</div>
 	</div>
 </div>
 

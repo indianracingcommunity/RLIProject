@@ -75,11 +75,11 @@ class HomeController extends Controller
             $user->device = '';
         }
 
-        $user-> mothertongue = $request->mothertongue;
+        $user-> mothertongue = trim($request->mothertongue);
         $user-> location = $location;
-        $user-> motorsport = $request->motorsport;
-        $user-> driversupport = $request->driversupport;
-        $user-> source = $request->source;
+        $user-> motorsport = trim($request->motorsport);
+        $user-> driversupport = trim($request->driversupport);
+        $user-> source = trim($request->source);
         $user->youtube = $request->youtube;
         $user->instagram = $request->instagram;
         $user->twitch = $request->twitch;
@@ -87,7 +87,7 @@ class HomeController extends Controller
         $user->xbox = $request->xbox;
         $user->psn = $request->psn;
         $user->spotify = $request->spotify;
-        $user->devicename = $request->devicename; 
+        $user->devicename = trim($request->devicename); 
         
        
         $user->save();
