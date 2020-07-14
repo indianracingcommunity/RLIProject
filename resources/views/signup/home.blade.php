@@ -362,6 +362,36 @@
     </div>
   </form>
   <script>
+   $( document ).ready(function() {
+                        
+      $('#drivernum').keydown(function(event) {
+         evt = (event) ? event : window.event;
+         var charCode = (evt.which) ? evt.which : evt.keyCode;
+         if ((charCode > 47 && charCode < 58 ) || (charCode > 95 && charCode < 105) || charCode == 9 || charCode == 8) {
+            return true;
+         }
+         return false;
+      });
+      
+      $('#drivernum').change(function(event) {
+         if($(this).val() < 0 ){
+            $(this).val('');
+         }
+      });
+
+      $('#speedlinkid').change(function(event) {
+         var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi; 
+         var regex = new RegExp(expression); 
+         var speedTestUrl = $(this).val(); 
+         if (speedTestUrl.match(regex)) { 
+            $(this).val(''); 
+         } else { 
+            $(this).val(''); 
+         } 
+
+      });
+
+   });
 
     refill = function(){
       var seasonid = document.getElementById("seasonnum").value
