@@ -19,7 +19,7 @@
 		<div class="font-semibold bg-blue-100 rounded-md p-2 my-1 text-green-800"><span class="text-green-600 ml-2 mr-2">●</span>Indians residing overseas are also eligible for Permanent Membership.</div>
 	</div>
 	<div class="my-8">
-		<p class="font-semibold mb-2 text-gray-700"><strong>You may now proceed by joining our Discord Server below</p>
+		<p class="font-semibold mb-2 rounded p-3 bg-gray-100 text-gray-700" style="width: fit-content;"><strong>You may now proceed by joining our Discord Server below</p>
 		<a href="https://discord.gg/dWG2bX6">
 			<img class="rounded mt-3" style="position: absolute;width:16%;" src="https://discord.com/api/guilds/533143665921622017/widget.png?style=banner1">
 		</a>	
