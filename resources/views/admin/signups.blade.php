@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="block text-gray-700 text-2xl font-bold p-10">Signup Details</div>
-<div id="page1" class="flex w-full justify-center bg-white shadow-lg rounded px-4 pb-4" style="display: flex;">
+<div id="page1" class="flex w-1/2 sm:w-full md:w-full lg:w-full xl:w-full justify-center bg-white shadow-lg rounded px-4 pb-4" style="display: flex;">
     <table class="table-auto rounded-lg shadow-lg">
         <thead>
             <tr id="tableheadid" class="bg-gray-200">
@@ -13,7 +13,7 @@
         </tbody>
     </table>
 </div>
-<div id="page2" class="block items-center bg-white shadow-lg rounded px-4 pb-4" style="display: none;">
+<div id="page2" class="block w-1/2 sm:w-full md:w-full lg:w-full xl:w-full items-center bg-white shadow-lg rounded px-4 pb-4" style="display: none;">
     
 </div>
 <script>
@@ -40,11 +40,11 @@
         var preference2 = "";
         var preference3 = "";
         var assist = "";
-        var assisttext = "Assist Used : None <br>";
+        var assisttext = "<strong>Assist Used :</strong> None <br>";
         console.log(data[index]);
         if (data[index].assists != "")
         {assist = PHPUnserialize.unserialize(data[index].assists);
-        assisttext = "Assists Used : <br>";}
+        assisttext = "<strong>Assists Used : </strong><br>";}
         for (var i in assist){
             assisttext += assist[i] + "<br>";
         }
@@ -59,26 +59,26 @@
                 preference3 = data[index].season.constructors[i].name;
             }
         }
-        document.getElementById("page2").innerHTML = "<div class='block w-full p-10'><div class='inline-block w-1/2 text-gray-700 text-4xl'>" + data[index].user.name + "</div>" + 
+        document.getElementById("page2").innerHTML = "<div class='block w-full p-10'><div class='inline-block w-1/2 text-gray-700 text-5xl'>" + data[index].user.name + "</div>" + 
                                                      "<div class='inline-block w-1/4 text-gray-700 text-base pl-10'>Created : " + data[index].created_at + "</div></div>"+
-                                                     "<div class='inline-block w-1/3 text-gray-700 text-xl pl-10 pb-5'>Driver number : " + data[index].drivernumber + "<br><br>" +
-                                                     "Will be able to attend 75% attendance? : " + attendance + "<br><br>" + 
-                                                     "Speedtest Link : <a class='text-blue-500 italic' href=" + data[index].speedtest + ">Show Result</a><br><br></div>" + 
+                                                     "<div class='flex items-center'> <div class='inline-block w-1/3 text-gray-700 text-xl pl-10 pb-5'><strong>Driver number : </strong>" + data[index].drivernumber + "<br><br>" +
+                                                     "<strong>Will be able to attend 75% attendance? : </strong>" + attendance + "<br><br>" + 
+                                                     "<strong>Speedtest Link</strong> : <a class='text-blue-500 italic' target='_blank' href=" + data[index].speedtest + ">Show Result</a><br><br></div>" + 
 
-                                                     "<div class='inline-block w-1/3 text-gray-700 text-xl pl-10 pb-5'>Preference 1 : " + preference1 + "<br><br>" + 
-                                                     "Preference 2 : " + preference2 + "<br><br>" + 
-                                                     "Preference 3 : " + preference3 + "<br><br></div>" +
+                                                     "<div class='inline-block w-1/3 text-gray-700 text-xl pl-10 pb-5'><strong>Preference 1 : </strong>" + preference1 + "<br><br>" + 
+                                                     "<strong>Preference 2 : </strong>" + preference2 + "<br><br>" + 
+                                                     "<strong>Preference 3 : </strong>" + preference3 + "<br><br></div>" +
 
-                                                     "<div class='inline-block w-1/3 h-full text-gray-700 text-xl pl-10 pb-5 capitalize'>" + assisttext + "<br><br></div>" + 
+                                                     "<div class='inline-block w-1/3 h-full text-gray-700 text-xl pl-10 pb-5 capitalize'>" + assisttext + "<br><br></div></div>" + 
 
                                                      "<div class='block w-full text-gray-700 text-xl pl-10 pb-5'><div class='inline-block p-1 w-1/3'><a target='_blank' href='/storage/" + data[index].ttevidence1 + "'><img class='object-contain' src=/storage/"+ data[index].ttevidence1 +"></a></div>" + 
                                                      "<div class='inline-block p-1 w-1/3'><a target='_blank' href='/storage/" + data[index].ttevidence2 + "'><img class='object-contain' target='_blank' src=/storage/"+ data[index].ttevidence2 +"></a></div>" + 
                                                      "<div class='inline-block p-1 w-1/3'><a target='_blank' href='/storage/" + data[index].ttevidence3 + "'><img class='object-contain' target='_blank' src=/storage/"+ data[index].ttevidence3 +"></a></div>"
                                                       + "</div>" + 
                                                       
-                                                      "<div class='block w-full text-gray-700 text-xl pl-10 pb-5'><div class='inline-block text-gray-700 text-xl text-center pb-5 w-1/3'>Time Trial 1 : " + data[index].timetrial1 + "</div>" +
-                                                      "<div class='inline-block text-gray-700 text-xl text-center pb-5 w-1/3'>Time Trial 2 : " + data[index].timetrial2 + "</div>" +
-                                                      "<div class='inline-block text-gray-700 text-xl text-center pb-5 w-1/3'>Time Trial 3 : " + data[index].timetrial3 + "</div>" +
+                                                      "<div class='block w-full text-gray-700 text-xl pl-10 pb-5'><div class='inline-block text-gray-700 text-xl text-center pb-5 w-1/3'><strong>Time Trial 1 : </strong>" + data[index].timetrial1 + "</div>" +
+                                                      "<div class='inline-block text-gray-700 text-xl text-center pb-5 w-1/3'><strong>Time Trial 2 : </strong>" + data[index].timetrial2 + "</div>" +
+                                                      "<div class='inline-block text-gray-700 text-xl text-center pb-5 w-1/3'><strong>Time Trial 3 : </strong>" + data[index].timetrial3 + "</div>" +
                                                        "</div>" + 
                                                        "<div class='flex w-full mt-5 content-center items-center justify-center'><button name='action' class='bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline' onclick='backFunction()'>Return to Table</button></div>"
                                                       ;
