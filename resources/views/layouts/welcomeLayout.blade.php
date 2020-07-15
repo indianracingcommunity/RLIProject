@@ -13,19 +13,20 @@
     </head>
     <body class="pageBody" style="display: none;">
         
-        <nav class="flex justify-between border-b">
-            <div class="flex py-2">
-                <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                    <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
-                </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
+        <nav class="block sm:block md:block lg:flex xl:flex items-center justify-between border-b">
+            
+            <div class="flex justify-center items-center px-2 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 bg-gray-800 text-white h-12 font-bold rounded-md hover:bg-gray-700 w-full sm:w-full md:w-full lg:w-1/5 xl:w-1/5 cursor-pointer">
+                <a href="/" class="flex bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><div class="w-12 flex item-center justify-center"><img class="object-contain" src="/img/IRC_logo/logo_square_new.png"></div> <div class="flex mx-3 items-center justify-center">Indian Racing Community</div></a>
+            </div>
+            <div class="flex sm:w-full md:w-full lg:w-1/2 xl:w-3/4 p-2 items-center">
+                <div class="flex items-center justify-center w-1/5 sm:w-1/5 md:w-1/5 lg:w-auto xl:w-auto px-0 sm:px-0 md:px-0 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer">
                     <a  href="/faq"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <button class="font-semibold px-4 rounded inline-flex items-center">
+                <div class="flex items-center justify-center w-2/5 sm:w-2/5 md:w-2/5 lg:w-auto xl:w-auto px-0 sm:px-1 md:px-1 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer dropdown">
+                    <button class="font-semibold rounded inline-flex items-center">
                         <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                     </button>
-                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 17.1rem;">
+                    <ul class="dropdown-content absolute hidden text-gray-700 ml-5 pt-20 mt-1 " style="width: 17.1rem;">
                         @foreach($topBarSeasons as $series) 
                             <li class="dropdown">
                                 <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
@@ -47,11 +48,11 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <button class="font-semibold px-4 rounded inline-flex items-center">
+                <div class="flex items-center justify-center w-1/5 sm:w-1/5 md:w-1/5 lg:w-auto xl:w-auto px-1 sm:px-1 md:px-0 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer dropdown">
+                    <button class="font-semibold rounded inline-flex items-center">
                         <span>🏁 Race Results</span>
                     </button>
-                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 11.2rem;">
+                    <ul class="dropdown-content absolute hidden text-gray-700 ml-5 pt-20 mt-1" style="width: 11.2rem;">
                         @foreach($topBarSeasons as $series) 
                             <li class="dropdown">
                                 <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
@@ -73,18 +74,21 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
-                    <a  href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
+                <div class="flex items-center justify-center w-1/4 sm:w-1/4 md:w-1/4 lg:w-auto xl:w-auto px-1 sm:px-1 md:px-1 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer">
+                    <a  href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500 flex justify-center'></i>About Us</a>
                 </div>
             </div>
-            <div>
-            <div class="px-4 flex py-2 m-2 bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
+            
+
+            <div class="w-full sm:w-full md:w-full lg:w-1/4 xl:w-1/4 flex items-center justify-end">
+               <div class="flex items-center justify-center px-4 py-2 m-2 w-full sm:w-full md:w-full lg:w-auto xl:w-auto bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
                @auth
                <a  href="/user/profile"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
                @endauth
                 @guest
                 <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>
                 @endguest
+                </div>
             </div>
         </nav>
         @if(session()->has('error'))

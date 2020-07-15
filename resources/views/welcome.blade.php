@@ -2,7 +2,7 @@
 
 @section('body')
 <div class="sm:block md:flex lg:flex xl:flex w-full">
-    <div class="block sm:p-5 md:p-10 lg:p-32 xl:p-32 sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
+    <div class="block p-5 sm:p-5 md:p-10 lg:p-32 xl:p-32 sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
         <div class="block text-5xl font-bold text-gray-900">
             Welcome to IRC!
         </div>
@@ -48,4 +48,10 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+    new Crate({
+      server: '641545840619683841',
+      channel: '645515279593373717'
+    })
+  </script>
 @endsection

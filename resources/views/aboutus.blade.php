@@ -1,8 +1,8 @@
 @extends('layouts.welcomeLayout')
 
 @section('body')
-<div class="flex items-center w-full">
-	<div class="inline-block pl-10 py-16 w-3/5 sm:w-full md:w-3/5 lg:w-3/5 xl:w-3/5">
+<div class="sm:block md:flex lg:flex xl:flex items-center w-full">
+	<div class="sm:block md:inline-block lg:inline-block xl:inline-block p-5 sm:px-5 md:pl-10 lg:pl-10 xl:pl-10 pt-16 sm:w-full md:w-3/5 lg:w-3/5 xl:w-3/5">
 		<h2 class="text-4xl font-bold text-gray-900 mb-4">About Us</h2>
 		<div class="flex">
 			<div class="font-semibold bg-green-100 rounded-md p-2 my-1 text-black-500"><strong>Indian Racing Community</strong> is one of the largest hubs for Indian racing enthusiasts & sim racers. This is the place for all discussions related to motorsports and IRC events. We engage into all the real life motorsport chatter, memes, and everything in between. You will find one of the best Indian motorsport fanbase in our community to interact with, and make friends with.
@@ -32,11 +32,13 @@
 				<i class="fab fa-instagram mx-2 text-pink-800 text-3xl"></i>
 			</a>
 		</div>
-		<a href="https://discord.gg/dWG2bX6">
-			<img class="rounded mt-3" style="position: absolute;" src="https://discord.com/api/guilds/533143665921622017/widget.png?style=banner1">
-		</a>
+		<div class="block rounded mt-3">
+			<a href="https://discord.gg/dWG2bX6">
+				<img class="" src="https://discord.com/api/guilds/533143665921622017/widget.png?style=banner1">
+			</a>
+		</div>
 	</div>
-	<div class="inline-flex items-center justify-center w-2/5">
+	<div class="sm:flex md:inline-flex lg:inline-flex xl:inline-flex items-center justify-center sm:w-full md:w-2/5 lg:w-2/5 xl:w-2/5">
 		<img class="object-cover" src="https://cdn.dribbble.com/users/2463018/screenshots/5415613/image.png">
 	</div>
 </div>

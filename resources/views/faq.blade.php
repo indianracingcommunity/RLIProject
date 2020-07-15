@@ -1,8 +1,8 @@
 @extends('layouts.welcomeLayout')
 
 @section('body')
-<div class="flex items-center">
-	<div class="inline-block pl-10 w-1/2 py-16">
+<div class="sm:block md:flex lg:flex xl:flex items-center">
+	<div class="sm:block md:inline-block lg:inline-block xl:inline-block p-5 sm:px-5 md:pl-10 lg:pl-10 xl:pl-10 sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2 pt-16">
 		<h2 class="text-4xl font-bold text-gray-900 mb-10">Frequently Asked Questions</h2>
 		<p class="font-semibold text-2xl text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> What are the pre-requisites to join?</p> 
 		<div class="flex">
@@ -25,7 +25,7 @@
 			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">This community is open for all people of any skill level to join. This community lets you improve your skills by giving valuable experience racing side-by-side with our members. You can start as a lower tier driver, gain some experience and skills throughout the season, and eventually compete in Tier-1, if your performance is promising.</div>
 		</div>
 	</div>
-	<div class="inline-flex items-center justify-center w-1/2">
+	<div class="sm:flex md:inline-flex lg:inline-flex xl:inline-flex items-center justify-center sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
 		<img class="object-contain" src='https://cdn.dribbble.com/users/1189560/screenshots/5795496/alfa-romeo-f1_4x.png?compress=1&resize=800x600'>
 	</div>
 </div>
