@@ -75,10 +75,10 @@
                     </ul>
                 </div>
                 <div class="px-4 py-3 font-semibold rounded hover:bg-blue-200 cursor-pointer mx-2 dropdown">
-                    <button class="font-semibold pl-5 pr-5 rounded inline-flex items-center">
+                    <button class="font-semibold pl-6 pr-6 rounded inline-flex items-center">
                         <a  href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</a>
                     </button>
-                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 7.8rem;">
+                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 8.2rem;">
                         <li class="dropdown">
                             <a class="bg-gray-200 hover:bg-blue-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/aboutus"><i class='far fa-address-card text-indigo-500'></i> About Us</a>
                         </li>
