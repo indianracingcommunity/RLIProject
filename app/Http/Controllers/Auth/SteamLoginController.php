@@ -16,17 +16,10 @@ class SteamLoginController extends AbstractSteamLoginController
      */
     public function authenticated(Request $request, SteamUser $steamUser)
     {
-       // dd($steamUser); 
-        $useraccount = User::where('id',Auth::user()->id);
-        $useraccount->update([
-                           
-                       "steam_id" => $steamUser->steamId
-
-                            ]);
+        $useraccount = User::where('id', Auth::user()->id);
+        $useraccount->update(["steam_id" => $steamUser->steamId]);
         
         session()->flash('steamSuccess','Steam Profile Linked Successfully.');
-
-        return redirect('/user/profile');                    
-        
+        return redirect('/user/profile');
     }
 }

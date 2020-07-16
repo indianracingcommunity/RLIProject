@@ -62,7 +62,7 @@
 			</div>
 		</div>
 
-		<h3 class="text-2xl pt-4  rounded font-bold bg-purple-400 text-black"><i class="fa fa-gavel p-3"></i>Stewards</h3>
+		<h3 class="text-2xl pt-4 flex items-center rounded font-bold bg-purple-400 text-black"><i class="fa fa-gavel p-3"></i>Stewards</h3>
 		<div class="flex bg-purple-400 justify-center">
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">

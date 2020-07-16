@@ -21,22 +21,17 @@ class SteamController extends Controller
 
         for($i = 0; $i < $count; $i++)
         {
-            
-                $str = $this->querySteam('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='.$key.'&steamids='.$query[$i]['user']['steam_id']);
-                //dd($str['response']);
+            $str = $this->querySteam('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='.$key.'&steamids='.$query[$i]['user']['steam_id']);
                 
-                if($str['response']['players'] == NULL)
-                    echo "Invalid Steam ID";
-                else
-                {
-                    $checkalias = $str['response']['players']['0']['personaname'];
-                    echo "<br>".$checkalias." Driver id ".$query[$i]['id']."<br>";
-                    $query[$i]->insertAlias($checkalias);
-                }
+            if($str['response']['players'] == NULL)
+                echo "Invalid Steam ID";
+            else
+            {
+                $checkalias = $str['response']['players']['0']['personaname'];
+                echo "<br>".$checkalias." Driver id ".$query[$i]['id']."<br>";
+                $query[$i]->insertAlias($checkalias);
             }
-
-            // Handling Vanity Urls     
-        
+        }
     }
 
     protected function querySteam(String $query)

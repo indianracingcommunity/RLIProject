@@ -12,9 +12,5 @@ class DiscordController extends Controller
     {
         $discord = new Discord();
         $userroles = $discord->getroles();
-       //dd($userroles);
-         
-       
     }
-
 }

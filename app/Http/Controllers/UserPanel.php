@@ -14,16 +14,15 @@ class UserPanel extends Controller
     public function index()
     {
         $user_id=Auth::user()->id;
-        return view('user.userhome',compact('user_id'));
+        return view('user.userhome', compact('user_id'));
     }
 
     public function viewprofile()
-    {   $id = Auth::user()->discord_id;
+    {
+        $id = Auth::user()->discord_id;
         $series = Series::all();
         $discord = new Discord();
         $userroles = $discord->getroles($id);
-
-      //  dd($userroles);
 
         return view('user.userprofile')
                 ->with('roles', $userroles)
@@ -33,15 +32,14 @@ class UserPanel extends Controller
     public function SetSteam(user $user)
     {
         $data = request()->all();
-        $user->steam_id=$data['steamid'];
+        $user->steam_id = $data['steamid'];
         $user->save();
-        return redirect('/user/profile/'.$user->id);
+        return redirect('/user/profile/' . $user->id);
     }
 
     public function ResetSteamLink(user $user)
     {
-        $user->update(['steam_id'=>NULL]);
+        $user->update(['steam_id' => NULL]);
         $user->save();
-        
     }
 }

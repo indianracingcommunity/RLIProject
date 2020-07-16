@@ -16,10 +16,11 @@ class CheckSteam
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->steam_id != NULL) {
-               return $next($request);
-           }
+        if (Auth::user() && Auth::user()->steam_id != NULL)
+        {
+            return $next($request);
+        }
    
        return redirect('/user/profile/');
-   }
+    }
 }
