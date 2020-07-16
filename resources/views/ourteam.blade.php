@@ -297,7 +297,7 @@
 			</div>
 			<div class="text-center p-4" style="text-align: -webkit-center;">
 				<div class="rounded m-5 overflow-hidden text-center" style="width: 80px;">
-					<a @if(array_key_exists(95,$fieldsTeams)) href="/user/profile/view/95" @endif><img src="@if( array_key_exists(95,$fieldsTeams) && $fieldsTeams[95]['avatar'] != null) {{$fieldsTeams[95]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2"></a>
+					<a @if(array_key_exists(111,$fieldsTeams)) href="/user/profile/view/111" @endif><img src="@if( array_key_exists(111,$fieldsTeams) && $fieldsTeams[111]['avatar'] != null) {{$fieldsTeams[111]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-600">Reddit</br><span class="font-semibold text-gray-900"> Modo</span></div>
 			</div>
