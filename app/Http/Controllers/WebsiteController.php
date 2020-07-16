@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class WebsiteController extends Controller
 {
@@ -28,7 +29,9 @@ class WebsiteController extends Controller
     }
 
      public function loadourteam(){
-        return view('ourteam');
+         $var = User::select('id','name','avatar')->where('role_id',3)->get()->toArray();
+         //dd($var);
+        return view('ourteam')->with('var',$var);
     }
 
      public function loadfaq(){
