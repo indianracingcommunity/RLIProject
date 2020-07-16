@@ -9,9 +9,9 @@
 		</div>
 		<h3 class="text-2xl pt-4 bg-gray-100 rounded font-bold text-black"><i class="fas fa-seedling"></i> FOUNDERS</h3>
 		<div class="flex bg-gray-100 justify-center">
-			<div class="text-center p-4" style="text-align: -webkit-center;">
-				<div class="rounded m-5 overflow-hidden text-center" style="width: 80px;">
-					<a @if(array_key_exists(2,$fieldsTeams) ) href="/user/profile/view/2" @endif><img src="@if( array_key_exists(2,$fieldsTeams) && $fieldsTeams[2]['avatar'] != null) {{$fieldsTeams[2]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2"></a>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(2,$fieldsTeams) ) href="/user/profile/view/2" @endif><img src="@if( array_key_exists(2,$fieldsTeams) && $fieldsTeams[2]['avatar'] != null) {{$fieldsTeams[2]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-800">Adil "MaranelloBaby" Chinoy</div>
 			</div>
