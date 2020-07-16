@@ -15,6 +15,7 @@
         <body class="w-full pageBody" style="display: none;">
             <nav class="flex justify-between border-b fixed bg-white w-screen z-10 py-2">
                 <div class="flex items-center flex-shrink-0">
+                    <div class="block items-center px-2 flex-shrink-0 cursor-pointer hover:bg-gray-200 py-2 ml-2 rounded" onclick="menu()"><i class="fas fa-bars"></i></div>
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
                         <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span> </a>
                     </div>
@@ -99,7 +100,7 @@
             </nav>
             <div class="flex">
                 @auth
-                <div class="sidebar fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow mt-16">
+                <div class="sidebar hidden fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow mt-16" id="sidebar">
                     <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md py-4 px-2">
                         <img src="{{Auth::user()->avatar}}" class="rounded-full w-16" alt="">
                         <div class="px-4 py-2">
@@ -131,7 +132,7 @@
                 </div>
                 @endauth
                 @auth
-                <main class="py-20 ml-64 w-full">
+                <main class="py-20 container mx-auto w-full" id="customMargin">
                     @if (session()->has('error'))
                     <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
                         {{session()->get('error')}}
@@ -157,5 +158,21 @@
         $( document ).ready(function() {
             $('.pageBody').show('slow', function() {});
         });
+
+        let sidebarVisible = 1
+        function menu() {
+            console.log("function called")
+            let element = document.getElementById("sidebar");
+            let element2 = document.getElementById("customMargin");
+            if (sidebarVisible == 1) {
+                // element.classList.remove("hidden");
+                $('#sidebar').show('slow', function() {})
+                // element2.classList.add("ml-64")
+                sidebarVisible = 0
+            } else {
+                $('#sidebar').hide('slow', function() {})
+                sidebarVisible = 1
+            }
+        }
     </script>
 </html>
