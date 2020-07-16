@@ -367,7 +367,7 @@
       $('#drivernum').keydown(function(event) {
          evt = (event) ? event : window.event;
          var charCode = (evt.which) ? evt.which : evt.keyCode;
-         if ((charCode > 47 && charCode < 58 ) || (charCode > 95 && charCode < 105) || charCode == 9 || charCode == 8) {
+         if ((charCode > 47 && charCode < 58 ) || (charCode > 95 && charCode < 106) || charCode == 9 || charCode == 8) {
             return true;
          }
          return false;

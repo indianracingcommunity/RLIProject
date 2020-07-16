@@ -27,6 +27,10 @@ class WebsiteController extends Controller
     	return view('aboutus');
     }
 
+     public function loadourteam(){
+        return view('ourteam');
+    }
+
      public function loadfaq(){
         return view('faq');
     }

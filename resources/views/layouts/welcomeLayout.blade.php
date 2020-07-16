@@ -4,7 +4,7 @@
         <title>Indian Racing Community</title>
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=1378">
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -74,8 +74,18 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="flex items-center justify-center w-1/4 sm:w-1/4 md:w-1/4 lg:w-auto xl:w-auto px-1 sm:px-1 md:px-1 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer">
-                    <a  href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500 flex justify-center'></i>About Us</a>
+                <div class="px-4 py-3 font-semibold rounded hover:bg-blue-200 cursor-pointer mx-2 dropdown">
+                    <button class="font-semibold pl-5 pr-5 rounded inline-flex items-center">
+                        <a  href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</a>
+                    </button>
+                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 7.8rem;">
+                        <li class="dropdown">
+                            <a class="bg-gray-200 hover:bg-blue-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/aboutus"><i class='far fa-address-card text-indigo-500'></i> About Us</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="bg-gray-200 hover:bg-green-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/ourteam"><i class="fa fa-users text-yellow-500" aria-hidden="true"></i> Our Team</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
             
