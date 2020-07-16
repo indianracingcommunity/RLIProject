@@ -213,7 +213,7 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(95,$fieldsTeams)) href="/user/profile/view/95" @endif><img src="@if( array_key_exists(95,$fieldsTeams) && $fieldsTeams[95]['avatar'] != null) {{$fieldsTeams[95]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+					<a @if(array_key_exists(110,$fieldsTeams)) href="/user/profile/view/110" @endif><img src="@if( array_key_exists(110,$fieldsTeams) && $fieldsTeams[110]['avatar'] != null) {{$fieldsTeams[110]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-700">Member of Editorial</br><span class="font-semibold text-gray-900"> Sai_Tarun</span></div>
 			</div>
