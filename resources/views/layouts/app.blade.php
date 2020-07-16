@@ -75,8 +75,18 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class=" mx-2 flex items-center flex-shrink-0">
-                        <a  class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
+                    <div class="px-4 py-3 font-semibold rounded hover:bg-blue-200 cursor-pointer mx-2 dropdown">
+                        <button class="font-semibold pl-5 pr-5 rounded inline-flex items-center">
+                            <a  href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</a>
+                        </button>
+                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 7.8rem;">
+                            <li class="dropdown">
+                                <a class="bg-gray-200 hover:bg-blue-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/aboutus"><i class='far fa-address-card text-indigo-500'></i> About Us</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="bg-gray-200 hover:bg-green-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/ourteam"><i class="fa fa-users text-yellow-500" aria-hidden="true"></i> Our Team</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="flex items-center flex-shrink-0 mr-8">

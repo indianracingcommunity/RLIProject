@@ -22,12 +22,12 @@
                 <div class="flex items-center justify-center w-1/5 sm:w-1/5 md:w-1/5 lg:w-auto xl:w-auto px-0 sm:px-0 md:px-0 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer">
                     <a  href="/faq"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                 </div>
-                <div class="flex items-center justify-center w-2/5 sm:w-2/5 md:w-2/5 lg:w-auto xl:w-auto px-0 sm:px-1 md:px-1 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer dropdown">
-                    <button class="font-semibold rounded inline-flex items-center">
+                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
+                    <button class="font-semibold px-4 rounded inline-flex items-center">
                         <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                     </button>
-                    <ul class="dropdown-content absolute hidden text-gray-700 ml-5 pt-20 mt-1 " style="width: 17.1rem;">
-                        @foreach($topBarSeasons as $series) 
+                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 17.1rem;">
+                        @foreach($topBarSeasons as $series)
                             <li class="dropdown">
                                 <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                 <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 17rem; width: 7.5rem;">
@@ -48,12 +48,12 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="flex items-center justify-center w-1/5 sm:w-1/5 md:w-1/5 lg:w-auto xl:w-auto px-1 sm:px-1 md:px-0 lg:px-3 xl:px-3 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 py-0 sm:py-0 md:py-0 lg:py-3 xl:py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer dropdown">
-                    <button class="font-semibold rounded inline-flex items-center">
+                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
+                    <button class="font-semibold px-4 rounded inline-flex items-center">
                         <span>🏁 Race Results</span>
                     </button>
-                    <ul class="dropdown-content absolute hidden text-gray-700 ml-5 pt-20 mt-1" style="width: 11.2rem;">
-                        @foreach($topBarSeasons as $series) 
+                    <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 11.2rem;">
+                        @foreach($topBarSeasons as $series)
                             <li class="dropdown">
                                 <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                 <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 11.1rem; width: 7.5rem;">
