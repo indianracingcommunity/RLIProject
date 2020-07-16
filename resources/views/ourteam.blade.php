@@ -189,7 +189,7 @@
 			</div>	
 			<div class="text-center p-4" style="text-align: -webkit-center;">
 				<div class="rounded m-5 overflow-hidden text-center" style="width: 80px;">
-					<a @if(array_key_exists(72,$fieldsTeams)) href="/user/profile/view/72" @endif><img src="@if( array_key_exists(72,$fieldsTeams) && $fieldsTeams['72']['avatar'] != null) {{$fieldsTeams[72]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2"></a>s
+					<a @if(array_key_exists(72,$fieldsTeams)) href="/user/profile/view/72" @endif><img src="@if( array_key_exists(72,$fieldsTeams) && $fieldsTeams['72']['avatar'] != null) {{$fieldsTeams[72]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-700">Member of Editorial</br><span class="font-semibold text-gray-900"> thirdworldprophet</span></div>
 			</div>
