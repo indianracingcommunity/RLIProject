@@ -115,3 +115,5 @@ Route::get('/discordapi/{driver}','DriverController@apidiscord');
 // Routes Handling the Discord Login
 Route::get('login/discord', 'Auth\LoginController@redirectToProvider')->name('auth');
 Route::get('login/discord/callback', 'Auth\LoginController@handleProviderCallback')->name('callback');
+
+Route::get('/test/roles','HomeController@test');

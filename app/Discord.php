@@ -5,6 +5,8 @@ namespace App;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Log;
+
 class Discord
 {
 
@@ -192,6 +194,121 @@ class Discord
 
             
     }
+
+
+    public function removeApplicantRole($id,$applicantrole)
+    {
+            $params =(['token' => config('services.discord.bot') ]);
+
+        $curl = curl_init();
+        $server = 533143665921622017; //irc 
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$applicantrole,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            "Authorization: Bot ".$params['token']
+        ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+            if ($err) 
+            {
+                return $err;
+            } 
+            else
+            {
+                $final = json_decode($response,true);
+                 
+                if(isset($final['message']))
+                {
+                return "Invalid";
+                }
+                else
+                {
+                  return $response;
+                }
+            }
+    }
+
+
+    public function addroles($roles,$id)
+    {
+        $params =(['token' => config('services.discord.bot')]);
+
+        $applicantrole = 731215351416750130;
+
+        $data = $this->getMemberRoles($id);
+
+        if(in_array($applicantrole,$data))
+        {
+           $var =  $this->removeApplicantRole($id,$applicantrole);
+
+            if($var == "Invalid")
+            {
+                return "Error Removing applicant role";
+            }
+
+        }
+    
+        if(!empty($roles))
+        {
+         foreach($roles as $value)
+        {
+          sleep(1);
+        $curl = curl_init();
+        $server = 533143665921622017; //irc 
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$value,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "PUT",
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Content-Length: 0',
+            "Authorization: Bot ".$params['token']
+        ),
+            ));
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+           
+         }
+
+            if ($err) 
+            {
+                return $err;
+            } 
+            else
+            {
+                $final = json_decode($response,true);
+                return $response;
+                if(isset($final['message']))
+                {
+                return "Invalid";
+                }
+                else
+                {
+                  return $final;
+                }
+            }
+        }
+    }
+
+
+
+
 
 
 }
