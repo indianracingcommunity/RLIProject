@@ -80,10 +80,10 @@
                     </button>
                     <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 8.2rem;">
                         <li class="dropdown">
-                            <a class="bg-gray-200 hover:bg-blue-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/aboutus"><i class='far fa-address-card text-indigo-500'></i> About Us</a>
+                            <a class="bg-gray-200 hover:bg-blue-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/aboutus"><i class='pr-2 far fa-address-card text-indigo-500'></i> About Us</a>
                         </li>
                         <li class="dropdown">
-                            <a class="bg-gray-200 hover:bg-green-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/ourteam"><i class="fa fa-users text-yellow-500" aria-hidden="true"></i> Our Team</a>
+                            <a class="bg-gray-200 hover:bg-green-300 py-2 text-center px-4 block whitespace-no-wrap rounded" href="/ourteam"><i class="pr-2 fa fa-users text-yellow-500" aria-hidden="true"></i> Our Team</a>
                         </li>
                     </ul>
                 </div>
