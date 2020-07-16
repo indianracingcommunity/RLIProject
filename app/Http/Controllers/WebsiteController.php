@@ -29,9 +29,15 @@ class WebsiteController extends Controller
     }
 
      public function loadourteam(){
-         $var = User::select('id','name','avatar')->where('role_id',3)->get()->toArray();
-         //dd($var);
-        return view('ourteam')->with('var',$var);
+        $var = User::select('id','name','avatar')->where('role_id',3)->get()->toArray();
+        $fieldsTeams = array();
+        for ($i=0; $i < count($var); $i++) { 
+            # code...
+            $id = $var[$i]['id'];
+            $fieldsTeams[$id] = $var[$i];
+        }
+        //  dd($fieldsTeams);
+        return view('ourteam',compact('fieldsTeams'));
     }
 
      public function loadfaq(){
