@@ -5,6 +5,10 @@
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta charset="utf-8">
         <meta name="viewport" content="width=1378">
+        <meta property="og:title" content="Indian Racing Community">
+        <meta property="og:description" content="A place For Every Indian Racing Enthusiast.">
+        <meta property="og:image" content="/img/IRC_logo/logo_square_new.png">
+        <meta property="og:url" content="https://indianracingcommunity.co.in">
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
