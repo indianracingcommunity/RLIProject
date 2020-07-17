@@ -16,7 +16,7 @@ class SteamController extends Controller
                 ->get()->load('user');
 
         $count = count($query);
-        $key =config('steam-login.api_key');
+        $key = config('steam-login.api_key');
         dd($key);
 
         for($i = 0; $i < $count; $i++)
