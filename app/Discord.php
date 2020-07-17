@@ -212,8 +212,7 @@ class Discord
         $data = $this->getMemberRoles($id);
         if(in_array($applicantrole, $data))
         {
-            $var =  $this->removeApplicantRole($id,$applicantrole);
-
+            $var =  $this->removeApplicantRole($id, $applicantrole);
             if($var == "Invalid")
             {
                 return "Error Removing applicant role";

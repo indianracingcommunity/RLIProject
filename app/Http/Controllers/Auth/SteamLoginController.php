@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use kanalumaddela\LaravelSteamLogin\Http\Controllers\AbstractSteamLoginController;
 use kanalumaddela\LaravelSteamLogin\SteamUser;
+use App\Http\Controllers\DiscordController;
 
 class SteamLoginController extends AbstractSteamLoginController
 {
@@ -19,6 +20,9 @@ class SteamLoginController extends AbstractSteamLoginController
         $useraccount = User::where('id', Auth::user()->id);
         $useraccount->update(["steam_id" => $steamUser->steamId]);
         
+        $dis = new DiscordController();
+        $dis->applyRoles();
+
         session()->flash('steamSuccess','Steam Profile Linked Successfully.');
         return redirect('/user/profile');
     }

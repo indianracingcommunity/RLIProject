@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\User;
+use App\Series;
+use App\Discord;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
-use Auth;
-use App\Discord;
-use App\Series;
 
 class UserPanel extends Controller
 {

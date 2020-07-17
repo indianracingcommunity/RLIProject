@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
-use App\Discord;
-use App\Series;
-use Illuminate\Support\Facades\Log;
 use Auth;
+use App\User;
+use App\Series;
+use App\Discord;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -43,45 +43,12 @@ class HomeController extends Controller
           ->with('series', $series);
     }
 
-    public function savedetails(Request $request,User $user)
+    public function savedetails(Request $request, User $user)
     {
         $id = Auth::user()->discord_id;
-
+        $dis = new DiscordController();
         // Dank code for auto roles
-        $roles = array();
-        if(isset($request->mothertongue))
-        {
-            $roles['member'] = 598061461511602191;
-            if(isset($request->game))
-            {
-                if(in_array("f1", $request->game) && in_array("PC", $request->platform))
-                {
-                    $roles['pc'] = 687344291265118224;
-                }
-                if(in_array("acc", $request->game))
-                {
-                    $roles['acc'] = 728830210874540082;
-                }
-                if(in_array("ac", $request->game))
-                {
-                    $roles['ac'] = 643354584747868172;
-                }
-            
-                if(in_array("PlayStation", $request->platform))
-                {
-                   $roles['ps4'] = 724495481241206795;
-                }
-                if(in_array("Xbox", $request->platform))
-                {
-                   $roles['xbox'] = 728827128443043902;
-                }
-            }
 
-            $discord = new Discord();
-            $var = $discord->addroles($roles,$id);
-        }
-
-      
         // Save query
         $location = $request->city."~".$request->state;
         if(isset($request->game))
@@ -90,9 +57,7 @@ class HomeController extends Controller
             $user->games = $games;
         }
         else
-        {
             $user->games = '';
-        }
 
         if(isset($request->platform))
         {
@@ -100,9 +65,7 @@ class HomeController extends Controller
             $user->platform = $platformdata;        
         }
         else
-        {
             $user->platform = '';
-        }
 
         if(isset($request->device))
         {
@@ -110,9 +73,7 @@ class HomeController extends Controller
             $user->device = $devicedata; 
         }
         else
-        {
             $user->device = '';
-        }
 
         $user->mothertongue = trim($request->mothertongue);
         $user->location = $location;
@@ -130,6 +91,8 @@ class HomeController extends Controller
         $user->save();
 
         session()->flash('savedProfile','Details saved successfully.');
+        $dis->applyRoles();
+
         return redirect('/user/profile');
     }
 }
