@@ -508,6 +508,7 @@ class ImageController extends Controller
     }
 
     public function ocrRace(Request $request) {
+        ini_set('max_execution_time', 300);
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg',
         ]);
@@ -521,6 +522,7 @@ class ImageController extends Controller
         ]);
     }
     public function pubRace(Request $request) {
+        ini_set('max_execution_time', 300);
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg',
         ]);
