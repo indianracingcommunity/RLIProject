@@ -137,7 +137,7 @@
                 <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
                 <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" alt=""> </a>
                 <span class="text-black-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account.</span></br>
-                @if ("{{Auth::user()->mothertongue}}" == "")
+                @if (!isset(Auth::user()->mothertongue))
                 <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>@endif
                 @endif
             </form>
@@ -238,13 +238,13 @@
 
                     <div class="mb-4">
                         <div>
-                            <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>Playstation Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>Playstation Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for PS Users)</label>
                         </div>
                         <input maxlength="40" type="text" name="psn" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>XBox Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>XBox Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for Xbox Users)</label>
                         </div>
                         <input maxlength="40" type="text" name="xbox" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
                     </div>
@@ -349,7 +349,7 @@
         $('.youtubeLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
 
-            var linkCheck = new RegExp(/^https:\/\/www.youtube.com\/.+/);
+            var linkCheck = new RegExp(/^https:\/\/www[.]youtube[.]com\/.+/);
             var linkValid = linkCheck.test($(this).val());
             if(linkValid == false){
                 $(this).val('');
@@ -358,7 +358,7 @@
         });
         $('.instaLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
-            var linkCheck = new RegExp(/^https:\/\/www.instagram.com\/.+/);
+            var linkCheck = new RegExp(/^https:\/\/www[.]instagram[.]com\/.+/);
             var linkValid = linkCheck.test($(this).val());
             if(linkValid == false){
                 $(this).val('');
@@ -367,7 +367,7 @@
         });
         $('.twitterLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
-            var linkCheck = new RegExp(/^https:\/\/www.twitter.com\/.+/);
+            var linkCheck = new RegExp(/^https:\/\/twitter[.]com\/.+/);
             var linkValid = linkCheck.test($(this).val());
             if(linkValid == false){
                 $(this).val('');
@@ -376,7 +376,7 @@
         });
         $('.twitchLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
-            var linkCheck = new RegExp(/^https:\/\/www.twitch.tv\/.+/);
+            var linkCheck = new RegExp(/^https:\/\/www[.]twitch[.]tv\/.+/);
             var linkValid = linkCheck.test($(this).val());
             if(linkValid == false){
                 $(this).val('');

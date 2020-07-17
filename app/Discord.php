@@ -169,7 +169,7 @@ class Discord
         $curl = curl_init();
         $server = 533143665921622017; //irc
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "/".$server."/members/".$id."/roles/".$applicantrole,
+            CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$applicantrole,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
