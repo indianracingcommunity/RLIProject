@@ -142,7 +142,8 @@
                 @endif
             </form>
         </div>
-        </div>
+
+    </div>
 
     <div class="border-l mx-4 px-4 w-full">
         <div class="font-semibold text-gray-600 mb-4 px-4">

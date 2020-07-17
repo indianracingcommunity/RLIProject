@@ -1,5 +1,4 @@
 @extends('layouts.welcomeLayout')
-
 @section('body')
 <div class="sm:block md:flex lg:flex xl:flex w-full">
     <div class="block p-5 sm:p-5 md:p-10 lg:p-32 xl:p-32 sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
@@ -42,16 +41,24 @@
             </div>
         </div>
     </div>
+    <div class="popover__wrapper">
+        <a href="#">
+            <img class="object-contain rounded-full bg-gray-300 border-2" width="60" src='{{asset('/img/discord2.png')}}'>
+        </a>
+        <div class="popover__content">
+            <iframe src="https://discord.com/widget?id=533143665921622017&theme=dark" class="mt-5" width="300" height="500" allowtransparency="true" frameborder="0"></iframe>
+        </div>
+    </div>
+    
     <div class="sm:flex md:inline-flex lg:inline-flex xl:inline-flex items-center justify-center sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
 		<img class="object-contain" src='https://cdn.dribbble.com/users/1568450/screenshots/7880617/media/2b89eb9a9496fba5dc1f7bf7d1418855.png'>
 	</div>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+{{-- <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
     new Crate({
       server: '641545840619683841',
       channel: '645515279593373717'
     })
-  </script>
+  </script> --}}
 @endsection

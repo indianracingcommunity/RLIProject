@@ -9,10 +9,10 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <script src="{{ asset('js/jquery35.js')}}"></script>
-        <link rel="stylesheet" href="/css/custom.css">
+        <link rel="stylesheet" href="{{ asset('/css/custom.css')}}">
     </head>
     <body class="pageBody" style="display: none;">
-        
+
         <nav class="block sm:block md:block lg:flex xl:flex items-center justify-between border-b">
             
             <div class="flex justify-center items-center px-2 m-0 sm:m-0 md:m-0 lg:m-2 xl:m-2 bg-gray-800 text-white h-12 font-bold rounded-md hover:bg-gray-700 w-full sm:w-full md:w-full lg:w-1/5 xl:w-1/5 cursor-pointer">
