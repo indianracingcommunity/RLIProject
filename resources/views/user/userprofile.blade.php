@@ -130,15 +130,18 @@
                 @endif
             </div>
         </div>
-        <div class="">
+        @if (Auth::user()->steam_id == NULL)
+        <hr>
+        @endif
+        <div class="mt-2">
             <form method="POST" @if ("{{Auth::user()->mothertongue}}" != "") action="setsteam/{{Auth::user()->id}}" @endif>
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
-                <span class="text-xs font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
-                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" alt=""> </a>
-                <span class="text-black-600 mr-2">●</span><span class="text-xs font-semibold text-gray-700 leading-none">To verify your account please Sign in with your Steam account.</span></br>
-                @if (!isset(Auth::user()->mothertongue))
-                <span class="text-red-600 mr-2">●</span><span class="text-xs font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>@endif
+                <span class=" font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
+                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
+                <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none"><strong>Mandatory for PC Users.</strong></span></br>
+                @if (isset(Auth::user()->mothertongue))
+                <span class="text-red-600 mr-2">●</span><span class=" font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>@endif
                 @endif
             </form>
         </div>
@@ -209,6 +212,18 @@
                     <div>
                     <div class="mb-4">
                         <div>
+                            <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>PSN ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for PS Users)</label>
+                        </div>
+                        <input maxlength="40" type="text" name="psn" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+                    </div>
+                    <div class="mb-4">
+                        <div>
+                            <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>Xbox ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for Xbox Users)</label>
+                        </div>
+                        <input maxlength="40" type="text" name="xbox" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                    </div>
+                    <div class="mb-4">
+                        <div>
                             <label for="youtube" class="font-semibold text-gray-800"><i class="fab fa-youtube text-red-500 mr-1"></i>Youtube<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
                         <input type="text" name="youtube" placeholder="https://www.youtube.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 youtubeLink" value='@if(isset(Auth::user()->youtube)) {{Auth::user()->youtube}} @endif'>
@@ -235,18 +250,12 @@
                         <input maxlength="100" type="text" name="twitter" placeholder="https://www.twitter.com/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 twitterLink" value='@if(isset(Auth::user()->twitter)) {{Auth::user()->twitter}} @endif'>
                         <span class="errormsg">Enter a valid link</span>
                     </div>
-
                     <div class="mb-4">
                         <div>
-                            <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>Playstation Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for PS Users)</label>
+                            <label for="reddit" class="font-semibold text-gray-800"><i class="fab fa-reddit mr-1" style="color: #ff581a"></i>Reddit<i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                         </div>
-                        <input maxlength="40" type="text" name="psn" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
-                    </div>
-                    <div class="mb-4">
-                        <div>
-                            <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>XBox Network ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for Xbox Users)</label>
-                        </div>
-                        <input maxlength="40" type="text" name="xbox" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                        <input maxlength="100" type="text" name="reddit" placeholder="https://www.reddit.com/user/xyz" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 redditLink" value='@if(isset(Auth::user()->reddit)) {{Auth::user()->reddit}} @endif'>
+                        <span class="errormsg">Enter a valid link</span>
                     </div>
                 </div>
                 </div>
@@ -281,7 +290,7 @@
                                 </span>
                                 <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
                                     <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if($platform!=NULL) @if (in_array("Xbox", $platform)) checked @endif @endif>
-                                    <label for="games" class="mr-2">XBox</label>
+                                    <label for="games" class="mr-2">Xbox</label>
                                 </span>
                             </div>
                             <span class="errormsg errormsgPlatform">Please select atleast 1.</span>
@@ -348,7 +357,6 @@
 
         $('.youtubeLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
-
             var linkCheck = new RegExp(/^https:\/\/www[.]youtube[.]com\/.+/);
             var linkValid = linkCheck.test($(this).val());
             if(linkValid == false){
@@ -356,6 +364,17 @@
                 $(this).siblings(".errormsg").show('slow/400/fast', function() {});
             }
         });
+
+        $('.redditLink').change(function(event) {
+            $(this).siblings(".errormsg").hide();
+            var linkCheck = new RegExp(/^https:\/\/www[.]reddit[.]com\/.+/);
+            var linkValid = linkCheck.test($(this).val());
+            if(linkValid == false){
+                $(this).val('');
+                $(this).siblings(".errormsg").show('slow/400/fast', function() {});
+            }
+        });
+
         $('.instaLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
             var linkCheck = new RegExp(/^https:\/\/www[.]instagram[.]com\/.+/);

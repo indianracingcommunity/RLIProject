@@ -18,14 +18,14 @@
         <script src="{{ asset('js/jquery35.js')}}"></script>
         </head>
         <body class="w-full pageBody" style="display: none;">
-            <nav class="flex justify-between border-b fixed bg-white w-screen z-10 py-2">
-                <div class="flex items-center flex-shrink-0">
-                    <div class="block items-center px-2 flex-shrink-0 cursor-pointer hover:bg-gray-200 py-2 ml-2 rounded" onclick="menu()"><i class="fas fa-bars"></i></div>
-                    <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
-                        <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span> </a>
+            <nav class="flex justify-between border-b">
+                <div class="flex py-2">
+                    <div class="block pt-3 items-center px-2 flex-shrink-0 cursor-pointer hover:bg-gray-200 py-2 ml-2 rounded" onclick="menu()"><i class="fas fa-bars"></i></div>
+                    <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
+                        <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
                     </div>
-                    <div class=" mx-2 flex items-center flex-shrink-0">
-                        <a  class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer" href="/faq"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
+                    <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
+                        <a  href="/faq"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                     </div>
                     <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
                         <button class="font-semibold px-4 rounded inline-flex items-center">
@@ -115,7 +115,7 @@
             </nav>
             <div class="flex">
                 @auth
-                <div class="sidebar hidden fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow mt-16" id="sidebar">
+                <div class="sidebar hidden fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow" id="sidebar">
                     <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md py-4 px-2">
                         <img src="{{Auth::user()->avatar}}" class="rounded-full w-16" alt="">
                         <div class="px-4 py-2">
@@ -181,13 +181,18 @@
             let element2 = document.getElementById("customMargin");
             if (sidebarVisible == 1) {
                 // element.classList.remove("hidden");
-                $('#sidebar').show('slow', function() {})
+                $('#sidebar').show('slow', function() {});
                 // element2.classList.add("ml-64")
                 sidebarVisible = 0
             } else {
-                $('#sidebar').hide('slow', function() {})
+                $('#sidebar').hide('slow', function() {});
                 sidebarVisible = 1
             }
         }
     </script>
+    @if ("{{Auth::user()->mothertongue}}" == "")
+    <script>
+        $('#sidebar').show('slow', function() {});
+    </script>
+    @endif
 </html>

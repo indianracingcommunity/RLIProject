@@ -38,15 +38,20 @@
                         <i class="fab fa-steam"></i>
                     </a>
                 </div>
+                <div class="text-4xl text-pink-800 ml-4">
+                    <a href="https://www.reddit.com/r/IndianRacingCommunity/" target="_blank">
+                        <i class="fab fa-reddit" style="color: #ff581a"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-    <div class="popover__wrapper">
+    <div class="popover__wrapper m-4">
         <a href="#">
-            <img class="object-contain rounded-full bg-gray-300 border-2" width="60" src='{{asset('/img/discord2.png')}}'>
+            <img class="object-contain rounded-full" width="70" src='{{asset('/img/homeDiscord.png')}}'>
         </a>
         <div class="popover__content">
-            <iframe src="https://discord.com/widget?id=533143665921622017&theme=dark" class="mt-5" width="300" height="500" allowtransparency="true" frameborder="0"></iframe>
+            <iframe src="https://discord.com/widget?id=533143665921622017&theme=dark" class="mt-5" width="300" height="500" allowtransparency="true"></iframe>
         </div>
     </div>
     

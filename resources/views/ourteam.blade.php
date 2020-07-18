@@ -343,6 +343,9 @@
 			</a>	
 			<a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
 				<i class="fab fa-instagram mx-2 text-pink-800 text-3xl"></i>
+			</a>	
+			<a href="https://www.reddit.com/r/IndianRacingCommunity/" target="_blank">
+				<i class="	fab fa-reddit text-3xl" style="color: #ff581a"></i>
 			</a>
 		</div>
 	</div>
