@@ -481,7 +481,6 @@
     if(signup != "")
       {
         javascript:refill();
-        console.log(signup);
       }
     else{
       document.getElementById("time1").value = "";

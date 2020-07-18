@@ -140,8 +140,9 @@
                 <span class=" font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
                 <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
                 <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none"><strong>Mandatory for PC Users.</strong></span></br>
-                @if (isset(Auth::user()->mothertongue))
-                <span class="text-red-600 mr-2">●</span><span class=" font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>@endif
+                @if (!isset(Auth::user()->mothertongue))
+                <span class="text-red-600 mr-2">●</span><span class=" font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>
+                @endif
                 @endif
             </form>
         </div>
@@ -204,7 +205,7 @@
                     </div>
                     <div class="mb-4">
                         <div>
-                            <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="State" class="font-semibold text-gray-800">Where did you hear about IRC?<span class="text-red-600 ml-2">●</span></label>
                         </div>
                         <input maxlength="100" type="text" name="source" class="border shadow-inner mandatory px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="Discord, Youtube, etc." value="{{Auth::user()->source}}">
                         <span class="errormsg errormsgIrc">Please enter required details.</span>

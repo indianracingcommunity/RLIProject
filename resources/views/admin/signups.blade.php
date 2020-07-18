@@ -101,7 +101,7 @@
                     for (var k = 0;k<active_seasons.length;k++){
                         if (data[j].season.name == active_seasons[k]){
                             eachrow[k] = "<td class='border text-center px-4 py-2'> <button id='" + j + "' onclick='myFunction(this.id)'> View Details </button></td>";
-                        } 
+                        }
                     }
                 }
                 else{
@@ -116,6 +116,7 @@
             if (j == data.length - 1){
                 for(var k = 0;k<active_seasons.length;k++){
                     tablebody += eachrow[k];
+                    eachrow[k] = "<td class='border text-center px-4 py-2'> - </td>";
                 }
                 tablebody += "</tr>";
             }
