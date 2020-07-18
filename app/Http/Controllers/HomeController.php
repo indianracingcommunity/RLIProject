@@ -81,6 +81,7 @@ class HomeController extends Controller
         $user->driversupport = trim($request->driversupport);
         $user->source = trim($request->source);
         $user->youtube = $request->youtube;
+        $user->reddit = $request->reddit;
         $user->instagram = $request->instagram;
         $user->twitch = $request->twitch;
         $user->twitter = $request->twitter;
