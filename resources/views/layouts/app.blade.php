@@ -18,7 +18,7 @@
         <script src="{{ asset('js/jquery35.js')}}"></script>
         </head>
         <body class="w-full pageBody" style="display: none;">
-            <nav class="flex justify-between border-b">
+            <nav class="flex justify-between fixed border-b bg-white w-full" style="z-index: 5;">
                 <div class="flex py-2">
                     @auth
                     <div class="block pt-3 items-center px-2 flex-shrink-0 cursor-pointer hover:bg-gray-200 py-2 ml-2 rounded" onclick="menu()"><i class="fas fa-bars"></i></div>
@@ -95,7 +95,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="flex items-center flex-shrink-0 mr-8">
+                <div class="flex items-center flex-shrink-0 mr-2">
                     @auth
                     <div class="px-4 py-2 bg-red-200 text-red-700 rounded font-semibold cursor-pointer hover:bg-red-300 text-center">
                         <a  href="{{ route('logout') }}"
@@ -115,10 +115,10 @@
                     @endguest
                 </div>
             </nav>
-            <div class="flex">
+            <div class="flex" style="z-index: 4;">
                 @auth
                 <div class="sidebar hidden fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow" id="sidebar">
-                    <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md py-4 px-2">
+                    <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md py-4 mt-16 px-2">
                         <img src="{{Auth::user()->avatar}}" class="rounded-full w-16" alt="">
                         <div class="px-4 py-2">
                             <div class="font-semibold text-indigo-600">
@@ -144,6 +144,7 @@
                         <a href="/home/admin/users" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 fas fa-binoculars w-8 text-center"></i>View/Allot Drivers</a>
                         <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-pen-alt w-8 text-center"></i>Update Standings</a>
                         <a href="/home/admin/report" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
+                        <a href="#" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-green-600 fa fa-eye w-8 text-center"></i> View Sign Ups </a>
                     </div>
                     @endif
                 </div>
@@ -194,6 +195,7 @@
     <script>
         $( document ).ready(function() {
            $('#sidebar').show('slow', function() {});
+           sidebarVisible = 0;
         });
     </script>
     @endif

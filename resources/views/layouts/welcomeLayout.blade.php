@@ -17,7 +17,7 @@
     </head>
     <body class="pageBody" style="display: none;">
 
-        <nav class="flex justify-between border-b">
+        <nav class="flex justify-between border-b fixed bg-white w-full" style="z-index: 5;">
             <div class="flex py-2">
                 @auth
                 <div class="block pt-3 items-center px-2 flex-shrink-0 cursor-pointer hover:bg-gray-200 py-2 ml-2 rounded" onclick="menu()"><i class="fas fa-bars"></i></div>
@@ -107,9 +107,9 @@
             </div>
         </nav>
         @auth
-        <div class="flex">
+        <div class="flex"  style="z-index: 4;">
             <div class="sidebar hidden fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow" id="sidebar">
-                <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md py-4 px-2">
+                <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md mt-16 py-4 px-2">
                     <img src="{{Auth::user()->avatar}}" class="rounded-full w-16" alt="">
                     <div class="px-4 py-2">
                         <div class="font-semibold text-indigo-600">
