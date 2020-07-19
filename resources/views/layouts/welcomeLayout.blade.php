@@ -19,6 +19,9 @@
 
         <nav class="flex justify-between border-b">
             <div class="flex py-2">
+                @auth
+                <div class="block pt-3 items-center px-2 flex-shrink-0 cursor-pointer hover:bg-gray-200 py-2 ml-2 rounded" onclick="menu()"><i class="fas fa-bars"></i></div>
+                @endauth
                 <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
                     <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
                 </div>
@@ -91,7 +94,6 @@
                     </ul>
                 </div>
             </div>
-            
 
             <div class="w-full sm:w-full md:w-full lg:w-1/4 xl:w-1/4 flex items-center justify-end">
                <div class="flex items-center justify-center px-4 py-2 m-2 w-full sm:w-full md:w-full lg:w-auto xl:w-auto bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
@@ -104,6 +106,40 @@
                 </div>
             </div>
         </nav>
+        @auth
+        <div class="flex">
+            <div class="sidebar hidden fixed h-screen bg-gray-100 border w-56 py-4 px-4 shadow" id="sidebar">
+                <a href="/user/profile/" class="flex hover:bg-gray-200 rounded-md py-4 px-2">
+                    <img src="{{Auth::user()->avatar}}" class="rounded-full w-16" alt="">
+                    <div class="px-4 py-2">
+                        <div class="font-semibold text-indigo-600">
+                            {{Auth::user()->name}}
+                        </div>
+                        <div class="font-semibold text-sm">
+                            #{{Auth::user()->discord_discrim}}
+                        </div>
+                    </div>
+                </a>
+                <div class="pt-8 text-sm font-bold text-gray-700">
+                    USER CONTROLS
+                </div>
+                <div class="flex flex-col">
+                    <a href="/signup/" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i> League Sign Up </a>
+                    <!-- <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>Create Report</a> -->
+                </div>
+                @if(Auth::user()->isadmin==1)
+                <div class="pt-8 text-sm font-bold text-gray-700">
+                    ADMIN CONTROLS
+                </div>
+                <div class="flex flex-col">
+                    <a href="/home/admin/users" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 fas fa-binoculars w-8 text-center"></i>View/Allot Drivers</a>
+                    <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-pen-alt w-8 text-center"></i>Update Standings</a>
+                    <a href="/home/admin/report" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
+                </div>
+                @endif
+            </div>
+        </div>
+        @endauth
         @if(session()->has('error'))
         <div class="bg-red-200 rounded text-black-800 p-4 mb-3 font-semibold">
             {{session()->get('error')}}
@@ -114,6 +150,21 @@
             $( document ).ready(function() {
                 $('.pageBody').show('slow', function() {});
             });
+            let sidebarVisible = 1
+            function menu() {
+                console.log("function called")
+                let element = document.getElementById("sidebar");
+                let element2 = document.getElementById("customMargin");
+                if (sidebarVisible == 1) {
+                    // element.classList.remove("hidden");
+                    $('#sidebar').show('slow', function() {});
+                    // element2.classList.add("ml-64")
+                    sidebarVisible = 0
+                } else {
+                    $('#sidebar').hide('slow', function() {});
+                    sidebarVisible = 1
+                }
+            }
         </script>
     </body>
 </html>
