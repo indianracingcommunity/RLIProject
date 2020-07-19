@@ -630,7 +630,7 @@
         }
       }
 
-      if (flag == 0){
+      if (flag == 0 || (flag == 1 && imaget1 != "")){
         if (imaget1 == ""){
           document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt1").style.borderColor = "#f56565";
@@ -650,8 +650,9 @@
           document.getElementById("errorimgt1").innerHTML = "<br><br>";
           document.getElementById("imgdivt1").style = "";
         }
-      
-      
+      }
+
+      if (flag == 0 || (flag == 1 && imaget2 != "")){
         if (imaget2 == ""){
           document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt2").style.borderColor = "#f56565";
@@ -671,7 +672,9 @@
           document.getElementById("errorimgt2").innerHTML = "<br><br>";
           document.getElementById("imgdivt2").style = "";
         }
-      
+      }
+
+      if (flag == 0 || (flag == 1 && imaget3 != "")){
         if (imaget3 == ""){
           document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
           document.getElementById("imgdivt3").style.borderColor = "#f56565";
