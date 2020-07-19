@@ -2,8 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=1378">
-        
+        <meta name="viewport" content="width=1378">`
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta property="og:title" content="Indian Racing Community">
@@ -162,7 +161,7 @@
                 </main>
                 @endauth
                 @guest
-                <main class="py-20 w-full">
+                <main class="py-10 w-full">
                     @yield('content')
                 </main>
                 @endguest
@@ -180,9 +179,7 @@
             let element = document.getElementById("sidebar");
             let element2 = document.getElementById("customMargin");
             if (sidebarVisible == 1) {
-                // element.classList.remove("hidden");
                 $('#sidebar').show('slow', function() {});
-                // element2.classList.add("ml-64")
                 sidebarVisible = 0
             } else {
                 $('#sidebar').hide('slow', function() {});
@@ -192,7 +189,9 @@
     </script>
     @if ("{{Auth::user()->mothertongue}}" == "")
     <script>
-        $('#sidebar').show('slow', function() {});
+        $( document ).ready(function() {
+           $('#sidebar').show('slow', function() {});
+        });
     </script>
     @endif
 </html>
