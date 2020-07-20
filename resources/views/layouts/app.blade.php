@@ -150,7 +150,7 @@
                 </div>
                 @endauth
                 @auth
-                <main class="py-10 container mx-auto w-full" id="customMargin">
+                <main class="py-10 pt-24 container mx-auto w-full" id="customMargin">
                     @if (session()->has('error'))
                     <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
                         {{session()->get('error')}}
@@ -165,7 +165,7 @@
                 </main>
                 @endauth
                 @guest
-                <main class="py-10 w-full">
+                <main class="py-10 pt-24 w-full">
                     @yield('content')
                 </main>
                 @endguest

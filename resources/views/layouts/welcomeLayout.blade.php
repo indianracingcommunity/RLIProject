@@ -145,7 +145,9 @@
             {{session()->get('error')}}
             </div>
         @endif
-        @yield('body')
+        <div class="pt-16">
+            @yield('body')
+        </div>
         <script type="text/javascript">
             $( document ).ready(function() {
                 $('.pageBody').show('slow', function() {});
