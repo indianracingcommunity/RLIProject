@@ -273,7 +273,8 @@ class Discord
         $discord_id = Auth::user()->discord_id;
         $params = (['token' => config('services.discord.bot')]);
         $curl = curl_init();
-        $profileschannel = 734086970413809746; //irc
+        //$profileschannel = 734086970413809746; //irc
+        $profileschannel = 545981427574112277;
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://discord.com/api/channels/".$profileschannel."/messages",
             CURLOPT_RETURNTRANSFER => true,
@@ -310,13 +311,5 @@ class Discord
             }
         }
     }
-
-    
-
-
-
-
-
-
 }
 ?>

@@ -22,9 +22,11 @@ class SteamLoginController extends AbstractSteamLoginController
         $useraccount->update(["steam_id" => $steamUser->steamId]);
         
         $dis = new DiscordController();
-        $dis->applyRoles();  
-        // $discord = new Discord();
-        // $discord->sendSteamProfile($steamUser->steamId);
+        $dis->applyRoles();
+
+        $discord = new Discord();
+        $discord->sendSteamProfile($steamUser->steamId);
+
         session()->flash('steamSuccess','Steam Profile Linked Successfully.');
         return redirect('/user/profile');
     }

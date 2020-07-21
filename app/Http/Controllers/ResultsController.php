@@ -15,6 +15,7 @@ use App\Result;
 use App\Driver;
 use App\Points;
 use App\Series;
+use App\Season;
 
 class ResultsController extends Controller
 {
@@ -92,19 +93,46 @@ class ResultsController extends Controller
         ]);
     }
 
+    protected function surroundingRaces($seasonid, $round) {
+        $prevRace = Race::has('results')
+                        ->where([
+                            ['season_id', $seasonid],
+                            ['round', ($round - 1)]
+                        ])
+                        ->first();
+        $nextRace = Race::has('results')
+                        ->where([
+                            ['season_id', $seasonid],
+                            ['round', ($round + 1)]
+                          ])
+                        ->first();
+
+        if($prevRace) $prevRace->load('circuit');
+        if($nextRace) $nextRace->load('circuit');
+
+        return array($prevRace, $nextRace);
+    }
+
     public function fetchRaceResults($code, $tier, $season, $round) {
         $series = Series::where("code", $code)->firstOrFail();
+        $season = Season::where([
+            ['series', $series['id']],
+            ['tier', $tier],
+            ['season', $season]
+        ])->firstOrFail();
+
         $points = Points::all()->toArray();
-        $race = Race::whereHas('season',
-            function (Builder $query) use ($series, $tier, $season) {
-                $query->where([
-                    ['series', $series['id']],
-                    ['tier', $tier],
-                    ['season', $season]
-                ]);
-            })
-            ->where('round', $round)
-            ->firstOrFail();
+        $race = Race::where('season_id', $season['id'])
+            //    whereHas('season',
+            //function (Builder $query) use ($series, $tier, $season) {
+            //    $query->where([
+            //        ['series', $series['id']],
+            //        ['tier', $tier],
+            //        ['season', $season]
+            //    ]);
+            //})
+                    ->where('round', $round)
+                    ->firstOrFail();
 
         $results = Result::where('race_id', $race['id'])
                          ->orderBy('position', 'asc')
@@ -128,10 +156,14 @@ class ResultsController extends Controller
                 if(((int)abs($results[$i]['status']) % 10) == 1) $results[$i]['points'] += 1;
             }
         }
-        //dd($results);
+
+        $sr = $this->surroundingRaces($season['id'], $round);
         $count = count($results);
+
         return view('standings.race')
                 ->with('code', $code)
+                ->with('prevRace', $sr[0])
+                ->with('nextRace', $sr[1])
                 ->with('results',$results)
                 ->with('count',$count);
     }
