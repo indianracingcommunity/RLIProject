@@ -261,19 +261,19 @@
                 </div>
                 </div>
                 <div class="flex-grow-0 w-1/2 px-4">
-                    <div class="mb-4">
+                    <label class="mb-4 cursor-pointer">
                         <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
-                        <label for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></label>
-                    </div>
-                    <div id="restfieldsid" style="display : block;">
+                        <span for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></span>
+                    </label>
+                    <div id="restfieldsid" class="mt-10" style="display : block;">
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which Games do you Play?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 @foreach($series as $gameList)
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="gameList" type="checkbox" id="gameid" name="game[]" value="{{$gameList->code}}" @if($games!=NULL) @if (in_array($gameList->code, $games)) checked @endif @endif>
-                                    <label for="games" class="mr-2">{{$gameList->name}}</label>
-                                </span>
+                                    <span for="games" class="mr-2">{{$gameList->name}}</span>
+                                </label>
                                 @endforeach
                             </div>
                             <span class="errormsg errormsgGame">Please select atleast 1.</span>
@@ -281,36 +281,36 @@
                         <div class="mb-4">
                             <label for="games" class="font-semibold text-gray-800">Which platform do you play on?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="PC" @if($platform!=NULL) @if (in_array("PC", $platform)) checked @endif @endif>
-                                    <label for="games" class="mr-2">PC</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <span for="games" class="mr-2">PC</span>
+                                </label>
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="PlayStation" @if($platform!=NULL) @if (in_array("PlayStation", $platform)) checked @endif @endif>
-                                    <label for="games" class="mr-2">PlayStation</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <span for="games" class="mr-2">PlayStation</span>
+                                </label>
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="platformList" type="checkbox" id="vehicle1" name="platform[]" value="Xbox" @if($platform!=NULL) @if (in_array("Xbox", $platform)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Xbox</label>
-                                </span>
+                                    <span for="games" class="mr-2">Xbox</span>
+                                </label>
                             </div>
                             <span class="errormsg errormsgPlatform">Please select atleast 1.</span>
                         </div>
                         <div>
                             <label for="games" class="font-semibold text-gray-800">What Controller do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Keyboard/Mouse</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <span for="games" class="mr-2">Keyboard/Mouse</span>
+                                </label>
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Controller" @if($device!=NULL) @if (in_array("Controller", $device)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Controller</label>
-                                </span>
-                                <span class="rounded bg-gray-200 px-2 py-1 my-1 mr-2">
+                                    <span for="games" class="mr-2">Controller</span>
+                                </label>
+                                <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Wheel" @if($device!=NULL)  @if (in_array("Wheel", $device)) checked @endif @endif>
-                                    <label for="games" class="mr-2">Wheel</label>
-                                </span>
+                                    <span for="games" class="mr-2">Wheel</span>
+                                </label>
                             </div>
                             <span class="errormsg errormsgDevice">Please select atleast 1.</span>
                         </div>
