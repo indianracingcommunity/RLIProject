@@ -56,7 +56,7 @@ td {
             </div>
         </div>
         @if ($nextRace != NULL)
-        <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200">
+        <div href="#" class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
             <div class="text-xs font-semibold text-gray-700">NEXT RACE</div>
             <div class="flex items-center flex-shrink-0  justify-between">
                 <div class="flex items-center flex-shrink-0">
@@ -65,7 +65,7 @@ td {
                         <div class="text-gray-800 cf ">
                             {{$nextRace->circuit->name}}
                         </div>
-                        <div class="text-xs text-gray-700 cf">
+                        <div class="text-xs text-gray-700 w-4/5 cf">
                             {{$nextRace->circuit->official}}
                         </div>
                     </div>
@@ -77,7 +77,7 @@ td {
         </div>
         @endif
         @if ($prevRace != NULL)
-        <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200">
+        <div href="#" class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="prev-race">
             <div class="text-xs font-semibold text-gray-700">PREVIOUS RACE</div>
             <div class="flex items-center flex-shrink-0  justify-between">
                 <div class="flex items-center flex-shrink-0">
@@ -86,7 +86,7 @@ td {
                         <div class="text-gray-800 cf ">
                             {{$prevRace->circuit->name}}
                         </div>
-                        <div class="text-xs text-gray-700 cf">
+                        <div class="text-xs text-gray-700 flex-wrap w-4/5 cf">
                             {{$prevRace->circuit->official}}
                         </div>
                     </div>
@@ -97,7 +97,7 @@ td {
             </div>
         </div>
         @endif
-    </div>
+  </div>
   <div class="w-3/4 mx-4">
   <div class="font-semibold">
     Race Results
@@ -184,7 +184,16 @@ td {
   </table>
   </div>
 </div>
-
+<script>
+  var button = document.getElementById('next-race');
+  button.onclick = function() {
+    location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
+  }
+  var button2 = document.getElementById('prev-race');
+  button2.onclick = function() {
+    location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
+  }
+</script>
 @endsection
 
 
