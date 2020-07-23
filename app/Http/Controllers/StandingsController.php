@@ -49,11 +49,10 @@ class StandingsController extends Controller
                        //->orderBy('round', 'asc')
                        //->get()->load('season','circuit');
 
-       //dd($races);
-       return view('standings.allraces')
-              ->with('code', $code)
-              ->with('races', $races)
-              ->with('season', $season);
+        return view('standings.allraces')
+                ->with('code', $code)
+                ->with('races', $races)
+                ->with('season', $season);
     }
 
     protected function latest_race($array, $start, $end)

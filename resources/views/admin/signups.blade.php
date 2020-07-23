@@ -20,9 +20,10 @@
     var data = <?php echo json_encode($data); ?>;
     var seasons = <?php echo json_encode($season); ?>;
     var tablebody = "";
-    var tablehead = "<th class='px-4 py-2'>Name</th>";
+    var tablehead = "<th class='px-4 py-2'>S No.</th><th class='px-4 py-2'>Name</th>";
     var active_seasons = [];
     var eachrow = [];
+    var serial_no = 0;
     
     for (var i=0;i<seasons.length;i++){
         if (seasons[i].status < 2 && seasons[i].status > 0){
@@ -39,6 +40,7 @@
         var preference1 = "";
         var preference2 = "";
         var preference3 = "";
+        
         var assist = "";
         var assisttext = "<strong>Assist Used :</strong> None <br>";
         console.log(data[index]);
@@ -96,7 +98,8 @@
             if (data[i].user.name == data[j].user.name){
                 if (j < i){break;}
                 else if (j == i){
-                    tablebody += "<tr><td class='border text-center px-4 py-2'>" + data[i].user.name + "</td>";
+                    serial_no += 1;
+                    tablebody += "<tr><td class='border text-center px-4 py-2'>" + serial_no + "</td><td class='border text-center px-4 py-2'>" + data[i].user.name + "</td>";
                     
                     for (var k = 0;k<active_seasons.length;k++){
                         if (data[j].season.name == active_seasons[k]){

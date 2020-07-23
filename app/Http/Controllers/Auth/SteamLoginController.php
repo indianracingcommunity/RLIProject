@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use kanalumaddela\LaravelSteamLogin\Http\Controllers\AbstractSteamLoginController;
 use kanalumaddela\LaravelSteamLogin\SteamUser;
 use App\Http\Controllers\DiscordController;
+use App\Discord;
 
 class SteamLoginController extends AbstractSteamLoginController
 {
@@ -22,6 +23,9 @@ class SteamLoginController extends AbstractSteamLoginController
         
         $dis = new DiscordController();
         $dis->applyRoles();
+
+        $discord = new Discord();
+        $discord->sendSteamProfile($steamUser->steamId);
 
         session()->flash('steamSuccess','Steam Profile Linked Successfully.');
         return redirect('/user/profile');

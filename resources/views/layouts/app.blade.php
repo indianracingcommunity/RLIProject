@@ -144,13 +144,13 @@
                         <a href="/home/admin/users" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 fas fa-binoculars w-8 text-center"></i>View/Allot Drivers</a>
                         <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-pen-alt w-8 text-center"></i>Update Standings</a>
                         <a href="/home/admin/report" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
-                        <a href="#" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-green-600 fa fa-eye w-8 text-center"></i> View Sign Ups </a>
+                        <a href="/home/admin/view-signups" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-green-600 fa fa-eye w-8 text-center"></i> View Sign Ups </a>
                     </div>
                     @endif
                 </div>
                 @endauth
                 @auth
-                <main class="py-10 container mx-auto w-full" id="customMargin">
+                <main class="py-10 pt-24 container mx-auto w-full" id="customMargin">
                     @if (session()->has('error'))
                     <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
                         {{session()->get('error')}}
@@ -165,7 +165,7 @@
                 </main>
                 @endauth
                 @guest
-                <main class="py-10 w-full">
+                <main class="py-10 pt-24 w-full">
                     @yield('content')
                 </main>
                 @endguest
