@@ -1,10 +1,9 @@
 @extends('layouts.app')
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-.cf {
+/* .cf {
     font-family: 'Anton', sans-serif;
-}
+} */
 tr:nth-child(even) td {
   /* background-color: #EDF2F7; */
 }
@@ -29,10 +28,10 @@ td {
   <div class="flex">
     <div class="w-1/4">
         <div class="border rounded-md p-3 leading-none">
-            <div class="text-3xl text-gray-700 leading-none mb-2 cf">
+            <div class="text-3xl text-purple-700 leading-none mb-2 cf font-bold">
                 {{$results[0]['race']['circuit']['name']}}
             </div>
-            <div class="text-gray-700 leading-none mb-4 cf">
+            <div class="text-purple-700 leading-none mb-4 cf font-semibold">
                 {{$results[0]['race']['circuit']['official']}}
             </div>
             <div class="mb-4">
@@ -57,22 +56,22 @@ td {
         </div>
         @if ($prevRace != NULL)
         <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$prevRace->round}}">
-          <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-r-4 border-green-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="prev-race">
-            <div class="text-xs font-semibold text-gray-700">PREVIOUS RACE</div>
-            <div class="flex items-center flex-shrink-0 justify-between">
+          <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-r-4 border-blue-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="prev-race">
+            <div class="text-xs text-center font-semibold text-gray-700">PREVIOUS RACE</div>
+            <div class="flex items-center flex-shrink-0 font-semibold justify-between">
                 <div class="flex items-center">
                         <i class="fas fa-chevron-left text-xl text-gray-700"></i>
                 </div>
-                <div class="flex items-center flex-shrink-0">
-                    <div class="pl-2">
+                <div class="flex items-center font-semibold flex-shrink-0">
+                    <div class="">
                         <div class="text-gray-800 cf ">
                             {{$prevRace->circuit->name}}
                         </div>
-                        <div class="text-xs text-gray-700 flex-wrap w-4/5 cf">
+                        <div class="text-xs text-gray-700 flex-wrap cf" style="width: 171px;">
                             {{$prevRace->circuit->official}}
                         </div>
                     </div>
-                    <img src="{{$prevRace->circuit->flag}}" alt="" class=" w-20 border">
+                    <img src="{{$prevRace->circuit->flag}}" alt="" class=" w-16 border">
                 </div>
             </div>
           </div>
@@ -80,16 +79,16 @@ td {
         @endif
         @if ($nextRace != NULL)
         <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$nextRace->round}}">
-          <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-red-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
-            <div class="text-xs font-semibold text-gray-700">NEXT RACE</div>
-            <div class="flex items-center flex-shrink-0  justify-between">
+          <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-green-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
+            <div class="text-xs text-center font-bold text-gray-700">NEXT RACE</div>
+            <div class="flex items-center flex-shrink-0 font-semibold justify-between">
                 <div class="flex items-center flex-shrink-0">
-                    <img src="{{$nextRace->circuit->flag}}" alt="" class=" w-20 border">
-                    <div class="pl-2">
+                    <img src="{{$nextRace->circuit->flag}}" alt="" class="mr-3 w-16 border">
+                    <div class="">
                         <div class="text-gray-800 cf ">
                             {{$nextRace->circuit->name}}
                         </div>
-                        <div class="text-xs text-gray-700 w-4/5 cf">
+                        <div class="text-xs text-gray-700 cf" style="width: 171px;">
                             {{$nextRace->circuit->official}}
                         </div>
                     </div>

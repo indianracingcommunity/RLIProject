@@ -165,7 +165,7 @@
                 </main>
                 @endauth
                 @guest
-                <main class="py-10 pt-24 w-full">
+                <main class="py-10 py-10 pt-24 mx-auto container w-full pt-24 w-full">
                     @yield('content')
                 </main>
                 @endguest
