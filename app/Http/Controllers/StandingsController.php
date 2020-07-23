@@ -35,6 +35,10 @@ class StandingsController extends Controller
             ['season', $season]
         ])->firstOrFail();
 
+        $cs = $this->computeStandings($series['id'], $tier, $season['id']);
+        if($cs['code'] != 200)
+            return abort(404);
+
         $races = Race::where('season_id', $season['id'])
                      ->has('results')
                      ->orderBy('round', 'asc')
@@ -51,6 +55,10 @@ class StandingsController extends Controller
 
         return view('standings.allraces')
                 ->with('code', $code)
+
+                ->with('tdrivers', $cs['drivers'])
+                ->with('tconst', $cs['constructors'])
+
                 ->with('races', $races)
                 ->with('season', $season);
     }
