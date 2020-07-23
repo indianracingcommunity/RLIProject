@@ -31,6 +31,7 @@ padding-left:10px;
          <div class="bg-indigo-100 font-semibold p-3 rounded-md my-2">
             Welcome to the Results Page of this Season.
          </div>
+         
       </div>
       <div class="w-5/6 mx-4">
          <h2 class="text-3xl font-semibold ml-20">All Races </h2>

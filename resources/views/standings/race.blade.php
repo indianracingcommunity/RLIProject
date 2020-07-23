@@ -1,5 +1,10 @@
 @extends('layouts.app')
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.cf {
+    font-family: 'Anton', sans-serif;
+}
 tr:nth-child(even) td {
   /* background-color: #EDF2F7; */
 }
@@ -23,31 +28,76 @@ td {
 <div class="w-11/12">
   <div class="flex">
     <div class="w-1/4">
-    <div class="border rounded-md p-3">
-    <div class="text-4xl font-semibold text-purple-700 leading-none mb-4">
-    {{$results[0]['race']['circuit']['name']}}
+        <div class="border rounded-md p-3 leading-none">
+            <div class="text-3xl text-gray-700 leading-none mb-2 cf">
+                {{$results[0]['race']['circuit']['name']}}
+            </div>
+            <div class="text-gray-700 leading-none mb-4 cf">
+                {{$results[0]['race']['circuit']['official']}}
+            </div>
+            <div class="mb-4">
+                <img src="{{$results[0]['race']['circuit']['display']}}" alt="">
+            </div>
+            <div class="flex justify-between font-semibold">
+                <div>
+                    Circuit Length
+                </div>
+                <div class="text-lg text-blue-700">
+                {{$results[0]['race']['circuit']['track_length']}}
+                </div>
+            </div>
+            <div class="flex justify-between font-semibold">
+                <div>
+                    Number of Laps
+                </div>
+                <div class="text-lg text-blue-700">
+                {{$results[0]['race']['circuit']['laps']}}
+                </div>
+            </div>
+        </div>
+        @if ($nextRace != NULL)
+        <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200">
+            <div class="text-xs font-semibold text-gray-700">NEXT RACE</div>
+            <div class="flex items-center flex-shrink-0  justify-between">
+                <div class="flex items-center flex-shrink-0">
+                    <img src="{{$nextRace->circuit->flag}}" alt="" class=" w-20 border">
+                    <div class="pl-2">
+                        <div class="text-gray-800 cf ">
+                            {{$nextRace->circuit->name}}
+                        </div>
+                        <div class="text-xs text-gray-700 cf">
+                            {{$nextRace->circuit->official}}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-xl text-gray-700"></i>
+                </div>
+            </div>
+        </div>
+        @endif
+        @if ($prevRace != NULL)
+        <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200">
+            <div class="text-xs font-semibold text-gray-700">PREVIOUS RACE</div>
+            <div class="flex items-center flex-shrink-0  justify-between">
+                <div class="flex items-center flex-shrink-0">
+                    <img src="{{$prevRace->circuit->flag}}" alt="" class=" w-20 border">
+                    <div class="pl-2">
+                        <div class="text-gray-800 cf ">
+                            {{$prevRace->circuit->name}}
+                        </div>
+                        <div class="text-xs text-gray-700 cf">
+                            {{$prevRace->circuit->official}}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-xl text-gray-700"></i>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
-    <div class="mb-4">
-      <img src="{{$results[0]['race']['circuit']['display']}}" alt="">
-    </div>
-    <div class="flex justify-between font-semibold">
-      <div>
-        Circuit Length
-      </div>
-      <div class="text-lg text-blue-700">
-       {{$results[0]['race']['circuit']['track_length']}}
-      </div>
-    </div>
-    <div class="flex justify-between font-semibold">
-      <div>
-        Number of Laps
-      </div>
-      <div class="text-lg text-blue-700">
-       {{$results[0]['race']['circuit']['laps']}}
-      </div>
-    </div>
-    </div>
-  </div>
   <div class="w-3/4 mx-4">
   <div class="font-semibold">
     Race Results
