@@ -111,13 +111,13 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
    </div>
    <div class="w-3/4 mx-5">
       <div class="flex mb-6 justify-center">
-         @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++)
+        @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++)
          @php
-         if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
-         {
-         $k--;
-         continue;
-         }
+            if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
+            {
+               $k--;
+               continue;
+            }
          @endphp
          @if($k == 0)
          <div class="card1 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">

@@ -48,54 +48,76 @@ Log::info(print_r($tdrivers,true));
             @if($k == 0)
             <div class="border hover:shadow-lg shadow-md text-center bg-yellow-300 rounded-md leading-none">
                <div class="text-2xl font-bold p-4">
-                  1st : {{$tdrivers[$i]['name']}}
+                  1st : {{$tdrivers[$i]['name']}}-> {{$tdrivers[$i]['points']}}
                </div>
                <div class="flex justify-center p-2">
-                  <img class="h-10" src="https://www.f1gamesetup.com/img/teams/2019/mclaren-2019.png">
+                  <img class="h-10" src="{{$tdrivers[$i]['team']['car']}}">
                </div>
             </div>
             @endif
             @if($k == 1)
             <div class="border hover:shadow-lg shadow-md mt-2 text-center bg-gray-200 rounded-md leading-none">
                <div class="text-2xl font-bold p-4">
-                  2nd : {{$tdrivers[$i]['name']}}
+                  2nd : {{$tdrivers[$i]['name']}} -> {{$tdrivers[$i]['points']}}
                </div>
                <div class="flex justify-center p-2">
-                  <img class="h-10" src="https://www.f1gamesetup.com/img/teams/2019/mclaren-2019.png">
+                  <img class="h-10" src="{{$tdrivers[$i]['team']['car']}}">
                </div>
             </div>
             @endif
             @if($k == 2)
             <div class="border hover:shadow-lg shadow-md mt-2 text-center bg-orange-200 rounded-md leading-none">
                <div class="text-2xl font-bold p-4">
-                  3rd : {{$tdrivers[$i]['name']}}
+                  3rd : {{$tdrivers[$i]['name']}} -> {{$tdrivers[$i]['points']}}
                </div>
                <div class="flex justify-center p-2">
-                  <img class="h-10" src="https://www.f1gamesetup.com/img/teams/2019/mclaren-2019.png">
+                  <img class="h-10" src="{{$tdrivers[$i]['team']['car']}}">
                </div>
             </div>
             @endif
             @endfor
          </div>
          <div class="bg-purple-100 ">
-            <div class="text-2xl text-purple-700 text-center rounded-md bg-purple-200 text-center p-4 mt-3 leading-none cf font-bold">
-               Top 3 Constructors
-            </div>
+           <div class="text-2xl text-purple-700 text-center rounded-md bg-purple-200 text-center p-4 mt-3 leading-none cf font-bold">
+              Top 3 Constructors
+           </div>
+           @for ($i = 0, $k = 0; $i < count($tconst) && $k < 3; $i++, $k++)
+            @php
+               if($tconst[$i]['team']['name'] == 'Reserve')
+               {
+                  $k--;
+                  continue;
+               }
+            @endphp
+            @if($k == 0)
             <div class="border hover:shadow-lg shadow-md  text-center bg-yellow-300 rounded-md leading-none">
+               <div class="text-2xl font-bold p-4">
+                  1st : {{$tconst[$i]['name']}} -> {{$tconst[$i]['points']}}
+               </div>
                <div class="flex justify-center p-2">
-                  <img class="h-10" src="https://www.f1gamesetup.com/img/teams/2019/mclaren-2019.png">
+                  <img class="h-10" src="{{$tconst[$i]['team']['car']}}">
                </div>
             </div>
+            @elseif($k == 1)
             <div class="border hover:shadow-lg shadow-md mt-2 text-center bg-gray-200 rounded-md leading-none">
+               <div class="text-2xl font-bold p-4">
+                  2nd : {{$tconst[$i]['name']}} -> {{$tconst[$i]['points']}}
+               </div>
                <div class="flex justify-center p-2">
-                  <img class="h-10" src="https://www.f1gamesetup.com/img/teams/2019/mclaren-2019.png">
+                  <img class="h-10" src="{{$tconst[$i]['team']['car']}}">
                </div>
             </div>
+            @elseif($k == 2)
             <div class="border hover:shadow-lg shadow-md mt-2 text-center bg-orange-200 rounded-md leading-none">
+               <div class="text-2xl font-bold p-4">
+                  3rd : {{$tconst[$i]['name']}} -> {{$tconst[$i]['points']}}
+               </div>
                <div class="flex justify-center p-2">
-                  <img class="h-10" src="https://www.f1gamesetup.com/img/teams/2019/mclaren-2019.png">
+                  <img class="h-10" src="{{$tconst[$i]['team']['car']}}">
                </div>
             </div>
+            @endif
+           @endfor
          </div>
       </div>
       <div class="w-5/6">

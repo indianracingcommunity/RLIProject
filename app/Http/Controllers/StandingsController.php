@@ -35,7 +35,7 @@ class StandingsController extends Controller
             ['season', $season]
         ])->firstOrFail();
 
-        $cs = $this->computeStandings($series['id'], $tier, $season['id']);
+        $cs = $this->computeStandings($series['id'], $tier, $season['season']);
         if($cs['code'] != 200)
             return abort(404);
 
