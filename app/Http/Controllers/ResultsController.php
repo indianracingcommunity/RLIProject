@@ -162,9 +162,12 @@ class ResultsController extends Controller
 
         return view('standings.race')
                 ->with('code', $code)
+                ->with('tier', $tier)
+                ->with('season', $season['season'])
+
                 ->with('prevRace', $sr[0])
                 ->with('nextRace', $sr[1])
-                ->with('results',$results)
-                ->with('count',$count);
+                ->with('results', $results)
+                ->with('count', $count);
     }
 }

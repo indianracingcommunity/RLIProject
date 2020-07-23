@@ -55,8 +55,32 @@ td {
                 </div>
             </div>
         </div>
+        @if ($prevRace != NULL)
+        <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$prevRace->round}}">
+          <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-r-4 border-green-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="prev-race">
+            <div class="text-xs font-semibold text-gray-700">PREVIOUS RACE</div>
+            <div class="flex items-center flex-shrink-0 justify-between">
+                <div class="flex items-center">
+                        <i class="fas fa-chevron-left text-xl text-gray-700"></i>
+                </div>
+                <div class="flex items-center flex-shrink-0">
+                    <div class="pl-2">
+                        <div class="text-gray-800 cf ">
+                            {{$prevRace->circuit->name}}
+                        </div>
+                        <div class="text-xs text-gray-700 flex-wrap w-4/5 cf">
+                            {{$prevRace->circuit->official}}
+                        </div>
+                    </div>
+                    <img src="{{$prevRace->circuit->flag}}" alt="" class=" w-20 border">
+                </div>
+            </div>
+          </div>
+        </a>
+        @endif
         @if ($nextRace != NULL)
-        <div href="#" class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
+        <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$nextRace->round}}">
+          <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-red-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
             <div class="text-xs font-semibold text-gray-700">NEXT RACE</div>
             <div class="flex items-center flex-shrink-0  justify-between">
                 <div class="flex items-center flex-shrink-0">
@@ -74,28 +98,8 @@ td {
                         <i class="fas fa-chevron-right text-xl text-gray-700"></i>
                 </div>
             </div>
-        </div>
-        @endif
-        @if ($prevRace != NULL)
-        <div href="#" class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-purple-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="prev-race">
-            <div class="text-xs font-semibold text-gray-700">PREVIOUS RACE</div>
-            <div class="flex items-center flex-shrink-0  justify-between">
-                <div class="flex items-center flex-shrink-0">
-                    <img src="{{$prevRace->circuit->flag}}" alt="" class=" w-20 border">
-                    <div class="pl-2">
-                        <div class="text-gray-800 cf ">
-                            {{$prevRace->circuit->name}}
-                        </div>
-                        <div class="text-xs text-gray-700 flex-wrap w-4/5 cf">
-                            {{$prevRace->circuit->official}}
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                        <i class="fas fa-chevron-right text-xl text-gray-700"></i>
-                </div>
-            </div>
-        </div>
+          </div>
+        </a>
         @endif
   </div>
   <div class="w-3/4 mx-4">
@@ -184,16 +188,6 @@ td {
   </table>
   </div>
 </div>
-<script>
-  var button = document.getElementById('next-race');
-  button.onclick = function() {
-    location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
-  }
-  var button2 = document.getElementById('prev-race');
-  button2.onclick = function() {
-    location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
-  }
-</script>
 @endsection
 
 
