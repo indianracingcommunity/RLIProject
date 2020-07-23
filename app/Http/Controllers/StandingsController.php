@@ -194,6 +194,7 @@ class StandingsController extends Controller
         $dres = array(array(
             "id" => $results[0][$field . '_id'],
             "name" => $results[0][$field]['name'],
+            "team" => $results[0]['constructor'],
             "start" => 0
         ));
 
@@ -203,6 +204,7 @@ class StandingsController extends Controller
                 $cur = array(
                     "id" => $driver[$field . '_id'],
                     "name" => $driver[$field]['name'],
+                    "team" => $driver['constructor'],
                     "start" => $k
                 );
 
