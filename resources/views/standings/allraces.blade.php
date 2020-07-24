@@ -33,7 +33,7 @@ Log::info(print_r($tdrivers,true));
          {{-- <div class="bg-indigo-100 font-semibold p-3 rounded-md my-2">
             Welcome to the Results Page of this Season.
          </div> --}}
-         <div class="text-3xl text-purple-700 rounded-md mt-4 pt-4 pb-4 leading-none cf font-bold">
+         <div class="text-xl text-purple-700 rounded-md mt-4 pt-4 pb-1 leading-none cf font-bold">
             Top 3 Drivers
          </div>
          <table>
@@ -46,67 +46,74 @@ Log::info(print_r($tdrivers,true));
             <tbody>
                @for ($i = 0, $k = 0; $i < count($tdrivers) && $k < 3; $i++, $k++)
                @php
-               if((abs($tdrivers[$i]['status']) >= 10 && abs($tdrivers[$i]['status']) < 20) || $tdrivers[$i]['team']['name'] == 'Reserve')
-               {
-               $k--;
-               continue;
-               }
+                  if((abs($tdrivers[$i]['status']) >= 10 && abs($tdrivers[$i]['status']) < 20) || $tdrivers[$i]['team']['name'] == 'Reserve')
+                  {
+                     $k--;
+                     continue;
+                  }
                @endphp
                   @if($k == 0)
                      <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold text-xl rounded-lg border-2 border-white">
+                        <td class="font-semibold text-l rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
-                        <td class="font-semibold pl-5 text-xl rounded-lg border-2 border-white">
+                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
                         </td>
                      </tr>
+                     @if($tdrivers[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
+                     @endif
                   @endif
                   @if($k == 1)
                      <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold text-xl  rounded-lg border-2 border-white">
+                        <td class="font-semibold text-l rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
-                        <td class="font-semibold pl-5 text-xl rounded-lg border-2 border-white">
+                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
                         </td>
                      </tr>
+                     @if($tdrivers[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
+                     @endif
                   @endif
                   @if($k == 2)
                      <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold text-xl  rounded-lg border-2 border-white">
+                        <td class="font-semibold text-l rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
-                        <td class="font-semibold pl-5 text-xl rounded-lg border-2 border-white">
+                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
                         </td>
                      </tr>
+                     @if($tdrivers[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
+                     @endif
                   @endif
                @endfor
             </tbody>
          </table>
-         <div class="text-3xl text-purple-700 rounded-md mt-10 pt-4 pb-4 leading-none cf font-bold">
+         @if($season['season'] - (int)$season['season'] < 0.75)
+         <div class="text-2xl text-purple-700 rounded-md mt-10 pt-4 pb-1 leading-none cf font-bold">
             Top 3 Constructors
          </div>
          <table>
             <thead>
                <tr>
-                  <th class="rounded-md bg-gray-300 border-2 border-white text-center">Constructor</th>
+                  <th class="rounded-md bg-gray-300 border-2 border-white">Constructor</th>
                   <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
                </tr>
             </thead>
@@ -152,6 +159,7 @@ Log::info(print_r($tdrivers,true));
                @endfor
             </tbody>
          </table>
+         @endif
       </div>
       <div class="w-5/6">
          <h2 class="text-3xl font-semibold ml-20">All Races </h2>
