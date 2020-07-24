@@ -2,17 +2,27 @@
 
 // Check if user is in IRC or not 
 namespace App;
+
+use Auth;
 use App\User;
 use Illuminate\Support\Facades\DB;
-use Auth;
 use Illuminate\Support\Facades\Log;
 
 class Discord
 {
-    public static function check($userr)
+    protected $irc_guild;
+    protected $applicantRole;
+    protected $profilesChannel;
+    public function __construct()
     {
-        $params =(['access_token' => $userr->accessTokenResponseBody['access_token'],]);
+        $this->irc_guild = (int)config('services.discord.irc_guild');
+        $this->applicantRole = (int)config('services.discord.applicant_role');
+        $this->profilesChannel = (int)config('services.discord.profiles_channel');
+    }
 
+    public function check($userr)
+    {
+        $params = (['access_token' => $userr->accessTokenResponseBody['access_token'],]);
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -41,7 +51,7 @@ class Discord
         else
         {
             $final = json_decode($response,true);
-            $irc = 533143665921622017;
+            $irc = $this->irc_guild;
             $check = 'False';
             for($i = 0; $i < count($final); $i++)
             {
@@ -56,10 +66,11 @@ class Discord
 
     public function getroles($id)
     {
-        $params =(['token' => config('services.discord.bot')]);
+        $params = (['token' => config('services.discord.bot')]);
 
         $curl = curl_init();
-        $server = 533143665921622017;
+        $server = $this->irc_guild;
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://discord.com/api/guilds/".$server."/roles",
             CURLOPT_RETURNTRANSFER => true,
@@ -90,9 +101,9 @@ class Discord
         }
     }
 
-    public static function checkRoles($roles, $id)
+    public function checkRoles($roles, $id)
     {
-        $data = Discord::getMemberRoles($id);
+        $data = $this->getMemberRoles($id);
         if($data != "Invalid")
         {
             $arr = array();
@@ -118,13 +129,13 @@ class Discord
         }
     }
 
-    public static function getMemberRoles($id)
+    public function getMemberRoles($id)
     {
         $userdata = $id;
-        $params =(['token' => config('services.discord.bot')]);
+        $params = (['token' => config('services.discord.bot')]);
 
         $curl = curl_init();
-        $server = 533143665921622017;
+        $server = $this->irc_guild;
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$userdata,
             CURLOPT_RETURNTRANSFER => true,
@@ -167,7 +178,7 @@ class Discord
         $params = (['token' => config('services.discord.bot')]);
 
         $curl = curl_init();
-        $server = 533143665921622017; //irc
+        $server = $this->irc_guild; //irc
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$applicantrole,
             CURLOPT_RETURNTRANSFER => true,
@@ -204,15 +215,12 @@ class Discord
         }
     }
 
-    public function addroles($roles, $id)
+    public function addroles($roles, $id, $data)
     {
         $params = (['token' => config('services.discord.bot')]);
-        $applicantrole = 731215351416750130;
-
-        $data = $this->getMemberRoles($id);
-        if(in_array($applicantrole, $data))
+        if(in_array($this->applicantRole, $data))
         {
-            $var =  $this->removeApplicantRole($id, $applicantrole);
+            $var =  $this->removeApplicantRole($id, $this->applicantRole);
             if($var == "Invalid")
             {
                 return "Error Removing applicant role";
@@ -225,7 +233,7 @@ class Discord
             {
                 sleep(1);
                 $curl = curl_init();
-                $server = 533143665921622017; //irc 
+                $server = $this->irc_guild; //irc
                 curl_setopt_array($curl, array(
                 CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$value,
                 CURLOPT_RETURNTRANSFER => true,
@@ -267,14 +275,18 @@ class Discord
         }
     }
 
-    public function sendSteamProfile($steamid)
-    {   
-        // https://steamcommunity.com/profiles/$steamid
+    public function sendMemberProfile($message)
+    {
+        $adata = array("content" => $message, "tts" => false);
+        $postdata = json_encode($adata);
+
         $discord_id = Auth::user()->discord_id;
         $params = (['token' => config('services.discord.bot')]);
         $curl = curl_init();
+
         //$profileschannel = 734086970413809746; //irc
-        $profileschannel = 545981427574112277;
+        $profileschannel = $this->profilesChannel;
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://discord.com/api/channels/".$profileschannel."/messages",
             CURLOPT_RETURNTRANSFER => true,
@@ -283,7 +295,7 @@ class Discord
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "{\"content\":\"Steam profile for : <@$discord_id>  https://steamcommunity.com/profiles/$steamid \",\"tts\":false}",
+            CURLOPT_POSTFIELDS => $postdata,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 "Authorization: Bot ".$params['token']

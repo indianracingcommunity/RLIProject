@@ -67,8 +67,8 @@ class LoginController extends Controller
 
      private function findOrCreateUser($userr)
      {
-        
-       $check = Discord::check($userr);
+       $discord = new Discord();
+       $check = $discord->check($userr);
        //dd($check);
        if($check == "True")
        {

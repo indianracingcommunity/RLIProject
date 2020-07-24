@@ -119,9 +119,9 @@
             </div>
             <div class="flex w-64 flex-wrap font-semibold text-sm">
                 @if(is_array($roles))
-                    @for ($i= 0; $i < count($roles) ; $i++)
+                    @for ($i= 0; $i < count($roles); $i++)
                         @php
-                        $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
+                            $color = str_pad($roles[$i]['color'], 6, "0", STR_PAD_LEFT);
                         @endphp
                         <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
                     @endfor
@@ -297,7 +297,7 @@
                             <span class="errormsg errormsgPlatform">Please select atleast 1.</span>
                         </div>
                         <div>
-                            <label for="games" class="font-semibold text-gray-800">What Controller do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
+                            <label for="games" class="font-semibold text-gray-800">What Device do you use to play Games?<span class="text-red-600 ml-2">●</span><i class="fas fa-globe-americas text-gray-600 ml-2"></i></label>
                             <div class="flex flex-wrap">
                                 <label class="rounded bg-gray-200 px-2 py-1 my-1 mr-2 cursor-pointer">
                                     <input class="deviceList" type="checkbox" id="vehicle1" name="device[]" value="Keyboard/Mouse" @if($device!=NULL) @if (in_array("Keyboard/Mouse", $device)) checked @endif @endif>

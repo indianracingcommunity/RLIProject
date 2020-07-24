@@ -11,21 +11,33 @@ use PhpParser\Node\Expr\New_;
 
 class DiscordController extends Controller
 {
-    public function getServerRoles()
+    protected $psRole;
+    protected $xboxRole;
+    protected $memberRole;
+    protected $applicantRole;
+
+    public function __construct()
     {
-        $discord = new Discord();
-        $userroles = $discord->getroles();
+        $this->psRole = (int)config('services.discord.ps_role');
+        $this->xboxRole = (int)config('services.discord.xbox_role');
+        $this->memberRole = (int)config('services.discord.member_role');
+        $this->applicantRole = (int)config('services.discord.applicant_role');
     }
 
     public function applyRoles()
     {
+        $discord = new Discord();
         $series_all = Series::all();
         $user = User::find(Auth::user()->id);
 
+        $psSet = false;
+        $xboxSet = false;
+
         $roles = array();
+        $discord_roles = $discord->getMemberRoles($user->discord_id);
         if(isset($user->mothertongue))
         {
-            $roles['member'] = 598061461511602191;
+            $roles['member'] = $this->memberRole;
             if(isset($user->games) && $user->games != "")
             {
                 $user->games = unserialize($user->games);
@@ -40,13 +52,23 @@ class DiscordController extends Controller
                 }
 
                 if(isset($user->psn) && $user->psn != "" && in_array("PlayStation", $user->platform))
-                   $roles['ps4'] = 724495481241206795;
+                {
+                    $roles['ps4'] = $this->psRole;
+                    $psSet = true;
+                }
                 if(isset($user->xbox) && $user->xbox != "" && in_array("Xbox", $user->platform))
-                   $roles['xbox'] = 728827128443043902;
+                {
+                    $roles['xbox'] = $this->xboxRole;
+                    $xboxSet = true;
+                }
             }
 
-            $discord = new Discord();
-            return $discord->addroles($roles, $user->discord_id);
+            if(!in_array($this->xboxRole, $discord_roles) && $xboxSet)
+                $discord->sendMemberProfile("Xbox ID for <@$user->discord_id> : $user->xbox");
+            if(!in_array($this->psRole, $discord_roles) && $psSet)
+                $discord->sendMemberProfile("PSN ID for <@$user->discord_id> : $user->psn");
+
+            return $discord->addroles($roles, $user->discord_id, $discord_roles);
         }
         return 0;
     }
