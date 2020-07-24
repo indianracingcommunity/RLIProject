@@ -10,17 +10,17 @@ class WebsiteController extends Controller
 {
     public function loadhomepage()
     {
-    	return view('welcome');
+        return view('welcome')->with('irc_guild', config('services.discord.irc_guild'));
     }
 
     public function loadjoinus()
     {
-    	return view('joinus');
+        return view('joinus')->with('irc_guild', config('services.discord.irc_guild'));
     }
 
     public function loadteamsanddrivers()
     {
-    	return view('teamsanddrivers');
+        return view('teamsanddrivers');
     }
 
     public function loadstandings()
@@ -30,7 +30,7 @@ class WebsiteController extends Controller
 
     public function loadaboutus()
     {
-    	return view('aboutus');
+        return view('aboutus')->with('irc_guild', config('services.discord.irc_guild'));
     }
 
     public function loadourteam()

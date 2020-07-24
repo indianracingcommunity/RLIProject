@@ -51,7 +51,7 @@
             <img class="object-contain rounded-full" width="70" src='{{asset('/img/homeDiscord.png')}}'>
         </a>
         <div class="popover__content">
-            <iframe src="https://discord.com/widget?id=533143665921622017&theme=dark" class="mt-5" width="300" height="500" allowtransparency="true"></iframe>
+            <iframe src="https://discord.com/widget?id={{$irc_guild}}&theme=dark" class="mt-5" width="300" height="500" allowtransparency="true"></iframe>
         </div>
     </div>
     

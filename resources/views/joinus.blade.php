@@ -23,7 +23,7 @@
 			<p class="font-semibold mb-2 rounded p-3 text-xl bg-gray-100 text-gray-700"><strong>You may now proceed by joining our Discord Server below</strong></p>
 			<div class="block rounded mt-3">
 			<a href="https://discord.gg/dWG2bX6">
-				<img class="" src="https://discord.com/api/guilds/533143665921622017/widget.png?style=banner1">
+				<img class="" src="https://discord.com/api/guilds/{{$irc_guild}}/widget.png?style=banner1">
 			</a>
 			</div>	
 		</div>
