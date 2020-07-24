@@ -33,7 +33,7 @@ Log::info(print_r($tdrivers,true));
          {{-- <div class="bg-indigo-100 font-semibold p-3 rounded-md my-2">
             Welcome to the Results Page of this Season.
          </div> --}}
-         <div class="text-2xl text-purple-700 rounded-md text-center mt-3 p-4 leading-none cf font-bold">
+         <div class="text-3xl text-purple-700 rounded-md mt-4 pt-4 pb-4 leading-none cf font-bold">
             Top 3 Drivers
          </div>
          <table>
@@ -41,7 +41,6 @@ Log::info(print_r($tdrivers,true));
                <tr>
                   <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
                   <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-                  <th  class="rounded-md bg-gray-300 border-2 border-white">Team</th>
                </tr>
             </thead>
             <tbody>
@@ -54,55 +53,61 @@ Log::info(print_r($tdrivers,true));
                }
                @endphp
                   @if($k == 0)
-                     <tr class="cursor-pointer bg-gray-200">
-                        <td class="font-semibold rounded-lg border border-white">
+                     <tr class="cursor-pointer bg-indigo-100">
+                        <td class="font-semibold text-xl rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
-                        <td class="font-semibold pl-5 rounded-lg border border-white">
+                        <td class="font-semibold pl-5 text-xl rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
                         </td>
-                        <td class="font-semibold rounded-lg border border-white">
-                           <img src="{{$tdrivers[$i]['team']['car']}}">
+                     </tr>
+                     <tr class="bg-indigo-100">
+                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                           <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
                   @endif
                   @if($k == 1)
-                     <tr class="cursor-pointer bg-gray-200">
-                        <td class="font-semibold rounded-lg border border-white">
+                     <tr class="cursor-pointer bg-indigo-100">
+                        <td class="font-semibold text-xl  rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
-                        <td class="font-semibold pl-5 rounded-lg border border-white">
+                        <td class="font-semibold pl-5 text-xl rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
                         </td>
-                        <td class="font-semibold rounded-lg border border-white">
-                           <img src="{{$tdrivers[$i]['team']['car']}}">
+                     </tr>
+                     <tr class="bg-indigo-100">
+                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                           <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
                   @endif
                   @if($k == 2)
-                     <tr class="cursor-pointer bg-gray-200">
-                        <td class="font-semibold rounded-lg border border-white">
+                     <tr class="cursor-pointer bg-indigo-100">
+                        <td class="font-semibold text-xl  rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
-                        <td class="font-semibold pl-5 rounded-lg border border-white">
+                        <td class="font-semibold pl-5 text-xl rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
                         </td>
-                        <td class="font-semibold rounded-lg border border-white">
-                           <img src="{{$tdrivers[$i]['team']['car']}}">
+                     </tr>
+                     <tr class="bg-indigo-100">
+                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                           <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
                   @endif
                @endfor
             </tbody>
          </table>
-         <div class="text-2xl text-purple-700 rounded-md mt-3 text-center p-4 leading-none cf font-bold">
+         <div class="text-3xl text-purple-700 rounded-md mt-10 pt-4 pb-4 leading-none cf font-bold">
             Top 3 Constructors
          </div>
          <table>
             <thead>
                <tr>
-                  <th class="rounded-md bg-gray-300 border-white text-center">Constructor</th>
-                  <th  class="rounded-md bg-gray-300 border-white">Points</th>
+                  <th class="rounded-md bg-gray-300 border-2 border-white text-center">Constructor</th>
+                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
                </tr>
             </thead>
             <tbody>
@@ -116,30 +121,30 @@ Log::info(print_r($tdrivers,true));
                @endphp
                @if($k == 0)
                      <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold rounded-lg border border-white">
+                        <td class="font-semibold rounded-lg border-2 border-white">
                            <img class="p-2" src="{{$tconst[$i]['team']['car']}}">
                         </td>
-                        <td class="font-semibold pl-5 rounded-lg border border-white">
+                        <td class="font-semibold pl-5 rounded-lg border-2 border-white">
                            {{$tconst[$i]['points']}}
                         </td>
                      </tr>
                @endif
                @if($k == 1)
                   <tr class="cursor-pointer bg-indigo-100">
-                     <td class="font-semibold rounded-lg border border-white">
+                     <td class="font-semibold rounded-lg border-2 border-white">
                         <img class="p-2" src="{{$tconst[$i]['team']['car']}}">
                      </td>
-                     <td class="font-semibold pl-5 rounded-lg border border-white">
+                     <td class="font-semibold pl-5 rounded-lg border-2 border-white">
                         {{$tconst[$i]['points']}}
                      </td>
                   </tr>
                @endif
                @if($k == 2)
                   <tr class="cursor-pointer bg-indigo-100">
-                     <td class="font-semibold rounded-lg border border-white">
+                     <td class="font-semibold rounded-lg border-2 border-white">
                         <img class="p-2" src="{{$tconst[$i]['team']['car']}}">
                      </td>
-                     <td class="font-semibold pl-5 rounded-lg border border-white">
+                     <td class="font-semibold pl-5 rounded-lg border-2 border-white">
                         {{$tconst[$i]['points']}}
                      </td>
                   </tr>

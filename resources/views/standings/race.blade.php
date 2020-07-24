@@ -81,7 +81,7 @@ td {
         <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$nextRace->round}}">
           <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-green-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
             <div class="text-xs text-center font-bold text-gray-700">NEXT RACE</div>
-            <div class="flex items-center flex-shrink-0 font-semibold justify-between">
+            <div class="flex items-center flex-shrink-0 font-bold justify-between">
                 <div class="flex items-center flex-shrink-0">
                     <img src="{{$nextRace->circuit->flag}}" alt="" class="mr-3 w-16 border">
                     <div class="">

@@ -50,8 +50,8 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       @endif
       @if($season['season'] - (int)$season['season'] < 0.75)
       <div class="rounded-md py-2 my-4 leading-none">
-         <div class="text-sm font-semibold my-2 leading-none">
-            Constructor Standings
+         <div class="font-semibold my-2 leading-none">
+            Constructors` Standings
          </div>
          <table>
             <thead>
@@ -164,7 +164,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          @endif
          @endfor
       </div>
-      <div class="text-s font-semibold mx-2">
+      <div class="text font-semibold mx-2">
          Drivers' Standings
       </div>
       <table class="table mx-2">
