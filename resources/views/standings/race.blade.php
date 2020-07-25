@@ -62,9 +62,9 @@ td {
                 <div class="flex items-center">
                         <i class="fas fa-chevron-left text-xl text-gray-700"></i>
                 </div>
-                <div class="flex items-center font-semibold flex-shrink-0">
+                <div class="flex items-center font-bold flex-shrink-0">
                     <div class="">
-                        <div class="text-gray-800 cf ">
+                        <div class="text-gray-800 cf">
                             {{$prevRace->circuit->name}}
                         </div>
                         <div class="text-xs text-gray-700 flex-wrap cf" style="width: 171px;">
@@ -80,7 +80,7 @@ td {
         @if ($nextRace != NULL)
         <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$nextRace->round}}">
           <div class="py-2 px-2 bg-gray-100 my-3 shadow-md rounded-md border-l-4 border-green-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
-            <div class="text-xs text-center font-bold text-gray-700">NEXT RACE</div>
+            <div class="text-xs text-center font-semibold text-gray-700">NEXT RACE</div>
             <div class="flex items-center flex-shrink-0 font-bold justify-between">
                 <div class="flex items-center flex-shrink-0">
                     <img src="{{$nextRace->circuit->flag}}" alt="" class="mr-3 w-16 border">

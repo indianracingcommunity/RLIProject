@@ -11,7 +11,7 @@ td {
 padding-left:10px;
 }
 </style>
-@php 
+@php
 Log::info(print_r($tdrivers,true));
 @endphp
 @section('content')
@@ -36,7 +36,7 @@ Log::info(print_r($tdrivers,true));
          <div class="text-xl text-purple-700 rounded-md mt-4 pt-4 pb-1 leading-none cf font-bold">
             Top 3 Drivers
          </div>
-         <table>
+         <table class="w-5/6">
             <thead>
                <tr>
                   <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
@@ -64,7 +64,7 @@ Log::info(print_r($tdrivers,true));
                      @if($tdrivers[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
-                           <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
+                           <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
                      @endif
@@ -81,7 +81,7 @@ Log::info(print_r($tdrivers,true));
                      @if($tdrivers[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
-                           <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
+                           <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
                      @endif
@@ -98,7 +98,7 @@ Log::info(print_r($tdrivers,true));
                      @if($tdrivers[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
-                           <img class="pl-6 pt-2 pb-2 pr-6" src="{{$tdrivers[$i]['team']['car']}}">
+                           <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
                         </td>
                      </tr>
                      @endif
@@ -110,7 +110,77 @@ Log::info(print_r($tdrivers,true));
          <div class="text-2xl text-purple-700 rounded-md mt-10 pt-4 pb-1 leading-none cf font-bold">
             Top 3 Constructors
          </div>
-         <table>
+         <table class="w-5/6">
+            <thead>
+               <tr>
+                  <th class="rounded-md bg-gray-300 border-2 border-white">Teams</th>
+                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
+               </tr>
+            </thead>
+            <tbody>
+               @for ($i = 0, $k = 0; $i < count($tdrivers) && $k < 3; $i++, $k++)
+               @php
+                  if((abs($tdrivers[$i]['status']) >= 10 && abs($tdrivers[$i]['status']) < 20) || $tdrivers[$i]['team']['name'] == 'Reserve')
+                  {
+                     $k--;
+                     continue;
+                  }
+               @endphp
+                  @if($k == 0)
+                     <tr class="cursor-pointer bg-indigo-100">
+                        <td class="font-semibold text-l rounded-lg border-2 border-white">
+                           <a class="hover:underline">{{$tconst[$i]['name']}}</a>
+                        </td>
+                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
+                           {{$tdrivers[$i]['points']}}
+                        </td>
+                     </tr>
+                     @if($tdrivers[$i]['team']['car'] != null)
+                     <tr class="bg-indigo-100">
+                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                           <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
+                        </td>
+                     </tr>
+                     @endif
+                  @endif
+                  @if($k == 1)
+                     <tr class="cursor-pointer bg-indigo-100">
+                        <td class="font-semibold text-l rounded-lg border-2 border-white">
+                           <a class="hover:underline">{{$tconst[$i]['name']}}</a>
+                        </td>
+                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
+                           {{$tdrivers[$i]['points']}}
+                        </td>
+                     </tr>
+                     @if($tdrivers[$i]['team']['car'] != null)
+                     <tr class="bg-indigo-100">
+                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                           <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
+                        </td>
+                     </tr>
+                     @endif
+                  @endif
+                  @if($k == 2)
+                     <tr class="cursor-pointer bg-indigo-100">
+                        <td class="font-semibold text-l rounded-lg border-2 border-white">
+                           <a class="hover:underline">{{$tconst[$i]['name']}}</a>
+                        </td>
+                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
+                           {{$tdrivers[$i]['points']}}
+                        </td>
+                     </tr>
+                     @if($tdrivers[$i]['team']['car'] != null)
+                     <tr class="bg-indigo-100">
+                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                           <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
+                        </td>
+                     </tr>
+                     @endif
+                  @endif
+               @endfor
+            </tbody>
+         </table>
+         <!-- <table class="w-5/6">
             <thead>
                <tr>
                   <th class="rounded-md bg-gray-300 border-2 border-white">Constructor</th>
@@ -158,7 +228,7 @@ Log::info(print_r($tdrivers,true));
                @endif
                @endfor
             </tbody>
-         </table>
+         </table> -->
          @endif
       </div>
       <div class="w-5/6">
