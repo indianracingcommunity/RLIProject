@@ -17,7 +17,7 @@ Log::info(print_r($tdrivers,true));
 @section('content')
 <div class="container mx-auto w-11/12">
    <div class="flex">
-      <div class="w-2/6">
+      <div class="w-1/3">
          @if($season['season'] == (int)$season['season'])
          <div class="text-4xl font-bold text-gray-800 leading-tight">
             <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
@@ -232,8 +232,8 @@ Log::info(print_r($tdrivers,true));
          @endif
       </div>
       <div class="w-5/6">
-         <h2 class="text-3xl font-semibold ml-20">All Races </h2>
-         <table class="w-5/6 mx-auto">
+         <h2 class="text-3xl font-semibold">All Races </h2>
+         <table class="w-full">
             <thead>
                <tr>
                   <th class="bg-gray-300 rounded-md w-24 text-center border-2 border-white">Round</th>

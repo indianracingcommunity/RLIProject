@@ -101,7 +101,7 @@ td {
         </a>
         @endif
   </div>
-  <div class="w-3/4 mx-4">
+  <div class="w-3/4 ml-16">
   <div class="font-semibold">
     Race Results
   </div>

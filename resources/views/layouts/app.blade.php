@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=1378">
-        
+
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta property="og:title" content="Indian Racing Community">

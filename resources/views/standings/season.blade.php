@@ -109,7 +109,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       </div>
       @endif
    </div>
-   <div class="w-3/4 mx-5">
+   <div class="w-3/4 ml-16">
       <div class="flex mb-6 justify-center">
         @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++)
          @php
