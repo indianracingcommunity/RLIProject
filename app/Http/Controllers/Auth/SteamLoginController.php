@@ -24,10 +24,11 @@ class SteamLoginController extends AbstractSteamLoginController
         $dis = new DiscordController();
         $dis->applyRoles();
 
+        $disc = new Discord();
         $discord_id = Auth::user()->discord_id;
         $steamid = $steamUser->steamId;
         $message = "Steam profile for <@$discord_id> : https://steamcommunity.com/profiles/$steamid";
-        Discord::sendMemberProfile($message);
+        $disc->sendMemberProfile($message);
 
         session()->flash('steamSuccess','Steam Profile Linked Successfully.');
         return redirect('/user/profile');

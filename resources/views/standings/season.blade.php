@@ -66,7 +66,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                      if($cres[$i]['name'] == 'Reserve')
                         continue;
                   @endphp
-                  <tr class="cursor-pointer">
+                  <tr class="">
                      <td class="font-semibold rounded-lg border border-white">
                         {{$cres[$i]['name']}}
                      </td>
@@ -181,11 +181,11 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          <tbody>
             @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
             @php
-            if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
-            {
-            $k--;
-            continue;
-            }
+               if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
+               {
+                  $k--;
+                  continue;
+               }
             @endphp
             <tr>
                @if ($res[$i]['user'] == Auth::id())

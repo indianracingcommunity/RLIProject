@@ -53,8 +53,8 @@ Log::info(print_r($tdrivers,true));
                   }
                @endphp
                   @if($k == 0)
-                     <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold text-l rounded-lg border-2 border-white">
+                     <tr class="bg-indigo-100">
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
@@ -70,8 +70,8 @@ Log::info(print_r($tdrivers,true));
                      @endif
                   @endif
                   @if($k == 1)
-                     <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold text-l rounded-lg border-2 border-white">
+                     <tr class="bg-indigo-100">
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
@@ -87,8 +87,8 @@ Log::info(print_r($tdrivers,true));
                      @endif
                   @endif
                   @if($k == 2)
-                     <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold text-l rounded-lg border-2 border-white">
+                     <tr class="bg-indigo-100">
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white">
                            <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
@@ -118,24 +118,24 @@ Log::info(print_r($tdrivers,true));
                </tr>
             </thead>
             <tbody>
-               @for ($i = 0, $k = 0; $i < count($tdrivers) && $k < 3; $i++, $k++)
+               @for ($i = 0, $k = 0; $i < count($tconst) && $k < 3; $i++, $k++)
                @php
-                  if((abs($tdrivers[$i]['status']) >= 10 && abs($tdrivers[$i]['status']) < 20) || $tdrivers[$i]['team']['name'] == 'Reserve')
+                  if($tconst[$i]['team']['name'] == 'Reserve')
                   {
                      $k--;
                      continue;
                   }
                @endphp
                   @if($k == 0)
-                     <tr class="cursor-pointer bg-indigo-100">
+                     <tr class="bg-indigo-100">
                         <td class="font-semibold text-l rounded-lg border-2 border-white">
-                           <a class="hover:underline">{{$tconst[$i]['name']}}</a>
+                           {{$tconst[$i]['name']}}
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
-                           {{$tdrivers[$i]['points']}}
+                           {{$tconst[$i]['points']}}
                         </td>
                      </tr>
-                     @if($tdrivers[$i]['team']['car'] != null)
+                     @if($tconst[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
@@ -144,15 +144,15 @@ Log::info(print_r($tdrivers,true));
                      @endif
                   @endif
                   @if($k == 1)
-                     <tr class="cursor-pointer bg-indigo-100">
+                     <tr class="bg-indigo-100">
                         <td class="font-semibold text-l rounded-lg border-2 border-white">
-                           <a class="hover:underline">{{$tconst[$i]['name']}}</a>
+                           {{$tconst[$i]['name']}}
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
-                           {{$tdrivers[$i]['points']}}
+                           {{$tconst[$i]['points']}}
                         </td>
                      </tr>
-                     @if($tdrivers[$i]['team']['car'] != null)
+                     @if($tconst[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
@@ -161,15 +161,15 @@ Log::info(print_r($tdrivers,true));
                      @endif
                   @endif
                   @if($k == 2)
-                     <tr class="cursor-pointer bg-indigo-100">
+                     <tr class="bg-indigo-100">
                         <td class="font-semibold text-l rounded-lg border-2 border-white">
-                           <a class="hover:underline">{{$tconst[$i]['name']}}</a>
+                           {{$tconst[$i]['name']}}
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
-                           {{$tdrivers[$i]['points']}}
+                           {{$tconst[$i]['points']}}
                         </td>
                      </tr>
-                     @if($tdrivers[$i]['team']['car'] != null)
+                     @if($tconst[$i]['team']['car'] != null)
                      <tr class="bg-indigo-100">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
