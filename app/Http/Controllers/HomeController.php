@@ -35,11 +35,14 @@ class HomeController extends Controller
     {
         $discord = new Discord();
         $userroles = $discord->getroles($user->discord_id);
-
+        $metaUserAvatar = $user->avatar;
+        $metaName = $user->name;
         $series = Series::all();
         return view('user.profiles')
           ->with('user', $user)
           ->with('roles', $userroles)
+          ->with('metaUserAvatar', $metaUserAvatar)
+          ->with('metaName', $metaName)
           ->with('series', $series);
     }
 
