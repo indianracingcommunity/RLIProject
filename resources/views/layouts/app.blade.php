@@ -3,12 +3,17 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=1378">
-
+        
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta property="og:title" content="Indian Racing Community">
-        <meta property="og:description" content="A place For Every Indian Racing Enthusiast.">
-        <meta property="og:image" content="/img/IRC_logo/logo_square_new.png">
+        @if(isset($metaUserAvatar))
+            <meta property="og:description" content="{{$metaName}}">
+            <meta property="og:image" content="{{$metaUserAvatar}}">
+        @else
+            <meta property="og:description" content="A place For Every Indian Racing Enthusiast.">
+            <meta property="og:image" content="/img/IRC_logo/logo_square_new.png">
+        @endif
         <meta property="og:url" content="https://indianracingcommunity.co.in">
         <title>Indian Racing Community</title>
         <!-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
