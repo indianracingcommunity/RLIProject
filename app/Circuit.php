@@ -11,6 +11,13 @@ class Circuit extends Model
         return json_decode(json_encode($official_list), true);
     }
 
+    static public function getTrackByName($game, $series) {
+        $track = Circuit::where('game', $game)
+                        ->where('series', $series)
+                        ->first();
+
+        return $track;
+    }
 
     public function races()
     {

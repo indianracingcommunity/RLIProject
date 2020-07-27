@@ -19,6 +19,7 @@ use App\Race;
 use App\Result;
 use App\Driver;
 use App\Season;
+use App\Series;
 use App\Circuit;
 use App\Constructor;
 
@@ -132,21 +133,55 @@ class AccController extends Controller
 
     public function parseJson(Request $request) {
         ini_set('max_execution_time', 300);
-        $file = request()->file('photo');      // <input type="file" name="fileinput" />
+        $file = request()->file('photo');
+
         //$fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
         //$file8 = mb_convert_encoding($file16, 'utf-8');
         $content = file_get_contents($file);
         $json = json_decode($content, true);
 
-        $circuit = Circuit::getTrackByGame($json['trackName']);
+        $round = 1;
+        $season = Season::find(1);
+
+        $series = Series::where('code', 'acc')->first();
+
+        $circuit = Circuit::getTrackByGame($json['trackName'], $series['id']);
         if($circuit == null) return response()->json([]);
 
         $track = array(
+            "season_id" => $season['id'],
             'circuit_id' => $circuit['id'],
             'official' => $circuit['official'],
             'display' => $circuit['name'],
+            "round" => 1
         );
-        return response()->json(["f" => $json]);
+
+        $results = array();
+        foreach($json['sessionResult']['leaderBoardLines'] as $k => $driver)
+        {
+            $dr = Driver::where('steam_id', substr($driver['currentDriver']['playerId'], 1))
+                        ->first();
+
+            $status = 0;
+            $team_ind = array_search($driver['car']['carModel'], array_column($season['circuits'], "game"));
+
+            array_push($rresults, array(
+                "position" => $k + 1,
+                "driver" => $dr['name'],
+                "driver_id" => $dr['id'],
+                "matched_driver" => $dr['name'],
+                "team" => $season['circuits'][$team_ind]['name'],
+                "constructor_id" => $season['circuits'][$team_ind]['id'],
+                "matched_team" => $season['circuits'][$team_ind]['name'],
+                "grid" => 0,
+                "stops" => 0,
+                "status" => $status,
+                "fastestlaptime" => convertMillisToStandard($driver['timing']['bestLap']),
+                "time" => convertMillisToStandard($driver['timing']['totalTime'])
+            ));
+        }
+
+        return response()->json(["t" => $track, "r" => $results]);
     }
 
     public function testing()
