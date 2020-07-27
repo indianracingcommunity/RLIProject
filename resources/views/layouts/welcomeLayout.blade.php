@@ -82,7 +82,7 @@
                 </div>
                 <div class="px-4 py-3 font-semibold rounded cursor-default hover:bg-blue-200 mx-2 dropdown">
                     <button class="font-semibold pl-6 pr-6 cursor-default rounded inline-flex items-center">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i> Info
+                        <i class="fa fa-info-circle pr-1" aria-hidden="true"></i> Info
                     </button>
                     <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 8.2rem;">
                         <li class="dropdown">
