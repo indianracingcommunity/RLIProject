@@ -51,7 +51,7 @@ padding-left:10px;
                @endphp
                   @if($k == 0)
                      <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['id']}}">
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
                            <a href="#">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
@@ -68,7 +68,7 @@ padding-left:10px;
                   @endif
                   @if($k == 1)
                      <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['id']}}">
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
                            <a href="#">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
@@ -85,7 +85,7 @@ padding-left:10px;
                   @endif
                   @if($k == 2)
                      <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['id']}}">
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
                            <a href="#">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
