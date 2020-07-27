@@ -48,6 +48,9 @@ Route::put('/position', 'ResultsController@updatePosition');
 Route::post('/results/race', 'ResultsController@saveRaceResults');
 //Route::post('/results/quali', 'ResultsController@saveQualiResults');
 
+Route::get('/acc/upload', 'AccController@raceUpload');
+Route::post('/acc/upload', 'AccController@parseJson');
+
 Auth::routes();
 
 // All Admin panel Routes
