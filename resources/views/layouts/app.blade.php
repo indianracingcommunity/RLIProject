@@ -88,9 +88,9 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class="px-4 py-3 font-semibold rounded hover:bg-blue-200 cursor-pointer mx-2 dropdown">
-                        <button class="font-semibold pl-6 pr-6 rounded inline-flex items-center">
-                            <a  href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</a>
+                    <div class="px-4 py-3 font-semibold cursor-default rounded hover:bg-blue-200 mx-2 dropdown">
+                        <button class="font-semibold cursor-default pl-6 pr-6 rounded inline-flex items-center">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i> Info
                         </button>
                         <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 8.2rem;">
                             <li class="dropdown">
