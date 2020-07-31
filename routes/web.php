@@ -96,7 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
           Route::get('/home/view/report/{report}/details','ReportsController@details');
 
           //Signup Routes
-          Route::get('/signup','SignupsController@view');
+          Route::get('/signup','SignupsController@view')->middleware('steam');
           Route::post('/signup/store','SignupsController@store');
           Route::post('/signup/update/{signup}','SignupsController@update');
           Route::get('/upload','SignupsController@temp');

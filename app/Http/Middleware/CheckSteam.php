@@ -20,7 +20,7 @@ class CheckSteam
         {
             return $next($request);
         }
-   
+       session()->flash('error','Please link your steam before accessing this page');
        return redirect('/user/profile/');
     }
 }
