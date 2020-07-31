@@ -13,7 +13,7 @@ class Signup extends Model
 
     public function season()
     {
-        return $this->belongsTo('App\Season','season');
+        return $this->belongsTo('App\Season', 'season');
     }
     
 }

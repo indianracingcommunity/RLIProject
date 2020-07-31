@@ -35,6 +35,11 @@ class Race extends Model
         return $this->belongsTo('App\Circuit');
     }
 
+    public function points()
+    {
+        return $this->belongsTo('App\Points');
+    }
+
     public function results()
     {
         return $this->hasMany('App\Result');

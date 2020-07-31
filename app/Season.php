@@ -21,6 +21,11 @@ class Season extends Model
         return $this->hasMany('App\Race');
     }
 
+    public function series()
+    {
+        return $this->belongsTo('App\Series');
+    }
+
     public function getConstructorsAttribute($string)
     {
         $cars = array_map('intval', explode(self::cdelim, $string));

@@ -141,43 +141,68 @@ class AccController extends Controller
         $json = json_decode($content, true);
 
         $round = 1;
-        $season = Season::find(1);
+        $season = Season::find(10);
 
-        $series = Series::where('code', 'acc')->first();
-
-        $circuit = Circuit::getTrackByGame($json['trackName'], $series['id']);
-        if($circuit == null) return response()->json([]);
+        $sp_circuit = Circuit::getTrackByGame($json['trackName'], $season['series']);
+        if($sp_circuit == null) return response()->json([]);
 
         $track = array(
             "season_id" => $season['id'],
-            'circuit_id' => $circuit['id'],
-            'official' => $circuit['official'],
-            'display' => $circuit['name'],
-            "round" => 1
+            'circuit_id' => $sp_circuit['id'],
+            'official' => $sp_circuit['official'],
+            'display' => $sp_circuit['name'],
+            "round" => $round
         );
 
+        $carLaps = array();
+        foreach($json['laps'] as $k => $laps)
+        {
+            if(!array_key_exists($laps['carId'], $carLaps))
+                $carLaps[$laps['carId']] = $laps['laptime'];
+            else
+                $carLaps[$laps['carId']] += $laps['laptime'];
+        }
+
         $results = array();
+        $totalLaps = 0;
+        if(count($json['sessionResult']['leaderBoardLines']) > 0)
+            $totalLaps = $json['sessionResult']['leaderBoardLines'][0]['timing']['lapCount'];
+
         foreach($json['sessionResult']['leaderBoardLines'] as $k => $driver)
         {
-            $dr = Driver::where('steam_id', substr($driver['currentDriver']['playerId'], 1))
+            $dr = User::where('steam_id', substr($driver['currentDriver']['playerId'], 1))
                         ->first();
 
-            $status = 0;
-            $team_ind = array_search($driver['car']['carModel'], array_column($season['circuits'], "game"));
+            if($dr == null)
+            {
+                $dr['name'] = $driver['currentDriver']['shortName'];
+                $dr['id'] = -1;
+            }
 
-            array_push($rresults, array(
+            $status = 0;
+            $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
+
+            $total_time = "";
+            if($totalLaps == $driver['timing']['lapCount'])
+                $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
+            else if($driver['timing']['totalTime'] == 2147483647)
+                $total_time = "DNF";
+            else
+                $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Laps";
+
+            array_push($results, array(
                 "position" => $k + 1,
                 "driver" => $dr['name'],
                 "driver_id" => $dr['id'],
                 "matched_driver" => $dr['name'],
-                "team" => $season['circuits'][$team_ind]['name'],
-                "constructor_id" => $season['circuits'][$team_ind]['id'],
-                "matched_team" => $season['circuits'][$team_ind]['name'],
+                "team" => $season['constructors'][$team_ind]['name'],
+                "constructor_id" => $season['constructors'][$team_ind]['id'],
+                "matched_team" => $season['constructors'][$team_ind]['name'],
                 "grid" => 0,
                 "stops" => 0,
                 "status" => $status,
-                "fastestlaptime" => convertMillisToStandard($driver['timing']['bestLap']),
-                "time" => convertMillisToStandard($driver['timing']['totalTime'])
+                "fastestlaptime" => $this->convertMillisToStandard($driver['timing']['bestLap']),
+                "time" => $total_time
             ));
         }
 

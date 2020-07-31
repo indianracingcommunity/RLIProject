@@ -11,7 +11,7 @@ class Circuit extends Model
         return json_decode(json_encode($official_list), true);
     }
 
-    static public function getTrackByName($game, $series) {
+    static public function getTrackByGame($game, $series) {
         $track = Circuit::where('game', $game)
                         ->where('series', $series)
                         ->first();
@@ -22,5 +22,10 @@ class Circuit extends Model
     public function races()
     {
         return $this->hasMany('App\Race');
+    }
+
+    public function series()
+    {
+        return $this->belongsTo('App\Series');
     }
 }

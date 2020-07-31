@@ -14,9 +14,9 @@ class Controller extends BaseController
     function convertMillisToStandard($time)
     {
         $mtime = (int)$time;
-        $seconds = $mtime / 1000.0;
+        $seconds = round($mtime / 1000.0, 3);
         $minutes = (int)($seconds / 60);
-        $seconds = $seconds - $minutes * 60;
+        $seconds = round($seconds - $minutes * 60, 3);
 
         $res = "";
         if($minutes > 0)
@@ -41,6 +41,6 @@ class Controller extends BaseController
             $sec = (float)$seg_time[0];
 
         $res = $min * 60 + $sec;
-        return (int)($res * 1000);
+        return ceil($res * 1000);
     }
 }
