@@ -106,9 +106,13 @@ Route::group(['middleware' => 'auth'], function () {
      });
 });
 
-Route::get('/teams/{key}','DriverController@viewferrari');
-Route::get('/api/{driver}','DriverController@api');
-Route::get('/discordapi/{driver}','DriverController@apidiscord');
+Route::group(['middleware' => 'auth:api'], function () {
+       Route::get('/drivers/data','DriverController@driverdata');
+});
+
+// Route::get('/teams/{key}','DriverController@viewferrari');
+// Route::get('/api/{driver}','DriverController@api');
+// Route::get('/discordapi/{driver}','DriverController@apidiscord');
 
 // Routes Handling the Discord Login
 Route::get('login/discord', 'Auth\LoginController@redirectToProvider')->name('auth');
