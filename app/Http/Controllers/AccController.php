@@ -181,10 +181,11 @@ class AccController extends Controller
             $grid = 0;
             $status = 0;
             $total_time = "";
+            $bestLap = "";
             $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
 
             //Grid Position
-            if(array_key_exists($qualiPosition, $driver['car']['carId']))
+            if(array_key_exists($driver['car']['carId'], $qualiPosition))
                 $grid = $qualiPosition[$driver['car']['carId']];
 
             //Fastest Lap
@@ -206,6 +207,11 @@ class AccController extends Controller
                     $total_time .= "s";
             }
 
+            if($driver['timing']['bestLap'] == 2147483647)
+                $bestLap = "-";
+            else
+                $bestLap = $this->convertMillisToStandard($driver['timing']['bestLap']);
+
             //Push to Results
             array_push($results, array(
                 "position" => $k + 1,
@@ -218,7 +224,7 @@ class AccController extends Controller
                 "grid" => $grid,
                 "stops" => 0,
                 "status" => $status,
-                "fastestlaptime" => $this->convertMillisToStandard($driver['timing']['bestLap']),
+                "fastestlaptime" => $bestLap,
                 "time" => $total_time
             ));
         }
