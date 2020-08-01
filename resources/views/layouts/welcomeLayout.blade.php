@@ -28,14 +28,14 @@
                 <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
                     <a  href="/faq"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <button class="font-semibold px-4 rounded inline-flex items-center">
+                <div class="px-4 py-3 font-semibold cursor-default rounded hover:bg-gray-200 mx-2 dropdown">
+                    <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                         <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                     </button>
                     <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 17.1rem;">
                         @foreach($topBarSeasons as $series)
                             <li class="dropdown">
-                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
+                                <a class="bg-indigo-100 cursor-default hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                 <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 17rem; width: 7.5rem;">
                                     @foreach($series['tier'] as $tier)
                                     <li class="dropdown">
@@ -54,14 +54,14 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2 dropdown">
-                    <button class="font-semibold px-4 rounded inline-flex items-center">
+                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-default mx-2 dropdown">
+                    <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                         <span>🏁 Race Results</span>
                     </button>
                     <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 11.2rem;">
                         @foreach($topBarSeasons as $series)
                             <li class="dropdown">
-                                <a class="bg-indigo-100 hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
+                                <a class="bg-indigo-100 hover:bg-blue-300 cursor-default py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['name']}}</a>
                                 <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 11.1rem; width: 7.5rem;">
                                     @foreach($series['tier'] as $tier)
                                     <li class="dropdown">
@@ -80,9 +80,9 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="px-4 py-3 font-semibold rounded hover:bg-blue-200 cursor-pointer mx-2 dropdown">
-                    <button class="font-semibold pl-6 pr-6 rounded inline-flex items-center">
-                        <a  href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</a>
+                <div class="px-4 py-3 font-semibold rounded cursor-default hover:bg-blue-200 mx-2 dropdown">
+                    <button class="font-semibold pl-6 pr-6 cursor-default rounded inline-flex items-center">
+                        <i class="fa fa-info-circle pr-1" aria-hidden="true"></i> Info
                     </button>
                     <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 8.2rem;">
                         <li class="dropdown">
@@ -135,6 +135,7 @@
                     <a href="/home/admin/users" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 fas fa-binoculars w-8 text-center"></i>View/Allot Drivers</a>
                     <a href="" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-purple-600 fas fa-pen-alt w-8 text-center"></i>Update Standings</a>
                     <a href="/home/admin/report" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>View Reports</a>
+                    <a href="/home/admin/view-signups" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-green-600 fa fa-eye w-8 text-center"></i> View Sign Ups </a>
                 </div>
                 @endif
             </div>

@@ -11,9 +11,6 @@ td {
 padding-left:10px;
 }
 </style>
-@php
-Log::info(print_r($tdrivers,true));
-@endphp
 @section('content')
 <div class="container mx-auto w-11/12">
    <div class="flex">
@@ -54,8 +51,8 @@ Log::info(print_r($tdrivers,true));
                @endphp
                   @if($k == 0)
                      <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white">
-                           <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
+                           <a href="#">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
@@ -71,8 +68,8 @@ Log::info(print_r($tdrivers,true));
                   @endif
                   @if($k == 1)
                      <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white">
-                           <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
+                           <a href="#">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
@@ -88,8 +85,8 @@ Log::info(print_r($tdrivers,true));
                   @endif
                   @if($k == 2)
                      <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white">
-                           <a class="hover:underline" href="/user/profile/view/{{$tdrivers[$i]['id']}}">{{$tdrivers[$i]['name']}}</a>
+                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
+                           <a href="#">{{$tdrivers[$i]['name']}}</a>
                         </td>
                         <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
                            {{$tdrivers[$i]['points']}}
@@ -267,4 +264,14 @@ Log::info(print_r($tdrivers,true));
       </div>
    </div>
 </div>
+<script>
+   $( document ).ready(function() {
+      $('.openDriver').click(function (e) { 
+         e.preventDefault();
+         var linkId = $(this).attr('data-driverLink');
+         console.log(linkId);
+         window.open('/user/profile/view/'+linkId, '_blank');
+      });
+   });
+</script>
 @endsection
