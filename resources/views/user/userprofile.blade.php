@@ -137,12 +137,13 @@
             <form method="POST" @if ("{{Auth::user()->mothertongue}}" != "") action="setsteam/{{Auth::user()->id}}" @endif>
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
-                <span class=" font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
-                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
-                <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none"><strong>Mandatory for PC Users.</strong></span></br>
-                @if (!isset(Auth::user()->mothertongue))
-                <span class="text-red-600 mr-2">●</span><span class=" font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>
-                @endif
+                    <span class=" font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
+                    <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
+                    <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none"><strong>Mandatory for PC Users.</strong></span></br>
+                    <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none">Roles related to PC will be alloted only after your steam profile has been linked.</span></br>
+                    @if (!isset(Auth::user()->mothertongue))
+                        <span class="text-red-600 mr-2">●</span><span class=" font-semibold text-red-700 leading-none">Steam Account can only be linked after you complete your profile.</span>
+                    @endif
                 @endif
             </form>
         </div>
@@ -263,7 +264,7 @@
                 <div class="flex-grow-0 w-1/2 px-4">
                     <label class="mb-4 cursor-pointer">
                         <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
-                        <span for="games" class="font-semibold text-gray-800"> I play racing games or am interested in esports.<span class="text-red-600 ml-2">●</span></span>
+                        <span for="games" class="font-semibold text-gray-800"> I play racing games.<span class="text-red-600 ml-2">●</span></span>
                     </label>
                     <div id="restfieldsid" class="mt-10" style="display : block;">
                         <div class="mb-4">
