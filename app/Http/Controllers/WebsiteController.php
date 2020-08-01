@@ -54,6 +54,11 @@ class WebsiteController extends Controller
         return view('faq');
     }
 
+    public function f1leaguerules()
+    {
+        return view('f1leaguerules');
+    }
+    
     public function loadlogin()
     {
     	return view('login');
