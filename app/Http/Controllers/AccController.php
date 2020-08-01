@@ -31,7 +31,8 @@ class AccController extends Controller
     }
 
     public function raceUpload() {
-        return view('accupload');
+        $seasons = Season::where('status', '<', 2)->get();
+        return view('accupload')->with('seasons', $seasons);
     }
     public function qualiIndex() {
         return view('qualiimage');
@@ -144,8 +145,8 @@ class AccController extends Controller
         $jq = json_decode($quali_content, true);
         $json = json_decode($race_content, true);
 
-        $round = 1;
-        $season = Season::find(10);
+        $round = (int)request()->round;
+        $season = Season::find(request()->season);
 
         $sp_circuit = Circuit::getTrackByGame($json['trackName'], $season['series']);
         if($sp_circuit == null) return response()->json([]);

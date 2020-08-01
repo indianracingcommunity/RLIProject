@@ -48,9 +48,6 @@ Route::put('/position', 'ResultsController@updatePosition');
 Route::post('/results/race', 'ResultsController@saveRaceResults');
 //Route::post('/results/quali', 'ResultsController@saveQualiResults');
 
-Route::get('/acc/upload', 'AccController@raceUpload');
-Route::post('/acc/upload', 'AccController@parseJson');
-
 Auth::routes();
 
 // All Admin panel Routes
@@ -76,6 +73,9 @@ Route::get('/image/quali', 'ImageController@qualiIndex');
 
 Route::get('/image/race', 'ImageController@raceIndex');
 Route::post('/image/race', 'ImageController@ocrRace');
+
+Route::get('/acc/upload', 'AccController@raceUpload');
+Route::post('/acc/upload', 'AccController@parseJson');
 
 });
 
