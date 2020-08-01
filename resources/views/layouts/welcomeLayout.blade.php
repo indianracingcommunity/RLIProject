@@ -125,7 +125,7 @@
                 </div>
                 <div class="flex flex-col">
                     <a href="/signup/" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i> League Sign Up </a>
-                    <a href="/f1leaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fa fa-gavel w-8 text-center"></i>F1 League Rules </a>
+                    <!--<a href="/f1leaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fa fa-gavel w-8 text-center"></i>F1 League Rules </a> -->
                     <!-- <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>Create Report</a> -->
                 </div>
                 @if(Auth::user()->isadmin==1)
