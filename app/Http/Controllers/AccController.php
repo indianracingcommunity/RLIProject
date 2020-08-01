@@ -133,12 +133,16 @@ class AccController extends Controller
 
     public function parseJson(Request $request) {
         ini_set('max_execution_time', 300);
-        $file = request()->file('photo');
+        $race = request()->file('race');
+        $quali = request()->file('quali');
 
         //$fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
         //$file8 = mb_convert_encoding($file16, 'utf-8');
-        $content = file_get_contents($file);
-        $json = json_decode($content, true);
+        $race_content = file_get_contents($race);
+        $quali_content = file_get_contents($quali);
+
+        $jq = json_decode($quali_content, true);
+        $json = json_decode($race_content, true);
 
         $round = 1;
         $season = Season::find(10);
@@ -147,24 +151,19 @@ class AccController extends Controller
         if($sp_circuit == null) return response()->json([]);
 
         $track = array(
-            "season_id" => $season['id'],
             'circuit_id' => $sp_circuit['id'],
             'official' => $sp_circuit['official'],
             'display' => $sp_circuit['name'],
+            "season_id" => $season['id'],
             "round" => $round
         );
 
-        $carLaps = array();
-        foreach($json['laps'] as $k => $laps)
-        {
-            if(!array_key_exists($laps['carId'], $carLaps))
-                $carLaps[$laps['carId']] = $laps['laptime'];
-            else
-                $carLaps[$laps['carId']] += $laps['laptime'];
-        }
+        $qualiPosition = array();
+        foreach($jq['sessionResult']['leaderBoardLines'] as $k => $driver)
+            $qualiPosition[$driver['car']['carId']] = $k + 1;
 
-        $results = array();
         $totalLaps = 0;
+        $results = array();
         if(count($json['sessionResult']['leaderBoardLines']) > 0)
             $totalLaps = $json['sessionResult']['leaderBoardLines'][0]['timing']['lapCount'];
 
@@ -179,17 +178,35 @@ class AccController extends Controller
                 $dr['id'] = -1;
             }
 
+            $grid = 0;
             $status = 0;
+            $total_time = "";
             $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
 
-            $total_time = "";
+            //Grid Position
+            if(array_key_exists($qualiPosition, $driver['car']['carId']))
+                $grid = $qualiPosition[$driver['car']['carId']];
+
+            //Fastest Lap
+            if($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10)
+                $status = 1;
+
+            //Total Time
             if($totalLaps == $driver['timing']['lapCount'])
                 $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
             else if($driver['timing']['totalTime'] == 2147483647)
+            {
+                $status = -2;
                 $total_time = "DNF";
+            }
             else
-                $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Laps";
+            {
+                $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Lap";
+                if($totalLaps - $driver['timing']['lapCount'] > 1)
+                    $total_time .= "s";
+            }
 
+            //Push to Results
             array_push($results, array(
                 "position" => $k + 1,
                 "driver" => $dr['name'],
@@ -198,7 +215,7 @@ class AccController extends Controller
                 "team" => $season['constructors'][$team_ind]['name'],
                 "constructor_id" => $season['constructors'][$team_ind]['id'],
                 "matched_team" => $season['constructors'][$team_ind]['name'],
-                "grid" => 0,
+                "grid" => $grid,
                 "stops" => 0,
                 "status" => $status,
                 "fastestlaptime" => $this->convertMillisToStandard($driver['timing']['bestLap']),
@@ -206,6 +223,6 @@ class AccController extends Controller
             ));
         }
 
-        return response()->json(["t" => $track, "r" => $results]);
+        return response()->json(["track" => $track, "results" => $results]);
     }
 }
