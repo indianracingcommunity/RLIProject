@@ -159,49 +159,10 @@ class DriverController extends StandingsController
     $driver->save();
     return redirect()->back();
   }
-    
-  // Unused Functions, Only Kept for refrences
-  public function viewferrari(Driver $driver,$key)
+  
+  public function driverdata()
   {
-    $driver = Driver::where('team', '=', $key )->get();
-    return view('driverview.teamview', compact('driver'));
-  }
-
-  public function api(Driver $driver)
-  {
-    $profile = $driver->steamid;
-    $str = file_get_contents('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=A858C6BCA92BE79C5483EF2029AD8F66&steamids='.$profile);
-    $json = json_decode($str, true);
-    $avatarurl=$json['response']['players']['0']['avatarfull'];
-
-    $driver->avatar=$avatarurl;
-    $driver->save();
-    return redirect('/drivers/'.$driver->id);
-  }
-
-  public function apidiscord(Driver $driver)
-  {
-    $opts = array(
-      'http' => array(
-        'method' =>"GET",
-        'header' =>
-                  "Authorization: Bot NjI1Mjg5MTY5NDUwNjk2NzA0.XZYYKQ.zrl8ET3alByITkxZYAsOGiUCadU \r\n"
-      )
-    );
-    
-    $context = stream_context_create($opts);
-    
-    // Open the file using the HTTP headers set above
-    $uid = $driver->discord;
-    $file = file_get_contents('https://discordapp.com/api/users/'.$uid, false, $context);
-
-    $json = json_decode($file,true);
-    $avatarhash = $json['avatar'];
-    $userid = $json['id'];
-    $result = 'https://cdn.discordapp.com/avatars/'.$userid.'/'.$avatarhash;
-
-    $driver->avatar = $result;
-    $driver->save();
-    return redirect('/drivers/'.$driver->id);
+    $data = Driver::select('id','name')->get();
+    return response()->json($data);
   }
 }
