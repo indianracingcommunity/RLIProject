@@ -104,7 +104,7 @@ padding-left:10px;
             </tbody>
          </table>
          @if($season['season'] - (int)$season['season'] < 0.75)
-         <div class="text-2xl text-purple-700 rounded-md mt-10 pt-4 pb-1 leading-none cf font-bold">
+         <div class="text-xl text-purple-700 rounded-md mt-10 pt-4 pb-1 leading-none cf font-bold">
             Top 3 Constructors
          </div>
          <table class="w-5/6">
