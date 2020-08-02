@@ -23,7 +23,7 @@ class BotController extends Controller
         if($doesitexisit)
         {
            $data = User::where('discord_id','=',$id)->first($query);
-           return response()->json($data[$query]);      
+           return response()->json(['data'=>$data[$query]]);      
         }
         else
         {
