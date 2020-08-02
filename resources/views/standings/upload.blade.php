@@ -29,8 +29,9 @@
                 <div class="inline-block relative">  
                     <select class="inline-block appearance-none w-56 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 ml-3 pl-2 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="season_id" id="seasonid">
                         @foreach ($season as $value)
-                        @foreach ($value->constructors as $constructor)
-                        <option value="{{$value->id}}">{{$constructor->name}}</option>
+                            @foreach ($value->constructors as $constructor)
+                            <option value="{{$value->id}}">{{$constructor['name']}}</option>
+                            @endforeach 
                         @endforeach 
                     </select>
                     <div class="inline-block pointer-events-none absolute inset-y-0 right-0 pr-2 flex items-center text-gray-700">
