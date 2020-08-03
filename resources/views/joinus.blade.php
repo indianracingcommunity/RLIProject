@@ -20,10 +20,11 @@
 			<div class="font-semibold bg-blue-100 text-xl rounded-md p-2 my-1 text-green-800"><span class="text-green-600 ml-2 mr-2">●</span>Indians residing overseas are also eligible for Permanent Membership.</div>
 		</div>
 		<div class="my-8">
-			<p class="font-semibold mb-2 rounded p-3 text-xl bg-gray-100 text-gray-700"><strong>You may now proceed by joining our Discord Server below</strong></p>
+			<p class="font-semibold mb-2 rounded p-3 text-xl bg-gray-100 text-gray-700"><strong>You may now proceed by joining our Discord Server below.</strong></p>
+			<p class="mb-2 rounded p-3 text bg-gray-100 text-teal-700"><strong>If you already are on our Discord Server, please <a class="hover:underline text-blue-800" href="/login/discord">login</a> and complete your basic profile.</strong></p>
 			<div class="block rounded mt-3">
 			<a href="https://discord.gg/dWG2bX6">
-				<img class="" src="https://discord.com/api/guilds/{{$irc_guild}}/widget.png?style=banner1">
+				<img class="rounded-md" src="https://discord.com/api/guilds/{{$irc_guild}}/widget.png?style=banner1">
 			</a>
 			</div>	
 		</div>
