@@ -26,7 +26,7 @@
     var serial_no = 0;
     
     for (var i=0;i<seasons.length;i++){
-        if (seasons[i].status < 2 && seasons[i].status > 0){
+        if (seasons[i].status < 2 && seasons[i].status >= 0){
             active_seasons.push(seasons[i].name);
             eachrow.push("<td class='border text-center px-4 py-2'> - </td>");
             tablehead += "<th class='px-4 py-2'>" + seasons[i].name + "</th>";
