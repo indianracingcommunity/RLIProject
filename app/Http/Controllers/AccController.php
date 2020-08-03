@@ -170,9 +170,8 @@ class AccController extends Controller
 
         foreach($json['sessionResult']['leaderBoardLines'] as $k => $driver)
         {
-            $dr = User::where('steam_id', substr($driver['currentDriver']['playerId'], 1))
-                        ->first();
-
+            $user = User::where('steam_id', substr($driver['currentDriver']['playerId'], 1))->first();
+            $dr = Driver::where('user_id', $user['id'])->first();
             if($dr == null)
             {
                 $dr['name'] = $driver['currentDriver']['shortName'];
