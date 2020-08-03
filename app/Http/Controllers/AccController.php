@@ -196,7 +196,7 @@ class AccController extends Controller
             //Total Time
             if($totalLaps == $driver['timing']['lapCount'])
                 $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
-            else if($driver['timing']['totalTime'] == 2147483647)
+            else if($driver['timing']['lastLap'] == 2147483647)
             {
                 $status = -2;
                 $total_time = "DNF";

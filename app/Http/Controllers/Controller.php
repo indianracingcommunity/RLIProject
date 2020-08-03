@@ -25,6 +25,17 @@ class Controller extends BaseController
             $res .= "0";
 
         $res .= (string)$seconds;
+        $tr = explode(".", $res);
+        if(count($tr) > 1)
+        {
+            $decimal = $tr[1];
+            if(strlen($decimal) != 3)
+            {
+                for($i = 3; $i > strlen($decimal); --$i)
+                    $res .= "0";
+            }
+        }
+
         return $res;
     }
 
