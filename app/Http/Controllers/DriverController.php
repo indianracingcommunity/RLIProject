@@ -164,7 +164,7 @@ class DriverController extends StandingsController
   
   public function driverdata()
   {
-    $data = Driver::select('id','name','team')->get();
+    $data = Driver::select('id','name','team','drivernumber')->get();
     return response()->json($data);
   }
 }
