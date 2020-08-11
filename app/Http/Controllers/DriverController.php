@@ -136,15 +136,17 @@ class DriverController extends StandingsController
 
   public function allotuser(User $id)
   {
+    $existing = Driver::where('user_id',$id->id)->get();
+    //dd($exisiting);
     return view('admin.allot')
             ->with('user',$id)
-            ->with('team',Constructor::all());
+            ->with('existing',$existing);
   }
 
   public function saveallotment()
   {
     $data = request()->all();
-       
+       //dd($data);
     $userinfo = User::select('*')
       ->where('id',$data['user_id'])
       ->get()->toArray();
@@ -152,7 +154,7 @@ class DriverController extends StandingsController
     $driver = new Driver();
     $driver -> user_id = $data['user_id'];
     $driver -> name = $userinfo['0']['name'];
-    $driver -> team = $data['constructor'];
+    $driver -> team = $data['tier'];
     $driver -> drivernumber = 5;
     $driver -> retired = 0;
     $driver -> alias = $userinfo['0']['name'];
