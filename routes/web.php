@@ -12,7 +12,7 @@ use kanalumaddela\LaravelSteamLogin\Facades\SteamLogin;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/discord/update','DiscordController@updateallusers');
 Route::get('/', 'WebsiteController@loadhomepage');
 Route::get('joinus', 'WebsiteController@loadjoinus');
 Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');

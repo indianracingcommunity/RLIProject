@@ -323,5 +323,147 @@ class Discord
             }
         }
     }
+
+
+   public function updatedetails()
+    {
+       $users = User::select('discord_id','id')->get();
+      // dd($users);
+       foreach($users as $user)
+       {
+        sleep(2);
+        $params = (['token' => config('services.discord.bot')]);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://discord.com/api/users/ ".$user->discord_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                "Authorization: Bot ".$params['token']
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) 
+        {
+            return $err;
+        }
+        else 
+        {
+            $final = json_decode($response,true);
+            $this->savedetails($final,$user->id);
+            
+        } 
+   }
+   return "Done";
+}   
+
+
+
+
+
+public function updatedetailstest()
+{
+    $userid = 53;
+    $discord_id = 692252150058844231;
+   // dd($users);
+     $params = (['token' => config('services.discord.bot')]);
+     $curl = curl_init();
+     curl_setopt_array($curl, array(
+         CURLOPT_URL => "https://discord.com/api/users/ ".$discord_id,
+         CURLOPT_RETURNTRANSFER => true,
+         CURLOPT_ENCODING => "",
+         CURLOPT_MAXREDIRS => 10,
+         CURLOPT_TIMEOUT => 30,
+         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+         CURLOPT_CUSTOMREQUEST => "GET",
+         CURLOPT_HTTPHEADER => array(
+             'Content-Type: application/json',
+             "Authorization: Bot ".$params['token']
+         ),
+     ));
+
+     $response = curl_exec($curl);
+     $err = curl_error($curl);
+     curl_close($curl);
+
+     if ($err) 
+     {
+         return $err;
+     }
+     else 
+     {
+         $final = json_decode($response,true);
+         $this->savedetails($final,$userid);
+         
+     } 
+
+return "Done";
+}   
+
+
+
+
+   public function savedetails($final,$userid)
+   {
+      // dd($final);
+      if(isset($final['username']) && $final['avatar'] == NULL)
+      {
+         $avatar = "https://cdn.discordapp.com/embed/avatars/3.png"; 
+         DB::table('users')
+         ->where('id', $userid)
+         ->update([
+            'name' => $final['username'],
+            'avatar'=> $avatar,
+            'discord_discrim' => $final['discriminator']
+
+        ]);
+      }
+
+      if(isset($final['message']))
+      {
+         $avatar = "https://cdn.discordapp.com/embed/avatars/3.png";
+         DB::table('users')
+         ->where('id', $userid)
+         ->update([ 
+                'avatar'=> $avatar,
+                ]); 
+      }
+
+      if(isset($final['avatar']) && $final['avatar'] != NULL)
+      {  
+          $avatar = "https://cdn.discordapp.com/avatars/".$final['id']."/".$final['avatar'].".jpg";
+          DB::table('users')
+         ->where('id', $userid)
+         ->update([
+            'name' => $final['username'],
+            'avatar'=> $avatar,
+            'discord_discrim' => $final['discriminator']
+
+        ]);
+      }
+
+    //   DB::table('users')
+    //   ->where('id', $userid)
+    //   ->update(
+    //     [
+    //     'name' => $final['username'],
+    //     'avatar'=> $avatar,
+    //     'discord_discrim' => $final['discriminator']
+
+    //     ]); 
+   }
+
+
+
+  
 }
 ?>

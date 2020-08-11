@@ -72,4 +72,11 @@ class DiscordController extends Controller
         }
         return 0;
     }
+
+   public function updateallusers()
+    {
+        $discord = new Discord();
+        $test = $discord->updatedetails();
+        dd($test);
+    }
 }
