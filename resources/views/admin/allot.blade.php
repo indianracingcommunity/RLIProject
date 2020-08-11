@@ -37,12 +37,12 @@
             <option value="2">Tier 2</option>
             <option value="3">Reserve/Challenger</option>
         </select>
-        @if (count($exisiting)==0)
+        @if (count($existing)==0)
         <button type="submit" class="ml-6 bg-blue-600 hover:bg-blue-700 text-white py-1 px-8 rounded font-semibold">Submit</button>
         @else
         @endif
 
-        @if (count($exisiting) > 1 )
+        @if (count($existing) > 1 )
         <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
             Duplicate Drivers in DB detected please check the database before proceeding !
         </div>
@@ -89,13 +89,13 @@
 
                 <br>
                 <br>
-                @if (count($exisiting)==0)
+                @if (count($existing)==0)
                 <input type="submit" class="btn btn-warning">
                 @else
 
                 @endif
 
-                @if (count($exisiting) > 1 )
+                @if (count($existing) > 1 )
               <div class="bg-red-200 rounded text-red-800 p-4 mb-3 font-semibold">
                  Duplicate Drivers in DB detected please check the database before proceeding !
                 </div>

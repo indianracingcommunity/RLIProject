@@ -136,11 +136,11 @@ class DriverController extends StandingsController
 
   public function allotuser(User $id)
   {
-    $exisiting = Driver::where('user_id',$id->id)->get();
+    $existing = Driver::where('user_id',$id->id)->get();
     //dd($exisiting);
     return view('admin.allot')
             ->with('user',$id)
-            ->with('exisiting',$exisiting);
+            ->with('existing',$existing);
   }
 
   public function saveallotment()
