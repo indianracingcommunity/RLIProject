@@ -77,6 +77,6 @@ class DiscordController extends Controller
     {
         $discord = new Discord();
         $test = $discord->updatedetails();
-        dd($test);
+        return $test;
     }
 }
