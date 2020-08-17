@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'IsAdmin' => \App\Http\Middleware\IsAdmin::class,
         'steam' =>  \App\Http\Middleware\CheckSteam::class,
         'profile' => \App\Http\Middleware\ProfileCheck::class,
+        'signup' => \App\Http\Middleware\SignupCheck::class,
     ];
 
     /**
