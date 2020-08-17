@@ -12,7 +12,6 @@ use kanalumaddela\LaravelSteamLogin\Facades\SteamLogin;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/discord/update','DiscordController@updateallusers');
 Route::get('/', 'WebsiteController@loadhomepage');
 Route::get('joinus', 'WebsiteController@loadjoinus');
 Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
@@ -100,7 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
           Route::get('/home/view/report/{report}/details','ReportsController@details');
 
           //Signup Routes
-          Route::get('/signup','SignupsController@view')->middleware('steam');
+          Route::get('/signup','SignupsController@view')->middleware('signup');
           Route::post('/signup/store','SignupsController@store');
           Route::post('/signup/update/{signup}','SignupsController@update');
           Route::get('/upload','SignupsController@temp');
