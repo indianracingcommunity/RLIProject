@@ -265,6 +265,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       </table>
    </div>
 </div>
+@endif
 <script>
    $( document ).ready(function() {
       $('.openDriver').click(function (e) { 
@@ -275,5 +276,4 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       });
    });
 </script>
-@endif
 @endsection
