@@ -17,7 +17,7 @@ class SteamController extends Controller
 
         $count = count($query);
         $key = config('steam-login.api_key');
-        dd($key);
+        //dd($key);
 
         for($i = 0; $i < $count; $i++)
         {
