@@ -153,6 +153,7 @@ class ResultsController extends Controller
                 if(array_key_exists((string)($pos - 1), $points[$ps_ind]))
                     $results[$i]['points'] = $points[$ps_ind][$pos - 1];
 
+                $results[$i]['points'] += $res['points'];
                 if(((int)abs($results[$i]['status']) % 10) == 1) $results[$i]['points'] += 1;
             }
         }
