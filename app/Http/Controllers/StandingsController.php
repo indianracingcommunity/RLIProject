@@ -221,6 +221,7 @@ class StandingsController extends Controller
                 if(array_key_exists((string)($pos - 1), $psystem[$ps_ind]))
                     $points += $psystem[$ps_ind][(string)($pos - 1)];
 
+                $points += $driver['points'];
                 if(((int)abs($driver['status']) % 10) == 1) $points += 1;
             }
         }
