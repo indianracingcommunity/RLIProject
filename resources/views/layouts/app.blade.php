@@ -136,12 +136,29 @@
                             </div>
                         </div>
                     </a>
-                    <div class="pt-8 text-sm font-bold text-gray-700">
-                        USER CONTROLS
+                    <div class="pt-8 pb-1 text-sm font-bold text-gray-700">
+                        LEAGUE RACING
                     </div>
                     <div class="flex flex-col">
-                        <a href="/signup/" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i> League Sign Up </a>
-                        <a href="/f1leaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fa fa-gavel w-8 text-center"></i>F1 League Rules </a>
+                        <div class="pb-1 pl-4 bg-gray-300 rounded-md text-sm font-bold text-gray-700">
+                            Sign-ups
+                        </div>
+                        <ul>
+                            <li class="p-2">
+                                <a href="/signup/" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-indigo-600 fas fa-edit w-8 text-center"></i> All Sign Ups </a>
+                            </li>
+                        </ul>
+                        <div class="pb-1 pl-4 bg-gray-300 rounded-md text-sm font-bold text-gray-700">
+                            League Rules
+                        </div>
+                        <ul>
+                            <li class="p-2">
+                                <a href="/f1leaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 pr-1 fa fa-desktop" aria-hidden="true"></i> PC F1 </a>
+                            </li>
+                            <li class="p-2">
+                                <a href="/f1XBOXleaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-green-500 pr-1 fab fa-xbox" aria-hidden="true"></i> XBOX F1</a>
+                            </li>
+                        </ul>
                         <!-- <a href="/home/report/create" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-orange-500 fas fa-exclamation-triangle w-8 text-center"></i>Create Report</a> -->
                     </div>
                     @if(Auth::user()->isadmin==1)

@@ -59,6 +59,11 @@ class WebsiteController extends Controller
         return view('f1leaguerules');
     }
     
+    public function f1XBOXleaguerules()
+    {
+        return view('f1XBOXleaguerules');
+    }
+    
     public function loadlogin()
     {
     	return view('login');

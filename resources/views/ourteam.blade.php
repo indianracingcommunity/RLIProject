@@ -65,9 +65,15 @@
 		<div class="flex bg-purple-400 justify-center">
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(17,$fieldsTeams)) href="/user/profile/view/17" @endif><img src="@if( array_key_exists(17,$fieldsTeams) && $fieldsTeams[17]['avatar'] != null) {{$fieldsTeams[17]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-700">Head of Stewards</br><span class="font-semibold text-gray-900"> BlackSheep</span></div>
+			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
 					<a @if(array_key_exists(101,$fieldsTeams)) href="/user/profile/view/101" @endif><img src="@if( array_key_exists(101,$fieldsTeams) && $fieldsTeams[101]['avatar'] != null) {{$fieldsTeams[101]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
-				<div class="font-bold mb-2 text-gray-700">Head of Stewards</br><span class="font-semibold text-gray-900"> GryphuS</span></div>
+				<div class="font-bold mb-2 text-gray-700">Steward</br><span class="font-semibold text-gray-900"> GryphuS</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
@@ -87,12 +93,6 @@
 				</div>
 				<div class="font-bold mb-2 text-gray-700">Steward</br><span class="font-semibold text-gray-900"> kapilace6</span></div>
 			</div>
-			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
-				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(17,$fieldsTeams)) href="/user/profile/view/17" @endif><img src="@if( array_key_exists(17,$fieldsTeams) && $fieldsTeams[17]['avatar'] != null) {{$fieldsTeams[17]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
-				</div>
-				<div class="font-bold mb-2 text-gray-700">Steward</br><span class="font-semibold text-gray-900"> BlackSheep</span></div>
-			</div>
 		</div>
 		<h3 class="text-2xl pt-4  bg-pink-300 rounded font-bold  text-black"><i class="fa fa-flag-checkered p-3" aria-hidden="true"></i>eSports Team</h3>
 		<div class="flex bg-pink-300 justify-center">
@@ -104,39 +104,39 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(12,$fieldsTeams)) href="/user/profile/view/12" @endif><img src="@if( array_key_exists(12,$fieldsTeams) && $fieldsTeams[12]['avatar'] != null) {{$fieldsTeams[12]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
-				</div>
-				<div class="font-bold mb-2 text-gray-600">Tier-1 Coordinator</br><span class="font-semibold text-gray-900"> 5zan</span></div>
-			</div>
-			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
-				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(7,$fieldsTeams)) href="/user/profile/view/7" @endif><img src="@if( array_key_exists(7,$fieldsTeams) && $fieldsTeams[7]['avatar'] != null) {{$fieldsTeams[7]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
-				</div>
-				<div class="font-bold mb-2 text-gray-600">Tier-1 Coordinator</br><span class="font-semibold text-gray-900"> Streeter</span></div>
-			</div>
-			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
-				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
 					<a @if(array_key_exists(34,$fieldsTeams)) href="/user/profile/view/34" @endif><img src="@if( array_key_exists(34,$fieldsTeams) && $fieldsTeams[34]['avatar'] != null) {{$fieldsTeams[34]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-600">Tier-1 Coordinator</br><span class="font-semibold text-gray-900"> notsomonsoon</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(1,$fieldsTeams)) href="/user/profile/view/1" @endif><img src="@if( array_key_exists(1,$fieldsTeams) && $fieldsTeams[1]['avatar'] != null) {{$fieldsTeams[1]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+					<a @if(array_key_exists(12,$fieldsTeams)) href="/user/profile/view/12" @endif><img src="@if( array_key_exists(12,$fieldsTeams) && $fieldsTeams[12]['avatar'] != null) {{$fieldsTeams[12]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
-				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> Freeman</span></div>
+				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> 5zan</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(32,$fieldsTeams)) href="/user/profile/view/32" @endif><img src="@if( array_key_exists(32,$fieldsTeams) && $fieldsTeams[32]['avatar'] != null) {{$fieldsTeams[32]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+					<a @if(array_key_exists(7,$fieldsTeams)) href="/user/profile/view/7" @endif><img src="@if( array_key_exists(7,$fieldsTeams) && $fieldsTeams[7]['avatar'] != null) {{$fieldsTeams[7]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
-				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> no more pp</span></div>
+				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> Streeter</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
 					<a @if(array_key_exists(45,$fieldsTeams)) href="/user/profile/view/45" @endif><img src="@if( array_key_exists(45,$fieldsTeams) && $fieldsTeams[45]['avatar'] != null) {{$fieldsTeams[45]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> IRC_Tanish</span></div>
+			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(1,$fieldsTeams)) href="/user/profile/view/1" @endif><img src="@if( array_key_exists(1,$fieldsTeams) && $fieldsTeams[1]['avatar'] != null) {{$fieldsTeams[1]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-600">CH Coordinator</br><span class="font-semibold text-gray-900"> Freeman</span></div>
+			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(32,$fieldsTeams)) href="/user/profile/view/32" @endif><img src="@if( array_key_exists(32,$fieldsTeams) && $fieldsTeams[32]['avatar'] != null) {{$fieldsTeams[32]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-600">CH Coordinator</br><span class="font-semibold text-gray-900"> no more pp</span></div>
 			</div>
 		</div>
 		<h3 class="text-2xl pt-4  bg-teal-300 rounded font-bold  text-black"><i class="fas fa-tools p-3" aria-hidden="true"></i>Website Team</h3>
@@ -216,6 +216,18 @@
 				</div>
 				<div class="font-bold mb-2 text-gray-700">Member of Editorial</br><span class="font-semibold text-gray-900"> Sai_Tarun</span></div>
 			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(122,$fieldsTeams)) href="/user/profile/view/122" @endif><img src="@if( array_key_exists(122,$fieldsTeams) && $fieldsTeams[122]['avatar'] != null) {{$fieldsTeams[122]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-700">Member of Editorial</br><span class="font-semibold text-gray-900"> Nervii</span></div>
+			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(31,$fieldsTeams)) href="/user/profile/view/31" @endif><img src="@if( array_key_exists(31,$fieldsTeams) && $fieldsTeams[31]['avatar'] != null) {{$fieldsTeams[31]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-700">Member of Editorial</br><span class="font-semibold text-gray-900"> Baba.G</span></div>
+			</div>
 		</div>
 		<h3 class="text-2xl pt-4  bg-purple-300 rounded font-bold  text-black"><i class="fas fa-video p-3" aria-hidden="true"></i>Stream & Telemetry</h3>
 		<div class="flex bg-purple-300 justify-center">
@@ -233,15 +245,21 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(33,$fieldsTeams)) href="/user/profile/view/33" @endif><img src="@if( array_key_exists(33,$fieldsTeams) && $fieldsTeams['33']['avatar'] != null) {{$fieldsTeams[33]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+					<a @if(array_key_exists(101,$fieldsTeams)) href="/user/profile/view/101" @endif><img src="@if( array_key_exists(101,$fieldsTeams) && $fieldsTeams['101']['avatar'] != null) {{$fieldsTeams[101]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
-				<div class="font-bold mb-2 text-gray-700">Streaming Member</br><span class="font-semibold text-gray-900"> rbferalo14</span></div>
+				<div class="font-bold mb-2 text-gray-700">Streaming Member</br><span class="font-semibold text-gray-900"> GryphuS</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
 					<a @if(array_key_exists(16,$fieldsTeams)) href="/user/profile/view/16" @endif><img src="@if( array_key_exists(16,$fieldsTeams) && $fieldsTeams[16]['avatar'] != null) {{$fieldsTeams[16]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-700">Streaming Member</br><span class="font-semibold text-gray-900"> kapilace6</span></div>
+			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(75,$fieldsTeams)) href="/user/profile/view/75" @endif><img src="@if( array_key_exists(75,$fieldsTeams) && $fieldsTeams[75]['avatar'] != null) {{$fieldsTeams[75]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-700">Streaming Member</br><span class="font-semibold text-gray-900"> ELECTRIP</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
@@ -284,12 +302,6 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(27,$fieldsTeams)) href="/user/profile/view/27" @endif><img src="@if( array_key_exists(27,$fieldsTeams) && $fieldsTeams[27]['avatar'] != null) {{$fieldsTeams[27]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
-				</div>
-				<div class="font-bold mb-2 text-gray-600">Youtube</br><span class="font-semibold text-gray-900"> The-Real-SD</span></div>
-			</div>
-			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
-				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
 					<a @if(array_key_exists(9,$fieldsTeams)) href="/user/profile/view/9" @endif><img src="@if( array_key_exists(9,$fieldsTeams) && $fieldsTeams[9]['avatar'] != null) {{$fieldsTeams[9]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-600">Reddit</br><span class="font-semibold text-gray-900"> Oxygen</span></div>
@@ -327,9 +339,14 @@
 				</div>
 				<div class="font-bold mb-2 text-gray-700">Podcast Member</br><span class="font-semibold text-gray-900"> kapilace6</span></div>
 			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(164,$fieldsTeams)) href="/user/profile/view/164" @endif><img src="@if( array_key_exists(164,$fieldsTeams) && $fieldsTeams[164]['avatar'] != null) {{$fieldsTeams[164]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-700">Podcast Member</br><span class="font-semibold text-gray-900"> AdiTheDaddy</span></div>
+			</div>
 		</div>
-
-<hr>
+		<hr>
 		<div class="my-8">
 			<p class="font-semibold mb-2 text-gray-700">Get in touch with us on:</p>
 			<a href="https://steamcommunity.com/groups/indianracingcommunity" target="_blank">

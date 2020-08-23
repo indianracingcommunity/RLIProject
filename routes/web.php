@@ -20,6 +20,7 @@ Route::get('aboutus', 'WebsiteController@loadaboutus');
 Route::get('ourteam', 'WebsiteController@loadourteam');
 Route::get('faq', 'WebsiteController@loadfaq');
 Route::get('f1leaguerules', 'WebsiteController@f1leaguerules');
+Route::get('f1XBOXleaguerules', 'WebsiteController@f1XBOXleaguerules');
 Route::get('login', 'WebsiteController@loadlogin');
 
 /* Exposing Image Manipulation API for Public
