@@ -56,6 +56,9 @@ class StandingsController extends Controller
         return view('standings.allraces')
                 ->with('code', $code)
 
+                ->with('flaps', $cs['flaps'])
+                ->with('penalties', $cs['penalties'])
+
                 ->with('tdrivers', $cs['drivers'])
                 ->with('tconst', $cs['constructors'])
 
@@ -102,6 +105,8 @@ class StandingsController extends Controller
         if(!count($results)) return array("code" => 404);
 
         $countReserves = 0;
+        $flaps = array();
+        $penalties = array();
         $dres = $this->computePoints($results, 'driver', $psystem);
         for($i = 0; $i < count($dres); $i++)
         {
@@ -110,14 +115,40 @@ class StandingsController extends Controller
             $dres[$i]['status'] = $results[$ind]['status'];
             $dres[$i]['user'] = $results[$ind]['driver']['user_id'];
 
+            if($dres[$i]['flaps'] > 0)
+                array_push($flaps, array("name" => $dres[$i]["name"],
+                                         "flaps" => $dres[$i]["flaps"]));
+            if($dres[$i]['penalties'] > 0)
+                array_push($penalties, array("name" => $dres[$i]["name"],
+                                             "penalties" => $dres[$i]["penalties"]));
+
             if((abs($dres[$i]['status']) >= 10 && abs($dres[$i]['status']) < 20) || $dres[$i]['team']['name'] == 'Reserve')
                 $countReserves++;
         }
 
+        usort($flaps, function($a, $b) {
+            if ($a["flaps"] < $b["flaps"])
+                return 1;
+            elseif ($a["flaps"] > $b["flaps"])
+                return -1;
+            else
+                return 0;
+        });
+        usort($penalties, function($a, $b) {
+            if ($a["penalties"] < $b["penalties"])
+                return 1;
+            elseif ($a["penalties"] > $b["penalties"])
+                return -1;
+            else
+                return 0;
+        });
+
         $cres = $this->computePoints($results, 'constructor', $psystem);
         return array(
             "code" => 200,
+            "flaps" => $flaps,
             "drivers" => $dres,
+            "penalties" => $penalties,
             "countReserves" => $countReserves,
             "constructors" => $cres,
             "season" => $season
@@ -136,6 +167,10 @@ class StandingsController extends Controller
         $nextRace = $this->nextRace($cs['season']['id']);
         return view('standings.season')
                ->with('code', $code)
+
+               ->with('flaps', $cs['flaps'])
+               ->with('penalties', $cs['penalties'])
+
                ->with('res', $cs['drivers'])
                ->with('count', count($cs['drivers']))
                ->with('reservecount', $cs['countReserves'])
@@ -199,6 +234,8 @@ class StandingsController extends Controller
         ));
 
         $points = 0;
+        $flaps = 0;
+        $penalties = 0;
         foreach($results as $k => $driver) {
             if($prev != $driver[$field . '_id']) {
                 $cur = array(
@@ -208,24 +245,36 @@ class StandingsController extends Controller
                     "start" => $k
                 );
 
+                $dres[count($dres) - 1]['flaps'] = $flaps;
                 $dres[count($dres) - 1]['points'] = $points;
+                $dres[count($dres) - 1]['penalties'] = $penalties;
                 $dres[count($dres) - 1]['end'] = $k;
+                $flaps = 0;
                 $points = 0;
+                $penalties = 0;
                 array_push($dres, $cur);
             }
 
-            $prev = $driver[$field . '_id'];
             $pos = $driver['position'];
+            $prev = $driver[$field . '_id'];
+            $penalties += round((abs($driver['status']) - (int)abs($driver['status'])) * 10, 2);
             if($driver['status'] >= 0) {
+                $rpoints = 0;
                 $ps_ind = array_search($results[$k]['race']['points'], array_column($psystem, "id"));
                 if(array_key_exists((string)($pos - 1), $psystem[$ps_ind]))
-                    $points += $psystem[$ps_ind][(string)($pos - 1)];
+                    $rpoints = $psystem[$ps_ind][(string)($pos - 1)];
 
                 $points += $driver['points'];
-                if(((int)abs($driver['status']) % 10) == 1) $points += 1;
+                $points += $rpoints;
+                if(((int)abs($driver['status']) % 10) == 1) {
+                    $flaps += 1;
+                    if($rpoints > 0) $points += 1;
+                }
             }
         }
+        $dres[count($dres) - 1]['flaps'] = $flaps;
         $dres[count($dres) - 1]['points'] = $points;
+        $dres[count($dres) - 1]['penalties'] = $penalties;
         $dres[count($dres) - 1]['end'] = count($results);
 
         usort($dres, function($a, $b) use ($results) {
