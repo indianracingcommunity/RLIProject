@@ -145,16 +145,17 @@ class ResultsController extends Controller
 
         foreach($results as $i => $res) {
             $pos = $res['position'];
+            $results[$i]['points'] = $res['points'];
 
-            if($res['status'] < 0)
-                $results[$i]['points'] = 0;
-            else {
+            if($res['status'] >= 0) {
+                $rpoints = 0;
                 $ps_ind = array_search($results[$i]['race']['points'], array_column($points, "id"));
                 if(array_key_exists((string)($pos - 1), $points[$ps_ind]))
-                    $results[$i]['points'] = $points[$ps_ind][$pos - 1];
+                    $rpoints = $points[$ps_ind][$pos - 1];
 
-                $results[$i]['points'] += $res['points'];
-                if(((int)abs($results[$i]['status']) % 10) == 1) $results[$i]['points'] += 1;
+                $results[$i]['points'] += $rpoints;
+                if(((int)abs($results[$i]['status']) % 10) == 1 && $rpoints > 0)
+                    $results[$i]['points'] += 1;
             }
         }
 

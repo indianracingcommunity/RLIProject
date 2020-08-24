@@ -258,13 +258,13 @@ class StandingsController extends Controller
             $pos = $driver['position'];
             $prev = $driver[$field . '_id'];
             $penalties += round((abs($driver['status']) - (int)abs($driver['status'])) * 10, 2);
+            $points += $driver['points'];
             if($driver['status'] >= 0) {
                 $rpoints = 0;
                 $ps_ind = array_search($results[$k]['race']['points'], array_column($psystem, "id"));
                 if(array_key_exists((string)($pos - 1), $psystem[$ps_ind]))
                     $rpoints = $psystem[$ps_ind][(string)($pos - 1)];
 
-                $points += $driver['points'];
                 $points += $rpoints;
                 if(((int)abs($driver['status']) % 10) == 1) {
                     $flaps += 1;
