@@ -228,7 +228,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
                <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
                @if($season['season'] - (int)$season['season'] < 0.75)
-               <th class="rounded-md bg-gray-300 border-2 border-white">Last Team Represented</th>
+               <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
                @endif
                <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
             </tr>
