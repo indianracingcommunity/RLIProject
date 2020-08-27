@@ -181,6 +181,8 @@ class DriverController extends StandingsController
 
       //Results for this Season
       $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
+      if($ts['code'] != 200)
+        continue;
 
       //Add Points to Drivers
       for($j = 0; $j < count($ts['drivers']); ++$j) {
