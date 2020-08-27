@@ -6,6 +6,7 @@ use App\Driver;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
+use App\Season;
 use App\Constructor;
 use App\Result;
 use App\Series;
@@ -164,9 +165,39 @@ class DriverController extends StandingsController
   
   public function driverdata()
   {
-    $data = Driver::select('id','name','team','drivernumber','user_id')
-                  ->get()->load('user:id,name,avatar,steam_id');
-    
-    return response()->json($data);
+    $driver = Driver::select('id','name','team','drivernumber','user_id')
+                  ->get()->load('user:id,name,avatar,steam_id')->toArray();
+    $constructor = Constructor::all()->toArray();
+
+    $seasons = Season::where('status', '<', 2)->get()->toArray();
+    $ts = array();
+
+    //Iterate through all Active Seasons
+    for($i = 0; $i < count($seasons); ++$i) {
+      for($j = 0; $j < count($driver); ++$j)
+        $driver[$j][$seasons[$i]['id']] = 0;
+      for($j = 0; $j < count($constructor); ++$j)
+        $constructor[$j][$seasons[$i]['id']] = 0;
+
+      //Results for this Season
+      $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
+
+      //Add Points to Drivers
+      for($j = 0; $j < count($ts['drivers']); ++$j) {
+        $d_id = array_search($ts['drivers'][$j]['id'], array_column($driver, "id"));
+        $driver[$d_id][$seasons[$i]['id']] = $ts['drivers'][$j]['points'];
+      }
+
+      //Add Points to Constructors
+      for($j = 0; $j < count($ts['constructors']); ++$j) {
+        $c_id = array_search($ts['constructors'][$j]['id'], array_column($constructor, "id"));
+        $constructor[$c_id][$seasons[$i]['id']] = $ts['constructors'][$j]['points'];
+      }
+    }
+
+    return response()->json([
+      "drivers" => $driver,
+      "constructors" => $constructor
+    ]);
   }
 }
