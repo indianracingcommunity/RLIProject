@@ -111,8 +111,8 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
        
-Route::get('/drivers/data','DriverController@driverdata');
 Route::group(['middleware' => 'auth:api'], function () {
+       Route::get('/drivers/data','DriverController@driverdata');
        Route::get('/api/users/details/{query}/{id}','BotController@fetchdetails');
 });
 
