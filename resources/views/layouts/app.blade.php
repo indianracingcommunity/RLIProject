@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=1378">
 
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,13 +17,94 @@
         <title>Indian Racing Community</title>
         <!-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
          -->
-         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <link rel="stylesheet" href="{{ asset('/css/custom.css')}}">
+        <!-- <link rel="stylesheet" href="{{ asset('/css/custom.css')}}"> -->
         <script src="{{ asset('js/jquery35.js')}}"></script>
         </head>
-        <body class="w-full pageBody" style="display: none;">
+
+
+        <body class="bg-gray-100">
+            <div class="md:flex" id="screen">
+                <div class="md:w-auto md:block bg-gray-900 hidden min-h-full fixed md:relative" style="min-width:250px" id="sidebar">
+                    <div class="h-screen py-5 text-white">
+                        <div class="md:hidden block items-center px-4 flex-shrink-0" onclick="menu()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="flex items-center px-4 py-4 cursor-pointer hover:bg-black">
+                            <div class="rounded-full w-20 h-20 bg-white items-center flex-shrink-0"></div>
+                            <div class="items-center flex-shrink-0 ml-4 leading-none">
+                                <div class="font-bold text-2xl">sdawn29</div>
+                                <div class="font-semibold text-gray-600">sdawn#4589</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="my-8">
+                                <div class="font-bold text-sm px-5">LEAGUE RACING</div>
+                                <div class="my-1">
+                                    <div class="py-2 text-gray-400 font-semibold cursor-pointer pr-4 mx-4 rounded-md hover:bg-black hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign up</div>
+                                </div>
+                                <div class="font-bold text-sm px-5 mt-4">LEAGUE RULES</div>
+                                <div class="my-1">
+                                    <div class="py-2 text-gray-400 font-semibold cursor-pointer pr-4 mx-4 rounded-md hover:bg-black hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC F1</div>
+                                    <div class="py-2 text-gray-400 font-semibold cursor-pointer pr-4 mx-4 rounded-md hover:bg-black hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</div>
+                                </div>
+                            </div>
+                            <div class="md:hidden block">
+                                <div class="my-2 flex px-4 justify-between">
+                                    <div class="text-center m-2 rounded py-2 bg-gray-800 font-semibold hover:bg-black cursor-pointer w-1/2">About Us</div>
+                                    <div class="text-center m-2 rounded py-2 bg-gray-800 font-semibold hover:bg-black cursor-pointer w-1/2">FAQ</div>
+                                </div>
+                                <div class="my-1 px-4">
+                                    <div class="text-center mx-2 rounded py-2 bg-red-800 font-semibold hover:bg-red-900 cursor-pointer text-white">logout</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-full" id="content">
+                    <nav class="flex items-center border-b justify-between px-2 py-2 bg-white">
+                        <div class="flex items-center">
+                            <div class="items-center p-4 flex-shrink-0 cursor-pointer" onclick="menu()"><i class="fas fa-bars"></i></div>
+                            <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
+                                <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
+                            </div>
+                            <div class="hidden md:block rounded-md py-2 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-200">Championship Standings</div>
+                            <div class="hidden md:block rounded-md py-2 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-200">Race Results</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="hidden md:block rounded-md py-2 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-200">About Us</div>
+                            <div class="hidden md:block rounded-md py-2 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-200">FAQ</div>
+                            <div class="hidden md:block rounded-md py-2 items-center flex-shrink-0 font-semibold px-4 text-red-500  cursor-pointer hover:text-white hover:bg-red-600">Logout</div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <nav class="flex justify-between fixed border-b bg-white w-full" style="z-index: 5;">
                 <div class="flex py-2">
                     @auth
