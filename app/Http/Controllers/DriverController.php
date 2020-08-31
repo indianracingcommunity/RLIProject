@@ -155,7 +155,7 @@ class DriverController extends StandingsController
     $driver = new Driver();
     $driver -> user_id = $data['user_id'];
     $driver -> name = $userinfo['0']['name'];
-    $driver -> team = $data['tier'];
+    $driver -> tier = $data['tier'];
     $driver -> drivernumber = 5;
     $driver -> retired = 0;
     $driver -> alias = $userinfo['0']['name'];

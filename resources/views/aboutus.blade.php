@@ -36,7 +36,7 @@
 			</a>
 		</div>
 		<div class="block rounded mt-3">
-			<a href="https://discord.gg/dWG2bX6">
+			<a href="https://discord.gg/ngvX9Mm">
 				<img class="" src="https://discord.com/api/guilds/{{$irc_guild}}/widget.png?style=banner1">
 			</a>
 		</div>
