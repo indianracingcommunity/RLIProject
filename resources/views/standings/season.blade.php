@@ -246,7 +246,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          @endfor
       </div>
       <div class="text font-semibold mx-2">
-         Drivers' Standdings
+         Drivers' Standings
       </div>
       <table class="table mx-2">
          <thead>

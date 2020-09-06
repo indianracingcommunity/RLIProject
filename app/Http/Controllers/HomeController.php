@@ -37,7 +37,7 @@ class HomeController extends Controller
         $userroles = $discord->getroles($user->discord_id);
         $metaUserAvatar = $user->avatar;
         $metaName = $user->name;
-        $series = Series::all();
+        $series = Series::where('profile', true)->get();
         return view('user.profiles')
           ->with('user', $user)
           ->with('roles', $userroles)

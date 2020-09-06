@@ -20,7 +20,7 @@ class UserPanel extends Controller
     public function viewprofile()
     {
         $id = Auth::user()->discord_id;
-        $series = Series::all();
+        $series = Series::where('profile', true)->get();
         $discord = new Discord();
         $userroles = $discord->getroles($id);
 
