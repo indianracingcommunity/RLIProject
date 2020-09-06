@@ -42,7 +42,7 @@ class ResultsController extends Controller
 
         $race_arr = json_decode($results, true);
         $driver_ind = array_search($request->driverid, array_column($race_arr, "driver_id"));
-        if($driver_ind === false)
+        if($driver_ind === null)
             return -1;
 
         $oldPos = $results[$driver_ind]['position'];

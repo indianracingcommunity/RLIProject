@@ -17,7 +17,7 @@ class DriverController extends StandingsController
   public function info(Request $request)
   {
     $number = $request->query('number');
-    if($number === false)
+    if($number === null)
       return response()->json([]);
 
     $code = $request->query('code');
