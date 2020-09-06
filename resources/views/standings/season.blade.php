@@ -34,81 +34,162 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
 }
 </style>
 @section('content')
+
 <div class="container mx-auto flex">
    <div class="w-1/4">
+
       @if($season['season'] == (int)$season['season'])
-      <div class="text-4xl font-bold text-gray-800 leading-none">
-         <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
-      </div>
-      <div class="text-2xl font-semibold text-gray-700 leading-none">
-         Season {{$season['season']}}
-      </div>
+         <div class="text-4xl font-bold text-gray-800 leading-none">
+            <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
+         </div>
+         <div class="text-2xl font-semibold text-gray-700 leading-none">
+            Season {{$season['season']}}
+         </div>
       @else
-      <div class="text-4xl font-bold text-gray-800 leading-none">
-         <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
-      </div>
+         <div class="text-4xl font-bold text-gray-800 leading-none">
+            <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
+         </div>
       @endif
+
       @if($season['season'] - (int)$season['season'] < 0.75)
-      <div class="rounded-md py-2 my-4 leading-none">
-         <div class="font-semibold my-2 leading-none">
-            Constructors` Standings
-         </div>
-         <table>
-            <thead>
-               <tr>
-                  <th class="rounded-md bg-gray-300 border-2 border-white">Teams</th>
-                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-               </tr>
-            </thead>
-            <tbody>
-               @for ($i = 0; $i < $ccount; $i++)
-                  @php
-                     if($cres[$i]['name'] == 'Reserve')
-                        continue;
-                  @endphp
-                  <tr class="">
-                     <td class="font-semibold rounded-lg border border-white">
-                        {{$cres[$i]['name']}}
-                     </td>
-                     <td class="font-semibold rounded-lg border border-white">
-                        {{$cres[$i]['points']}}
-                     </td>
+         <div class="rounded-md py-2 my-4 leading-none">
+            <div class="font-semibold my-2 leading-none">
+               Constructors` Standings
+            </div>
+            <table>
+               <thead>
+                  <tr>
+                     <th class="rounded-md bg-gray-300 border-2 border-white">Teams</th>
+                     <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
                   </tr>
-               @endfor
-            </tbody>
-         </table>
-      </div>
+               </thead>
+               <tbody>
+                  @for ($i = 0; $i < $ccount; $i++)
+                     @php
+                        if($cres[$i]['name'] == 'Reserve')
+                           continue;
+                     @endphp
+                     <tr class="">
+                        <td class="font-semibold rounded-lg border border-white">
+                           {{$cres[$i]['name']}}
+                        </td>
+                        <td class="font-semibold rounded-lg border border-white">
+                           {{$cres[$i]['points']}}
+                        </td>
+                     </tr>
+                  @endfor
+               </tbody>
+            </table>
+         </div>
       @endif
+
+      @if(count($flaps)>0)
+         <div class="rounded-md py-2 my-4 leading-none">
+            <div class="font-bold my-2 leading-none text-purple-700">
+               Fastest Laps
+            </div>
+            <table>
+               <thead>
+                  <tr>
+                     <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
+                     <th  class="rounded-md bg-gray-300 border-2 border-white">Fastest Laps</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @for ($i = 0; $i < count($flaps); $i++)
+                     @if($flaps != 0 && $flaps != '0')
+                        <tr class="">
+                           <td class="font-semibold rounded-lg border border-white">
+                              {{$flaps[$i]['name']}}
+                           </td>
+                           <td class="font-semibold text-center rounded-lg border border-white">
+                              {{$flaps[$i]['flaps']}}
+                           </td>
+                        </tr>
+                     @endif
+                  @endfor
+               </tbody>
+            </table>
+         </div>
+      @endif
+
+      @if(count($penalties)>0)
+         <div class="rounded-md py-2 my-4 leading-none">
+            <div class="font-semibold my-2 leading-none text-orange-500">
+               Driver Penalties
+            </div>
+            <table>
+               <thead>
+                  <tr>
+                     <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
+                     <th  class="rounded-md bg-gray-300 border-2 text-center border-white">Penalty/Warning</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @for ($i = 0; $i < count($penalties); $i++)
+                     @php
+                        $penalty = $penalties[$i]['penalties'];
+                        $warnings = 0;
+                        if(floor( $penalty ) != $penalties[$i]['penalties']){
+                           $warnings = 1;
+                        }
+                     @endphp
+                     @if($penalty != 0 && $penalty != '0')
+                        <tr class="">
+                           <td class="font-semibold rounded-lg border border-white">
+                              {{$penalties[$i]['name']}}
+                           </td>
+                           <td class="font-semibold text-center rounded-lg border border-white">
+                              @if (floor( $penalty ) != 0)
+                                 {{floor( $penalty )}}
+                              @endif
+
+                              @if ($warnings != 0)
+                                 @if (floor( $penalty ) != 0)
+                                 +
+                                 @endif
+                                 Warning
+                              @endif
+                           </td>
+                        </tr>
+                     @endif
+                  @endfor
+               </tbody>
+            </table>
+         </div>
+      @endif
+
       @if($nextRace != null)
-      <div class="border rounded-md p-3">
-         <div class="text-xl font-semibold text-gray-600">
-            Next Race
-         </div>
-         <div class="text-4xl font-semibold text-purple-700">
-            {{$nextRace['name']}}
-         </div>
-         <div class="mb-4">
-            <img src="{{$nextRace['display']}}" alt="">
-         </div>
-         <div class="flex justify-between font-semibold">
-            <div>
-               Circuit Length
+         <div class="border rounded-md p-3">
+            <div class="text-xl font-semibold text-gray-600">
+               Next Race
             </div>
-            <div class="text-lg text-blue-700">
-               {{$nextRace['track_length']}}
+            <div class="text-4xl font-semibold text-purple-700">
+               {{$nextRace['name']}}
+            </div>
+            <div class="mb-4">
+               <img src="{{$nextRace['display']}}" alt="">
+            </div>
+            <div class="flex justify-between font-semibold">
+               <div>
+                  Circuit Length
+               </div>
+               <div class="text-lg text-blue-700">
+                  {{$nextRace['track_length']}}
+               </div>
+            </div>
+            <div class="flex justify-between font-semibold">
+               <div>
+                  Number of laps
+               </div>
+               <div class="text-lg text-blue-700">
+                  {{$nextRace['laps']}}
+               </div>
             </div>
          </div>
-         <div class="flex justify-between font-semibold">
-            <div>
-               Number of laps
-            </div>
-            <div class="text-lg text-blue-700">
-               {{$nextRace['laps']}}
-            </div>
-         </div>
-      </div>
       @endif
    </div>
+
    <div class="w-3/4 ml-16">
       <div class="flex mb-6 justify-center">
         @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++)
@@ -120,52 +201,52 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             }
          @endphp
          @if($k == 0)
-         <div class="card1 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
-            <div class="text-4xl font-bold">
-               1st
+            <div class="card1 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+               <div class="text-4xl font-bold">
+                  1st
+               </div>
+               @if($season['season'] - (int)$season['season'] < 0.75)
+               <div class="font-semibold">
+                  {{$res[$i]['team']['name']}}
+               </div>
+               @endif
+               <div class="font-semibold text-xl">
+                  {{$res[$i]['name']}}
+               </div>
             </div>
-            @if($season['season'] - (int)$season['season'] < 0.75)
-            <div class="font-semibold">
-               {{$res[$i]['team']['name']}}
-            </div>
-            @endif
-            <div class="font-semibold text-xl">
-               {{$res[$i]['name']}}
-            </div>
-         </div>
          @elseif($k == 1)
-         <div class="card2 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
-            <div class="text-4xl font-bold">
-               2nd
+            <div class="card2 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+               <div class="text-4xl font-bold">
+                  2nd
+               </div>
+               @if($season['season'] - (int)$season['season'] < 0.75)
+               <div class="font-semibold">
+                  {{$res[$i]['team']['name']}}
+               </div>
+               @endif
+               <div class="font-semibold text-xl">
+                  {{$res[$i]['name']}}
+               </div>
             </div>
-            @if($season['season'] - (int)$season['season'] < 0.75)
-            <div class="font-semibold">
-               {{$res[$i]['team']['name']}}
-            </div>
-            @endif
-            <div class="font-semibold text-xl">
-               {{$res[$i]['name']}}
-            </div>
-         </div>
          @elseif($k == 2)
-         <div class="card3 ml-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
-            <div class="text-4xl font-bold">
-               3rd
+            <div class="card3 ml-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+               <div class="text-4xl font-bold">
+                  3rd
+               </div>
+               @if($season['season'] - (int)$season['season'] < 0.75)
+                  <div class="font-semibold">
+                     {{$res[$i]['team']['name']}}
+                  </div>
+               @endif
+                  <div class="font-semibold text-xl">
+                     {{$res[$i]['name']}}
+                  </div>
             </div>
-            @if($season['season'] - (int)$season['season'] < 0.75)
-            <div class="font-semibold">
-               {{$res[$i]['team']['name']}}
-            </div>
-            @endif
-            <div class="font-semibold text-xl">
-               {{$res[$i]['name']}}
-            </div>
-         </div>
          @endif
          @endfor
       </div>
       <div class="text font-semibold mx-2">
-         Drivers' Standings
+         Drivers' Standdings
       </div>
       <table class="table mx-2">
          <thead>
@@ -219,53 +300,53 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
          </tbody>
       </table>
       @if ($reservecount != 0)
-      <div class="font-semibold mt-8 mx-2">
-         Reserves` Standings
-      </div>
-      <table class="table mx-2">
-         <thead>
-            <tr>
-               <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
-               <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
-               @if($season['season'] - (int)$season['season'] < 0.75)
-               <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
-               @endif
-               <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-            </tr>
-         </thead>
-         <tbody>
-            @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
-            @php
-               if(!((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve'))
-               {
-                  $k--;
-                  continue;
-               }
-            @endphp
-            <tr class="cursor-pointer">
-               <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
-                  {{$k+1}}
-               </td>
-               <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
-                  <a class="hover:underline" href="/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a>
-               </td>
-               @if($season['season'] - (int)$season['season'] < 0.75)
-               <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
-                  <span>
-                     {{$res[$i]['team']['name']}}
-                  </span>
-               </td>
-               @endif
-               <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
-                  {{$res[$i]['points']}}
-               </td>
-            </tr>
-            @endfor
-         </tbody>
-      </table>
+         <div class="font-semibold mt-8 mx-2">
+            Reserves` Standings
+         </div>
+         <table class="table mx-2">
+            <thead>
+               <tr>
+                  <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
+                  <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
+                  @if($season['season'] - (int)$season['season'] < 0.75)
+                  <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
+                  @endif
+                  <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
+               </tr>
+            </thead>
+            <tbody>
+               @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
+               @php
+                  if(!((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve'))
+                  {
+                     $k--;
+                     continue;
+                  }
+               @endphp
+               <tr class="cursor-pointer">
+                  <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
+                     {{$k+1}}
+                  </td>
+                  <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
+                     <a class="hover:underline" href="/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a>
+                  </td>
+                  @if($season['season'] - (int)$season['season'] < 0.75)
+                  <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
+                     <span>
+                        {{$res[$i]['team']['name']}}
+                     </span>
+                  </td>
+                  @endif
+                  <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
+                     {{$res[$i]['points']}}
+                  </td>
+               </tr>
+               @endfor
+            </tbody>
+         </table>
+      @endif
    </div>
 </div>
-@endif
 <script>
    $( document ).ready(function() {
       $('.openDriver').click(function (e) { 
