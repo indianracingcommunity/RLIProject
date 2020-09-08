@@ -140,6 +140,9 @@
                             <a href="/f1leaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 pr-1 fa fa-desktop" aria-hidden="true"></i> PC F1 </a>
                         </li>
                         <li class="p-2">
+                            <a href="/accleaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-blue-500 pr-1 fa fa-desktop" aria-hidden="true"></i> PC ACC</a>
+                        </li>
+                        <li class="p-2">
                             <a href="/f1XBOXleaguerules" class="px-3 py-2 font-semibold hover:bg-gray-300 hover:text-blue-600 rounded-md text-gray-700"><i class="text-green-500 pr-1 fab fa-xbox" aria-hidden="true"></i> XBOX F1</a>
                         </li>
                     </ul>
