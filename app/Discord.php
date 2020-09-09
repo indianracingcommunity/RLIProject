@@ -464,7 +464,61 @@ return "Done";
 
 
 
-       $profileschannel = 734086970413809746;
+   public static function notifysignup($season)
+   {
+       $seasonname = Season::where('id',$season)->select('game','name')->get()->toArray();
+       
+       $discordid = Auth::user()->discord_id;
+       $sname = $seasonname[0]['name'];
+       $gname = $seasonname[0]['game'];
+       $message = "<@$discordid> has signed up for **$sname** !";
+       $adata = array("content" => $message, "tts" => false);
+       $postdata = json_encode($adata);
+
+       $params = (['token' => config('services.discord.bot')]);
+       $curl = curl_init();
+
+       $esports= 753275648989986856;
+
+       curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/".$esports."/messages",
+           CURLOPT_RETURNTRANSFER => true,
+           CURLOPT_ENCODING => "",
+           CURLOPT_MAXREDIRS => 10,
+           CURLOPT_TIMEOUT => 30,
+           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+           CURLOPT_CUSTOMREQUEST => "POST",
+           CURLOPT_POSTFIELDS => $postdata,
+           CURLOPT_HTTPHEADER => array(
+               'Content-Type: application/json',
+               "Authorization: Bot ".$params['token']
+           ),
+       ));
+
+       $response = curl_exec($curl);
+       $err = curl_error($curl);
+       curl_close($curl);
+
+       if ($err) 
+       {
+           return $err;
+       } 
+       else
+       {
+           $final = json_decode($response,true);
+           if(isset($final['message']))
+           {
+               return "Invalid";
+           }
+           else
+           {
+             return $response;
+           }
+       }
+   }
+
+
+
   
 }
 ?>

@@ -9,6 +9,7 @@ use App\Circuit;
 use App\Constructor;
 use App\Driver;
 use App\Signup;
+use App\Discord;
 use Storage;
 use Auth;
 //Hi
@@ -64,9 +65,7 @@ class SignupsController extends Controller
              $assists = '' ;
            }
           
-          
-
-          
+        
            //dd($assists);
         $signup = new Signup();
         $signup->user_id = Auth::user()->id;
@@ -90,7 +89,7 @@ class SignupsController extends Controller
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
         $signup->save();
-        
+        $discord = Discord::notifysignup($data['seas']);
         session()->flash('success',"Signup Submitted Successfully");
         return redirect('/signup');
     }
@@ -98,7 +97,7 @@ class SignupsController extends Controller
     public function update(Signup $signup)
     {
        $data = request()->all();
-
+   
      // dd($signup);
        if($signup->user_id==Auth::user()->id)
        {
@@ -178,11 +177,8 @@ class SignupsController extends Controller
      ->with('data',$data)
      ->with('season',$season);
    }
-
-
-
-
-
+ 
+   
     public function temp()
     {
       $data = '{
