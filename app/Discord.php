@@ -18,6 +18,7 @@ class Discord
         $this->irc_guild = (int)config('services.discord.irc_guild');
         $this->applicantRole = (int)config('services.discord.applicant_role');
         $this->profilesChannel = (int)config('services.discord.profiles_channel');
+        $this->notificationchannel = (int)config('services.discord.notification_channel');
     }
 
     public function check($userr)
@@ -464,7 +465,7 @@ return "Done";
 
 
 
-   public static function notifysignup($season)
+   public function notifysignup($season)
    {
        $seasonname = Season::where('id',$season)->select('game','name')->get()->toArray();
        
@@ -478,7 +479,7 @@ return "Done";
        $params = (['token' => config('services.discord.bot')]);
        $curl = curl_init();
 
-       $esports= 753275648989986856;
+       $esports= $this->notificationchannel;
 
        curl_setopt_array($curl, array(
            CURLOPT_URL => "https://discord.com/api/channels/".$esports."/messages",

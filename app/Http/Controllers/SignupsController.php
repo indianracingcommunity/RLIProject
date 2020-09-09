@@ -12,7 +12,6 @@ use App\Signup;
 use App\Discord;
 use Storage;
 use Auth;
-//Hi
 class SignupsController extends Controller 
 {
     public function view()
@@ -89,7 +88,8 @@ class SignupsController extends Controller
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
         $signup->save();
-        $discord = Discord::notifysignup($data['seas']);
+        $discord = new Discord(); 
+        $discord->notifysignup($data['seas']);
         session()->flash('success',"Signup Submitted Successfully");
         return redirect('/signup');
     }
@@ -178,7 +178,7 @@ class SignupsController extends Controller
      ->with('season',$season);
    }
  
-   
+
     public function temp()
     {
       $data = '{
