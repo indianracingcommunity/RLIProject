@@ -18,6 +18,7 @@ class Discord
         $this->irc_guild = (int)config('services.discord.irc_guild');
         $this->applicantRole = (int)config('services.discord.applicant_role');
         $this->profilesChannel = (int)config('services.discord.profiles_channel');
+        $this->notificationchannel = (int)config('services.discord.notification_channel');
     }
 
     public function check($userr)
@@ -460,6 +461,61 @@ return "Done";
     //     'discord_discrim' => $final['discriminator']
 
     //     ]); 
+   }
+
+
+
+   public function notifysignup($season)
+   {
+       $seasonname = Season::where('id',$season)->select('game','name')->get()->toArray();
+       
+       $discordid = Auth::user()->discord_id;
+       $sname = $seasonname[0]['name'];
+       $gname = $seasonname[0]['game'];
+       $message = "<@$discordid> has signed up for **$sname** !";
+       $adata = array("content" => $message, "tts" => false);
+       $postdata = json_encode($adata);
+
+       $params = (['token' => config('services.discord.bot')]);
+       $curl = curl_init();
+
+       $esports= $this->notificationchannel;
+
+       curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/".$esports."/messages",
+           CURLOPT_RETURNTRANSFER => true,
+           CURLOPT_ENCODING => "",
+           CURLOPT_MAXREDIRS => 10,
+           CURLOPT_TIMEOUT => 30,
+           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+           CURLOPT_CUSTOMREQUEST => "POST",
+           CURLOPT_POSTFIELDS => $postdata,
+           CURLOPT_HTTPHEADER => array(
+               'Content-Type: application/json',
+               "Authorization: Bot ".$params['token']
+           ),
+       ));
+
+       $response = curl_exec($curl);
+       $err = curl_error($curl);
+       curl_close($curl);
+
+       if ($err) 
+       {
+           return $err;
+       } 
+       else
+       {
+           $final = json_decode($response,true);
+           if(isset($final['message']))
+           {
+               return "Invalid";
+           }
+           else
+           {
+             return $response;
+           }
+       }
    }
 
 
