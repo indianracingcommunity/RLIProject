@@ -11,6 +11,7 @@ use App\Driver;
 use App\Signup;
 use Storage;
 use Auth;
+//Hi
 class SignupsController extends Controller 
 {
     public function view()
