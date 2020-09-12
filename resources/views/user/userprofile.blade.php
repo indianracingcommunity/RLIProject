@@ -4,7 +4,7 @@
     $platform = isset(Auth::user()->platform) ? unserialize(Auth::user()->platform) : NULL;
     $games = isset(Auth::user()->games) ? unserialize(Auth::user()->games) : NULL;
     $device = isset(Auth::user()->device) ? unserialize(Auth::user()->device) : NULL;
-    
+
     if(isset(Auth::user()->location))
     {
         $data = Auth::user()->location;
@@ -49,7 +49,7 @@
         background: grey;
     }
 </style>
-<div class="flex  my-8 ">
+<div class="flex">
     <div class="flex flex-shrink-0">
         <div>
             <img src="{{Auth::user()->avatar}}" class="rounded-md " alt="">

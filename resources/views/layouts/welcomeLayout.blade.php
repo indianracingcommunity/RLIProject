@@ -4,7 +4,6 @@
         <title>Indian Racing Community</title>
         <link rel="icon" href="{{url('/img/IRC_logo/logo_square.png')}}">
         <meta charset="utf-8">
-        <meta name="viewport" content="width=1378">
         <meta property="og:title" content="Indian Racing Community">
         <meta property="og:description" content="A place For Every Indian Racing Enthusiast.">
         <meta property="og:image" content="/img/IRC_logo/logo_square_new.png">

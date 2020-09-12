@@ -13,7 +13,7 @@
     }
     $device = isset($user->device) && $user->device != '' ? unserialize($user->device) : NULL;
 @endphp
-<div class="flex  my-8 ">
+<div class="flex">
     <div class="flex flex-shrink-0">
         <div>
             <img src="{{$user->avatar}}" class="rounded-md " alt="">
