@@ -48,9 +48,9 @@
     </head>
 
 
-    <body>
+    <body class="bg-gray-100">
         <div class="" id="screen">
-            <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
+            <div class="md:w-auto bg-white z-100 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
                 <div class="h-screen py-2 text-black">
                     <div class="flex items-center px-4">
                         <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
@@ -60,16 +60,16 @@
                     </div>
                     <div>
                         <div class="my-8">
-                            <div class="font-bold text-sm px-5">LEAGUE RACING</div>
+                            <div class="font-bold text-sm px-5 tracking-wide">LEAGUE RACING</div>
                             <div class="my-1">
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign up</div>
                             </div>
-                            <div class="font-bold text-sm px-5 mt-4">LEAGUE RULES</div>
+                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             <div class="my-1">
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC F1</div>
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</div>
                             </div>
-                            <div class="font-bold text-sm px-5 mt-4">LEAGUE INFO</div>
+                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             <div class="my-1">
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>Championship Standings</div>
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>Race Results</div>
@@ -81,7 +81,7 @@
             </div>
 
             <div class="md:w-full" id="content">
-                <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white">
+                <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
                     <div class="flex items-center">
                         <div class="items-center p-4 flex-shrink-0 cursor-pointer" onclick="menu()"><i class="fas fa-bars"></i></div>
                         <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
@@ -132,7 +132,7 @@
                     </div>
                 </nav>
                 @auth
-                <main class="container mx-auto my-8" id="customMargin">
+                <main class="container mx-auto my-4">
                     @if (session()->has('error'))
                     <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
                     <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
@@ -151,21 +151,21 @@
                     @yield('content')
                 </main>
                 @endguest
-                <footer class="container mx-auto border-t py-8 justify-between items-center flex flex-col md:flex-row">
+                <footer class="mx-8 border-t py-8 justify-between md:items-center flex flex-col md:flex-row mt-10">
                     <div class="leading-tight">
                         <div class="text-gray-700 font-bold">Indian Racing Comunity</div>
                         <div class="text-gray-600 font-semibold text-sm">A place for every racing enthusiast.</div>
-                        <div class="text-sm font-bold text-gray-600 mt-6">
-                            <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                                FAQ
-                            </span>
-                            <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                                About Us
-                            </span>
-                            <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                                Our Team
-                            </span>
-                        </div>
+                    </div>
+                    <div class="text-sm font-bold text-gray-600 md:my-0 my-0">
+                        <span class="mr-4 hover:text-gray-900 cursor-pointer">
+                            FAQ
+                        </span>
+                        <span class="mr-4 hover:text-gray-900 cursor-pointer">
+                            About Us
+                        </span>
+                        <span class="mr-4 hover:text-gray-900 cursor-pointer">
+                            Our Team
+                        </span>
                     </div>
                     <div>
                         <span class="mr-2 text-xl text-gray-600 hover:text-gray-900 cursor-pointer">
@@ -180,7 +180,7 @@
                         <span class="mr-2 text-xl text-gray-600 hover:text-gray-900 cursor-pointer">
                             <i class="fab fa-steam"></i>
                         </span>
-                        <span class="mr-2 text-xl text-gray-600 hover:text-gray-900 cursor-pointer">
+                        <span class="text-xl text-gray-600 hover:text-gray-900 cursor-pointer">
                             <i class="fab fa-reddit"></i>
                         </span>
                     </div>
@@ -194,7 +194,7 @@
             $('.pageBody').show('slow', function() {});
         });
 
-        let sidebarVisible = 0
+        let sidebarVisible = 1
         function menu() {
             console.log("function called")
             let element = document.getElementById("sidebar");
