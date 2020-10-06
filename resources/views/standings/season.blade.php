@@ -1,22 +1,5 @@
 @extends('layouts.app')
 <style>
-tr:nth-child(even) td {
-background-color: #EDF2F7;
-margin:5px;
-}
-table {
-width: 100%
-}
-th {
-padding: 10px;
-text-align: left;
-}
-tr:hover, td:hover {background-color: #E2E8F0;}
-td {
-padding-left:10px;
-padding-top:5px;
-padding-bottom: 5px;
-}
 .card1 {
 background:linear-gradient(45deg,#f09819,#edde5d);
 }
@@ -35,48 +18,59 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
 </style>
 @section('content')
 <div class="container mx-auto flex">
-   <div class="w-1/4">
-      @if($season['season'] == (int)$season['season'])
-      <div class="text-4xl font-bold text-gray-800 leading-none">
-         <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
-      </div>
-      <div class="text-2xl font-semibold text-gray-700 leading-none">
-         Season {{$season['season']}}
-      </div>
-      @else
-      <div class="text-4xl font-bold text-gray-800 leading-none">
-         <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
-      </div>
-      @endif
+   <div class="w-1/3">
+   <div class="bg-white p-4 rounded-lg shadow-lg">
+       @if($season['season'] == (int)$season['season'])
+       <div class="font-bold text-gray-800 leading-none flex items-center">
+           <div class="mr-4">
+               <i class="fas fa-chess-king text-5xl text-purple-600"></i>
+           </div>
+           <div>
+               <div class="text-3xl">
+                   Tier {{$season['tier']}}
+               </div>
+                <div class="text-2xl font-semibold text-gray-700 leading-none">
+                    Season {{$season['season']}}
+                </div>
+           </div>
+       </div>
+       @else
+       <div class="text-4xl font-bold text-gray-800 leading-none">
+          <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
+       </div>
+       @endif
+   </div>
       @if($season['season'] - (int)$season['season'] < 0.75)
-      <div class="rounded-md py-2 my-4 leading-none">
-         <div class="font-semibold my-2 leading-none">
-            Constructors` Standings
-         </div>
-         <table>
-            <thead>
-               <tr>
-                  <th class="rounded-md bg-gray-300 border-2 border-white">Teams</th>
-                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-               </tr>
-            </thead>
-            <tbody>
-               @for ($i = 0; $i < $ccount; $i++)
-                  @php
-                     if($cres[$i]['name'] == 'Reserve')
-                        continue;
-                  @endphp
-                  <tr class="">
-                     <td class="font-semibold rounded-lg border border-white">
-                        {{$cres[$i]['name']}}
-                     </td>
-                     <td class="font-semibold rounded-lg border border-white">
-                        {{$cres[$i]['points']}}
-                     </td>
-                  </tr>
-               @endfor
-            </tbody>
-         </table>
+      <div class="py-2 my-4 leading-none bg-white p-4 rounded-lg shadow-lg">
+        <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4 text-indigo-600">
+        Constructors` Standings
+        </div>
+        <div>
+            <table class="w-full">
+                <thead>
+                    <th class="font-bold tracking-widest bg-purple-400 py-1 border-4 border-white">
+                        TEAMS
+                    </th>
+                    <th class="font-bold tracking-wider text-white bg-purple-800 py-1 border-4 border-white">
+                        POINTS
+                    </th>
+                </thead>
+                @for ($i = 0; $i < $ccount; $i++)
+                    @php
+                        if($cres[$i]['name'] == 'Reserve')
+                            continue;
+                    @endphp
+                    <tr>
+                        <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 ">
+                            {{$cres[$i]['name']}}
+                        </td>
+                        <td class="bg-white font-semibold text-purple-600 text-center tracking-widest flex-grow text-md ">
+                            {{$cres[$i]['points']}}
+                        </td>
+                    </tr>
+                @endfor
+            </table>
+        </div>
       </div>
       @endif
       @if($nextRace != null)
@@ -109,8 +103,8 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
       </div>
       @endif
    </div>
-   <div class="w-3/4 ml-16">
-      <div class="flex mb-6 justify-center">
+   <div class="w-3/4 ml-4">
+      <div class="flex justify-center">
         @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++)
          @php
             if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
@@ -120,7 +114,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             }
          @endphp
          @if($k == 0)
-         <div class="card1 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
+         <!-- <div class="card1 mx-2 text-white px-4 py-8 rounded-md hover:shadow-lg w-full text-center">
             <div class="text-4xl font-bold">
                1st
             </div>
@@ -160,64 +154,67 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             <div class="font-semibold text-xl">
                {{$res[$i]['name']}}
             </div>
-         </div>
+         </div> -->
          @endif
          @endfor
       </div>
-      <div class="text font-semibold mx-2">
-         Drivers' Standings
+      <div class="bg-white rounded-lg shadow-lg p-4">
+        <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4 text-red-600">
+            DRIVERS` STANDINGS
+        </div>
+          <table class="w-full">
+             <thead>
+                <tr>
+                   <th class="font-bold tracking-widest bg-purple-400 py-1 border-4 border-white">POSITION</th>
+                   <th class="font-bold tracking-widest bg-purple-800 text-white py-1 border-4 border-white">DRIVER</th>
+                   @if($season['season'] - (int)$season['season'] < 0.75)
+                   <th class="font-bold tracking-widest bg-purple-400 py-1 border-4 border-white">TEAM</th>
+                   @endif
+                   <th class="font-bold tracking-widest bg-purple-800 text-white py-1 border-4 border-white">POINTS</th>
+                </tr>
+             </thead>
+             <tbody>
+                @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
+                @php
+                   if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
+                   {
+                      $k--;
+                      continue;
+                   }
+                @endphp
+                <tr>
+                   @if ($res[$i]['user'] == Auth::id())
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-red-100 text-center tracking-widest">{{$k+1}}</td>
+                   @else
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 text-center tracking-widest">{{$k+1}}</td>
+                   @endif
+                   @if ($res[$i]['user'] == Auth::id())
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}" style="background-color:#2f4353"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
+                   @else
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
+                   @endif
+                   @if($season['season'] - (int)$season['season'] < 0.75)
+                   @if ($res[$i]['user'] == Auth::id())
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 " style="background-color:#2f4353">
+                      {{$res[$i]['team']['name']}}
+                   </td>
+                   @else
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 ">
+                      {{$res[$i]['team']['name']}}
+                   </td>
+                   @endif
+                   @endif
+                   @if ($res[$i]['user'] == Auth::id())
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 " style="background-color:#2f4353">{{$res[$i]['points']}}</td>
+                   @else
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white text-purple-600 text-center tracking-widest">{{$res[$i]['points']}}</td>
+                   @endif
+                </tr>
+                @endfor
+             </tbody>
+          </table>
+
       </div>
-      <table class="table mx-2">
-         <thead>
-            <tr>
-               <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
-               <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
-               @if($season['season'] - (int)$season['season'] < 0.75)
-               <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
-               @endif
-               <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-            </tr>
-         </thead>
-         <tbody>
-            @for ($i = 0, $k = 0; $i < $count; $i++, $k++)
-            @php
-               if((abs($res[$i]['status']) >= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name'] == 'Reserve')
-               {
-                  $k--;
-                  continue;
-               }
-            @endphp
-            <tr>
-               @if ($res[$i]['user'] == Auth::id())
-               <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">{{$k+1}}</td>
-               @else
-               <td class="font-semibold rounded-lg border border-white">{{$k+1}}</td>
-               @endif
-               @if ($res[$i]['user'] == Auth::id())
-               <td class="font-bold rounded border border-white text-white hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}" style="background-color:#2f4353"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
-               @else
-               <td class="font-semibold rounded-lg border border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
-               @endif
-               @if($season['season'] - (int)$season['season'] < 0.75)
-               @if ($res[$i]['user'] == Auth::id())
-               <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">
-                  {{$res[$i]['team']['name']}}
-               </td>
-               @else
-               <td class="font-semibold rounded-lg border border-white">
-                  {{$res[$i]['team']['name']}}
-               </td>
-               @endif
-               @endif
-               @if ($res[$i]['user'] == Auth::id())
-               <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">{{$res[$i]['points']}}</td>
-               @else
-               <td class="font-semibold rounded-lg border border-white">{{$res[$i]['points']}}</td>
-               @endif
-            </tr>
-            @endfor
-         </tbody>
-      </table>
       @if ($reservecount != 0)
       <div class="font-semibold mt-8 mx-2">
          Reserves` Standings
@@ -268,7 +265,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
 @endif
 <script>
    $( document ).ready(function() {
-      $('.openDriver').click(function (e) { 
+      $('.openDriver').click(function (e) {
          e.preventDefault();
          var linkId = $(this).attr('data-driverLink');
          console.log(linkId);
