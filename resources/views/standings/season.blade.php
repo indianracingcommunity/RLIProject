@@ -184,18 +184,18 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                 @endphp
                 <tr>
                    @if ($res[$i]['user'] == Auth::id())
-                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-red-100 text-center tracking-widest">{{$k+1}}</td>
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-green-200 text-center tracking-widest">{{$k+1}}</td>
                    @else
                    <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 text-center tracking-widest">{{$k+1}}</td>
                    @endif
                    @if ($res[$i]['user'] == Auth::id())
-                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}" style="background-color:#2f4353"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-green-200 hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}" <a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
                    @else
                    <td class="font-semibold flex-grow text-md p-2 border-4 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$res[$i]['user']}}"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
                    @endif
                    @if($season['season'] - (int)$season['season'] < 0.75)
                    @if ($res[$i]['user'] == Auth::id())
-                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 " style="background-color:#2f4353">
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-green-200">
                       {{$res[$i]['team']['name']}}
                    </td>
                    @else
@@ -205,7 +205,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                    @endif
                    @endif
                    @if ($res[$i]['user'] == Auth::id())
-                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-gray-100 " style="background-color:#2f4353">{{$res[$i]['points']}}</td>
+                   <td class="font-semibold flex-grow text-md p-2 border-4 border-white bg-green-200 text-purple-600 text-center tracking-widest" >{{$res[$i]['points']}}</td>
                    @else
                    <td class="font-semibold flex-grow text-md p-2 border-4 border-white text-purple-600 text-center tracking-widest">{{$res[$i]['points']}}</td>
                    @endif
@@ -216,18 +216,19 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
 
       </div>
       @if ($reservecount != 0)
-      <div class="font-semibold mt-8 mx-2">
+      <div class="shadow-lg rounded-lg p-4 bg-white mt-4">
+      <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4 text-gray-600">
          Reserves` Standings
       </div>
-      <table class="table mx-2">
+      <table class="w-full">
          <thead>
             <tr>
-               <th class="rounded-md bg-gray-300 border-2 border-white">Position</th>
-               <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
+               <th class="font-bold tracking-widest bg-purple-400 py-1 border-4 border-white">POSITION</th>
+               <th class="font-bold tracking-widest bg-purple-800 text-white py-1 border-4 border-white">DRIVER</th>
                @if($season['season'] - (int)$season['season'] < 0.75)
-               <th class="rounded-md bg-gray-300 border-2 border-white">Team</th>
+               <th class="font-bold tracking-widest bg-purple-400 py-1 border-4 border-white">TEAM</th>
                @endif
-               <th class="rounded-md bg-gray-300 border-2 border-white">Points</th>
+               <th class="font-bold tracking-widest bg-purple-800 text-white py-1 border-4 border-white">POINTS</th>
             </tr>
          </thead>
          <tbody>
@@ -260,6 +261,8 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
             @endfor
          </tbody>
       </table>
+
+      </div>
    </div>
 </div>
 @endif
