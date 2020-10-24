@@ -104,4 +104,9 @@ class WebsiteController extends Controller
     {
     	return view('login');
     }
+
+    public function f1tournament()
+    {
+    	return view('f1tournament');
+    }
 }
