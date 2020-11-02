@@ -2,7 +2,6 @@
 <style>
 tr:nth-child(even) td {
 background-color: #edf2f7;
-margin:5px;
 }
 
 table {
