@@ -4,7 +4,6 @@
     $platform = isset(Auth::user()->platform) ? unserialize(Auth::user()->platform) : NULL;
     $games = isset(Auth::user()->games) ? unserialize(Auth::user()->games) : NULL;
     $device = isset(Auth::user()->device) ? unserialize(Auth::user()->device) : NULL;
-    
     if(isset(Auth::user()->location))
     {
         $data = Auth::user()->location;
@@ -20,7 +19,6 @@
     else{
         $city = ""; $state="";
     }
-
 @endphp
 
 <div class="container">
@@ -49,15 +47,14 @@
         background: grey;
     }
 </style>
-<div class="flex  my-8 ">
-    <div class="flex flex-shrink-0">
+<div class="text-4xl font-bold tracking-wide md:mb-2 p-4 md:p-0">User Profile</div>
+<div class="flex md:flex-row flex-col px-4 md:p-0">
+    <div class="flex bg-white rounded-lg p-4 items-center shadow-xl">
         <div>
             <img src="{{Auth::user()->avatar}}" class="rounded-md " alt="">
         </div>
-        <div class="my-2">
-            <div class="flex">
-                <div class=" font-semibold text-gray-800 mx-4 text-4xl font-bold">{{Auth::user()->name}}</div>
-            </div>
+        <div>
+            <div class=" font-bold text-gray-800 mx-4 text-3xl tracking-tight">{{Auth::user()->name}}</div>
             <div class="flex mb-1 mx-4">
                 @if($platform != NULL)
                     @foreach ($platform as $value)
@@ -90,30 +87,31 @@
                 <div class="text-5xl text-indigo-700">🚜</div>
                 <div class="font-semibold mt-2 p-2 bg-blue-600 rounded-md text-white">Season 2</div>
             </div>
-
         </div>
     </div> -->
 </div>
-<div class="flex">
+<div class="flex flex-col md:flex-row mt-2 md:mt-6 p-4 md:p-0">
     <div>
-        <div class="font-semibold text-gray-600 mb-4">
-            <i class="far fa-user-circle mr-1"></i> User Details
+        <div class="bg-white rounded-lg shadow-xl p-4">
+            <div class="font-semibold text-gray-600 mb-4 tracking-wide text-sm border-b pb-2">
+                <i class="far fa-user-circle mr-1"></i> USER DETAILS
+            </div>
+            <table>
+                <tr>
+                    <td class="font-semibold text-gray-600">USERNAME</td>
+                    <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->name}}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold text-gray-600">EMAIL</td>
+                    <td class=" font-bold text-gray-800 px-4 py-1 whitespace-pre-wrap">{{Auth::user()->email}}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold text-gray-600">DISCORD</td>
+                    <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->name}}#{{Auth::user()->discord_discrim}}</td>
+                </tr>
+            </table>
         </div>
-        <table>
-            <tr>
-                <td class="font-semibold text-gray-600">USERNAME</td>
-                <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->name}}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold text-gray-600">EMAIL</td>
-                <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->email}}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold text-gray-600">DISCORD</td>
-                <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->name}}#{{Auth::user()->discord_discrim}}</td>
-            </tr>
-        </table>
-        <div class="pl-4 bg-gray-800 rounded-md p-4 inline-block my-4">
+        <div class="pl-4 bg-gray-800 rounded-lg p-4 my-6 shadow-xl">
             <div class="font-semibold text-gray-100 mb-4 border-b border-gray-600 pb-2">
                 <i class="fab fa-discord mr-1 text-gray-100"></i> User Roles
             </div>
@@ -150,14 +148,14 @@
 
     </div>
 
-    <div class="border-l mx-4 px-4 w-full">
-        <div class="font-semibold text-gray-600 mb-4 px-4">
-            <i class="fas fa-edit mr-1"></i> More Details
-        </div>
+    <div class="md:mx-4 mx-auto w-full">
         <form action="/user/profile/save/{{Auth::user()->id}}" method="POST" id="submitProfileForm">
             @csrf
-            <div class="flex">
-                <div class="w-1/2 flex-grow-0 px-4">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 w-auto flex-grow-0 md:px-4 bg-white rounded-lg shadow-xl p-4">
+                <div class="font-semibold text-gray-600 pb-2 mb-4 text-sm tracking-wide border-b">
+                    <i class="fas fa-edit mr-1"></i> MORE DETAILS
+                </div>
                     <div class="mb-4">
                         <div>
                             <label for="Nationality" class="font-semibold text-gray-800">Are you an Indian?<span class="text-red-600 ml-2">●</span></label>
@@ -261,7 +259,8 @@
                     </div>
                 </div>
                 </div>
-                <div class="flex-grow-0 w-1/2 px-4">
+                <div class="md:w-1/2 w-auto mt-6 md:ml-4 md:mt-0">
+                <div class="bg-white p-4 rounded-lg shadow-xl">
                     <label class="mb-4 cursor-pointer">
                         <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
                         <span for="games" class="font-semibold text-gray-800"> I play racing games.<span class="text-red-600 ml-2">●</span></span>
@@ -322,20 +321,21 @@
                             <input maxlength="100" type="text" name="devicename" id="deviceName" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700" placeholder="T300, xbox controller, g29, Red Legend, etc." value="{{Auth::user()->devicename}}">
                             <span class="errormsg errormsgDeviceName">Please enter device details.</span>
                         </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 shadow-xl mt-6">
+                        <div class="font-semibold text-gray-700">
+                            <div>
+                                <span class="text-red-600 mr-2">●</span>Mandatory Fields
+                            </div>
+                            <div>
+                                <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
+                            </div>
+                        </div>
+                        <button type="button" id="enabledbuttonid" class="bg-blue-500 rounded mt-4 text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
+                        <span class="errormsg errormsgSubmit">You need to be an Indian to fill this Form.</span>
                     </div>
                 </div>
-            </div>
-            <div>
-                <div class="font-semibold text-gray-700 mb-4 ml-4">
-                    <div>
-                        <span class="text-red-600 mr-2">●</span>Mandatory Fields
-                    </div>
-                    <div>
-                        <i class="fas fa-globe-americas text-gray-600 mr-2"></i>Publicly visible fields
-                    </div>
-                </div>
-                <button type="button" id="enabledbuttonid" class="bg-blue-500 rounded ml-4 text-white font-semibold px-8 py-2 hover:bg-blue-800" style="display: block;">Submit</button>
-                <span class="errormsg errormsgSubmit">You need to be an Indian to fill this Form.</span>
             </div>
         </form>
     </div>
@@ -346,17 +346,14 @@
     var games = <?php echo json_encode($games); ?>;
     var platform = <?php echo json_encode($platform); ?>;
     var device = <?php echo json_encode($device); ?>;
-
     $( document ).ready(function() {
         $('#restfieldsid').hide();
-
         $('.tildeNotValid').keydown(function(event) {
             var keyCode = (event.which) ? event.which : event.keyCode;
             if(keyCode == 192){
                 return false;
             }
         });
-
         $('.youtubeLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
             var linkCheck = new RegExp(/^https:\/\/www[.]youtube[.]com\/.+/);
@@ -366,7 +363,6 @@
                 $(this).siblings(".errormsg").show('slow/400/fast', function() {});
             }
         });
-
         $('.redditLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
             var linkCheck = new RegExp(/^https:\/\/www[.]reddit[.]com\/.+/);
@@ -376,7 +372,6 @@
                 $(this).siblings(".errormsg").show('slow/400/fast', function() {});
             }
         });
-
         $('.instaLink').change(function(event) {
             $(this).siblings(".errormsg").hide();
             var linkCheck = new RegExp(/^https:\/\/www[.]instagram[.]com\/.+/);
@@ -404,11 +399,9 @@
                 $(this).siblings(".errormsg").show('slow/400/fast', function() {});
             }
         });
-
         $('#deviceName').change(function(event) {
             $(this).val($.trim($(this).val()));
         });
-
         $('.nationalityOption').change(function(event) {
             $('.errormsgSubmit').hide();
             $('#enabledbuttonid').removeAttr('disabled');
@@ -419,7 +412,6 @@
                 $('#enabledbuttonid').attr('disabled', 'disabled');
             }
         });
-
         $('#playgameid').change(function(event) {
             if( $(this).is(':checked') ){
                 $('#restfieldsid').show('slow/400/fast', function() {});
@@ -433,16 +425,13 @@
                 $('#deviceName').removeClass('mandatory');
             }
         });
-
         $('.nationalityOption').trigger('change');
         $('#playgameid').trigger('change');
-
         $('.mandatory').each(function(index, el) {
             if( $(this).val() == '' ){
                 $('.profileAlert').show('slow/400/fast', function() {});
             }
         });
-
         $('#enabledbuttonid').click(function(event) {
             $('.errormsg').hide();
             var dontSubmit = false;
@@ -497,7 +486,5 @@
             }
         });
     });
-
 </script>
-
 @endsection
