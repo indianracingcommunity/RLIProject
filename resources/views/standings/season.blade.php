@@ -41,7 +41,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
         Championship Standings
     </div>
     <div class="flex flex-col md:flex-row">
-        <div class="bg-white p-4 rounded-lg shadow-lg md:w-1/3 mb-4 md:m-0">
+        <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">
             @if($season['season'] == (int)$season['season'])
             <div class="font-bold text-gray-800 leading-none flex items-center">
                 <div class="mr-4">
@@ -73,7 +73,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                 @endphp
 
                 @if($k == 0)
-                    <div class="bg-white p-4 rounded-lg shadow-lg md:w-1/3 mb-4 md:m-0">
+                    <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">
                         <div class="font-bold text-gray-800 leading-none flex items-center">
                             <div class="mr-4">
                                 <i class="fas fa-award text-5xl" style="color: gold;"></i>
@@ -89,7 +89,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                         </div>
                     </div>
                 @elseif($k == 1)
-                    <div class="bg-white p-4 rounded-lg shadow-lg md:w-1/3 mb-4 md:m-0">
+                    <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">
                         <div class="font-bold text-gray-800 leading-none flex items-center">
                             <div class="mr-4">
                                 <i class="fas fa-award text-5xl" style="color: silver;"></i>
@@ -105,7 +105,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                         </div>
                     </div>
                 @elseif($k == 2)
-                    <div class="bg-white p-4 rounded-lg shadow-lg md:w-1/3 mb-4 md:m-0">
+                    <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">
                         <div class="font-bold text-gray-800 leading-none flex items-center">
                             <div class="mr-4">
                                 <i class="fas fa-award text-5xl" style="color: #b08d57;"></i>
@@ -129,7 +129,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
     <div class="flex flex-col-reverse md:flex-row">
        <div class="md:w-1/3">
           @if($season['season'] - (int)$season['season'] < 0.75)
-             <div class="my-4 leading-none bg-white p-4 rounded-lg shadow-lg">
+             <div class="my-4 leading-none bg-white p-4 rounded-lg border">
                 <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
                     Constructors` Standings
                 </div>
@@ -161,7 +161,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           @endif
 
           @if(count($flaps)>0)
-             <div class="bg-white p-4 rounded-lg shadow-lg leading-none">
+             <div class="bg-white p-4 rounded-lg border leading-none">
                 <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4 text-purple-700">
                    Fastest Laps
                 </div>
@@ -191,7 +191,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
           @endif
 
           @if(count($penalties)>0)
-             <div class="bg-white p-4 rounded-lg shadow-lg mt-4 leading-none">
+             <div class="bg-white p-4 rounded-lg border mt-4 leading-none">
                 <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4 text-orange-500">
                    Driver Penalties
                 </div>
@@ -268,7 +268,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
        </div>
 
        <div class="md:w-2/3 md:ml-4 md:mt-4">
-          <div class="bg-white p-4 rounded-lg shadow-lg">
+          <div class="bg-white p-4 rounded-lg border">
               <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
                  Drivers' Standings
               </div>
@@ -276,10 +276,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                   <table>
                      <thead>
                         <tr>
-                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Position</th>
+                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Pos.</th>
                            <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                            @if($season['season'] - (int)$season['season'] < 0.75)
-                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Team</th>
+                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white md:block hidden">Team</th>
                            @endif
                            <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 text-center border-white">Points</th>
                         </tr>
@@ -306,11 +306,11 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                            @endif
                            @if($season['season'] - (int)$season['season'] < 0.75)
                            @if ($res[$i]['user'] == Auth::id())
-                           <td class="font-semibold rounded border border-white text-white" style="background-color:#2f4353">
+                           <td class="font-semibold rounded border border-white text-white hidden md:block" style="background-color:#2f4353">
                               {{$res[$i]['team']['name']}}
                            </td>
                            @else
-                           <td class="font-semibold rounded-lg border border-white">
+                           <td class="font-semibold rounded-lg border border-white hidden md:block">
                               {{$res[$i]['team']['name']}}
                            </td>
                            @endif
@@ -327,7 +327,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
               </div>
           </div>
           @if ($reservecount != 0)
-          <div class="p-4 shadow-xl rounded-lg bg-white my-4 overflow-y-auto">
+          <div class="p-4 border rounded-lg bg-white my-4 overflow-y-auto">
               <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
                  Reserves` Standings
               </div>
@@ -335,10 +335,10 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                   <table>
                      <thead>
                         <tr>
-                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Position</th>
+                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Pos.</th>
                            <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                            @if($season['season'] - (int)$season['season'] < 0.75)
-                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Team</th>
+                           <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white hidden md:block">Team</th>
                            @endif
                            <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Points</th>
                         </tr>
@@ -360,7 +360,7 @@ background: linear-gradient(to right, #94716B, #B79891); /* W3C, IE 10+/ Edge, F
                               <a class="hover:underline" href="/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a>
                            </td>
                            @if($season['season'] - (int)$season['season'] < 0.75)
-                           <td class="font-semibold rounded-lg border border-white" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
+                           <td class="font-semibold rounded-lg border border-white md:block hidden" @if ($res[$i]['user'] == Auth::id()) style="background-color:#2f4353; color:white;" @endif>
                               <span>
                                  {{$res[$i]['team']['name']}}
                               </span>

@@ -49,7 +49,7 @@
 </style>
 <div class="text-4xl font-bold tracking-wide md:mb-2 p-4 md:p-0">User Profile</div>
 <div class="flex md:flex-row flex-col px-4 md:p-0">
-    <div class="flex bg-white rounded-lg p-4 items-center shadow-xl">
+    <div class="flex bg-white rounded-lg p-4 items-center border">
         <div>
             <img src="{{Auth::user()->avatar}}" class="rounded-md " alt="">
         </div>
@@ -92,7 +92,7 @@
 </div>
 <div class="flex flex-col md:flex-row mt-2 md:mt-6 p-4 md:p-0">
     <div>
-        <div class="bg-white rounded-lg shadow-xl p-4">
+        <div class="bg-white rounded-lg border p-4">
             <div class="font-semibold text-gray-600 mb-4 tracking-wide text-sm border-b pb-2">
                 <i class="far fa-user-circle mr-1"></i> USER DETAILS
             </div>
@@ -111,7 +111,7 @@
                 </tr>
             </table>
         </div>
-        <div class="pl-4 bg-gray-800 rounded-lg p-4 my-6 shadow-xl">
+        <div class="pl-4 bg-gray-800 rounded-lg p-4 my-6 border">
             <div class="font-semibold text-gray-100 mb-4 border-b border-gray-600 pb-2">
                 <i class="fab fa-discord mr-1 text-gray-100"></i> User Roles
             </div>
@@ -152,7 +152,7 @@
         <form action="/user/profile/save/{{Auth::user()->id}}" method="POST" id="submitProfileForm">
             @csrf
             <div class="flex flex-col md:flex-row">
-                <div class="md:w-1/2 w-auto flex-grow-0 md:px-4 bg-white rounded-lg shadow-xl p-4">
+                <div class="md:w-1/2 w-auto flex-grow-0 md:px-4 bg-white rounded-lg border p-4">
                 <div class="font-semibold text-gray-600 pb-2 mb-4 text-sm tracking-wide border-b">
                     <i class="fas fa-edit mr-1"></i> MORE DETAILS
                 </div>
@@ -260,7 +260,7 @@
                 </div>
                 </div>
                 <div class="md:w-1/2 w-auto mt-6 md:ml-4 md:mt-0">
-                <div class="bg-white p-4 rounded-lg shadow-xl">
+                <div class="bg-white p-4 rounded-lg border">
                     <label class="mb-4 cursor-pointer">
                         <input type="checkbox" required id="playgameid" name="playgame" value="playsgame" @if ($games != NULL) checked @endif>
                         <span for="games" class="font-semibold text-gray-800"> I play racing games.<span class="text-red-600 ml-2">●</span></span>
@@ -323,7 +323,7 @@
                         </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg p-4 shadow-xl mt-6">
+                    <div class="bg-white rounded-lg p-4 border mt-6">
                         <div class="font-semibold text-gray-700">
                             <div>
                                 <span class="text-red-600 mr-2">●</span>Mandatory Fields
