@@ -57,10 +57,10 @@
                         <div class="items-center py-4 px-2 flex-shrink-0 cursor-pointer" onclick="menu()"><i class="fas fa-times"></i></div>
                     </div>
                     <div>
-                        <div class="my-8">
+                        <div class="my-8" id="main-menu">
                             <div class="font-bold text-sm px-5 tracking-wide">LEAGUE RACING</div>
                             <div class="my-1">
-                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign up</div>
+                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign ups</div>
                             </div>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             <div class="my-1">
@@ -69,14 +69,22 @@
                             </div>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             <div class="my-1">
-                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>Championship Standings</div>
+                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-trophy"></i></div>Championship Standings</div>
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>Race Results</div>
                             </div>
                         </div>
+
+                        <div id="champ-menu">
+
+                        </div>
+
+                        <div id="race-menu">
+
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
             <div class="md:w-full" id="content">
                 <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
