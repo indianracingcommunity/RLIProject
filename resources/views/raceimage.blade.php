@@ -33,6 +33,15 @@
    <form method="post" action="{{url('/image/race')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
+    <select class="form-control" style="width:350px" name="season" id="exampleFormControlSelect1">
+       @foreach($seasons as $season)
+        <option value="{{$season['id']}}">{{$season['name']}}</option>
+       @endforeach
+     </select>
+     <br>
+     <label for="exampleFormControlSelect1">Round Select</label>
+     <input type="number" name="round" style="width:100px" class="form-control" aria-label="Text input with dropdown button">
+     <br>
      <table class="table">
       <tr>
        <td width="40%" align="right"><label>Select File for Upload</label></td>

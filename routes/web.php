@@ -29,6 +29,12 @@ Route::get('/public/image/race', 'ImageController@pubRace');
 Route::get('/public/image/quali', 'ImageController@pubQuali');
 */
 
+Route::put('/impel', 'WebsiteController@impelS');
+Route::delete('/impel', 'WebsiteController@impelA');
+
+Route::get('/recotap', 'WebsiteController@recotapB');
+Route::post('/recotap', 'WebsiteController@recotapG');
+
 Route::get('/test','ImageController@testing');
 Route::post('/test/save','ImageController@testsave');
 
