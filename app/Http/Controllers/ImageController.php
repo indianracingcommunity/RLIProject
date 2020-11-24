@@ -30,7 +30,8 @@ class ImageController extends Controller
     }
 
     public function raceIndex() {
-        return view('raceimage');
+        $seasons = Season::where('status', '<', 2)->get();
+        return view('raceimage')->with('seasons', $seasons);
     }
     public function qualiIndex() {
         return view('qualiimage');
@@ -359,7 +360,7 @@ class ImageController extends Controller
         return $res;
     }
     
-    public function raceprep(String $src, Bool $pub=false) {
+    public function raceprep(String $src, Bool $pub=false, $seasonid=null) {
         $tess = new TesseractOCR();
         $tess->lang('eng')->psm(7);
 
@@ -513,9 +514,11 @@ class ImageController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
-        $track = $this->race_name($request->photo->path());
-        $results = $this->raceprep($request->photo->path());
+        $track = $this->race_name($request->photo->path(), false);
+        $results = $this->raceprep($request->photo->path(), false, request()->season);
 
+        $track['season_id'] = request()->season;
+        $track['round'] = (int)request()->round;
         return response()->json([
             "track" => $track,
             "results" => $results
