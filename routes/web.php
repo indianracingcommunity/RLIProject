@@ -12,6 +12,10 @@ use kanalumaddela\LaravelSteamLogin\Facades\SteamLogin;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// temp links
+Route::get('ircpaceoff', 'WebsiteController@f1tournament');
+
 Route::get('/', 'WebsiteController@loadhomepage');
 Route::get('joinus', 'WebsiteController@loadjoinus');
 Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers');
