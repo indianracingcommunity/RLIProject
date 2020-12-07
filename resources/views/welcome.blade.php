@@ -1,4 +1,4 @@
-@extends('layouts.welcomeLayout')
+@extends('layouts.app')
 @section('body')
 <div class="sm:block md:flex lg:flex xl:flex w-full">
     <div class="block p-5 sm:p-5 md:p-10 lg:p-32 xl:p-32 sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
@@ -13,7 +13,7 @@
                 <a href="/joinus">Join us</a>
             </div>
         </div>
-        <div class="mt-10">
+        {{-- <div class="mt-10">
             <div class="text-xl font-semibold text-gray-600">
                 Follow Us
             </div>
@@ -44,7 +44,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="popover__wrapper m-4">
         <a href="#">
@@ -55,10 +55,11 @@
         </div>
     </div>
     
-    <div class="sm:flex md:inline-flex lg:inline-flex xl:inline-flex items-center justify-center sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
+    <div class="sm:flex md:inline-flex lg:inline-flex xl:inline-flex justify-center sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
 		<img class="object-contain" src='https://cdn.dribbble.com/users/1568450/screenshots/7880617/media/2b89eb9a9496fba5dc1f7bf7d1418855.png'>
 	</div>
 </div>
+<div style="height:250px; width:100%; clear:both;"></div>
 
 {{-- <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
     new Crate({

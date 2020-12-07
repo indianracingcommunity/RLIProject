@@ -1,4 +1,4 @@
-@extends('layouts.welcomeLayout')
+@extends('layouts.app')
 <!-- <style>
       body {
          min-height: 100vh;
