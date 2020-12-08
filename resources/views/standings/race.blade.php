@@ -106,7 +106,7 @@ td {
             <thead>
               <tr>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Pos.</th>
-                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white w-1">Driver</th>
+                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white md:block hidden">Team</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 text-center border-white">Points</th>
               </tr>

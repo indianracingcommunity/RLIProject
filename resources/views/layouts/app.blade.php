@@ -25,7 +25,7 @@
     </head>
 
 
-    <body class="bg-gray-100">
+    <body class="">
         <div class="" id="screen">
             <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
                 <div class="h-screen py-2 text-black">
@@ -184,7 +184,7 @@
                     @endauth
                 </nav>
                 @auth
-                
+
                     @if (session()->has('error'))
                         <div class="container mx-auto">
                             <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
