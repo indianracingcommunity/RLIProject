@@ -22,6 +22,12 @@
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('/css/custom.css')}}">
         <script src="{{ asset('js/jquery35.js')}}"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+            * {
+                font-family: 'Inter', sans-serif;
+            }
+        </style>
     </head>
 
 
