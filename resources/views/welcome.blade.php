@@ -13,6 +13,33 @@
                 <a href="/joinus">Join us</a>
             </div>
         </div>
+        <div class="mt-10">
+            <div class="text-xl font-semibold text-gray-600">
+                Follow Us
+            </div>
+            <div class="flex">
+                <div class="text-4xl text-red-600">
+                    <a href="https://www.youtube.com/channel/UC2Li3g3zak9gQ6YtE3YThXw" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+                <div class="text-4xl text-blue-600 ml-4">
+                    <a href="https://twitter.com/racing_indian" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+                <div class="text-4xl text-pink-800 ml-4">
+                    <a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+                <div class="text-4xl text-blue-800 ml-4">
+                    <a href="https://steamcommunity.com/groups/indianracingcommunity" target="_blank">
+                        <i class="fab fa-steam"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
 

@@ -46,9 +46,9 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(101,$fieldsTeams)) href="/user/profile/view/101" @endif><img src="@if( array_key_exists(101,$fieldsTeams) && $fieldsTeams[101]['avatar'] != null) {{$fieldsTeams[101]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
+					<a @if(array_key_exists(16,$fieldsTeams)) href="/user/profile/view/16" @endif><img src="@if( array_key_exists(16,$fieldsTeams) && $fieldsTeams[16]['avatar'] != null) {{$fieldsTeams[16]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
 				</div>
-				<div class="font-bold mb-2 text-gray-700">Aditya "GryphuS" Jain</div>
+				<div class="font-bold mb-2 text-gray-800">Kapil "kapilace6" Bharath</div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
@@ -73,9 +73,9 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(101,$fieldsTeams)) href="/user/profile/view/101" @endif><img src="@if( array_key_exists(101,$fieldsTeams) && $fieldsTeams[101]['avatar'] != null) {{$fieldsTeams[101]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
+					<a @if(array_key_exists(34,$fieldsTeams)) href="/user/profile/view/34" @endif><img src="@if( array_key_exists(34,$fieldsTeams) && $fieldsTeams[34]['avatar'] != null) {{$fieldsTeams[34]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
 				</div>
-				<div class="font-bold mb-2 text-gray-700">Steward</br><span class="font-semibold text-gray-900"> GryphuS</span></div>
+				<div class="font-bold mb-2 text-gray-700">Steward</br><span class="font-semibold text-gray-900"> notsomonsoon</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
@@ -112,6 +112,12 @@
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
+					<a @if(array_key_exists(45,$fieldsTeams)) href="/user/profile/view/45" @endif><img src="@if( array_key_exists(45,$fieldsTeams) && $fieldsTeams[45]['avatar'] != null) {{$fieldsTeams[45]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
+				</div>
+				<div class="font-bold mb-2 text-gray-600">Tier-1 Coordinator</br><span class="font-semibold text-gray-900"> IRC_Tanish</span></div>
+			</div>
+			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
+				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
 					<a @if(array_key_exists(12,$fieldsTeams)) href="/user/profile/view/12" @endif><img src="@if( array_key_exists(12,$fieldsTeams) && $fieldsTeams[12]['avatar'] != null) {{$fieldsTeams[12]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> 5zan</span></div>
@@ -121,12 +127,6 @@
 					<a @if(array_key_exists(7,$fieldsTeams)) href="/user/profile/view/7" @endif><img src="@if( array_key_exists(7,$fieldsTeams) && $fieldsTeams[7]['avatar'] != null) {{$fieldsTeams[7]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
 				</div>
 				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> Streeter</span></div>
-			</div>
-			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
-				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
-					<a @if(array_key_exists(45,$fieldsTeams)) href="/user/profile/view/45" @endif><img src="@if( array_key_exists(45,$fieldsTeams) && $fieldsTeams[45]['avatar'] != null) {{$fieldsTeams[45]['avatar']}} @else {{asset('img/avatars/blankpic.png')}} @endif" class="rounded-full border-green-300 border-2 w-20 object-contain mx-auto"></a>
-				</div>
-				<div class="font-bold mb-2 text-gray-600">Tier-2 Coordinator</br><span class="font-semibold text-gray-900"> IRC_Tanish</span></div>
 			</div>
 			<div class="block align-center text-center p-4" style="text-align: -webkit-center;">
 				<div class="flex-column md:flex justify-center rounded overflow-hidden text-center w-full py-5">
