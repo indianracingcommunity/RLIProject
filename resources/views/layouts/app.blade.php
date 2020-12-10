@@ -56,52 +56,62 @@
                             </div>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             <div class="my-1">
-                                <div class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
-                                <div class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
+                                <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
+                                <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
                             </div>
                         </div>
 
                         <div style="display: none" class="my-8 mx-6" id="sub-menu">
                             
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
+                            
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
-
                             <div class="pl-8 w-full">
-                                <select class="border border-gray-500 rounded w-1/2 hover:bg-purple-100 p-1">
+                                <select class="seriesOptions border border-gray-500 rounded w-3/4 hover:bg-purple-100 p-1">
+                                    <option class="" selected value="">Choose Series</option>
                                     @foreach($topBarSeasons as $series)
-                                        <option data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
+                                        <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
-                            <div class="pl-8 w-full">
-                                <select class="border border-gray-500 rounded w-1/2 hover:bg-purple-100 p-1">
-                                    @foreach($topBarSeasons as $series)
-                                        @foreach($series['tier'] as $tier)
-                                            <option class="tierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>Tier {{$tier[0]['tier']}}</option>
-                                        @endforeach
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
-                            <div class="pl-8 w-full">
-                                <select class="border border-gray-500 rounded w-1/2 hover:bg-purple-100 p-1">
-                                    @foreach($topBarSeasons as $series)
-                                        @foreach($series['tier'] as $tier)
-                                            @foreach($tier as $season)
-                                                <option class="seasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-season='{{$season['season']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>Season {{$season['season']}}</option>
+                            <div id="tierSelectDiv" style="display: none;">
+                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
+                                <div class="pl-8 w-full">
+                                    <select class="tierOptions border border-gray-500 rounded w-3/4 hover:bg-purple-100 p-1">
+                                        <option class="" selected value="">Choose Tier</option>
+                                        @foreach($topBarSeasons as $series)
+                                            @foreach($series['tier'] as $tier)
+                                                <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>Tier {{$tier[0]['tier']}}</option>
                                             @endforeach
                                         @endforeach
-                                    @endforeach
-                                </select>
-                            </div>
-                            
-                            <div class=" mt-8">
-                                <div class="px-4 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
-                                    <a>Lick and Send</a>
+                                    </select>
                                 </div>
                             </div>
+
+                            <div id="seasonSelectDiv" style="display: none;">
+                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
+                                <div class="pl-8 w-full">
+                                    <select class="seasonOptions border border-gray-500 rounded w-3/4 hover:bg-purple-100 p-1">
+                                        <option class="" selected value="">Choose Season</option>
+                                        @foreach($topBarSeasons as $series)
+                                            @foreach($series['tier'] as $tier)
+                                                @foreach($tier as $season)
+                                                    <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{$season['season']}}</option>
+                                                @endforeach
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-8">
+                                <div style="display: none;" class="lickAndSend px-4 py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
+                                    <button id="lickAndSend" type="button" class="text-center">Lick and Send</button>
+                                </div>
+                                <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
+                            </div>
+                            <a style="display: none;" id="redirectLickAndSend" href=""></a>
                             
                         </div>
 
@@ -312,6 +322,77 @@
     <script type="text/javascript">
         $( document ).ready(function() {
             $('.pageBody').show('slow', function() {});
+
+            // sidebar menu
+            $(document).on('click', '.subMenuShow', function() {
+                $('#optionError').hide();
+                $('#tierSelectDiv').hide();
+                $('#seasonSelectDiv').hide();
+                $('.lickAndSend').hide();
+                $('#lickAndSend').removeAttr('data-origin');
+                $('#main-menu').hide('slow', function() {});
+                $('#sub-menu').show('slow', function() {});
+                $('.seriesOptions').val('');
+                $('.tierOptions').val('');
+                $('.seasonOptions').val('');
+                $('.allTierOptions').hide();
+                $('.allSeasonOptions').hide();
+                $('#lickAndSend').attr('data-origin', $(this).attr('data-origin'));
+            });
+
+            $(document).on('click', '.goBackMainMenu', function() {
+                $('#sub-menu').hide('slow', function() {});
+                $('#main-menu').show('slow', function() {});
+            });
+            
+            $(document).on('change', '.seriesOptions', function() {
+                $('#optionError').hide();
+                $('.lickAndSend').hide();
+                $('#tierSelectDiv').hide();
+                $('#seasonSelectDiv').hide();
+                $('.tierOptions').val('');
+                $('.seasonOptions').val('');
+                $('.allTierOptions').hide();
+                $('.allSeasonOptions').hide();
+                if($(this).val() != ''){
+                    $('.tiersOf_'+$(this).val()).show();
+                    $('#tierSelectDiv').show('slow', function() {});
+                }
+            });
+
+            $(document).on('change', '.tierOptions', function() {
+                $('#optionError').hide();
+                $('.seasonOptions').val('');
+                $('.allSeasonOptions').hide();
+                $('#seasonSelectDiv').hide();
+                $('.lickAndSend').hide();
+                if($(this).val() != ''){
+                    $('.tiersOf_'+$(this).val()).show();
+                    var series = $('.tierOptions option:selected').attr('data-series');
+                    var tier = $('.tierOptions option:selected').attr('data-tier');
+                    $('.seasonOf_'+tier+'_'+series).show();
+                    $('#seasonSelectDiv').show('slow', function() {});
+                }
+            });
+            
+            $(document).on('change', '.seasonOptions', function() {
+                $('#optionError').hide();
+                $('.lickAndSend').show();
+            });
+            
+            $(document).on('click', '#lickAndSend', function() {
+                $('#optionError').hide();
+                if($('.seriesOptions').val() != '' && $('.tierOptions').val() != '' && $('.seasonOptions').val() != '' ){
+                    if($(this).attr('data-origin') == 'champ'){
+                        redirectLink = $('.seasonOptions option:selected').attr('data-champLink');
+                    }else{
+                        redirectLink = $('.seasonOptions option:selected').attr('data-raceLink');
+                    }
+                    window.location = location.protocol+'//'+window.location.hostname+redirectLink;
+                }else{
+                    $('#optionError').show();
+                }
+            });
         });
 
         let sidebarVisible = 1
@@ -329,17 +410,6 @@
                 sidebarVisible = 1
             }
         }
-
-        // sidebar menu
-        $(document).on('click', '.subMenuShow', function() {
-            $('#main-menu').hide('slow', function() {});
-            $('#sub-menu').show('slow', function() {});
-        });
-
-        $(document).on('click', '.goBackMainMenu', function() {
-            $('#sub-menu').hide('slow', function() {});
-            $('#main-menu').show('slow', function() {});
-        });
         
     </script>
     @if ("{{Auth::user()->mothertongue}}" == "")

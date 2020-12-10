@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('content')
+@section('body')
 <div class="flex justify-between items-center mx-8 w-full">
     <div class="">
         <div class="block text-5xl font-bold text-gray-900">
