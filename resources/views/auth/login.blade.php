@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+<div style="height:20px; width:100%; clear:both;"></div>
 <div class="container mx-auto">
     <div class="w-1/3 mx-auto bg-gray-200 rounded-md p-8">
     <div class="px-3 bg-gray-800 mx-2 text-center text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
@@ -17,6 +19,6 @@
         </div>
     </div>
 </div>
-</div>
 
+<div style="height:150px; width:100%; clear:both;"></div>
 @endsection
