@@ -9,7 +9,11 @@
             <a href="/" class="flex ml-10 px-2 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
     </div>
     <div class="p-3 bg-red-200 text-center font-semibold rounded mx-2 my-4 text-red-700">
-        Acess Denied!
+        @if(Session::has('error'))
+            {{session('error')}}
+        @else
+            Acess Denied!
+        @endif
     </div>
     <div class="p-3 bg-blue-200 text-center font-semibold rounded mx-2 my-4">
         You need to Login to access this content

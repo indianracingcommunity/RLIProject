@@ -54,8 +54,8 @@
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><a href="/accleaguerules"><i class="fas fa-desktop"></i></div>PC ACC</a></div>
                                 <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><a href="/f1XBOXleaguerules"><i class="fab fa-xbox"></i></div>XBOX F1</a></div>
                             </div>
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
-                            <div class="my-1">
+                            <div class="font-bold md:hidden text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
+                            <div class="my-1 md:hidden">
                                 <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
                                 <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
                             </div>
@@ -107,7 +107,7 @@
                             
                             <div class="text-center mt-8">
                                 <div style="display: none;" class="lickAndSend px-4 py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
-                                    <button id="lickAndSend" type="button" class="text-center">Lick and Send</button>
+                                    <button id="lickAndSend" type="button" class="text-center">Send It!</button>
                                 </div>
                                 <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
                             </div>
@@ -182,6 +182,23 @@
                             @endforeach
                         </ul>
                     </div>
+                    @guest
+                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
+                            <a href="/faq"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQ</span></a>
+                        </button>
+                    </div>
+                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
+                            <a href="/ourteam"><span><i class="mr-1 text-purple-700 far fas fa-user-friends"></i> Our Team</span></a>
+                        </button>
+                    </div>
+                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
+                            <a href="/aboutus"><span><i class="mr-1 text-teal-700 far fa-address-card"></i> About us</span></a>
+                        </button>
+                    </div>
+                    @endguest
                 </div>
                 @guest
                     <div class="px-4 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
