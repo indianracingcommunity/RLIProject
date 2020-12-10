@@ -31,7 +31,7 @@
     </head>
 
 
-    <body class="">
+    <body class="" style="background:#F1F2F2">
 
         <div class="" id="screen">
             <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
@@ -61,13 +61,13 @@
                             </div>
                         </div>
 
-                        <div style="display: none" class="my-8 mx-6" id="sub-menu">
+                        <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
+                            <div class="font-bold text-sm px-5 mt-4 mb-2 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
                             
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
-                            
+                            <hr>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
                             <div class="pl-8 w-full">
-                                <select class="seriesOptions border border-gray-500 rounded w-3/4 hover:bg-purple-100 p-1">
+                                <select class="seriesOptions shadow-lg border-2 border-purple-500 rounded w-3/4 hover:bg-gray-900 bg-white text-black hover:text-white p-1">
                                     <option class="" selected value="">Choose Series</option>
                                     @foreach($topBarSeasons as $series)
                                         <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
@@ -78,7 +78,7 @@
                             <div id="tierSelectDiv" style="display: none;">
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
                                 <div class="pl-8 w-full">
-                                    <select class="tierOptions border border-gray-500 rounded w-3/4 hover:bg-purple-100 p-1">
+                                    <select class="tierOptions shadow-lg border-2 border-purple-500 rounded w-3/4 hover:bg-gray-900 bg-white text-black hover:text-white p-1">
                                         <option class="" selected value="">Choose Tier</option>
                                         @foreach($topBarSeasons as $series)
                                             @foreach($series['tier'] as $tier)
@@ -92,7 +92,7 @@
                             <div id="seasonSelectDiv" style="display: none;">
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
                                 <div class="pl-8 w-full">
-                                    <select class="seasonOptions border border-gray-500 rounded w-3/4 hover:bg-purple-100 p-1">
+                                    <select class="seasonOptions shadow-lg border-2 border-purple-500 rounded w-3/4 hover:bg-gray-900 bg-white text-black hover:text-white p-1">
                                         <option class="" selected value="">Choose Season</option>
                                         @foreach($topBarSeasons as $series)
                                             @foreach($series['tier'] as $tier)
@@ -126,7 +126,7 @@
         <div class="md:w-full" id="content">
             <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
                 <div class="flex items-center">
-                    <div class="items-center p-4 flex-shrink-0 cursor-pointer" onclick="menu()"><i class="fas fa-bars"></i></div>
+                    <div class="items-center p-4 flex-shrink-0 cursor-pointer menuButton" onclick="menu()"><i class="fas fa-bars"></i></div>
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
                         <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2  md:block hidden">Indian Racing Community</span></a>
                     </div>
@@ -410,9 +410,21 @@
                     $('#optionError').show();
                 }
             });
+
+            $(document).on('click', '#content', function(e) {
+                var notTheDiv = $("#sidebar");
+                var notThisEither = $(".menuButton");
+
+                if (!notTheDiv.is(e.target)  && notTheDiv.has(e.target).length === 0 && !notThisEither.is(e.target)  && notThisEither.has(e.target).length === 0 )  
+                {
+                    sidebarVisible = 1
+                    $('#sidebar').hide('slow', function() {});
+                }
+            });
+            // sidebar menu
         });
 
-        let sidebarVisible = 1
+        let sidebarVisible = 1;
         function menu() {
             $('#main-menu').show();
             $('#sub-menu').hide();

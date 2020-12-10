@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('body')
+@section('content')
 <div class="flex justify-between items-center pt-10 px-8 w-full">
     <div class="">
         <div class="block text-5xl font-bold text-gray-900">
@@ -41,7 +41,9 @@
             </div>
         </div>
     </div>
-
+    <div>
+        
+    </div>
 
     <div class="popover__wrapper m-4 ">
         <a href="#">
@@ -53,7 +55,7 @@
     </div>
 
     <div class="w-1/2 hidden md:block">
-		<img class="object-contain" src='https://cdn.dribbble.com/users/1568450/screenshots/7880617/media/2b89eb9a9496fba5dc1f7bf7d1418855.png'>
+		<img class="object-contain" src='https://cdn.dribbble.com/users/594619/screenshots/1841153/yaycars.png?compress=1&resize=800x600'>
 	</div>
 </div>
 <div style="height:250px; width:100%; clear:both;"></div>
