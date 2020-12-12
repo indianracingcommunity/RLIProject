@@ -63,11 +63,11 @@
 
                         <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
                             <div class="font-bold text-sm px-5 mt-4 mb-2 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
-                            
+
                             <hr>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
-                            <div class="pl-8 w-full">
-                                <select class="seriesOptions shadow-lg border-2 border-purple-500 rounded w-3/4 hover:bg-gray-900 bg-white text-black hover:text-white p-1">
+                            <div class="px-5 w-full">
+                                <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
                                     <option class="" selected value="">Choose Series</option>
                                     @foreach($topBarSeasons as $series)
                                         <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
@@ -77,8 +77,8 @@
 
                             <div id="tierSelectDiv" style="display: none;">
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
-                                <div class="pl-8 w-full">
-                                    <select class="tierOptions shadow-lg border-2 border-purple-500 rounded w-3/4 hover:bg-gray-900 bg-white text-black hover:text-white p-1">
+                                <div class="px-5 w-full">
+                                    <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
                                         <option class="" selected value="">Choose Tier</option>
                                         @foreach($topBarSeasons as $series)
                                             @foreach($series['tier'] as $tier)
@@ -91,8 +91,8 @@
 
                             <div id="seasonSelectDiv" style="display: none;">
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
-                                <div class="pl-8 w-full">
-                                    <select class="seasonOptions shadow-lg border-2 border-purple-500 rounded w-3/4 hover:bg-gray-900 bg-white text-black hover:text-white p-1">
+                                <div class="px-5 w-full">
+                                    <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
                                         <option class="" selected value="">Choose Season</option>
                                         @foreach($topBarSeasons as $series)
                                             @foreach($series['tier'] as $tier)
@@ -104,15 +104,15 @@
                                     </select>
                                 </div>
                             </div>
-                            
-                            <div class="text-center mt-8">
-                                <div style="display: none;" class="lickAndSend px-4 py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
+
+                            <div class="text-center my-2 mx-6 font-semibold">
+                                <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
                                     <button id="lickAndSend" type="button" class="text-center">Send It!</button>
                                 </div>
                                 <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
                             </div>
                             <a style="display: none;" id="redirectLickAndSend" href=""></a>
-                            
+
                         </div>
 
                         <div id="race-menu">
@@ -361,7 +361,7 @@
                 $('#sub-menu').hide('slow', function() {});
                 $('#main-menu').show('slow', function() {});
             });
-            
+
             $(document).on('change', '.seriesOptions', function() {
                 $('#optionError').hide();
                 $('.lickAndSend').hide();
@@ -391,12 +391,12 @@
                     $('#seasonSelectDiv').show('slow', function() {});
                 }
             });
-            
+
             $(document).on('change', '.seasonOptions', function() {
                 $('#optionError').hide();
                 $('.lickAndSend').show();
             });
-            
+
             $(document).on('click', '#lickAndSend', function() {
                 $('#optionError').hide();
                 if($('.seriesOptions').val() != '' && $('.tierOptions').val() != '' && $('.seasonOptions').val() != '' ){
@@ -415,7 +415,7 @@
                 var notTheDiv = $("#sidebar");
                 var notThisEither = $(".menuButton");
 
-                if (!notTheDiv.is(e.target)  && notTheDiv.has(e.target).length === 0 && !notThisEither.is(e.target)  && notThisEither.has(e.target).length === 0 )  
+                if (!notTheDiv.is(e.target)  && notTheDiv.has(e.target).length === 0 && !notThisEither.is(e.target)  && notThisEither.has(e.target).length === 0 )
                 {
                     sidebarVisible = 1
                     $('#sidebar').hide('slow', function() {});
@@ -439,7 +439,7 @@
                 sidebarVisible = 1
             }
         }
-        
+
     </script>
     @if ("{{Auth::user()->mothertongue}}" == "")
         <script>

@@ -2,9 +2,8 @@
 
 @section('content')
 
-<div style="height:20px; width:100%; clear:both;"></div>
-<div class="container mx-auto">
-    <div class="w-1/3 mx-auto bg-gray-200 rounded-md p-8">
+<div class="container mx-auto my-4">
+    <div class="md:w-1/3 w-full md:mx-auto bg-white rounded-lg border p-8">
     <div class="px-3 bg-gray-800 mx-2 text-center text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
             <a href="/" class="flex ml-10 px-2 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="p-3">Indian Racing Comunity</span> </a>
     </div>
@@ -12,7 +11,7 @@
         @if(Session::has('error'))
             {{session('error')}}
         @else
-            Acess Denied!
+            Access Denied!
         @endif
     </div>
     <div class="p-3 bg-blue-200 text-center font-semibold rounded mx-2 my-4">
