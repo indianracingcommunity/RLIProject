@@ -13,7 +13,7 @@
     }
     $device = isset($user->device) && $user->device != '' ? unserialize($user->device) : NULL;
 @endphp
-<div class="flex md:flex-row flex-col px-4 md:p-0 gap-4">
+<div class="flex md:flex-row flex-col px-4 mt-10 md:p-0 gap-4">
     <div class="flex bg-white rounded-lg p-4 items-center border">
         <div>
             <img src="{{$user->avatar}}" class="rounded-md " alt="">
@@ -60,6 +60,8 @@
             </div>
         </div>
     </div>
+</div>
+<div class="flex md:flex-row flex-col px-4 mt-10 md:p-0 gap-4">
         <!-- <div class="ml-24 leading-none ">
             <div class="font-semibold text-gray-700 mb-4">
                 <i class="fas fa-trophy mr-1"></i> Trophies
@@ -85,7 +87,7 @@
             </div>
         </div> -->
     <div class="bg-white rounded-lg p-4 items-center border ">
-        <div class="font-semibold text-gray-600 mb-4 tracking-wide text-sm border-b pb-2">
+        <div class="font-bold text-gray-900 mb-4 tracking-wide text-sm border-b pb-2">
                 <i class="far fa-user-circle mr-1"></i> USER DETAILS
         </div>
         <table class="table-auto">
@@ -160,5 +162,7 @@
 
 </div>
 </div>
+<div style="height:400px; width:100%; clear:both;"></div>
+
 
 @endsection

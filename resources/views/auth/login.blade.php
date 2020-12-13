@@ -23,5 +23,5 @@
     </div>
 </div>
 
-<div style="height:150px; width:100%; clear:both;"></div>
+<div style="height:400px; width:100%; clear:both;"></div>
 @endsection

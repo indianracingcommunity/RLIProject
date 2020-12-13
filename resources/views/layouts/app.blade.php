@@ -31,7 +31,7 @@
     </head>
 
 
-    <body class="" style="background:#F1F2F2">
+    <body class="">
 
         <div class="" id="screen">
             <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
