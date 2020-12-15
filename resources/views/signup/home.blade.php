@@ -34,7 +34,7 @@
         Sign Up Details
       </label>
       
-   
+    <input type="hidden" name="statusCheck" id='statusCheck'>
       <div class="w-full flex items-center justify-between px-12 mt-5">
         <div class="inline-flex w-1/2">
           <div class="inline-flex items-stretch pt-2">
@@ -101,7 +101,7 @@
             </label>
           </div>
           <div class="inline-block w-auto pl-3">
-            <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-64 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="speedlinkid" type="link" name="speedtest">
+            <input class="bg-gray-200 appearance-none required border shadow-lg border-gray-500 rounded w-64 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="speedlinkid" type="link" name="speedtest">
             <div class="block text-red-600 text-sm italic pt-2" id="errorspeed">
               Enter the link of your speed test performed at <br> "https://www.speedtest.net/"<br> Ensure that the server is set to Bangalore/Mumbai
             </div>
@@ -109,11 +109,11 @@
         </div>
       </div>
            
-      <div class="bg-purple-700 w-full h-px mt-2 rounded shadow-2xl">
+      <div class="bg-purple-700 w-full h-px mt-2 rounded shadow-2xl ttSection">
       </div>
 
       <div class="flex-wrap w-full">
-        <div class="w-full">
+        <div class="w-full ttSection">
           <div class="flex items-center w-full px-12 mt-5">
             <div class="flex w-1/2">
               <div class="block items-stretch overflow-hidden" style="width: 8.7rem;">
@@ -583,9 +583,14 @@
       for(i=0;i<data.length;i++){
         
         if(seasonid == data[i].id){
+          console.log(data[i].status);
+          $('.ttSection').show();
           if(data[i].status == 0.2){
             document.getElementById("preferenceid").style.display = "none";
             document.getElementById("errorteam").style.display = "none";
+          }
+          if(data[i].status == 0.3){
+            $('.ttSection').hide();
           }
           else{
             document.getElementById("preferenceid").style.display = "flex";
@@ -642,54 +647,66 @@
       var imaget3 = document.getElementById("imgt3").value;
       var speedlink = document.getElementById("speedlinkid").value;
       var patt = new RegExp("^([0-5]?[0-9]\:)?[0-5]?[0-9][.][0-9]{3}$");;
+      var seasonid = document.getElementById("seasonnum").value;
       var res;
-      
-      res = patt.test(t1);
-      if (t1 == ""){
-        document.getElementById("errort1").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
-        document.getElementById("time1").style.borderColor = "#f56565";
-        sendform = false;
-      }
-      else if (res == false){
-        document.getElementById("errort1").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
-        document.getElementById("time1").style.borderColor = "#f56565";
-        sendform = false;
-      }
-      else{
-        document.getElementById("errort1").innerHTML = "<br><br>";
-        document.getElementById("time1").style = "";
+      var formStatus = '';
+      var data = <?php echo json_encode($seasons); ?>;
+      for(i=0;i<data.length;i++){ 
+        if(seasonid == data[i].id){
+          var formStatus = data[i].status;
+        }
       }
 
-      res = patt.test(t2);
-      if (t2 == ""){
-        document.getElementById("errort2").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
-        document.getElementById("time2").style.borderColor = "#f56565";
-        sendform = false;
-      }
-      else if (res == false){
-        document.getElementById("errort2").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
-        document.getElementById("time2").style.borderColor = "#f56565";
-        sendform = false;
-      }
-      else{
-        document.getElementById("errort2").innerHTML = "<br><br>";
-        document.getElementById("time2").style = "";
-      }
+      $('#statusCheck').val(formStatus);
       
-      res = patt.test(t3);
-      if (t3 == ""){
-        document.getElementById("errort3").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
-        document.getElementById("time3").style.borderColor = "#f56565";
-        sendform = false;
-      }
-      else if (res == false){
-        document.getElementById("errort3").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
-        document.getElementById("time3").style.borderColor = "#f56565";
-        sendform = false;
-      }
-      else{
-        document.getElementById("errort3").innerHTML = "<br><br>";
-        document.getElementById("time3").style = "";
+      if(formStatus != 0.3){
+        res = patt.test(t1);
+        if (t1 == ""){
+          document.getElementById("errort1").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
+          document.getElementById("time1").style.borderColor = "#f56565";
+          sendform = false;
+        }
+        else if (res == false){
+          document.getElementById("errort1").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
+          document.getElementById("time1").style.borderColor = "#f56565";
+          sendform = false;
+        }
+        else{
+          document.getElementById("errort1").innerHTML = "<br><br>";
+          document.getElementById("time1").style = "";
+        }
+  
+        res = patt.test(t2);
+        if (t2 == ""){
+          document.getElementById("errort2").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
+          document.getElementById("time2").style.borderColor = "#f56565";
+          sendform = false;
+        }
+        else if (res == false){
+          document.getElementById("errort2").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
+          document.getElementById("time2").style.borderColor = "#f56565";
+          sendform = false;
+        }
+        else{
+          document.getElementById("errort2").innerHTML = "<br><br>";
+          document.getElementById("time2").style = "";
+        }
+        
+        res = patt.test(t3);
+        if (t3 == ""){
+          document.getElementById("errort3").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
+          document.getElementById("time3").style.borderColor = "#f56565";
+          sendform = false;
+        }
+        else if (res == false){
+          document.getElementById("errort3").innerHTML = "Let's follow F1 format mate! <br> Time format should be 1:06.006";
+          document.getElementById("time3").style.borderColor = "#f56565";
+          sendform = false;
+        }
+        else{
+          document.getElementById("errort3").innerHTML = "<br><br>";
+          document.getElementById("time3").style = "";
+        }
       }
       
       var seasonid = document.getElementById("seasonnum").value;
@@ -701,72 +718,73 @@
         }
       }
 
-      if (flag == 0 || (flag == 1 && imaget1 != "")){
-        if (imaget1 == ""){
-          document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
-          document.getElementById("imgdivt1").style.borderColor = "#f56565";
-          sendform = false; 
+      console.log(formStatus);
+      if(formStatus != 0.3){
+        if (flag == 0 || (flag == 1 && imaget1 != "")){
+          if (imaget1 == ""){
+            document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
+            document.getElementById("imgdivt1").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else if(document.getElementById("imgt1").files[0].type != "image/png" && document.getElementById("imgt1").files[0].type != "image/jpg" && document.getElementById("imgt1").files[0].type != "image/jpeg"){
+            document.getElementById("errorimgt1").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
+            document.getElementById("imgdivt1").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else if(document.getElementById("imgt1").files[0].size > 3000000){
+            document.getElementById("errorimgt1").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+            document.getElementById("imgdivt1").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else{
+            document.getElementById("errorimgt1").innerHTML = "<br><br>";
+            document.getElementById("imgdivt1").style = "";
+          }
         }
-        else if(document.getElementById("imgt1").files[0].type != "image/png" && document.getElementById("imgt1").files[0].type != "image/jpg" && document.getElementById("imgt1").files[0].type != "image/jpeg"){
-          document.getElementById("errorimgt1").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
-          document.getElementById("imgdivt1").style.borderColor = "#f56565";
-          sendform = false; 
+        if (flag == 0 || (flag == 1 && imaget2 != "")){
+          if (imaget2 == ""){
+            document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
+            document.getElementById("imgdivt2").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else if(document.getElementById("imgt2").files[0].type != "image/png" && document.getElementById("imgt2").files[0].type != "image/jpg" && document.getElementById("imgt2").files[0].type != "image/jpeg"){
+            document.getElementById("errorimgt2").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
+            document.getElementById("imgdivt2").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else if(document.getElementById("imgt2").files[0].size > 3000000){
+            document.getElementById("errorimgt2").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+            document.getElementById("imgdivt2").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else{
+            document.getElementById("errorimgt2").innerHTML = "<br><br>";
+            document.getElementById("imgdivt2").style = "";
+          }
         }
-        else if(document.getElementById("imgt1").files[0].size > 3000000){
-          document.getElementById("errorimgt1").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
-          document.getElementById("imgdivt1").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else{
-          document.getElementById("errorimgt1").innerHTML = "<br><br>";
-          document.getElementById("imgdivt1").style = "";
+  
+        if (flag == 0 || (flag == 1 && imaget3 != "")){
+          if (imaget3 == ""){
+            document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
+            document.getElementById("imgdivt3").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else if(document.getElementById("imgt3").files[0].type != "image/png" && document.getElementById("imgt3").files[0].type != "image/jpg" && document.getElementById("imgt3").files[0].type != "image/jpeg"){
+            document.getElementById("errorimgt3").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
+            document.getElementById("imgdivt3").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else if(document.getElementById("imgt3").files[0].size > 3000000){
+            document.getElementById("errorimgt3").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+            document.getElementById("imgdivt3").style.borderColor = "#f56565";
+            sendform = false; 
+          }
+          else{
+            document.getElementById("errorimgt3").innerHTML = "<br><br>";
+            document.getElementById("imgdivt3").style = "";
+          }
         }
       }
-
-      if (flag == 0 || (flag == 1 && imaget2 != "")){
-        if (imaget2 == ""){
-          document.getElementById("errorimgt2").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
-          document.getElementById("imgdivt2").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else if(document.getElementById("imgt2").files[0].type != "image/png" && document.getElementById("imgt2").files[0].type != "image/jpg" && document.getElementById("imgt2").files[0].type != "image/jpeg"){
-          document.getElementById("errorimgt2").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
-          document.getElementById("imgdivt2").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else if(document.getElementById("imgt2").files[0].size > 3000000){
-          document.getElementById("errorimgt2").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
-          document.getElementById("imgdivt2").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else{
-          document.getElementById("errorimgt2").innerHTML = "<br><br>";
-          document.getElementById("imgdivt2").style = "";
-        }
-      }
-
-      if (flag == 0 || (flag == 1 && imaget3 != "")){
-        if (imaget3 == ""){
-          document.getElementById("errorimgt3").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";
-          document.getElementById("imgdivt3").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else if(document.getElementById("imgt3").files[0].type != "image/png" && document.getElementById("imgt3").files[0].type != "image/jpg" && document.getElementById("imgt3").files[0].type != "image/jpeg"){
-          document.getElementById("errorimgt3").innerHTML = "Sorry our PC won't be able to open that! <br> Format should be .jpg, .jpeg or .png";
-          document.getElementById("imgdivt3").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else if(document.getElementById("imgt3").files[0].size > 3000000){
-          document.getElementById("errorimgt3").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
-          document.getElementById("imgdivt3").style.borderColor = "#f56565";
-          sendform = false; 
-        }
-        else{
-          document.getElementById("errorimgt3").innerHTML = "<br><br>";
-          document.getElementById("imgdivt3").style = "";
-        }
-      }
-      
 
       if (seas == ""){
         document.getElementById("errorseason").innerHTML = "It is fun to go in the past but we dont have time machine! <br> Select Season 5 or later";
@@ -803,7 +821,7 @@
         document.getElementById("speedlinkid").style = "";
       }
 
-      var data = <?php echo json_encode($seasons); ?>;
+      
       flag = 0;
       for(i=0;i<data.length;i++){ 
         if(seasonid == data[i].id){
@@ -823,7 +841,6 @@
         document.getElementById("preference2").style = "";
         document.getElementById("preference3").style = "";
       }
-
       return sendform;
     }
   </script>
