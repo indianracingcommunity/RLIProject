@@ -67,15 +67,25 @@ class SignupsController extends Controller
         
            //dd($assists);
         $signup = new Signup();
+        // dd($data);
         $signup->user_id = Auth::user()->id;
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
-        $signup->timetrial1 = $data['t1'];
-        $signup->timetrial2 = $data['t2'];
-        $signup->timetrial3 = $data['t3'];
-        $signup->ttevidence1 = $evidence1;
-        $signup->ttevidence2 = $evidence2;
-        $signup->ttevidence3 = $evidence3;
+        if(isset($data['statusCheck']) && $data['statusCheck'] != 0.3 ){
+          $signup->timetrial1 = $data['t1'];
+          $signup->timetrial2 = $data['t2'];
+          $signup->timetrial3 = $data['t3'];
+          $signup->ttevidence1 = $evidence1;
+          $signup->ttevidence2 = $evidence2;
+          $signup->ttevidence3 = $evidence3;
+        }else{
+          $signup->timetrial1 = '';
+          $signup->timetrial2 = '';
+          $signup->timetrial3 = '';
+          $signup->ttevidence1 = '';
+          $signup->ttevidence2 = '';
+          $signup->ttevidence3 = '';
+        }
         if(isset($prefrence))
         {
         $signup->carprefrence = $prefrence;
@@ -124,9 +134,15 @@ class SignupsController extends Controller
            }
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
-        $signup->timetrial1 = $data['t1'];
-        $signup->timetrial2 = $data['t2'];
-        $signup->timetrial3 = $data['t3'];
+        if(isset($data['statusCheck']) && $data['statusCheck'] != 0.3 ){
+          $signup->timetrial1 = $data['t1'];
+          $signup->timetrial2 = $data['t2'];
+          $signup->timetrial3 = $data['t3'];
+        }else{
+          $signup->timetrial1 = '';
+          $signup->timetrial2 = '';
+          $signup->timetrial3 = '';
+        }
         $signup->attendance = $attendance;
        
         $signup->assists = $assists;
@@ -138,8 +154,6 @@ class SignupsController extends Controller
           Storage::delete($signup->ttevidence1); 
           $signup->ttevidence1 = $evidence1;         
         }
-
-
         if(isset($data['evidencet2']))
         {
           $evidence1 = $data['evidencet2']->store('timetrials');
@@ -147,15 +161,11 @@ class SignupsController extends Controller
           $signup->ttevidence2 = $evidence1;
   
         }
-
         if(isset($data['evidencet3']))
         {
           $evidence1 = $data['evidencet3']->store('timetrials');
           Storage::delete($signup->ttevidence3); 
           $signup->ttevidence3 = $evidence1;
-          
-          
-          
         }
 
           $signup->save();
