@@ -217,6 +217,7 @@
                     </div>
                 @endguest
                 @auth
+
                 <div class="flex items-center">
                     <div class="py-2 items-center flex-shrink-0 font-semibold px-4 dropdown cursor-pointer">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
@@ -235,6 +236,7 @@
                                         {{Auth::user()->name}}#{{Auth::user()->discord_discrim}}
                                     </div>
                                 </div>
+
                             </div>
                             <a href="/user/profile/" class="flex items-center py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
                                 <div class="w-10"><i class="ml-2 far fa-user"></i></div>
