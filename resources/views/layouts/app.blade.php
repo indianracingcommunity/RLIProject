@@ -46,19 +46,30 @@
                         <div class="my-8" id="main-menu">
                             <div class="font-bold text-sm px-5 tracking-wide">LEAGUE RACING</div>
                             <div class="my-1">
-                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><a href="/signup/"><i class="fas fa-edit"></i></div>All sign ups</a></div>
+                                <a href="/signup/" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign ups</a>
                             </div>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             <div class="my-1">
-                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><a href="/f1leaguerules"><i class="fas fa-desktop"></i></div>PC F1</a></div>
-                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><a href="/accleaguerules"><i class="fas fa-desktop"></i></div>PC ACC</a></div>
-                                <div class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><a href="/f1XBOXleaguerules"><i class="fab fa-xbox"></i></div>XBOX F1</a></div>
+                                <a href="/f1leaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC F1</a>
+                                <a href="/accleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
+                                <a href="/f1XBOXleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a>
                             </div>
                             <div class="font-bold md:hidden text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             <div class="my-1 md:hidden">
                                 <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
                                 <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
                             </div>
+                            @auth
+                                @if(Auth::user()->isadmin==1)
+                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">ADMIN CONTROLS</div>
+                                <div class="my-1">
+                                    <a href="/home/admin/users" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-sort"></i></div>View/Allot Drivers</a>
+                                    <a href="" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-pen-alt"></i></div>Update Standings</a>
+                                    <a href="/home/admin/report" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a>
+                                    <a href="/home/admin/view-signups" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
+                                </div>
+                                @endif
+                            @endauth
                         </div>
 
                         <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
@@ -225,27 +236,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><a href="/user/profile/"><i class="ml-2 far fa-user"></i></div>
-                                <div>Profile</a></div>
-                            </div>
-                            <div class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><a href="/faq"><i class="ml-2 far fa-question-circle"></i></div>
-                                <div>FAQ</a></div>
-                            </div>
-                            <div class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><a href="/aboutus"><i class="ml-2 far fa-address-card"></i></div>
-                                <div>About us</a></div>
-                            </div>
-                            <div class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><a href="/ourteam"><i class="ml-2 fas fa-user-friends"></i></div>
-                                <div>Our Team</a></div>
-                            </div>
-                            <div class="flex items-center  py-2 px-1 hover:bg-red-600 hover:text-white rounded text-red-600">
+                            <a href="/user/profile/" class="flex items-center py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                                <div class="w-10"><i class="ml-2 far fa-user"></i></div>
+                                <div>Profile</div>
+                            </a>
+                            <a href="/faq" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                                <div class="w-10"><i class="ml-2 far fa-question-circle"></i></div>
+                                <div>FAQ</div>
+                            </a>
+                            <a href="/aboutus" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                                <div class="w-10"><i class="ml-2 far fa-address-card"></i></div>
+                                <div>About us</div>
+                            </a>
+                            <a href="/ourteam" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                                <div class="w-10"><i class="ml-2 fas fa-user-friends"></i></div>
+                                <div>Our Team</div>
+                            </a>
+                            <div class="flex items-center  py-2 px-1 hover:bg-red-600 hover:text-white rounded text-red-600" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                 <div class="w-10"><i class="ml-2 fas fa-sign-out-alt"></i></div>
-                                    <div><a
-                                        onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
+                                    <div><a>
                                         Logout
                                     </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
