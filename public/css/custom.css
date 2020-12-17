@@ -1,6 +1,18 @@
 .dropdown:hover > .dropdown-content {
     display: block;
 }
+.box {
+  position:absolute;
+  top:0px;
+  right:0px;
+  bottom:0px;
+  left:0px;
+}
+.profileDropdown {
+  display: none;
+  position: absolute;
+  right: 10px;
+}
 .popover__title {
     font-size: 24px;
     line-height: 0px;
@@ -11,7 +23,7 @@
   }
   .popover__wrapper {
     position: fixed;
-    bottom: 0;
+    bottom: 34px;
     right: 0;
     margin-top: 1.5rem;
     display: inline-block;

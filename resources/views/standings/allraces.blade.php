@@ -12,106 +12,136 @@ padding-left:10px;
 }
 </style>
 @section('content')
-<div class="container mx-auto w-11/12">
-   <div class="flex">
-      <div class="w-1/3">
-         @if($season['season'] == (int)$season['season'])
-         <div class="text-4xl font-bold text-gray-800 leading-tight">
-            <i class="fas fa-chess-king text-purple-600"></i> Tier {{$season['tier']}}
-         </div>
-         <div class="text-2xl font-semibold text-gray-700 leading-none">
-            Season {{$season['season']}}
-         </div>
-         @else
-         <div class="text-4xl font-bold text-gray-800 leading-none">
-            <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
-         </div>
-         @endif
-         {{-- <div class="bg-indigo-100 font-semibold p-3 rounded-md my-2">
-            Welcome to the Results Page of this Season.
-         </div> --}}
-         <div class="text-xl text-purple-700 rounded-md mt-4 pt-4 pb-1 leading-none cf font-bold">
-            Top 3 Drivers
-         </div>
-         <table class="w-5/6">
-            <thead>
-               <tr>
-                  <th class="rounded-md bg-gray-300 border-2 border-white">Driver</th>
-                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-               </tr>
-            </thead>
-            <tbody>
-               @for ($i = 0, $k = 0; $i < count($tdrivers) && $k < 3; $i++, $k++)
-               @php
-                  if((abs($tdrivers[$i]['status']) >= 10 && abs($tdrivers[$i]['status']) < 20) || $tdrivers[$i]['team']['name'] == 'Reserve')
-                  {
-                     $k--;
-                     continue;
-                  }
-               @endphp
-                  @if($k == 0)
-                     <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
-                           <a href="#">{{$tdrivers[$i]['name']}}</a>
-                        </td>
-                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
-                           {{$tdrivers[$i]['points']}}
-                        </td>
+<div class="container mx-auto px-4 md:p-0">
+            <div class="bg-white p-4 rounded-lg border mb-4 md:m-0 md:hidden block">
+                @if($season['season'] == (int)$season['season'])
+                <div class="font-bold text-gray-800 leading-none flex items-center">
+                    <div class="mr-4">
+                        <i class="fas fa-chess-king text-5xl text-purple-600"></i>
+                    </div>
+                    <div>
+                        <div class="text-3xl">
+                            Tier {{$season['tier']}}
+                        </div>
+                        <div class="text-2xl font-semibold text-gray-700 leading-none">
+                            Season {{$season['season']}}
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div class="text-4xl font-bold text-gray-800 leading-none">
+                    <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
+                </div>
+                @endif
+            </div>
+    <div class="flex flex-col-reverse md:flex-row md:gap-4">
+        <div class="md:w-1/3 ">
+            <div class="bg-white p-4 rounded-lg border mb-4 md:m-0 hidden md:block">
+                @if($season['season'] == (int)$season['season'])
+                <div class="font-bold text-gray-800 leading-none flex items-center">
+                    <div class="mr-4">
+                        <i class="fas fa-chess-king text-5xl text-purple-600"></i>
+                    </div>
+                    <div>
+                        <div class="text-3xl">
+                            Tier {{$season['tier']}}
+                        </div>
+                        <div class="text-2xl font-semibold text-gray-700 leading-none">
+                            Season {{$season['season']}}
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div class="text-4xl font-bold text-gray-800 leading-none">
+                    <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
+                </div>
+                @endif
+            </div>
+            <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
+                <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
+                    Top 3 drivers
+                </div>
+               <table>
+                  <thead>
+                     <tr>
+                        <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
+                        <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Points</th>
                      </tr>
-                     @if($tdrivers[$i]['team']['car'] != null)
-                     <tr class="bg-indigo-100">
-                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
-                           <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
-                        </td>
-                     </tr>
-                     @endif
-                  @endif
-                  @if($k == 1)
-                     <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
-                           <a href="#">{{$tdrivers[$i]['name']}}</a>
-                        </td>
-                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
-                           {{$tdrivers[$i]['points']}}
-                        </td>
-                     </tr>
-                     @if($tdrivers[$i]['team']['car'] != null)
-                     <tr class="bg-indigo-100">
-                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
-                           <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
-                        </td>
-                     </tr>
-                     @endif
-                  @endif
-                  @if($k == 2)
-                     <tr class="bg-indigo-100">
-                        <td class="cursor-pointer font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
-                           <a href="#">{{$tdrivers[$i]['name']}}</a>
-                        </td>
-                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
-                           {{$tdrivers[$i]['points']}}
-                        </td>
-                     </tr>
-                     @if($tdrivers[$i]['team']['car'] != null)
-                     <tr class="bg-indigo-100">
-                        <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
-                           <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
-                        </td>
-                     </tr>
-                     @endif
-                  @endif
-               @endfor
-            </tbody>
-         </table>
-         @if($season['season'] - (int)$season['season'] < 0.75)
-         <div class="text-xl text-purple-700 rounded-md mt-10 pt-4 pb-1 leading-none cf font-bold">
+                  </thead>
+                  <tbody>
+                     @for ($i = 0, $k = 0; $i < count($tdrivers) && $k < 3; $i++, $k++)
+                     @php
+                        if((abs($tdrivers[$i]['status']) >= 10 && abs($tdrivers[$i]['status']) < 20) || $tdrivers[$i]['team']['name'] == 'Reserve')
+                        {
+                           $k--;
+                           continue;
+                        }
+                     @endphp
+                        @if($k == 0)
+                           <tr class="bg-gray-100">
+                              <td class="font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
+                                 <a href="#">{{$tdrivers[$i]['name']}}</a>
+                              </td>
+                              <td class="font-bold text-l rounded-lg border-2 border-white text-center tracking-widest py-2">
+                                 {{$tdrivers[$i]['points']}}
+                              </td>
+                           </tr>
+                           @if($tdrivers[$i]['team']['car'] != null)
+                           <tr class="bg-gray-300">
+                              <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                                 <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
+                              </td>
+                           </tr>
+                           @endif
+                        @endif
+                        @if($k == 1)
+                           <tr class="bg-gray-100">
+                              <td class="font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
+                                 <a href="#">{{$tdrivers[$i]['name']}}</a>
+                              </td>
+                              <td class="font-bold text-l rounded-lg border-2 border-white text-center tracking-widest py-2">
+                                 {{$tdrivers[$i]['points']}}
+                              </td>
+                           </tr>
+                           @if($tdrivers[$i]['team']['car'] != null)
+                           <tr class="bg-gray-300">
+                              <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                                 <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
+                              </td>
+                           </tr>
+                           @endif
+                        @endif
+                        @if($k == 2)
+                           <tr class="bg-gray-100">
+                              <td class="font-semibold text-l rounded-lg border-2 border-white hover:underline cursor-pointer openDriver" data-driverLink="{{$tdrivers[$i]['user']}}">
+                                 <a href="#">{{$tdrivers[$i]['name']}}</a>
+                              </td>
+                              <td class="font-bold text-l rounded-lg border-2 border-white text-center tracking-widest py-2">
+                                 {{$tdrivers[$i]['points']}}
+                              </td>
+                           </tr>
+                           @if($tdrivers[$i]['team']['car'] != null)
+                           <tr class="bg-gray-300">
+                              <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
+                                 <img class="px-6 py-2 w-11/12" src="{{$tdrivers[$i]['team']['car']}}">
+                              </td>
+                           </tr>
+                           @endif
+                        @endif
+                     @endfor
+                  </tbody>
+               </table>
+            </div>
+            @if($season['season'] - (int)$season['season'] < 0.75)
+            <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
+        <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
             Top 3 Constructors
          </div>
-         <table class="w-5/6">
+         <table>
             <thead>
                <tr>
-                  <th class="rounded-md bg-gray-300 border-2 border-white">Teams</th>
-                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
+                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Teams</th>
+                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Points</th>
                </tr>
             </thead>
             <tbody>
@@ -124,16 +154,16 @@ padding-left:10px;
                   }
                @endphp
                   @if($k == 0)
-                     <tr class="bg-indigo-100">
+                     <tr class="bg-gray-100">
                         <td class="font-semibold text-l rounded-lg border-2 border-white">
                            {{$tconst[$i]['name']}}
                         </td>
-                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
+                        <td class="font-bold py-2 text-l rounded-lg border-2 border-white text-center tracking-widest">
                            {{$tconst[$i]['points']}}
                         </td>
                      </tr>
                      @if($tconst[$i]['team']['car'] != null)
-                     <tr class="bg-indigo-100">
+                     <tr class="bg-gray-300">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
                         </td>
@@ -141,16 +171,16 @@ padding-left:10px;
                      @endif
                   @endif
                   @if($k == 1)
-                     <tr class="bg-indigo-100">
+                     <tr class="bg-gray-100">
                         <td class="font-semibold text-l rounded-lg border-2 border-white">
                            {{$tconst[$i]['name']}}
                         </td>
-                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
+                        <td class="font-bold py-2 text-l rounded-lg border-2 border-white text-center tracking-widest">
                            {{$tconst[$i]['points']}}
                         </td>
                      </tr>
                      @if($tconst[$i]['team']['car'] != null)
-                     <tr class="bg-indigo-100">
+                     <tr class="bg-gray-300">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
                         </td>
@@ -158,16 +188,16 @@ padding-left:10px;
                      @endif
                   @endif
                   @if($k == 2)
-                     <tr class="bg-indigo-100">
+                     <tr class="bg-gray-100">
                         <td class="font-semibold text-l rounded-lg border-2 border-white">
                            {{$tconst[$i]['name']}}
                         </td>
-                        <td class="font-semibold pl-5 text-l rounded-lg border-2 border-white">
+                        <td class="font-bold pt-2 text-l rounded-lg border-2 border-white text-center tracking-widest">
                            {{$tconst[$i]['points']}}
                         </td>
                      </tr>
                      @if($tconst[$i]['team']['car'] != null)
-                     <tr class="bg-indigo-100">
+                     <tr class="bg-gray-300">
                         <td colspan="2" class="font-semibold rounded-lg border-2 border-white">
                            <img class="px-6 py-2 w-11/12" src="{{$tconst[$i]['team']['car']}}">
                         </td>
@@ -177,96 +207,62 @@ padding-left:10px;
                @endfor
             </tbody>
          </table>
-         <!-- <table class="w-5/6">
-            <thead>
-               <tr>
-                  <th class="rounded-md bg-gray-300 border-2 border-white">Constructor</th>
-                  <th  class="rounded-md bg-gray-300 border-2 border-white">Points</th>
-               </tr>
-            </thead>
-            <tbody>
-            @for ($i = 0, $k = 0; $i < count($tconst) && $k < 3; $i++, $k++)
-               @php
-                  if($tconst[$i]['team']['name'] == 'Reserve')
-                  {
-                     $k--;
-                     continue;
-                  }
-               @endphp
-               @if($k == 0)
-                     <tr class="cursor-pointer bg-indigo-100">
-                        <td class="font-semibold rounded-lg border-2 border-white">
-                           <img class="p-2" src="{{$tconst[$i]['team']['car']}}">
-                        </td>
-                        <td class="font-semibold pl-5 rounded-lg border-2 border-white">
-                           {{$tconst[$i]['points']}}
-                        </td>
-                     </tr>
-               @endif
-               @if($k == 1)
-                  <tr class="cursor-pointer bg-indigo-100">
-                     <td class="font-semibold rounded-lg border-2 border-white">
-                        <img class="p-2" src="{{$tconst[$i]['team']['car']}}">
-                     </td>
-                     <td class="font-semibold pl-5 rounded-lg border-2 border-white">
-                        {{$tconst[$i]['points']}}
-                     </td>
-                  </tr>
-               @endif
-               @if($k == 2)
-                  <tr class="cursor-pointer bg-indigo-100">
-                     <td class="font-semibold rounded-lg border-2 border-white">
-                        <img class="p-2" src="{{$tconst[$i]['team']['car']}}">
-                     </td>
-                     <td class="font-semibold pl-5 rounded-lg border-2 border-white">
-                        {{$tconst[$i]['points']}}
-                     </td>
-                  </tr>
-               @endif
-               @endfor
-            </tbody>
-         </table> -->
          @endif
       </div>
-      <div class="w-5/6">
-         <h2 class="text-3xl font-semibold">All Races </h2>
+    </div>
+
+    <div class="md:w-2/3">
+        <div class="bg-white p-4 rounded-lg border leading-none overflow-y-auto mb-4">
+            <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
+                All Races
+            </div>
          <table class="w-full">
             <thead>
                <tr>
-                  <th class="bg-gray-300 rounded-md w-24 text-center border-2 border-white">Round</th>
-                  <th class="bg-gray-300 rounded-md border-2 border-white">Tracks</th>
+                    <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-8">Rnd.</th>
+                    <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Tracks</th>
+                    <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/6">Actions</th>
                </tr>
             </thead>
             <tbody>
                @foreach($races as $ie=>$value)
                <tr>
-                  <td class="rounded-md border-2 border-white font-semibold">
+                    <td class="rounded-md border-2 border-white font-semibold">
                      <div class="py-2 text-center">
                         {{$value->round}}
                      </div>
-                  </td>
-                  <td class="rounded-md border-2 border-white font-semibold flex justify-between">
-                     <div class="py-2 flex items-center flex-shrink-0">
-                        <div class="flex items-center flex-shrink-0">
-                           {{$value->circuit->name}}
-                        </div class="flex items-center flex-shrink-0">
+                    </td>
+                    <td class="rounded-md border-2 border-white font-semibold flex justify-between">
+                        <div class="py-2 flex items-center flex-shrink-0 gap-4">
+                            <div class="text-center float-right">
+                                <img src="{{$value->circuit->flag}}" class="w-12 border rounded inline-block" alt="">
+                            </div>
+                            <div class="flex items-center flex-shrink-0">
+                                <span class="hidden md:block">{{$value->circuit->name}}</span>
+                                @php
+                                $cname = substr($value->circuit->name,0,3)
+                                @endphp
+                                <span class="md:hidden block uppercase tracking-widest font-semibold">{{$cname}}</span>
+                            </div>
 
-                     </div>
-                     <div>
-                        <a href="/{{$code}}/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="float-right bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800">View Results</a>
-                        <img src="{{$value->circuit->flag}}" class="w-12 mr-8 border rounded float-right" alt="">
-                     </div>
+                        </div>
+                    </td>
+                  <td>
+                  <div class="text-center">
+                        <a href="/{{$code}}/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>View</a>
+                    </div>
                   </td>
                </tr>
                @endforeach
             </tbody>
          </table>
       </div>
-   </div>
+    </div>
+    </div>
 </div>
 <script>
    $( document ).ready(function() {
-      $('.openDriver').click(function (e) { 
+      $('.openDriver').click(function (e) {
          e.preventDefault();
          var linkId = $(this).attr('data-driverLink');
          console.log(linkId);

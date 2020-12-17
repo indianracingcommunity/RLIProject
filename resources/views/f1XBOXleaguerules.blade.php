@@ -1,4 +1,4 @@
-@extends('layouts.welcomeLayout')
+@extends('layouts.app')
 
 @section('body')
 <div class="container flex mx-auto h-screen w-full">

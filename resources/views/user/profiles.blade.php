@@ -13,14 +13,14 @@
     }
     $device = isset($user->device) && $user->device != '' ? unserialize($user->device) : NULL;
 @endphp
-<div class="flex  my-8 ">
-    <div class="flex flex-shrink-0">
+<div class="flex md:flex-row flex-col px-4 mt-10 md:p-0 gap-4">
+    <div class="flex bg-white rounded-lg p-4 items-center border">
         <div>
             <img src="{{$user->avatar}}" class="rounded-md " alt="">
         </div>
         <div class="">
             <div class="flex">
-                <div class=" font-semibold text-gray-800 mx-4 text-4xl font-bold">{{$user->name}}</div>
+                <div class="text-gray-800 mx-4 text-4xl font-bold">{{$user->name}}</div>
             </div>
             <div class="flex mb-1 mx-4">
                 @if($platform != NULL)
@@ -60,6 +60,8 @@
             </div>
         </div>
     </div>
+</div>
+<div class="flex md:flex-row flex-col px-4 mt-10 md:p-0 gap-4">
         <!-- <div class="ml-24 leading-none ">
             <div class="font-semibold text-gray-700 mb-4">
                 <i class="fas fa-trophy mr-1"></i> Trophies
@@ -84,13 +86,11 @@
 
             </div>
         </div> -->
-</div>
-<div class="flex">
-    <div>
-        <div class="font-semibold text-gray-700 mb-4">
-            <i class="far fa-user-circle mr-1"></i> User Details
+    <div class="bg-white rounded-lg p-4 items-center border ">
+        <div class="font-bold text-gray-900 mb-4 tracking-wide text-sm border-b pb-2">
+                <i class="far fa-user-circle mr-1"></i> USER DETAILS
         </div>
-        <table>
+        <table class="table-auto">
             <tr>
                 <td class="font-semibold text-gray-600">USERNAME</td>
                 <td class=" font-bold text-gray-800 px-4 py-1">{{$user->name}}</td>
@@ -142,25 +142,27 @@
             @endif
         </table>
     </div>
-    <div class="ml-24 pl-4 bg-gray-800 rounded-md p-4 inline-block">
-        <div class="font-semibold text-gray-100 mb-4 border-b border-gray-600 pb-2">
-            <i class="fab fa-discord mr-1 text-gray-100"></i> User Roles
+    <div class="bg-gray-800 rounded-lg p-4 border">
+            <div class="font-semibold text-gray-100 mb-4 border-b border-gray-600 pb-2">
+                <i class="fab fa-discord mr-1 text-gray-100"></i> User Roles
+            </div>
+            <div class="flex w-64 flex-wrap font-semibold text-sm">
+                @if(is_array($roles))
+                    @for ($i= 0; $i < count($roles); $i++)
+                        @php
+                            $color = str_pad($roles[$i]['color'], 6, "0", STR_PAD_LEFT);
+                        @endphp
+                        <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
+                    @endfor
+                @else
+                    <!-- {{$roles}} -->
+                @endif
+            </div>
         </div>
-        <div class="flex w-64 flex-wrap font-semibold text-sm">
-            @if(is_array($roles))
-            @for ($i= 0; $i < count($roles) ; $i++)
-            @php
-             $color = str_pad($roles[$i]['color'],6,"0",STR_PAD_LEFT);
-            @endphp
-           <div class="px-1 border rounded-full mr-1 mb-1 border-600 text-gray-300" style="border-color:#{{$color}};"><i class="fas fa-circle mr-1 text-500" style="color:#{{$color}}"></i>{{$roles[$i]['name']}} </div>
 
-            @endfor
-            @else
-            {{$roles}}
-            @endif
-        </div>
-    </div>
-   
 </div>
+</div>
+<div style="height:400px; width:100%; clear:both;"></div>
+
 
 @endsection
