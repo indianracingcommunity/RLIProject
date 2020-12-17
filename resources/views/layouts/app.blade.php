@@ -408,10 +408,10 @@
                 $('.lickAndSend').show();
             });
 
-            $(document).on('click', '#lickAndSend', function() {
+            $(document).on('click', '.lickAndSend', function() {
                 $('#optionError').hide();
                 if($('.seriesOptions').val() != '' && $('.tierOptions').val() != '' && $('.seasonOptions').val() != '' ){
-                    if($(this).attr('data-origin') == 'champ'){
+                    if($('#lickAndSend').attr('data-origin') == 'champ'){
                         redirectLink = $('.seasonOptions option:selected').attr('data-champLink');
                     }else{
                         redirectLink = $('.seasonOptions option:selected').attr('data-raceLink');
