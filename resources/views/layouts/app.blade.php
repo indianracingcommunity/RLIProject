@@ -38,7 +38,7 @@
                 <div class="h-screen py-2 text-black">
                     <div class="flex items-center px-4">
                         <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-800 cursor-pointer">
-                            <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" height="45" width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
+                            <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" style='height:45px;' width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
                         </div>
                         <div class="items-center py-4 px-2 flex-shrink-0 cursor-pointer" onclick="menu()"><i class="fas fa-times"></i></div>
                     </div>
