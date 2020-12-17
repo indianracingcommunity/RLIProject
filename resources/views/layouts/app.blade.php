@@ -365,6 +365,8 @@
                 $('.seasonOptions').val('');
                 $('.allTierOptions').hide();
                 $('.allSeasonOptions').hide();
+                $('.allTierOptions').attr('disabled','disabled');
+                $('.allSeasonOptions').attr('disabled','disabled');
                 $('#lickAndSend').attr('data-origin', $(this).attr('data-origin'));
             });
 
@@ -382,8 +384,11 @@
                 $('.seasonOptions').val('');
                 $('.allTierOptions').hide();
                 $('.allSeasonOptions').hide();
+                $('.allTierOptions').attr('disabled','disabled');
+                $('.allSeasonOptions').attr('disabled','disabled');
                 if($(this).val() != ''){
                     $('.tiersOf_'+$(this).val()).show();
+                    $('.tiersOf_'+$(this).val()).removeAttr('disabled');
                     $('#tierSelectDiv').show('slow', function() {});
                 }
             });
@@ -392,6 +397,7 @@
                 $('#optionError').hide();
                 $('.seasonOptions').val('');
                 $('.allSeasonOptions').hide();
+                $('.allSeasonOptions').attr('disabled','disabled');
                 $('#seasonSelectDiv').hide();
                 $('.lickAndSend').hide();
                 if($(this).val() != ''){
@@ -399,6 +405,7 @@
                     var series = $('.tierOptions option:selected').attr('data-series');
                     var tier = $('.tierOptions option:selected').attr('data-tier');
                     $('.seasonOf_'+tier+'_'+series).show();
+                    $('.seasonOf_'+tier+'_'+series).removeAttr('disabled');
                     $('#seasonSelectDiv').show('slow', function() {});
                 }
             });
