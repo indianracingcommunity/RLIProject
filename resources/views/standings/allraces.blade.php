@@ -235,7 +235,7 @@ padding-left:10px;
                     <td class="rounded-md border-2 border-white font-semibold flex justify-between">
                         <div class="py-2 flex items-center flex-shrink-0 gap-4">
                             <div class="text-center float-right">
-                                <img src="{{$value->circuit->flag}}" class="w-12 border rounded inline-block" alt="">
+                                <img src="{{$value->circuit->flag}}" class="w-12 mr-3 border rounded inline-block" alt="">
                             </div>
                             <div class="flex items-center flex-shrink-0">
                                 <span class="hidden md:block">{{$value->circuit->name}}</span>
