@@ -1,4 +1,4 @@
-@extends('layouts.welcomeLayout')
+@extends('layouts.app')
 
 @section('body')
 <div class="sm:block md:flex lg:flex xl:flex items-center w-full">
@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="flex">
-			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-700"><span class="text-green-600 ml-2 mr-2">●</span><strong>IRC eSports</strong> is a wholly owned subsidiary of IRC currently hosted on our Discord server. IRC eSports division holds league races on the Latest Official F1 Game on PC (currently, F1 2020) which is open for all players regardless to signup and participate in.
+			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-700"><span class="text-green-600 ml-2 mr-2">●</span><strong>IRC eSports</strong> is a wholly owned subsidiary of IRC currently hosted on our Discord server. IRC eSports division holds league races on the Latest Official F1 Game on PC (currently, F1 2020) and on Assetto Corsa Competizione which is open for all players regardless to signup and participate in.
 			</div>
 		</div>
 		<div class="flex">

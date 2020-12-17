@@ -1,4 +1,4 @@
-@extends('layouts.welcomeLayout')
+@extends('layouts.app')
 
 @section('body')
 <div class="sm:block md:flex lg:flex xl:flex items-center">
