@@ -6,7 +6,7 @@
 	<div class="inline-block text-center w-full">
 		<div class="bg-gray-800 p-10 text-white font-bold">
 
-            <img src="/img/IRC_logo/logo_square.png" height="55" width="55" class="mx-auto">
+            <img src="/img/IRC_logo/logo_square.png" class="mx-auto h-10 mt-1">
             <div class="py-3 pl-2 text-2xl">Indian Racing Community Team</div>
 		</div>
 		<h3 class="text-2xl pt-4 bg-gray-100 rounded font-bold text-black"><i class="fas fa-seedling"></i> FOUNDERS</h3>
