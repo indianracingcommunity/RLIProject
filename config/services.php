@@ -44,4 +44,19 @@ return [
         ],
     ],
 
+    'discord' => [
+        'bot' => env('DISCORD_BOT_KEY'),
+        'client_id' => env('DISCORD_KEY'),
+        'client_secret' => env('DISCORD_SECRET'),
+        'redirect' => env('DISCORD_REDIRECT_URI'),
+
+        'irc_guild' => env('IRC_GUILD'),
+        'profiles_channel' => env('PROFILES_CHANNEL'),
+        'notification_channel' => env('NOTIFICATION_CHANNEL'),
+
+        'ps_role' => env('PS_ROLE'),
+        'xbox_role' => env('XBOX_ROLE'),
+        'member_role' => env('MEMBER_ROLE'),
+        'applicant_role' => env('APPLICANT_ROLE')
+    ],
 ];

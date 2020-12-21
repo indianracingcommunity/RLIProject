@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('body')
 
@@ -9,49 +9,49 @@
 
     <div class="col-3 text-center">
       <a href="/teams/mercedes"  id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/merc.png')}}" height="90" /> 
+        <img src="{{url('/storage/img/teamlogos/merc.png')}}" height="90" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/ferrari" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/ferrari.png')}}" height="90" /> 
+        <img src="{{url('/storage/img/teamlogos/ferrari.png')}}" height="90" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/redbull" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/rbr.png')}}" height="80" /> 
+        <img src="{{url('/storage/img/teamlogos/rbr.png')}}" height="80" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/mclaren"  id="key" name="key"class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/mclaren.png')}}" height="100" /> 
+        <img src="{{url('/storage/img/teamlogos/mclaren.png')}}" height="100" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/renault" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/renault.png')}}" height="70" /> 
+        <img src="{{url('/storage/img/teamlogos/renault.png')}}" height="70" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/haas" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/haas.png')}}" height="70" /> 
+        <img src="{{url('/storage/img/teamlogos/haas.png')}}" height="70" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/rpoint" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/rpoint.png')}}" height="100" /> 
+        <img src="{{url('/storage/img/teamlogos/rpoint.png')}}" height="100" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/alfa" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/alfa.png')}}" height="100" /> 
+        <img src="{{url('/storage/img/teamlogos/alfa.png')}}" height="100" /> 
       </a>
     </div>
 
@@ -61,13 +61,13 @@
 
     <div class="col-3 text-center">
       <a href="/teams/toro" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/toro.png')}}" height="50" /> 
+        <img src="{{url('/storage/img/teamlogos/toro.png')}}" height="50" /> 
       </a>
     </div>
 
     <div class="col-3 text-center">
       <a href="/teams/williams" id="key" name="key" class="btn btn-default my-3">
-        <img src="{{url('/img/teamlogos/williams.png')}}" height="60" /> 
+        <img src="{{url('/storage/img/teamlogos/williams.png')}}" height="60" /> 
       </a>
     </div>
   </div>

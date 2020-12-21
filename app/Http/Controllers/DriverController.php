@@ -4,152 +4,202 @@ namespace App\Http\Controllers;
 
 use App\Driver;
 use Illuminate\Http\Request;
+use App\User;
+use App\Report;
+use App\Season;
+use App\Constructor;
+use App\Result;
+use App\Series;
 
-class DriverController extends Controller
+class DriverController extends StandingsController
 {
-    public function create()
 
- {
-      return view('admin.create');
- }
+  public function info(Request $request)
+  {
+    $number = $request->query('number');
+    if($number === null)
+      return response()->json([]);
 
- // Function to store data 
-   public function store()
-   {
-       $data= request()->all();
-       $driver= new Driver();
-       $driver->name = $data['name'];
-       $driver->steamid=$data['steamid'];
-       $driver->discord=$data['discord'];
-       $driver->drivernumber=$data['drivernumber'];
-       $driver->team=$data['team'];
-       $driver->teammate=$data['teammate'];
-       $driver->retired=false;
-       $driver->save();
-       return redirect('/home');
-       
-   }
-  // Function to View all data
-   public function view(){
-         
-         return view('admin.view')->with('driver',Driver::all());
-       
-   }
+    $code = $request->query('code');
+    $tier = $request->query('tier');
+    $season = $request->query('season');
+    $series = Series::where("code", $code)->first();
 
-   public function viewdetails(Driver $driver){
-       return view('admin.viewdetails')->with('driver',$driver);
-     
+    $driver = Driver::where('drivernumber', $number)
+                    ->select('id', 'name', 'drivernumber', 'team')
+                    ->first();
+    $constructor = 5;
 
-   }
-  // Function showing the categories Active and Retired
-   public function category()
-   {
-       return view('admin.drivercategory');
-   }
-// Only Showing active drivers
-   public function active()
-   {
-    return view('admin.activedrivers')->with('driver',Driver::all());
-   }
+    if($driver == null || $series == null)
+      return response()->json([]);
 
-   public function retired()
-   {
-    return view('admin.retireddrivers')->with('driver',Driver::all());
-   }
+    $points = 0;
+    $cpoints = 0;
+    $dpoints = 0;
+    $dpos = 0;
+    $cpos = 0;
 
-   public function edit(Driver $driver){
+    $found = false;
+    if(!($tier === null || $season === null))
+    {
+      $cs = $this->computeStandings($series['id'], $tier, $season);
+      if($cs['code'] == 200)
+      {
+        $driver_ind = array_search($driver['id'], array_column($cs['drivers'], "id"));
 
-        return view('admin.edit')->with('driver',$driver);
-   }
+        if($driver_ind !== false)
+        {
+          if((abs($cs['drivers'][$driver_ind]['status']) >= 10 && abs($cs['drivers'][$driver_ind]['status']) < 20))
+            $constructor = Constructor::where('name', 'Reserve')->first();
+          else
+          {
+            $constructor = $cs['drivers'][$driver_ind]['team'];
+            $cons_ind = array_search($constructor['id'], array_column($cs['constructors'], "id"));
 
-   public function update(Driver $driver)
-   {
-     $data = request()->all();
-    $driver->name=$data['name'];
-    $driver->steamid=$data['steamid'];
-    $driver->discord=$data['discord'];
-    $driver->drivernumber=$data['drivernumber'];
-    $driver->teammate=$data['teammate'];
-    $driver->team=$data['team'];
+            $cpoints = $cs['constructors'][$cons_ind]['points'];
+            $cpos = $cons_ind + 1;
+          }
 
+          $found = true;
+          $dpoints = $cs['drivers'][$driver_ind]['points'];
+          $dpos = $driver_ind + 1;
+        }
+      }
+    }
+
+    if(!$found)
+      $constructor = Constructor::find($driver['team']);
+
+    unset($driver['team']);
+    unset($constructor['created_at']);
+    unset($constructor['updated_at']);
+
+    $driver['points'] = $dpoints;
+    $driver['position'] = $dpos;
+    $constructor['points'] = $cpoints;
+    $constructor['position'] = $cpos;
+
+    return response()->json([
+      "driver" => $driver,
+      "constructor" => $constructor
+    ]);
+  }
+
+  public function index()
+  {
+    return view('admin.adminhome');
+  }
+
+  public function viewusers()
+  {
+    return view('admin.viewusers')->with('user',User::all());
+  }
+  public function viewdetails(User $user)
+  {
+    return view('admin.viewdetails')->with('user',$user);
+  }
+
+  public function viewedit(User $user)
+  {
+    return view('admin.edit')->with('user',$user);
+  }
+ 
+  public function saveedit(User $user)
+  {
+    $data = request()->all();
+    $user->name = $data['name'];
+    $user->discord_discrim = $data['discord_discrim'];
+    $user->team = $data['team'];
+    $user->steam_id = $data['steam_id'];
+    $user->avatar = $data['avatar'];
+    $user->save();
+    return redirect()->back();
+  }
+
+  public function viewreports(Report $report)
+  {
+    return view('admin.reports')->with('report',Report::all());
+  }
+
+  public function reportdetails(Report $report)
+  {
+    return view('admin.reportdetails')->with('report', $report);
+  }
+
+  public function saveverdict(Report $report)
+  {
+    $data = request()->all();
+    $report->verdict = $data['verdict'];
+    $report->resolved = 1;
+    $report->save();
+    return redirect()->back();
+  }
+
+  public function allotuser(User $id)
+  {
+    $existing = Driver::where('user_id',$id->id)->get();
+    //dd($exisiting);
+    return view('admin.allot')
+            ->with('user',$id)
+            ->with('existing',$existing);
+  }
+
+  public function saveallotment()
+  {
+    $data = request()->all();
+       //dd($data);
+    $userinfo = User::select('*')
+      ->where('id',$data['user_id'])
+      ->get()->toArray();
+
+    $driver = new Driver();
+    $driver -> user_id = $data['user_id'];
+    $driver -> name = $userinfo['0']['name'];
+    $driver -> tier = $data['tier'];
+    $driver -> drivernumber = 5;
+    $driver -> retired = 0;
+    $driver -> alias = $userinfo['0']['name'];
     $driver->save();
-     return redirect('/drivers/'.$driver->id);
-         
-
-   }
-
-
-   public function delete(Driver $driver)
-   {
-      $driver->delete();
-      return redirect('/home');
-   }
-
-   public function retire(Driver $driver)
-   {
-      $driver->retired=true;
-      $driver->team="";
-      $driver->teammate="";
-      $driver->save();
-      return redirect('/home');
-   }
-
-   public function actived(Driver $driver)
-   {
-      $driver->retired=false;
-      $driver->save();
-      return redirect('/home');
-   }
-   
-
-   public function viewferrari(Driver $driver,$key)
-   {
-      
-
-    $driver = Driver::where('team' ,'=', $key )
-            ->get();
-    return view('driverview.teamview',compact('driver'));
-   }
-
-   public function api(Driver $driver){
-
-       $profile=$driver->steamid;     
-        $str=file_get_contents('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=A858C6BCA92BE79C5483EF2029AD8F66&steamids='.$profile);
-       $json = json_decode($str,true);
-        $avatarurl=$json['response']['players']['0']['avatarfull'];
-      //  echo $avatarurl;
-        $driver->avatar=$avatarurl;
-        $driver->save();
-        return redirect('/drivers/'.$driver->id);
-        
-   }
-   public function apidiscord(Driver $driver){
-
-    $opts = array(
-      'http'=>array(
-        'method'=>"GET",
-        'header'=>
-                  "Authorization: Bot NjI1Mjg5MTY5NDUwNjk2NzA0.XZYYKQ.zrl8ET3alByITkxZYAsOGiUCadU \r\n"
-      )
-    );
-    
-    $context = stream_context_create($opts);
-    
-    // Open the file using the HTTP headers set above
-    $uid=$driver->discord;
-    $file = file_get_contents('https://discordapp.com/api/users/'.$uid, false, $context);
-
-    $json = json_decode($file,true);
-    $avatarhash=$json['avatar'];
-    $userid=$json['id'];
-    $result= 'https://cdn.discordapp.com/avatars/'.$userid.'/'.$avatarhash;
-   $driver->avatar=$result;
-   $driver->save();
-   return redirect('/drivers/'.$driver->id);
-
+    return redirect()->back();
+  }
   
+  public function driverdata()
+  {
+    $driver = Driver::select('id','name','tier','team','drivernumber','user_id')
+                  ->get()->load('user:id,name,avatar,steam_id')->toArray();
+    $constructor = Constructor::all()->toArray();
 
+    $seasons = Season::where('status', '<', 2)->get()->toArray();
+    $ts = array();
 
-  
-}
+    //Iterate through all Active Seasons
+    for($i = 0; $i < count($seasons); ++$i) {
+      for($j = 0; $j < count($driver); ++$j)
+        $driver[$j][$seasons[$i]['id']] = 0;
+      for($j = 0; $j < count($constructor); ++$j)
+        $constructor[$j][$seasons[$i]['id']] = 0;
+
+      //Results for this Season
+      $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
+      if($ts['code'] != 200)
+        continue;
+
+      //Add Points to Drivers
+      for($j = 0; $j < count($ts['drivers']); ++$j) {
+        $d_id = array_search($ts['drivers'][$j]['id'], array_column($driver, "id"));
+        $driver[$d_id][$seasons[$i]['id']] = $ts['drivers'][$j]['points'];
+      }
+
+      //Add Points to Constructors
+      for($j = 0; $j < count($ts['constructors']); ++$j) {
+        $c_id = array_search($ts['constructors'][$j]['id'], array_column($constructor, "id"));
+        $constructor[$c_id][$seasons[$i]['id']] = $ts['constructors'][$j]['points'];
+      }
+    }
+
+    return response()->json([
+      "drivers" => $driver,
+      "constructors" => $constructor
+    ]);
+  }
 }

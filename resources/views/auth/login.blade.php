@@ -1,73 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div style="height:100px; width:100%; clear:both;"></div>
+<div class="container mx-auto my-4">
+    <div class="md:w-1/3 w-full md:mx-auto bg-white rounded-lg border border-red-300 p-8">
+    <!-- <div class="px-3 bg-gray-800 mx-2 text-center text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer flex items-center flex-shrink-0">
+            <a href="/" class="flex ml-10 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" class="self-center" style='height:45px;' width="45px"> <span class="p-3">Indian Racing Community</span> </a>
+    </div> -->
+    <div class="p-3 bg-red-200 text-center font-semibold rounded mx-2 my-2 text-red-700">
+        @if(Session::has('error'))
+            {{session('error')}}
+        @else
+            Access Denied!
+        @endif
+    </div>
+    <div class="p-3 bg-blue-200 text-center font-semibold rounded mx-2 my-4">
+        You need to Login to access this content
+    </div>
+    <div class="px-4 flex mx-2 py-3 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer text-center hover:bg-gray-900">
+        <a href="/login/discord" class="w-full"><i class="fab fa-discord mr-4"></i></i>Login with Discord</a>
+    </div>
     </div>
 </div>
+
+<div style="height:400px; width:100%; clear:both;"></div>
 @endsection
