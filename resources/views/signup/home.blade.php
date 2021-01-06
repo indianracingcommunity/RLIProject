@@ -731,8 +731,8 @@
             document.getElementById("imgdivt1").style.borderColor = "#f56565";
             sendform = false; 
           }
-          else if(document.getElementById("imgt1").files[0].size > 3000000){
-            document.getElementById("errorimgt1").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+          else if(document.getElementById("imgt1").files[0].size > 2097152){
+            document.getElementById("errorimgt1").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 2MB";
             document.getElementById("imgdivt1").style.borderColor = "#f56565";
             sendform = false; 
           }
@@ -752,8 +752,8 @@
             document.getElementById("imgdivt2").style.borderColor = "#f56565";
             sendform = false; 
           }
-          else if(document.getElementById("imgt2").files[0].size > 3000000){
-            document.getElementById("errorimgt2").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+          else if(document.getElementById("imgt2").files[0].size > 2097152){
+            document.getElementById("errorimgt2").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 2MB";
             document.getElementById("imgdivt2").style.borderColor = "#f56565";
             sendform = false; 
           }
@@ -774,8 +774,8 @@
             document.getElementById("imgdivt3").style.borderColor = "#f56565";
             sendform = false; 
           }
-          else if(document.getElementById("imgt3").files[0].size > 3000000){
-            document.getElementById("errorimgt3").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 3MB";
+          else if(document.getElementById("imgt3").files[0].size > 2097152){
+            document.getElementById("errorimgt3").innerHTML = "You may have a lot of high quality pics of stuff :P <br> Please limit file sizes to 2MB";
             document.getElementById("imgdivt3").style.borderColor = "#f56565";
             sendform = false; 
           }
