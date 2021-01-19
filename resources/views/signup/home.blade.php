@@ -589,7 +589,14 @@
             document.getElementById("preferenceid").style.display = "none";
             document.getElementById("errorteam").style.display = "none";
           }
-          if(data[i].status == 0.3){
+          if(data[i].status > 1){
+            var tempVal1 = data[i].status - Math.floor(data[i].status);
+          }else{
+            var tempVal1 = data[i].status;
+          }
+          // console.log(tempVal1.toFixed(1));
+
+          if(tempVal1.toFixed(1) == 0.3){
             $('.ttSection').hide();
           }
           else{
@@ -658,8 +665,12 @@
       }
 
       $('#statusCheck').val(formStatus);
-      
-      if(formStatus != 0.3){
+      if(formStatus > 1){
+        var tempVal = formStatus - Math.floor(formStatus);
+      }else{
+        var tempVal = formStatus;
+      }
+      if(tempVal.toFixed(1) != 0.3){
         res = patt.test(t1);
         if (t1 == ""){
           document.getElementById("errort1").innerHTML = "Well can't escape without filling this! <br> Mandatory Field";
@@ -719,7 +730,13 @@
       }
 
       console.log(formStatus);
-      if(formStatus != 0.3){
+      if(formStatus > 1){
+        var tempVal3 = formStatus - Math.floor(formStatus);
+      }else{
+        var tempVal3 = formStatus;
+      }
+      console.log(tempVal3.toFixed(1));
+      if(tempVal3.toFixed(1) != 0.3){
         if (flag == 0 || (flag == 1 && imaget1 != "")){
           if (imaget1 == ""){
             document.getElementById("errorimgt1").innerHTML = "FBI needs your image for verification! <br> Mandatory Field";

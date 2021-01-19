@@ -12,6 +12,7 @@ use App\Signup;
 use App\Discord;
 use Storage;
 use Auth;
+use Log;
 class SignupsController extends Controller 
 {
     public function view()
@@ -71,7 +72,9 @@ class SignupsController extends Controller
         $signup->user_id = Auth::user()->id;
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
-        if(isset($data['statusCheck']) && $data['statusCheck'] != 0.3 ){
+        $statCheck = $data['statusCheck'] - floor($data['statusCheck']);
+        $statCheck = round($statCheck,1);
+        if($statCheck != 0.3){
           $signup->timetrial1 = $data['t1'];
           $signup->timetrial2 = $data['t2'];
           $signup->timetrial3 = $data['t3'];
@@ -134,7 +137,9 @@ class SignupsController extends Controller
            }
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
-        if(isset($data['statusCheck']) && $data['statusCheck'] != 0.3 ){
+        $statCheck = $data['statusCheck'] - floor($data['statusCheck']);
+        $statCheck = round($statCheck,1);
+        if($statCheck != 0.3 ){
           $signup->timetrial1 = $data['t1'];
           $signup->timetrial2 = $data['t2'];
           $signup->timetrial3 = $data['t3'];
