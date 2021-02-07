@@ -24,10 +24,13 @@
                   @if ($report->resolved==0)
                 Status:<p>Being Reviewed By stewards</p>
                       @else
-                      <p>Resolved</p>
+                      Status:   <p class="text-success">Resolved</p>
                   @endif  
 
-                  
+                  @isset($report->verdict)
+                  <p>{{$report->verdict}}</p>
+                    @endisset
+                    
             
 
 

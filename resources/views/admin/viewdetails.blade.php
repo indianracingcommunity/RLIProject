@@ -41,8 +41,8 @@
                 
         </div>
         <a href="edit/{{$user->id}}/" class="btn btn-info">Edit User</a>
-        <a href="#" class="btn btn-default my-3"><img src="{{url('/img/discord2.png')}}" width="30" /> </a>
-        <a href="{{$user->steam_id}}" class="btn btn-default my-3"><img src="{{url('/img/steam.png')}}" width="30" /> </a>
+        <a href="#" class="btn btn-default my-3"><img src="{{url('/storage/img/discord2.png')}}" width="30" /> </a>
+        <a href="{{$user->steam_id}}" class="btn btn-default my-3"><img src="{{url('/storage/img/steam.png')}}" width="30" /> </a>
         <a href="/delete/{{$user->id}}/" class="btn btn-danger my-3">Delete User </a>
 
 
@@ -53,8 +53,8 @@
          @endif
 
 
-    <a href="#" class="btn btn-default my-3"><img src="{{url('/img/discord2.png')}}" width="30" /> </a>
-        <a href="{{"https://steamcommunity.com/profiles/".$driver->steamid}}" class="btn btn-default my-3"><img src="{{url('/img/steam.png')}}" width="30" /> </a>
+    <a href="#" class="btn btn-default my-3"><img src="{{url('/storage/img/discord2.png')}}" width="30" /> </a>
+        <a href="{{"https://steamcommunity.com/profiles/".$driver->steamid}}" class="btn btn-default my-3"><img src="{{url('/storage/img/steam.png')}}" width="30" /> </a>
      
     </div>
     @endauth

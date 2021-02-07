@@ -24,8 +24,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call('App\Http\Controllers\DiscordController@updateallusers')
+        ->everyMinute();
+
+        // $schedule->call(function () {
+        //     $controller = new \App\Http\Controllers\SteamController();
+        //     $controller->check();
+        // })->everyMinute();
     }
 
     /**

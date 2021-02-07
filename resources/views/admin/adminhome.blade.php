@@ -11,9 +11,9 @@
                   <h1 class="text-center my-5">  Admin Controls  </h1>
              
             
-                 <a href="#" class="btn btn-primary btn float-left ml-1">Add Drivers</a>
-                 <a href="/home/admin/users" class="btn btn-primary btn float-left ml-2">View All Drivers</a>
+                 <a href="/home/admin/users" class="btn btn-primary btn float-left ml-2">View/Allot Drivers</a>
                  <a href="#" class="btn btn-primary btn float-left ml-2">Update Standings</a>
+                 <a href="/home/admin/report" class="btn btn-primary btn float-left ml-2">View All Reports</a>
                  <br><br><br>
                  <p>User Panel:</p>
                  <a href="/home" class="btn btn-primary btn float-left ml-2">Back to User panel</a>

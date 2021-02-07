@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->integer('role_id')->default(2);
             $table->string('name');
             $table->string('discord_discrim')->nullable();
@@ -28,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->string('team')->nullable();
             $table->string('teammate')->nullable();
             $table->boolean('isadmin')->default(0);
-
         });
     }
 

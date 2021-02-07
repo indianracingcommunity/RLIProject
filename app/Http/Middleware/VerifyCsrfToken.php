@@ -19,6 +19,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        '/position',
+        '/results/race',
+        '/impel',
+        '/recotap'
     ];
 }

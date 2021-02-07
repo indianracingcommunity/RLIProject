@@ -1,80 +1,69 @@
-@extends('layout')
-
-
-@section('body')
-<div class="col bg-dark pt-md-5 embed-responsive container">
-    <br>
-    <div class=" pt-4 text-center">
-        <h1 class="display-3 font-weight-bold  font-italic text-white">INDIAN RACING COMMUNITY</h1>
-    </div><hr class=" m-3 bg-info">
-
-   <div id="demo" class="carousel slide pt-3" data-ride="carousel">
-        <ul class="carousel-indicators">
-            <li data-target="#demo" data-slide-to="0" class="active"></li>
-            <li data-target="#demo" data-slide-to="1"></li>
-            <li data-target="#demo" data-slide-to="2"></li>
-        </ul>
-
-        <div class="carousel-inner">
-            <div class="carousel-item col active">
-                 <div class="col-12 col">
-                    <div class="card bg-secondary" style="width:1300px" >
-                        <div class="card-body text-center">
-                            <h2 class="display-4">Latest Race Results  Belgium GP</h2>
-                            <h5 class="card-text"><strong>Race Winner : theKC66</strong></h5>
-                            <h6 class="card-text">2nd Place : Freeman</h6>
-                            <p class="card-text">3rd Place : kapilace6</p>
-                            <a href="standings" class="btn btn-dark">Go to Standings</a>
-                            <hr>
-                        </div>
-                    </div> 
-                </div>
+@extends('layouts.app')
+@section('content')
+<div class="flex justify-between items-center pt-10 px-8 w-full">
+    <div class="">
+        <div class="block text-5xl font-bold text-gray-900">
+            Welcome to IRC!
+        </div>
+        <div class="block text-3xl font-semibold text-gray-700">
+            A place for every Indian Racing Enthusiast.
+        </div>
+        <div class="flex">
+            <div class="mt-16 text-2xl font-semibold px-4 py-2 bg-purple-600 shadow-lg text-white rounded-md cursor">
+                <a href="/joinus">Join us</a>
             </div>
-            <div class="carousel-item col">
-                <div class="col-12 col ">
-                    <div class="card bg-info" style="width:1300px" >
-                        <div class="card-body text-center">
-                            <h2 class="display-4">Want to be a part of this Community?</h2>
-                            <h5 class="card-text"><strong>Only for Indians*</strong></h5>
-                            <h6 class="card-text">Click on the button below to get the steps on how to join our community!</h6>
-                            <a href="joinus" class="btn btn-dark">Join Us</a>
-                            <a href="aboutus" class="btn btn-dark">About Us</a>
-                            <hr>
-                        </div>
-                    </div> 
-                </div>
+        </div>
+        <div class="mt-10">
+            <div class="text-xl font-semibold text-gray-600">
+                Follow Us
             </div>
-            <div class="carousel-item col">
-                <div class="col-12 col">
-                    <div class="card bg-warning" style="width:1300px" >
-                        <div class="card-body text-center">
-                            <h2 class="display-4">Current Championship Standings</h2>
-                            <h5 class="card-text"><strong>1st : theKC66</strong></h5>
-                            <h6 class="card-text">2nd Place : Freeman</h6>
-                            <p class="card-text">3rd Place : kapilace6</p>
-                            <a href="standings" class="btn btn-dark">Go to Standings</a>
-                            <hr>
-                        </div>
-                    </div> 
+            <div class="flex">
+                <div class="text-4xl text-red-600">
+                    <a href="https://www.youtube.com/channel/UC2Li3g3zak9gQ6YtE3YThXw" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+                <div class="text-4xl text-blue-600 ml-4">
+                    <a href="https://twitter.com/racing_indian" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+                <div class="text-4xl text-pink-800 ml-4">
+                    <a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+                <div class="text-4xl text-blue-800 ml-4">
+                    <a href="https://steamcommunity.com/groups/indianracingcommunity" target="_blank">
+                        <i class="fab fa-steam"></i>
+                    </a>
                 </div>
             </div>
         </div>
-  
-  <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </a>
-        <a class="carousel-control-next" href="#demo" data-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </a>
     </div>
-</div>
+    <div>
+        
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+    <div class="popover__wrapper m-4 ">
+        <a href="#">
+            <img class="object-contain rounded-full hidden md:block" width="70" src='{{asset('/img/homeDiscord.png')}}'>
+        </a>
+        <div class="popover__content">
+            <iframe src="https://discord.com/widget?id={{$irc_guild}}&theme=dark" class="mt-5" width="300" height="500" allowtransparency="true"></iframe>
+        </div>
+    </div>
+
+    <div class="w-1/2 hidden md:block">
+		<img class="object-contain" src='https://cdn.dribbble.com/users/1568450/screenshots/7880617/media/2b89eb9a9496fba5dc1f7bf7d1418855.png'>
+	</div>
+</div>
+<div style="height:250px; width:100%; clear:both;"></div>
+
+{{-- <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
     new Crate({
       server: '641545840619683841',
-      channel: '641545909565390869',
-      shard: 'https://disweb.dashflo.net'
+      channel: '645515279593373717'
     })
-  </script>
+  </script> --}}
 @endsection
