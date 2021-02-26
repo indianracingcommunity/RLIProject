@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'steam' =>  \App\Http\Middleware\CheckSteam::class,
         'profile' => \App\Http\Middleware\ProfileCheck::class,
         'signup' => \App\Http\Middleware\SignupCheck::class,
+        'allowed'=> \App\Http\Middleware\PermissionManager::class,
     ];
 
     /**
