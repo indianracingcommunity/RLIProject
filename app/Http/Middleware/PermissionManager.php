@@ -19,32 +19,40 @@ class PermissionManager
      * @return mixed
      */
     public function handle($request, Closure $next,...$roles) {
-        if(Auth::user() &&  Auth::user()->isadmin == 1) {
+        
+        $res = PermissionManager::verify($roles); 
+        if($res==true)
+        {
             return $next($request);
+        }
+        else{
+            session()->flash('error','You cannot view this page!');
+            return redirect('/'); 
+        }                           
+    }
+
+    public function verify($roles){
+        if(Auth::user() &&  Auth::user()->isadmin == 1) {
+            return true;
         }
         else{  
         for($i=0;$i<count($roles);$i++) {
             if(Schema::hasColumn('roles',$roles[$i])!=true) {
-                session()->flash('error','Route Permission error! Please contact an administrator.');
-                return redirect('/'); 
+                return false;
             }   
         }
-        
+    }
         for($i=0;$i<count($roles);$i++) {
             $getRole = Role::select('role_id')
             ->where($roles[$i], '1')
             ->pluck('role_id')->toArray();
             $check = PermissionManager::checkRole($getRole); 
             if($check == "Verified") {
-                return $next($request);
+                return true;
             }
-        }  
-        session()->flash('error','You cannot view this page!');
-            return redirect('/');       
-     
-            
+        }
+            return false;  
     }
-}
 
     public function checkRole($roles){
         $discord = new Discord();
