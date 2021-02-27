@@ -17,10 +17,10 @@ class CreateRolesTable extends Migration
             $table->bigIncrements('id');
             $table->string('role_name');
             $table->bigInteger('role_id');
-            $table->boolean('admin');
-            $table->boolean('coordinator');
-            $table->boolean('steward');
-            $table->boolean('signup');
+            $table->boolean('admin')->default('0');
+            $table->boolean('coordinator')->default('0');
+            $table->boolean('steward')->default('0');
+            $table->boolean('signup')->default('0');
         });
     }
 
@@ -31,14 +31,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::create('roles', function (Blueprint $table) {
-        $table->dropColumn('id');
-        $table->dropColumn('role_name');
-        $table->dropColumn('role_id');
-        $table->dropColumn('admin');
-        $table->dropColumn('coordinator');
-        $table->dropColumn('steward');
-        $table->dropColumn('signup');
-    });
+        Schema::dropIfExists('roles');
     }
 }

@@ -46,8 +46,6 @@ class PermissionManager
     }
 }
 
-
-
     public function checkRole($roles){
         $discord = new Discord();
         $userArray = $discord->getMemberRoles(Auth::user()->discord_id);
