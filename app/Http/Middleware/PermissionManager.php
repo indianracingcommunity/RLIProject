@@ -7,7 +7,7 @@ use App\Role;
 use App\Discord;
 use Auth;
 use Illuminate\Support\Facades\Schema;
-use DB;
+use Illuminate\Support\Facades\Cache;
 class PermissionManager
 
 {
@@ -55,14 +55,26 @@ class PermissionManager
     }
 
     public function checkRole($roles){
-        $discord = new Discord();
-        $userArray = $discord->getMemberRoles(Auth::user()->discord_id);
+        if(Cache::has('userRoles')!=true){
+            $discord = new Discord();
+            $userArray = $discord->getMemberRoles(Auth::user()->discord_id);
+            PermissionManager::runCache($userArray);
+        };    
+        $cacheArr = Cache::get('userRoles');
+        // dd($cacheArr);
         for($i=0;$i<count($roles);$i++){
-            if(in_array($roles[$i],$userArray)){
+            if(in_array($roles[$i],$cacheArr)){
                 return "Verified";
             }
         }
         return "Unverified";
+    }
+
+    public function runCache($userArray){
+        $seconds = 100;
+        Cache::remember('userRoles', $seconds , function() use ($userArray){
+            return $userArray;
+        }); 
     }
     
 }
