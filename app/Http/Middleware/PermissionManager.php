@@ -8,6 +8,7 @@ use App\Discord;
 use Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 class PermissionManager
 
 {
@@ -19,20 +20,21 @@ class PermissionManager
      * @return mixed
      */
     public function handle($request, Closure $next,...$roles) {
-        
-        $res = PermissionManager::verify($roles); 
+    if(Auth::user()==true){
+        $res = PermissionManager::verify($request,$roles); 
         if($res==true)
         {
             return $next($request);
         }
+    }
         else{
             session()->flash('error','You cannot view this page!');
             return redirect('/'); 
         }                           
     }
 
-    public function verify($roles){
-        if(Auth::user() &&  Auth::user()->isadmin == 1) {
+    public function verify($request,$roles){
+        if(Auth::user()->isadmin == 1) {
             return true;
         }
         else{  
@@ -46,7 +48,7 @@ class PermissionManager
             $getRole = Role::select('role_id')
             ->where($roles[$i], '1')
             ->pluck('role_id')->toArray();
-            $check = PermissionManager::checkRole($getRole); 
+            $check = PermissionManager::checkRole($request,$getRole); 
             if($check == "Verified") {
                 return true;
             }
@@ -54,13 +56,13 @@ class PermissionManager
             return false;  
     }
 
-    public function checkRole($roles){
-        if(Cache::has('userRoles')!=true){
+    public function checkRole(Request $request,$roles){
+        if($request->session()->has('userRoles')!=true){
             $discord = new Discord();
             $userArray = $discord->getMemberRoles(Auth::user()->discord_id);
-            PermissionManager::runCache($userArray);
+            PermissionManager::runCache($request,$userArray);
         };    
-        $cacheArr = Cache::get('userRoles');
+        $cacheArr = $request->session()->get('userRoles');
         // dd($cacheArr);
         for($i=0;$i<count($roles);$i++){
             if(in_array($roles[$i],$cacheArr)){
@@ -70,11 +72,8 @@ class PermissionManager
         return "Unverified";
     }
 
-    public function runCache($userArray){
-        $seconds = 100;
-        Cache::remember('userRoles', $seconds , function() use ($userArray){
-            return $userArray;
-        }); 
+    public function runCache(Request $request,$userArray){
+        $request->session()->put('userRoles', $userArray); 
     }
     
 }
