@@ -21,17 +21,17 @@ class PermissionManager
      */
     public function handle($request, Closure $next,...$roles) {
     if(Auth::user()==true){
-        $res = PermissionManager::verify($request,$roles); 
-        if($res==true)
-        {
+        $res = PermissionManager::verify($request,$roles);
+        if($res==true){
             return $next($request);
         }
-    }
+    
         else{
             session()->flash('error','You cannot view this page!');
             return redirect('/'); 
         }                           
     }
+}
 
     public function verify($request,$roles){
         if(Auth::user()->isadmin == 1) {
