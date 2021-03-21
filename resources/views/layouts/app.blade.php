@@ -54,6 +54,7 @@
                                 <a href="/accleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
                                 <a href="/f1XBOXleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a>
                             </div>
+
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             <div class="my-1 ">
                                 <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
@@ -72,7 +73,9 @@
                             @endauth
                         </div>
 
+
                         <!-- <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
+
                             <div class="font-bold text-sm px-5 mt-4 mb-2 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
 
                             <hr>
@@ -80,7 +83,6 @@
                             <div class="px-5 w-full">
                                 <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
                                     <option class="" selected value="">Choose Series</option>
-                                    @php Log::info(print_r($topBarSeasons,true)); @endphp
                                     @foreach($topBarSeasons as $series)
                                         <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
                                     @endforeach
@@ -100,7 +102,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div id="seasonSelectDiv" style="display: none;">
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
                                 <div class="px-5 w-full">
@@ -347,6 +348,7 @@
                     </div>
                 </div>
             </div>
+
             @auth
 
                 @if (session()->has('error'))
@@ -454,6 +456,7 @@
                 $('#lickAndSend').attr('data-origin', $(this).attr('data-origin'));
             });
 
+
             $(document).on('click', '#closeModal', function() {
                 $('.champResModal').fadeOut();
             });
@@ -529,6 +532,7 @@
         function menu() {
             $('#main-menu').show();
             // $('#sub-menu').hide();
+
             console.log("function called")
             let element = document.getElementById("sidebar");
             let element2 = document.getElementById("customMargin");
