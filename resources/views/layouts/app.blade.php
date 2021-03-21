@@ -142,7 +142,7 @@
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
                         <a href="/" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 "><img src="/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="py-3 pl-2  md:block hidden">Indian Racing Community</span></a>
                     </div>
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                    {{-- <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                         </button>
@@ -151,8 +151,9 @@
                         <button data-origin='race' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <span><i class="fa fa-flag mx-1 text-green-500"></i> Race Results</span>
                         </button>
-                    </div>
-                    {{-- <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                    </div> --}}
+
+                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                         </button>
@@ -205,7 +206,7 @@
                                 </li>
                             @endforeach
                         </ul>
-                    </div> --}}
+                    </div>
                     @guest
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
