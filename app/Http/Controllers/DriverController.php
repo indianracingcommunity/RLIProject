@@ -166,7 +166,8 @@ class DriverController extends StandingsController
   public function driverdata()
   {
     $driver = Driver::select('id','name','tier','team','drivernumber','user_id')
-                  ->get()->load('user:id,name,avatar,steam_id')->toArray();
+                      ->get()->load('user:id,name,avatar,steam_id,xbox')->toArray();
+
     $constructor = Constructor::all()->toArray();
 
     $seasons = Season::where('status', '<', 2)->get()->toArray();
