@@ -89,8 +89,10 @@ Route::post('/image/race', 'ImageController@ocrRace');
 Route::get('/acc/upload', 'AccController@raceUpload');
 Route::post('/acc/upload', 'AccController@parseJson');
 
-});
+Route::get('/ac/upload', 'AcController@raceUpload');
+Route::post('/ac/upload', 'AcController@parseCsv');
 
+});
 
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {

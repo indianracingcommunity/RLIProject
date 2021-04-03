@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>ACC Upload</title>
+  <title>AC Upload</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -11,7 +11,7 @@
   <br />
   
   <div class="container">
-   <h3 align="center">ACC Race Results Upload</h3>
+   <h3 align="center">AC Race Results Upload</h3>
    <br />
    @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -30,7 +30,7 @@
    </div>
    <img src="/images/{{ Session::get('path') }}" width="300" />
    @endif
-   <form method="post" action="{{url('/acc/upload')}}" enctype="multipart/form-data">
+   <form method="post" action="{{url('/ac/upload')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
      <div class="form-group">
@@ -47,7 +47,6 @@
      <table class="table">
       <tr>
        <td width="40%" align="right"><label>Select File for Upload</label></td>
-       <td width="30">Quali : <input type="file" name="quali" /></td>
        <td width="30">Race  : <input type="file" name="race" /></td>
        <td width="30%" align="left"><input type="submit" name="upload" class="btn btn-primary" value="Upload"></td>
       </tr>
