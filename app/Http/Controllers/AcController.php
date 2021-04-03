@@ -153,7 +153,7 @@ class AcController extends Controller
             $rcsv[$j][0] = (int)$rcsv[$j][0]; //Finishing Position, Name, Car
             $rcsv[$j][3] = (int)$rcsv[$j][3]; //Fastest Lap
             $rcsv[$j][4] = (int)$rcsv[$j][4]; //Total Time
-            $rcsv[$j][5] = (int)$rcsv[$j][5]; //Grid, Track
+            $rcsv[$j][5] = (int)$rcsv[$j][5]; //Grid, Track, Laps
 
             //check which driver has fastest lap
             if($rcsv[$j][5] < $mintime) {
@@ -172,6 +172,7 @@ class AcController extends Controller
             'official' => $sp_circuit['official'],
             'display' => $sp_circuit['name'],
             "season_id" => $season['id'],
+            "distance" => $rcsv[0][7] / 10.0,
             "round" => $round
         );
 
