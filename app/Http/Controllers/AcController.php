@@ -23,7 +23,7 @@ use App\Series;
 use App\Circuit;
 use App\Constructor;
 
-class AccController extends Controller
+class AcController extends Controller
 {
     private $output;
     public function __construct() {
@@ -31,12 +31,13 @@ class AccController extends Controller
     }
 
     public function raceUpload() {
-        $series = Series::where('code', 'acc')->firstOrFail();
+        $series = Series::where('code', 'ac')->firstOrFail();
         $seasons = Season::where([
             ['status', '<', 2],
             ['series', $series['id']]
         ])->get();
-        return view('accupload')->with('seasons', $seasons);
+
+        return view('acupload')->with('seasons', $seasons);
     }
     public function qualiIndex() {
         return view('qualiimage');
@@ -136,22 +137,34 @@ class AccController extends Controller
              mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
     }
 
-    public function parseJson(Request $request) {
+    public function parseCsv(Request $request) {
         $race = request()->file('race');
-        $quali = request()->file('quali');
+        $rcsvlines = file_get_contents($race);
 
-        //$fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
-        //$file8 = mb_convert_encoding($file16, 'utf-8');
-        $race_content = file_get_contents($race);
-        $quali_content = file_get_contents($quali);
+        $rcsv = str_getcsv($rcsvlines, "\n");
+        if(count($rcsv) == 0) return response()->json([]);
 
-        $jq = json_decode($quali_content, true);
-        $json = json_decode($race_content, true);
+        $minid = 0;
+        $mintime = PHP_INT_MAX;
+        for($j = 0; $j < count($rcsv); $j++) {
+            $l = str_replace("\"", "", $rcsv[$j]);
+            $rcsv[$j] = explode(",", $l);
+
+            $rcsv[$j][0] = (int)$rcsv[$j][0]; //Finishing Position, Name, Car
+            $rcsv[$j][3] = (int)$rcsv[$j][3]; //Fastest Lap
+            $rcsv[$j][4] = (int)$rcsv[$j][4]; //Total Time
+            $rcsv[$j][5] = (int)$rcsv[$j][5]; //Grid, Track, Laps
+
+            //check which driver has fastest lap
+            if($rcsv[$j][5] < $mintime) {
+                $minid = $j;
+                $mintime = $rcsv[$j][5];
+            }
+        }
 
         $round = (int)request()->round;
         $season = Season::find(request()->season);
-
-        $sp_circuit = Circuit::getTrackByGame($json['trackName'], $season['series']);
+        $sp_circuit = Circuit::getTrackByGame($rcsv[0][6], $season['series']);
         if($sp_circuit == null) return response()->json([]);
 
         $track = array(
@@ -159,76 +172,71 @@ class AccController extends Controller
             'official' => $sp_circuit['official'],
             'display' => $sp_circuit['name'],
             "season_id" => $season['id'],
+            "distance" => $rcsv[0][7] / 10.0,
             "round" => $round
         );
 
-        $qualiPosition = array();
-        foreach($jq['sessionResult']['leaderBoardLines'] as $k => $driver)
-            $qualiPosition[$driver['car']['carId']] = $k + 1;
-
-        $totalLaps = 0;
         $results = array();
-        if(count($json['sessionResult']['leaderBoardLines']) > 0)
-            $totalLaps = $json['sessionResult']['leaderBoardLines'][0]['timing']['lapCount'];
+        //Check for Fastest Time, get ID
 
-        foreach($json['sessionResult']['leaderBoardLines'] as $k => $driver)
+        foreach($rcsv as $k => $driver)
         {
-            $user = User::where('steam_id', substr($driver['currentDriver']['playerId'], 1))->first();
-            $dr = Driver::where('user_id', $user['id'])->first();
-            if($dr == null)
-            {
-                $dr['name'] = $driver['currentDriver']['shortName'];
-                $dr['id'] = -1;
+            //Search for Closest Matching Driver
+            $drList = Driver::getNames();
+            $drName = array_column($drList, 'name');
+
+            $index = $this->closest_match($driver[1], $drName);
+            $flat_drivers = $this->crude_flatten((array)$drList);
+
+            $matched_driverid = $drList[$index[0]]['id'];
+            $matched_drivername = $drList[$index[0]]['name'];
+
+            if($index[1] != 0) {
+                $fname = array_column($flat_drivers, 'alias');
+                $findex = $this->closest_match($driver[1], $fname);
+
+                if($findex[1] < $index[1]) {
+                    $matched_driverid = $flat_drivers[$findex[0]]['id'];
+                    $matched_drivername = $flat_drivers[$findex[0]]['alias'];
+                }
             }
 
-            $grid = 0;
+            //Search Car
             $status = 0;
-            $total_time = "";
-            $bestLap = "";
-            $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
+            $car = Constructor::where('game', $driver[2])->first();
+            if($car == null) $car = array("id" => -1, "name" => "NA");
 
-            //Grid Position
-            if(array_key_exists($driver['car']['carId'], $qualiPosition))
-                $grid = $qualiPosition[$driver['car']['carId']];
-
-            //Fastest Lap
-            if($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10)
+            //if position > 1000, position -= 1000;
+            //if minid (fastest lap), $status = 1;
+            if($k == $minid) {
                 $status = 1;
-
-            //Total Time
-            if($totalLaps == $driver['timing']['lapCount'])
-                $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
-            else if($driver['timing']['lastLap'] == 2147483647)
-            {
+            }
+            else if($driver[0] > 1000) {
                 $status = -2;
-                $total_time = "DNF";
-            }
-            else
-            {
-                $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Lap";
-                if($totalLaps - $driver['timing']['lapCount'] > 1)
-                    $total_time .= "s";
+                $driver[0] -= 1000;
             }
 
-            if($driver['timing']['bestLap'] == 2147483647)
-                $bestLap = "-";
-            else
-                $bestLap = $this->convertMillisToStandard($driver['timing']['bestLap']);
+            //Convert Times to Standard Format
+            $fastestLapTime = $this->convertMillisToStandard($driver[3]);
+            if($fastestLapTime == "00") $fastestLapTime = "-";
+
+            $totalTime = $this->convertMillisToStandard($driver[4]);
+            if($totalTime == "00") $totalTime = "DNF";
 
             //Push to Results
             array_push($results, array(
-                "position" => $k + 1,
-                "driver" => $dr['name'],
-                "driver_id" => $dr['id'],
-                "matched_driver" => $dr['name'],
-                "team" => $season['constructors'][$team_ind]['name'],
-                "constructor_id" => $season['constructors'][$team_ind]['id'],
-                "matched_team" => $season['constructors'][$team_ind]['name'],
-                "grid" => $grid,
+                "position" => $driver[0],
+                "driver" => $driver[1],
+                "driver_id" => $matched_driverid,
+                "matched_driver" => $matched_drivername,
+                "team" => $car['name'],
+                "constructor_id" => $car['id'],
+                "matched_team" => $car['name'],
+                "grid" => $driver[5],
                 "stops" => 0,
                 "status" => $status,
-                "fastestlaptime" => $bestLap,
-                "time" => $total_time
+                "fastestlaptime" => $fastestLapTime,
+                "time" => $totalTime
             ));
         }
 
