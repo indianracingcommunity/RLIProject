@@ -56,7 +56,6 @@ Route::get('/{code}/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceR
 
 //Route::post('/results/quali', 'ResultsController@saveQualiResults');
 Auth::routes();
-
 // MiddleWare For Userlogin
 Route::group(['middleware' => 'auth'], function () {
      Route::get('/user/profile/', 'UserPanel@viewprofile')->name('home');
@@ -117,10 +116,12 @@ Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
      Route::post('/home/admin/user-allot/submit','DriverController@saveallotment');
 });
 
-Route::group(['middleware' => 'allowed:admin'], function () {
+Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
      Route::get('/image/quali', 'ImageController@qualiIndex');
      Route::get('/image/race', 'ImageController@raceIndex');
      Route::post('/image/race', 'ImageController@ocrRace');
      Route::get('/acc/upload', 'AccController@raceUpload');
      Route::post('/acc/upload', 'AccController@parseJson');
+     Route::get('/ac/upload', 'AcController@raceUpload');
+     Route::post('/ac/upload', 'AcController@parseCsv');
 });

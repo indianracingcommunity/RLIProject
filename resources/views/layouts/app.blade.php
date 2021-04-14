@@ -40,7 +40,7 @@
                         <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-800 cursor-pointer">
                             <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" style='height:45px;' width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
                         </div>
-                        <div class="items-center py-4 px-2 flex-shrink-0 cursor-pointer" onclick="menu()"><i class="fas fa-times"></i></div>
+                        <div class="items-center py-4 px-2 flex-shrink-0 cursor-pointer" onclick="menu()"></div>
                     </div>
                     <div>
                         <div class="my-8" id="main-menu">
@@ -54,8 +54,9 @@
                                 <a href="/accleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
                                 <a href="/f1XBOXleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a>
                             </div>
-                            <div class="font-bold md:hidden text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
-                            <div class="my-1 md:hidden">
+
+                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
+                            <div class="my-1 ">
                                 <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
                                 <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
                             </div>
@@ -80,7 +81,9 @@
                             @endauth
                         </div>
 
-                        <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
+
+                        <!-- <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
+
                             <div class="font-bold text-sm px-5 mt-4 mb-2 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
 
                             <hr>
@@ -101,13 +104,12 @@
                                         <option class="" selected value="">Choose Tier</option>
                                         @foreach($topBarSeasons as $series)
                                             @foreach($series['tier'] as $tier)
-                                                <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>Tier {{$tier[0]['tier']}}</option>
+                                                <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-
                             <div id="seasonSelectDiv" style="display: none;">
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
                                 <div class="px-5 w-full">
@@ -116,7 +118,7 @@
                                         @foreach($topBarSeasons as $series)
                                             @foreach($series['tier'] as $tier)
                                                 @foreach($tier as $season)
-                                                    <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{$season['season']}}</option>
+                                                    <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
                                                 @endforeach
                                             @endforeach
                                         @endforeach
@@ -132,7 +134,7 @@
                             </div>
                             <a style="display: none;" id="redirectLickAndSend" href=""></a>
 
-                        </div>
+                        </div> -->
 
                         <div id="race-menu">
 
@@ -149,6 +151,17 @@
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
                         <a href="/" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 "><img src="/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="py-3 pl-2  md:block hidden">Indian Racing Community</span></a>
                     </div>
+                    {{-- <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                        <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
+                            <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
+                        </button>
+                    </div>
+                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                        <button data-origin='race' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
+                            <span><i class="fa fa-flag mx-1 text-green-500"></i> Race Results</span>
+                        </button>
+                    </div> --}}
+
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
@@ -160,11 +173,12 @@
                                     <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 17rem; width: 7.5rem;">
                                         @foreach($series['tier'] as $tier)
                                         <li class="dropdown">
-                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
-                                            <ul class="dropdown-content absolute hidden text-gray-700 ml-20 pl-10 -mt-10">
+                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
+                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}} </a>
+                                            <ul class="dropdown-content absolute hidden text-gray-700 pl-10 -mt-10" style="margin-left:210px">
                                                 @foreach($tier as $season)
                                                 <li>
-                                                    <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
+                                                    <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -186,11 +200,12 @@
                                     <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 11.1rem; width: 7.5rem;">
                                         @foreach($series['tier'] as $tier)
                                         <li class="dropdown">
-                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a>
-                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left: 7.4rem;">
+                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
+                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}}</a>
+                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:250px">
                                                 @foreach($tier as $season)
                                                 <li>
-                                                    <a class="bg-purple-100 hover:bg-orange-300 px-4 py-2 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{$season['season']}}</a>
+                                                    <a class="bg-purple-100 hover:bg-orange-300 px-4 py-2 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -276,6 +291,72 @@
                 </div>
                 @endauth
             </nav>
+            <div class="fixed z-50 inset-0 overflow-y-auto champResModal" style='display:none;'>
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                    <div class='bg-gray-900 mb-3 p-1 flex justify-end'>
+                        <div class="modalTitle text-white w-full p-1 pl-4">
+                        </div>
+                        <button id='closeModal' class="rounded-full text-white font-bold h-8 w-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="mb-8 mx-6 rounded-lg border" id="sub-menu">
+                        <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
+                        <div class="px-5 w-full">
+                            <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                <option class="" selected value="">Choose Series</option>
+                                @foreach($topBarSeasons as $series)
+                                    <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div id="tierSelectDiv" style="display: none;">
+                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
+                            <div class="px-5 w-full">
+                                <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                    <option class="" selected value="">Choose Tier</option>
+                                    @foreach($topBarSeasons as $series)
+                                        @foreach($series['tier'] as $tier)
+                                            <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="seasonSelectDiv" style="display: none;">
+                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
+                            <div class="px-5 w-full">
+                                <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                    <option class="" selected value="">Choose Season</option>
+                                    @foreach($topBarSeasons as $series)
+                                        @foreach($series['tier'] as $tier)
+                                            @foreach($tier as $season)
+                                                <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
+                                            @endforeach
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-center my-2 mx-6 font-semibold">
+                            <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
+                                <button id="lickAndSend" type="button" class="text-center">Send It!</button>
+                            </div>
+                            <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
+                        </div>
+                        <a style="display: none;" id="redirectLickAndSend" href=""></a>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+
             @auth
 
                 @if (session()->has('error'))
@@ -292,7 +373,6 @@
                         </div>
                     </div>
                 @endif
-
                 <main class="container mx-auto my-4">
                     @yield('content')
                 </main>
@@ -361,13 +441,19 @@
 
             // sidebar menu
             $(document).on('click', '.subMenuShow', function() {
+                if($(this).attr('data-origin') == 'champ'){
+                    $('.modalTitle').html('Championship Standings');
+                }else{
+                    $('.modalTitle').html('Race Result');
+                }
+                $('.champResModal').fadeIn();
                 $('#optionError').hide();
                 $('#tierSelectDiv').hide();
                 $('#seasonSelectDiv').hide();
                 $('.lickAndSend').hide();
                 $('#lickAndSend').removeAttr('data-origin');
-                $('#main-menu').hide('slow', function() {});
-                $('#sub-menu').show('slow', function() {});
+                // $('#main-menu').hide('slow', function() {});
+                // $('#sub-menu').show('slow', function() {});
                 $('.seriesOptions').val('');
                 $('.tierOptions').val('');
                 $('.seasonOptions').val('');
@@ -378,9 +464,9 @@
                 $('#lickAndSend').attr('data-origin', $(this).attr('data-origin'));
             });
 
-            $(document).on('click', '.goBackMainMenu', function() {
-                $('#sub-menu').hide('slow', function() {});
-                $('#main-menu').show('slow', function() {});
+
+            $(document).on('click', '#closeModal', function() {
+                $('.champResModal').fadeOut();
             });
 
             $(document).on('change', '.seriesOptions', function() {
@@ -453,7 +539,8 @@
         let sidebarVisible = 1;
         function menu() {
             $('#main-menu').show();
-            $('#sub-menu').hide();
+            // $('#sub-menu').hide();
+
             console.log("function called")
             let element = document.getElementById("sidebar");
             let element2 = document.getElementById("customMargin");
