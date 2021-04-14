@@ -61,15 +61,23 @@
                                 <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
                             </div>
                             @auth
-                                @if(Auth::user()->isadmin==1)
+                                @view('admin,coordinator,steward,signup')
                                 <div class="font-bold text-sm px-5 mt-4 tracking-wide">ADMIN CONTROLS</div>
+                                @endview
                                 <div class="my-1">
+                                    @view('admin,coordinator')  
                                     <a href="/home/admin/users" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-sort"></i></div>View/Allot Drivers</a>
+                                    @endview
                                     <a href="#" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-pen-alt"></i></div>Update Standings</a>
+                                    @view('steward,coordinator')
                                     <a href="/home/admin/report" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a>
+                                    @endview
+                                    @view('admin,signup')
                                     <a href="/home/admin/view-signups" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
+                                    @endview
                                 </div>
-                                @endif
+                                
+                                
                             @endauth
                         </div>
 
