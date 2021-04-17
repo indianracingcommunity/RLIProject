@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'RLIProject'),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +169,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
 
-        /*
+        /*s
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,

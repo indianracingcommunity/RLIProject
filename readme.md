@@ -18,7 +18,11 @@
 
 
 
-* Github: [@TheFreeman15](https://github.com/TheFreeman15)
+* Project Head: [@TheFreeman15](https://github.com/TheFreeman15)
+* Architect: [@kapilace6](https://github.com/kapilace6)
+* Front-End Developer: [@sdawn29](https://github.com/sdawn29)
+* Front-End Developer: [@thekalpeshchoudhary](https://github.com/thekalpeshchoudhary)
+* Front-End Developer: [@Dipanshuprasad](https://github.com/Dipanshuprasad)
 
 ## Show your support
 

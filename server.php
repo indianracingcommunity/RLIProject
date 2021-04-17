@@ -3,8 +3,10 @@
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
- * @package  Laravel
- * @author   Taylor Otwell <taylor@laravel.com>
+ * @package  RLIProject - Official IRC Website
+ *
+ * @author   Kapil Bharath <kapilace6@gmail.com>
+ * @author   Kalpesh Choudhary <thekc66@gmail.com>
  */
 
 $uri = urldecode(
