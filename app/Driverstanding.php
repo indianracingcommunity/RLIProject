@@ -7,7 +7,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Driverstanding extends Model
 {
     use LogsActivity;
-
     protected static $logName = 'driverstanding';  // Name for the log 
     protected static $logAttributes = ['*']; // Log All fields in the table
     protected static $recordEvents = ['updated']; // Only log updated events

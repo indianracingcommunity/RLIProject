@@ -7,7 +7,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Series extends Model
 {
     use LogsActivity;
-
     protected static $logName = 'series';  // Name for the log 
     protected static $logAttributes = ['*']; // Log All fields in the table
     protected static $recordEvents = ['updated']; // Only log updated events

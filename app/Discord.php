@@ -11,7 +11,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Discord
 {
     use LogsActivity;
-
     protected static $logName = 'discord';  // Name for the log 
     protected static $logAttributes = ['*']; // Log All fields in the table
     protected static $recordEvents = ['updated']; // Only log updated events
