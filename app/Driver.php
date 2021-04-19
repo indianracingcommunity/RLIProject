@@ -3,9 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 class Driver extends Model
 {
+    use LogsActivity;
+    protected static $logName = 'driver';  // Name for the log 
+    protected static $logAttributes = ['*']; // Log All fields in the table
+    protected static $recordEvents = ['updated','created']; // Log when a driver is Created or Updated
+    protected static $logOnlyDirty = true; // Only log the fields that have been updated
+
     const delimiter = '~$~';
     static public function getAliases() {
         $alias_list = Driver::pluck('alias');

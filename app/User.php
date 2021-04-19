@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 class User extends Authenticatable
 {
     use Notifiable;
-
+    use LogsActivity;
+    
     static public function updateAlias() {
         $user = User::all();
         return $user;
@@ -24,10 +25,16 @@ class User extends Authenticatable
      *
      * @var array
      */
+    
+
     protected $fillable = [
         'name', 'email', 'password','discord_discrim','discord_id','avatar'
     ];
 
+    protected static $logName = 'user';  // Name for the log 
+    protected static $logAttributes = ['*']; // Log All fields in the table
+    protected static $recordEvents = ['updated']; // Only log updated events
+    protected static $logOnlyDirty = true; // Only log the fields that have been updated
     /**
      * The attributes that should be hidden for arrays.
      *

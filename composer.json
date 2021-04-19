@@ -16,6 +16,7 @@
         "laravel/framework": "6.0.*",
         "laravel/tinker": "^1.0",
         "socialiteproviders/discord": "^2.0",
+        "spatie/laravel-activitylog": "^3.16",
         "thiagoalessio/tesseract_ocr": "^2.9"
     },
     "require-dev": {
