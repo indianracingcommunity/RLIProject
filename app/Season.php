@@ -3,9 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 class Season extends Model
 {
+    use LogsActivity;
+    protected static $logName = 'season';  // Name for the log 
+    protected static $logAttributes = ['*']; // Log All fields in the table
+    protected static $logOnlyDirty = true; // Only log the fields that have been updated
+
     const cdelim = ',';
     static public function fetch() {
         $seasons = Season::all()->orderBy('updated_at', 'desc')->get();
