@@ -8,8 +8,7 @@ class Driver extends Model
 {
     use LogsActivity;
     protected static $logName = 'driver';  // Name for the log 
-    protected static $logAttributes = ['*']; // Log All fields in the table
-    protected static $recordEvents = ['updated','created']; // Log when a driver is Created or Updated
+    protected static $logAttributes = ['*']; // Log All fields in the table // Log when a driver is Created or Updated
     protected static $logOnlyDirty = true; // Only log the fields that have been updated
 
     const delimiter = '~$~';
