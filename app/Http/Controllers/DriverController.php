@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Driver;
 use Illuminate\Http\Request;
+
 use App\User;
+use App\Driver;
 use App\Report;
 use App\Season;
-use App\Constructor;
-use App\Result;
 use App\Series;
+use App\Constructor;
 
 class DriverController extends StandingsController
 {
@@ -137,29 +137,30 @@ class DriverController extends StandingsController
 
   public function allotuser(User $id)
   {
-    $existing = Driver::where('user_id',$id->id)->get();
-    //dd($exisiting);
+    $existing = Driver::where('user_id', $id->id)->get();
     return view('admin.allot')
-            ->with('user',$id)
-            ->with('existing',$existing);
+            ->with('user', $id)
+            ->with('existing', $existing);
   }
 
   public function saveallotment()
   {
     $data = request()->all();
-       //dd($data);
     $userinfo = User::select('*')
-      ->where('id',$data['user_id'])
-      ->get()->toArray();
+                    ->where('id', $data['user_id'])
+                    ->get()->toArray();
+
+    //Missing Validation that ID exists or not
 
     $driver = new Driver();
     $driver -> user_id = $data['user_id'];
-    $driver -> name = $userinfo['0']['name'];
+    $driver -> name = $userinfo['0']['name'];       //Will throw error if ID not exists
     $driver -> tier = $data['tier'];
     $driver -> drivernumber = 5;
     $driver -> retired = 0;
-    $driver -> alias = $userinfo['0']['name'];
+    $driver -> alias = $userinfo['0']['name'];      //Will throw error if ID not exists
     $driver->save();
+
     return redirect()->back();
   }
   

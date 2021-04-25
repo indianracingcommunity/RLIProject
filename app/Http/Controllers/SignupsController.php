@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 use App\Season;
-use App\Circuit;
-use App\Constructor;
 use App\Driver;
 use App\Signup;
 use App\Discord;
+use App\Circuit;
+use App\Constructor;
+
 use Storage;
 use Auth;
 use Log;
+
 class SignupsController extends Controller 
 {
     public function view()
@@ -36,8 +39,7 @@ class SignupsController extends Controller
     public function store(Request $request)
     {
         $data = request()->all();
-      //  dd($data); 
-        if(isset($data['evidencet1']) & isset($data['evidencet2']) & isset($data['evidencet3'])  )
+        if(isset($data['evidencet1']) & isset($data['evidencet2']) & isset($data['evidencet3']))
            {
              if($data['evidencet1'] != NULL & $data['evidencet2'] != NULL & $data['evidencet3'] != NULL)
               $evidence1 = $data['evidencet1']->store('timetrials');
@@ -54,21 +56,19 @@ class SignupsController extends Controller
            }
            if(isset($data['pref1']))
            {
-           $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
+             $prefrence = $data['pref1'] . ',' . $data['pref2'] . ',' . $data['pref3'];
            }
            if(isset($data['assists']))
            {
-            $assists = serialize($data['assists']);
+             $assists = serialize($data['assists']);
            }
            else
            {
-             $assists = '' ;
+             $assists = '';
            }
           
-        
-           //dd($assists);
         $signup = new Signup();
-        // dd($data);
+
         $signup->user_id = Auth::user()->id;
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
@@ -91,19 +91,22 @@ class SignupsController extends Controller
         }
         if(isset($prefrence))
         {
-        $signup->carprefrence = $prefrence;
+          $signup->carprefrence = $prefrence;
         }
         else
         {
-        $signup->carprefrence = '';
+          $signup->carprefrence = '';
         }
+
         $signup->attendance = $attendance;
         $signup->assists = $assists;
         $signup->drivernumber = $data['drivernumber'];
         $signup->save();
+
         $discord = new Discord(); 
         $discord->notifysignup($data['seas']);
         session()->flash('success',"Signup Submitted Successfully");
+
         return redirect('/signup');
     }
 
@@ -111,10 +114,9 @@ class SignupsController extends Controller
     {
        $data = request()->all();
    
-     // dd($signup);
-       if($signup->user_id==Auth::user()->id)
+       if($signup->user_id == Auth::user()->id)
        {
-        if($data['attendance']=="YES")
+        if($data['attendance'] == "YES")
         {
           $attendance = 1;
         }
@@ -128,17 +130,18 @@ class SignupsController extends Controller
            }
            else
            {
-             $assists = '' ;
+             $assists = '';
            }
            if(isset($data['pref1']))
            {
-           $prefrence = $data['pref1'].','.$data['pref2'].','.$data['pref3'];
-           $signup->carprefrence = $prefrence;
+             $prefrence = $data['pref1'] . ',' . $data['pref2'] . ',' . $data['pref3'];
+             $signup->carprefrence = $prefrence;
            }
+
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
         $statCheck = $data['statusCheck'] - floor($data['statusCheck']);
-        $statCheck = round($statCheck,1);
+        $statCheck = round($statCheck, 1);
         if($statCheck != 0.3 ){
           $signup->timetrial1 = $data['t1'];
           $signup->timetrial2 = $data['t2'];
@@ -287,9 +290,5 @@ class SignupsController extends Controller
       ->with('tracks',$tracks)
       ->with('constructor',$constructor)
       ->with('driver',$driver);
-
     }
-
-
-
 }

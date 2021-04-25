@@ -11,11 +11,13 @@ use App\Http\Controllers\Controller;
 
 class UserPanel extends Controller
 {
+    /*
     public function index()
     {
         $user_id = Auth::user()->id;
         return view('user.userhome', compact('user_id'));
     }
+    */
 
     public function viewprofile()
     {
