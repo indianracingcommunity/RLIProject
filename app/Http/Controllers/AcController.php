@@ -208,12 +208,12 @@ class AcController extends Controller
 
             //if position > 1000, position -= 1000;
             //if minid (fastest lap), $status = 1;
-            if($k == $minid) {
-                $status = 1;
-            }
-            else if($driver[0] > 1000) {
+            if($driver[0] > 1000) {
                 $status = -2;
                 $driver[0] -= 1000;
+            }
+            else if($k == $minid) {
+                $status = 1;
             }
 
             //Convert Times to Standard Format
@@ -232,7 +232,7 @@ class AcController extends Controller
                 "team" => $car['name'],
                 "constructor_id" => $car['id'],
                 "matched_team" => $car['name'],
-                "grid" => $driver[5],
+                "grid" => ($driver[5] > 1000) ? $driver[5] - 1000 : $driver[5],
                 "stops" => 0,
                 "status" => $status,
                 "fastestlaptime" => $fastestLapTime,
