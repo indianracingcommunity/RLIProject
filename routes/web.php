@@ -40,17 +40,6 @@ Route::get('/recotap', 'WebsiteController@recotapB');
 Route::post('/recotap', 'WebsiteController@recotapG');
 //
 
-//Are we using these Routes anymore?
-//Why are we exposing our Data publicly?
-Route::get('/fetch/drivers', 'StandingsController@fetchDrivers');
-Route::get('/fetch/circuit', 'StandingsController@fetchCircuit');
-Route::get('/store-results', 'StandingsController@fetchCircuit');
-
-//What do these Routes even do?
-//I don't even know how to run them.
-Route::get('/steam/check', 'SteamController@check');
-Route::get('/driver', 'DriverController@info');
-
 //League Result Data
 Route::get('/{code}/{tier}/{season}/standings', 'StandingsController@fetchStandings')                         //Standings
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
@@ -81,10 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
           Route::post('/signup/store','SignupsController@store');
           Route::post('/signup/update/{signup}','SignupsController@update');
 
-          //Will we work on this page?
-          //Its a Page visible to any user.
-          Route::get('/upload','SignupsController@temp');
-
           //Profile Routes
           Route::get('/user/profile/view/{user}','HomeController@viewprofile');     
      });
@@ -114,6 +99,7 @@ Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
      Route::get('/home/admin/user/{user}','DriverController@viewdetails'); 
      Route::get('/home/admin/user/edit/{user}','DriverController@viewedit');
      Route::post('/home/admin/user/edit/save/{user}','DriverController@saveedit');
+     Route::get('/result/upload','SignupsController@temp');
 });
 
 //League Sign Up
@@ -136,12 +122,11 @@ Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
 });
 
 //League Results Parsing
-//Should Prefix with 'parse'
-Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
+Route::group(['middleware' => 'allowed:admin,coordinator', 'prefix'=>'parse'], function () {
      //F1 Results
-     Route::get('/image/quali', 'ImageController@qualiIndex');
-     Route::get('/image/race', 'ImageController@raceIndex');
-     Route::post('/image/race', 'ImageController@ocrRace');
+     Route::get('/f1/quali', 'ImageController@qualiIndex');
+     Route::get('/f1/race', 'ImageController@raceIndex');
+     Route::post('/f1/race', 'ImageController@ocrRace');
      
      //ACC Results
      Route::get('/acc/upload', 'AccController@raceUpload');
