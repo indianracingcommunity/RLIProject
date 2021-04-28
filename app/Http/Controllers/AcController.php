@@ -2,21 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
-use thiagoalessio\TesseractOCR\TesseractOCR;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Illuminate\Support\Facades\Input;
-use Intervention\Image\Image as Img;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-use App\Http\Requests\RaceResults;
-
-use App\User;
-use App\Race;
-use App\Result;
 use App\Driver;
 use App\Season;
 use App\Series;
@@ -30,6 +22,7 @@ class AcController extends Controller
         $this->output = new ConsoleOutput();
     }
 
+    //View for CSV Upload
     public function raceUpload() {
         $series = Series::where('code', 'ac')->firstOrFail();
         $seasons = Season::where([
@@ -39,104 +32,12 @@ class AcController extends Controller
 
         return view('acupload')->with('seasons', $seasons);
     }
-    public function qualiIndex() {
-        return view('qualiimage');
-    }
 
-    public function closest_match($input, $dic) {
+    //Currently the CSV is generated from an SQLite Query
+    //The Query HAS to be run on a Unix system
 
-        // no shortest distance found, yet
-        $shortest = -1;
-        $index = 0;
-
-        // loop through words to find the closest
-        foreach ($dic as $i => $word) {
-
-            // calculate the distance between the input word,
-            // and the current word
-            $lev = levenshtein($input, $word);
-
-            // check for an exact match
-            if ($lev == 0) {
-
-                // closest word is this one (exact match)
-                //$closest = $word;
-                $index = $i;
-                $shortest = 0;
-
-                // break out of the loop; we've found an exact match
-                break;
-            }
-
-            // if this distance is less than the next found shortest
-            // distance, OR if a next shortest word has not yet been found
-            if ($lev <= $shortest || $shortest < 0) {
-                // set the closest match, and shortest distance
-                //$closest  = $word;
-                $index = $i;
-                $shortest = $lev;
-            }
-        }
-
-        $res = array($index, $shortest);
-        return $res;
-    }
-
-    protected function crude_flatten($array) {
-        $res = array();
-        for($i = 0; $i < count($array); $i++) {
-            $ires = array();
-            $ires['id'] = $array[$i]['id'];
-            $ires['name'] = $array[$i]['name'];
-
-            foreach($array[$i]['alias'] as $j => $alias) {
-                $ires['alias'] = $alias;
-                array_push($res, $ires);
-            }
-        }
-        return $res;
-    }
-
-    public function race_name(String $src, Bool $pub=false) {
-        $tess = new TesseractOCR();
-        $tess->lang('eng')->psm(1);
-
-        $imag = $this->getImage($src, "name");
-        $tess->image($imag->dirname . '/' . $imag->basename);
-        $tr = $tess->run();
-        unlink($imag->dirname . '/' . $imag->basename);
-
-        //Replace Series of '\n' with a single '$'
-        $tri = preg_replace('/\n+/', '$', $tr);
-        $track = explode("$", $tri);
-
-        if(count($track) < 2)
-            return response()->json($track);
-
-        $circuits = Circuit::getOfficial();
-
-        if($pub) {
-            return array(
-                'official' => $track[1],
-                'display' => $track[0]
-            );
-        }
-
-        $official = array_column($circuits, 'official');
-        $index = $this->closest_match($track[1], $official);
-        return array(
-            'circuit_id' => $circuits[$index[0]]['id'],
-            'official' => $track[1],
-            'display' => $track[0]
-        );
-    }
-
-    public function file_get_contents_utf8($fn) {
-        $content = file_get_contents($fn);
-         return mb_convert_encoding($content, 'UTF-8',
-             mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
-    }
-
+    //TODO: Handle Windows Line Ending format
+    //TODO: Validate File Format and Columns
     public function parseCsv(Request $request) {
         $race = request()->file('race');
         $rcsvlines = file_get_contents($race);
@@ -208,12 +109,12 @@ class AcController extends Controller
 
             //if position > 1000, position -= 1000;
             //if minid (fastest lap), $status = 1;
-            if($k == $minid) {
-                $status = 1;
-            }
-            else if($driver[0] > 1000) {
+            if($driver[0] > 1000) {
                 $status = -2;
                 $driver[0] -= 1000;
+            }
+            else if($k == $minid) {
+                $status = 1;
             }
 
             //Convert Times to Standard Format
@@ -232,7 +133,7 @@ class AcController extends Controller
                 "team" => $car['name'],
                 "constructor_id" => $car['id'],
                 "matched_team" => $car['name'],
-                "grid" => $driver[5],
+                "grid" => ($driver[5] > 1000) ? $driver[5] - 1000 : $driver[5],
                 "stops" => 0,
                 "status" => $status,
                 "fastestlaptime" => $fastestLapTime,

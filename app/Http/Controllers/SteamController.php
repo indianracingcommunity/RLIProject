@@ -8,7 +8,7 @@ use App\User;
 use App\Driver;
 
 class SteamController extends Controller
-{
+{   // Add this check before uploading race results
     public function check()
     {
         //Get all Users from DB

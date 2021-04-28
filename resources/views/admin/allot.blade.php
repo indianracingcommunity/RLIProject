@@ -41,7 +41,7 @@
             <option value="12">Xbox F1 Tier 2</option>
             <option value="13">Xbox F1 Reserve/Challenger</option>
             <option value="21">ACC</option>
-            <option value="31">ACC</option>
+            <option value="31">AC</option>
         </select>
         @if (count($existing) == 0)
         <button type="submit" class="ml-6 bg-blue-600 hover:bg-blue-700 text-white py-1 px-8 rounded font-semibold">Submit</button>
