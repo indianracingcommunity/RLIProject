@@ -538,35 +538,4 @@ class ImageController extends Controller
             "results" => $results
         ]);
     }
-
-    public function testing()
-    {
-        $string = '{"track":{"circuit_id":4,"official":"BAKU CITY CIRCUIT","display":"AZERBAIJAN GRAND PRIX - RACE"},"results":[{"position":4,"driver":"MaranelloBaby","driver_id":2,"matched_driver":"MaranelloBaby","team":"McLaren","constructor_id":4,"matched_team":"McLaren","grid":2,"stops":2,"fastestlaptime":"1:39.783","time":"48:04.219"},{"position":2,"driver":"GensralPeps","driver_id":13,"matched_driver":"GeneralPepe","team":"Visi","constructor_id":1,"matched_team":"Haas","grid":0,"stops":2,"fastestlaptime":"PLE BTy","time":"+1527\""},{"position":3,"driver":"Streeter","driver_id":7,"matched_driver":"Streeter","team":"Tara Rosso","constructor_id":5,"matched_team":"Toro Rosso","grid":5,"stops":1,"fastestlaptime":"1:43.891","time":"+21.078"},{"position":4,"driver":"IRC | The\u2014Re...","driver_id":5,"matched_driver":"IRC | The\u2014Re...","team":"Haas","constructor_id":1,"matched_team":"Haas","grid":3,"stops":3,"fastestlaptime":"1:43.021","time":"+46.711"},{"position":5,"driver":"TanyR31","driver_id":8,"matched_driver":"TanyR31","team":"Taro Rassa","constructor_id":5,"matched_team":"Toro Rosso","grid":8,"stops":2,"fastestlaptime":"1:43.233","time":"#1:04.222"},{"position":6,"driver":"Rambo.","driver_id":24,"matched_driver":"Rambo","team":"Williams","constructor_id":7,"matched_team":"Williams","grid":6,"stops":3,"fastestlaptime":"1:44.642","time":"+1:08.372"},{"position":7,"driver":"Monk007","driver_id":18,"matched_driver":"Monk007","team":"Renault","constructor_id":6,"matched_team":"Renault","grid":14,"stops":2,"fastestlaptime":"1:48.219","time":"+1 Lap"},{"position":8,"driver":"kapilace6","driver_id":3,"matched_driver":"kapilace6","team":"Red Bull Racing","constructor_id":2,"matched_team":"Red Bull Racing","grid":13,"stops":2,"fastestlaptime":"1:42.651","time":"DNF"},{"position":5,"driver":"Im_A_Myth","driver_id":25,"matched_driver":"Im_A_Myth","team":"Ferrari","constructor_id":10,"matched_team":"Ferrari","grid":1,"stops":4,"fastestlaptime":"1:42.570","time":"ONF"},{"position":10,"driver":"LoneShark","driver_id":27,"matched_driver":"LoneShark","team":"Alfa Romeo Racing","constructor_id":3,"matched_team":"Alfa Romeo Racing","grid":16,"stops":2,"fastestlaptime":"1:43.399","time":"DNF"},{"position":0,"driver":"IRC] rANT","driver_id":20,"matched_driver":"IRC||rANT","team":"Ferrari","constructor_id":10,"matched_team":"Ferrari","grid":10,"stops":4,"fastestlaptime":"1,48.547","time":"DNF"},{"position":12,"driver":"thekC66","driver_id":6,"matched_driver":"theKC66","team":"Red Bull Racing","constructor_id":2,"matched_team":"Red Bull Racing","grid":0,"stops":1,"fastestlaptime":"2:04.452","time":"DNF"},{"position":13,"driver":"BlackSheep","driver_id":19,"matched_driver":"BlackSheep","team":"Mercedes-AMG Petronas","constructor_id":9,"matched_team":"Mercedes-AMG Petronas","grid":7,"stops":1,"fastestlaptime":"1:59,574","time":"DNF"},{"position":14,"driver":"deathblaom1424","driver_id":17,"matched_driver":"deathbloom1421","team":"Mercedes-AMG Petranas","constructor_id":9,"matched_team":"Mercedes-AMG Petronas","grid":3,"stops":0,"fastestlaptime":"neten inne","time":"DNF"}]}';
-        $dec = json_decode($string, true);
-        $count = count($dec['results']);
-        return $dec;
-        // return view('standings.review')
-        // ->with('json',$dec)
-        // ->with('count',$count);
-    }
-
-    public function testsave()
-    {
-        $data = request()->all();
-        $track = array("circuit_id"=>$data['circuit_id'],"official"=>$data['official'],"display"=>$data['display']);
-        for( $i=0; $i<5; $i++){
-       
-        $results = array("position"=>$data['position'.$i],"driver"=>$data['driver'.$i],"driver_id"=>$data['driver_id'.$i],"matched_driver"=>$data['matched_driver'.$i],"team"=>$data['team'.$i],"constructor_id"=>$data['constructor_id'.$i],"matched_team"=>$data['matched_team'.$i],"grid"=>$data['grid'.$i],"stops"=>$data['stops'.$i],"fastestlaptime"=>$data['fastestlaptime'.$i],"time"=>$data['time'.$i]);
-
-       $json = response()->json([ 
-        "track" => $track,
-        "results" => $results
-         
-    ]);
-
-    return $json;
-       }  
-      
-    }
-
 }
