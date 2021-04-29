@@ -5,6 +5,9 @@
   }
 </style>
 @section('content')
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
 <div class="container">
   <div class="font-bold text-xl">Create a report</div>
     <form action="submit" method="POST" class="my-4">
@@ -12,40 +15,27 @@
         <table>
           <tr>
             <td>
-              <label for="against" class="font-semibold">Who are you reporting?</label>
+              <label for="against" class="font-semibold">Race</label>
             </td>
             <td>
-              <input type="text" class="border rounded py-2 px-3 w-64" id="against" name="against" placeholder="User's Name">
+              <select class="border rounded py-2 px-3 w-64" id="race" name="race">
+                @for ($i =0 ; $i <count($data) ; $i++)
+                <option value="{{$data[$i]['season']['tier']}}">{{$data[$i]['circuit']['name'] ." ".$data[$i]['season']['name']}} </option>
+                    
+                @endfor
+              </select>
             </td>
           </tr>
           <tr>
             <td>
-              <label for="track" class="font-semibold">At which track did this incident take place?</label>
+              <label for="against" class="font-semibold">Who are you reporting?</label>
             </td>
             <td>
-              <select class="border rounded py-2 px-3 w-64" id="track" name="track">
-                <option>Australia</option>
-                <option>Bahrain</option>
-                <option>China</option>
-                <option>Baku</option>
-                <option>Spain</option>
-                <option>Monaco</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Silverstone</option>
-                <option>Germany</option>
-                <option>Belgium</option>
-                <option>Italy</option>
-                <option>Singapore</option>
-                <option>Russia</option>
-                <option>Japan</option>
-                <option>Mexico</option>
-                <option>USA</option>
-                <option>Brazil</option>
-                <option>Abu Dhabi</option>
+              <select class="border rounded py-2 px-3 w-64" id="driver" name="driver">
               </select>
             </td>
           </tr>
+          
           <tr>
             <td>
               <label for="lap" class="font-semibold">On Which lap did the incident take place</label>
@@ -75,56 +65,54 @@
           </tr>
         </table>
         <input type="submit" class="bg-orange-500 hover:bg-orange-600 cursor-pointer font-semibold px-4 py-2 rounded text-white" value="Submit report">
-      <!-- <div class="my-2">
-        <label for="against" class="font-semibold">Who are you reporting?</label>
-        <input type="text" class="border rounded py-2 px-3 mx-8" id="against" name="against" placeholder="User's Name">
-      </div> -->
-      <!-- <div class="my-2">
-        <label for="track" class="font-semibold">At which track did this incident take place?</label>
-        <select class="border rounded py-2 px-3" id="track" name="track">
-          <option>Australia</option>
-          <option>Bahrain</option>
-          <option>China</option>
-          <option>Baku</option>
-          <option>Spain</option>
-          <option>Monaco</option>
-          <option>Canada</option>
-          <option>France</option>
-          <option>Silverstone</option>
-          <option>Germany</option>
-          <option>Belgium</option>
-          <option>Italy</option>
-          <option>Singapore</option>
-          <option>Russia</option>
-          <option>Japan</option>
-          <option>Mexico</option>
-          <option>USA</option>
-          <option>Brazil</option>
-          <option>Abu Dhabi</option>
-        </select>
-      </div> -->
-
-     <!-- <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="1" id="inquali" name="inquali">
-          <label class="form-check-label" for="defaultCheck1">
-            Did the Incident take place in Qualifiying?
-          </label>
-        </div> 
-
-      <div class="form-group">
-          <label for="lap" class="font-semibold">On Which lap did the incident take place</label>
-          <input type="text" class="border rounded py-2 px-3" id="lap" placeholder="Lap Number" name="lap">
-        </div> -->
-      <!-- <div class="form-group">
-        <label for="explained">Elaborate the Issue</label>
-        <textarea class="form-control" id="explained" rows="3" name="explained"></textarea>
-      </div>
-      <div class="form-group">
-          <label for="proof">Video Proof</label>
-          <input type="text" name="proof" class="form-control" id="proof" placeholder="Youtube link (For multiple videos seperate links with commas)">
-        </div>
-        <br>
-        <input type="submit" class="btn btn-primary" value="Submit report" style="margin-left:40%"> -->
     </form>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type='text/javascript'>
+
+  $(document).ready(function(){
+
+    // Department Change
+    $('#race').change(function(){
+      
+       // Department id
+       var id = $(this).val();
+      
+       // Empty the dropdown
+       $('#driver').find('option').not(':first').remove();
+
+       // AJAX request 
+       $.ajax({
+         url: '/fetch/drivers/'+id,
+         type: 'get',
+         dataType: 'json',
+         success: function(response){
+          // console.log(response)
+           var len = 0;
+           if(response!= null){
+             len = response.length;
+           }
+          //  console.log(len)
+           if(len > 0){
+             // Read data and create <option >
+              
+             for(var i=0; i<len; i++){
+
+               var id = response[i].id;
+               var name = response[i].name;
+
+               var option = "<option value='"+id+"'>"+name+"</option>"; 
+
+               $("#driver").append(option); 
+             }
+           }
+
+         }
+      });
+    });
+
+  });
+
+  </script>
 @endsection
