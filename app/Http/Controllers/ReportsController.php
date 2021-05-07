@@ -16,28 +16,24 @@ class ReportsController extends Controller
 {
     public function view()
     {
-        $seasons = Season::where('status', '<', 2)->get()->toArray(); // Get all active seasons
+        $seasons = Season::where('status', '<', 2)->get()->toArray();   // Get all active seasons
         $report_races = array();  
         foreach($seasons as $i)
         {
-            if($i['report_races']!=NULL)
+            if($i['report_races'] != NULL)
             {
-            $arr = explode(',', $i['report_races']);
-            for($j=0; $j<count($arr); $j++)
-            {
-                array_push($report_races,$arr[$j]);        // Array of report_races id's from all seasons
-            }
-            
+                $arr = explode(',', $i['report_races']);
+                for($j = 0; $j < count($arr); $j++)
+                {
+                    array_push($report_races,$arr[$j]);                 // Array of report_races id's from all seasons
+                }
             }
         }
 
-        $final = array();
-        for($i=0;$i<count($report_races);$i++)
-        {
-           $races = Race::where('id','=',$report_races[$i])->get()->load(['circuit','season'])->toArray();
-           array_push($final,$races[0]);
-        }
-        return view('user.createreport')->with('data',$final);
+        $races = Race::wherein('id', $report_races)
+                        ->get()->load(['circuit','season'])->toArray();
+
+        return view('user.createreport')->with('data', $races);
     }
 
     public function driversdata($race)
@@ -56,7 +52,7 @@ class ReportsController extends Controller
     {
         $data = request()->all();
         // array_push($data['driver'],'1');       Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
-        for($i=0;$i<count($data['driver']);$i++)
+        for($i = 0; $i < count($data['driver']); $i++)
         {
             $report = new Report();
             $report -> race_id = $data['race'];
@@ -69,7 +65,8 @@ class ReportsController extends Controller
         }
         
         // Redirect to View all Reports page
-        return redirect('/');
+        session()->flash('success',"Report Submitted Successfully");
+        return redirect('/home/report/list');
     }
 
     public function listDriverReports()
