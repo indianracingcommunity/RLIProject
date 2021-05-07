@@ -90,6 +90,12 @@ class ReportsController extends Controller
         $report = Report::findOrFail(request()->report)
                         ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit'])->toArray();
 
+        if(!($report->reported_driver->user_id == Auth::user()->id || $report->reporting_against->user_id == Auth::user()->id))
+        {
+            session()->flash('denied',"You are not allowed to view this report");
+            return redirect('/home/report/list');
+        }
+
         return view('user.reportdetails')->with('report',$report);
     }
 }
