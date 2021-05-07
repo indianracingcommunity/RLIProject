@@ -20,7 +20,7 @@
             <td>
               <select class="border rounded py-2 px-3 w-64" id="race" name="race">
                 @for ($i =0 ; $i <count($data) ; $i++)
-                <option value="{{$data[$i]['season']['tier']}}">{{$data[$i]['circuit']['name'] ." ".$data[$i]['season']['name']}} </option>
+                <option value="{{$data[$i]['id']}}">{{$data[$i]['circuit']['name'] ." | ".$data[$i]['season']['name']}} </option>
                     
                 @endfor
               </select>
@@ -73,10 +73,8 @@
 
   $(document).ready(function(){
 
-    // Department Change
     $('#race').change(function(){
       
-       // Department id
        var id = $(this).val();
       
        // Empty the dropdown
@@ -88,12 +86,10 @@
          type: 'get',
          dataType: 'json',
          success: function(response){
-          // console.log(response)
            var len = 0;
            if(response!= null){
              len = response.length;
            }
-          //  console.log(len)
            if(len > 0){
              // Read data and create <option >
               

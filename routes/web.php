@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //REST APIs
 //To be moved to api.php
-Route::get('/fetch/drivers/{tier}','ReportsController@driversdata'); // Test API function
+Route::get('/fetch/drivers/{race}','ReportsController@driversdata'); // Need to move this in API middleware later on
 
 Route::group(['middleware' => 'auth:api'], function () {
      //Fetch Driver & Constructor Details - Telemetry API

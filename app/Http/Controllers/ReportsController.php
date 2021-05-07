@@ -8,6 +8,7 @@ use App\Report;
 use Auth;
 use App\Season;
 use App\Race;
+use App\Result;
 
 class ReportsController extends Controller
 {
@@ -32,18 +33,20 @@ class ReportsController extends Controller
         for($i=0;$i<count($report_races);$i++)
         {
            $races = Race::where('id','=',$report_races[$i])->get()->load(['circuit','season'])->toArray();
-        //    dd($races);
            array_push($final,$races[0]);
-            
         }
-        // dd($final);
         return view('user.createreport')->with('data',$final);
     }
 
-    public function driversdata($tier)
+    public function driversdata($race)
     {
-        $drivers = Driver::where('tier',$tier)->get();
-        
+        $result = Result::where('race_id',$race)->get()->load('driver')->toArray();
+        $drivers = array();
+        for($i=0; $i<count($result); $i++)
+        {
+            array_push($drivers,$result[$i]['driver']);
+        }
+          
         return response()->json($drivers);
     }
 
