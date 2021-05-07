@@ -77,10 +77,9 @@ class ReportsController extends Controller
                          ->orwhere('reported_against', $driver['id'])
                          ->orderBy('created_at', 'desc')
                          ->get()
-                         ->load(['reporting_driver', 'reported_against', 'race']);
+                         ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit']);
 
-        return response()->json($reports);
-        //return view('something')->with('reports', $reports);
+        return view('user.viewreports')->with('reports', $reports);
     }
 
     public function category(Report $report)

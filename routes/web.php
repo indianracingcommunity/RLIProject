@@ -62,7 +62,6 @@ Route::group(['middleware' => 'auth'], function () {
           //Driver Report Routes
           Route::get('/home/report/create','ReportsController@view');
           Route::post('/home/report/submit','ReportsController@create');
-          Route::get('/home/report/list','ReportsController@listDriverReports');
           Route::get('/home/view/report/{report}/details','ReportsController@details');
 
           //Signup Routes
@@ -74,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
           Route::get('/user/profile/view/{user}','HomeController@viewprofile');     
      });
 });
+Route::get('/home/report/list','ReportsController@listDriverReports');
 
 //REST APIs
 //To be moved to api.php
