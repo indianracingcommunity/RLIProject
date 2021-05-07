@@ -49,4 +49,9 @@ class Race extends Model
     {
         return $this->hasMany('App\Result');
     }
+
+    public function report()
+    {
+        return $this->hasMany('App\Report');
+    }
 }

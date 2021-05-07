@@ -79,9 +79,11 @@ class ReportsController extends Controller
         $reports = Report::where('reporting_driver', $driver['id'])
                          ->orwhere('reported_against', $driver['id'])
                          ->orderBy('created_at', 'desc')
-                         ->get();
+                         ->get()
+                         ->load(['reporting_driver', 'reported_against', 'race']);
 
-        return view('something')->with('reports', $reports);
+        return response()->json($reports);
+        //return view('something')->with('reports', $reports);
     }
 
     public function category(Report $report)

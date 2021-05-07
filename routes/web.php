@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
           //Driver Report Routes
           Route::get('/home/report/create','ReportsController@view');
           Route::post('/home/report/submit','ReportsController@create');
-          Route::get('/home/report/category','ReportsController@category');
+          Route::get('/home/report/list','ReportsController@listDriverReports');
           Route::get('/home/view/report/{report}/details','ReportsController@details');
 
           //Signup Routes

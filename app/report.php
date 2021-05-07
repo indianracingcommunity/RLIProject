@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+
 class Report extends Model
 {
     use LogsActivity;
@@ -18,4 +19,18 @@ class Report extends Model
          'resolved'
     ];
 
+    public function race()
+    {
+        return $this->belongsTo('App\Race');
+    }
+
+    public function reporting_driver()
+    {
+        return $this->belongsTo('App\Driver', 'reporting_driver');
+    }
+
+    public function reported_against()
+    {
+        return $this->belongsTo('App\Driver', 'reported_against');
+    }
 }
