@@ -88,7 +88,7 @@ class ReportsController extends Controller
     public function details()
     {
         $report = Report::findOrFail(request()->report)
-                        ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit']);
+                        ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit'])->toArray();
 
         return view('user.reportdetails')->with('report',$report);
     }
