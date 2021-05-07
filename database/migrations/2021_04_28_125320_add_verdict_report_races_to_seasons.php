@@ -28,9 +28,9 @@ class AddVerdictReportRacesToSeasons extends Migration
     public function down()
     {
         Schema::table('seasons', function (Blueprint $table) {
-            $table->dropColumn('report_channel');
-            $table->dropColumn('verdict_channel');
             $table->dropColumn('report_races');
+            $table->dropColumn('verdict_channel');
+            $table->dropColumn('report_channel');
         });
     }
 }

@@ -30,11 +30,11 @@ class AddForiegnKeysToReportsTable extends Migration
     public function down()
     {
         Schema::table('reports', function (Blueprint $table) {
-
+            $table->dropforeign(['race_id']);
             $table->dropForeign(['reporting_driver']);
-             $table->dropforeign(['race_id']);
-            $table->dropColumn('reporting_driver');
+
             $table->dropColumn('race_id');
+            $table->dropColumn('reporting_driver');
         });
     }
 }
