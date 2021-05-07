@@ -17,7 +17,7 @@ class AddForiegnKeysToReportsTable extends Migration
             $table->bigInteger('reporting_driver')->unsigned()->after('id');
             $table->bigInteger('race_id')->unsigned()->after('reported_against');
 
-            $table->foreign('reporting_driver')->references('id')->on('users');
+            $table->foreign('reporting_driver')->references('id')->on('drivers');
             $table->foreign('race_id')->references('id')->on('races');
         });
     }

@@ -16,11 +16,11 @@ class RefactorReportsTable extends Migration
         Schema::table('reports', function (Blueprint $table) {
             $table->renameColumn('against', 'reported_against');
             $table->renameColumn('explained', 'explanation');
-            $table->renameColumn('verdict', 'verdict_message');
+            $table->renameColumn('verdict', 'verdict_message')->default('NFA');
 
-            $table->string('verdict_time')->after('proof');
-            $table->float('verdict_pp')->after('proof');
-            $table->text('stewards_notes')->after('proof');
+            $table->string('verdict_time')->default('0')->after('proof');
+            $table->float('verdict_pp')->default(0)->after('proof');
+            $table->text('stewards_notes')->nullable()->after('proof');
 
             $table->dropColumn('track');
             $table->dropColumn('inquali');
