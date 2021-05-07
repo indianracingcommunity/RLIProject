@@ -19,7 +19,7 @@ class ReportsController extends Controller
         $dr = Driver::where('user_id', Auth::user()->id)->first();
         if($dr == null)
         {   
-            session()->flash('error',"Need to get a license first child, Please contact a coordinator");
+            session()->flash('error', "Need to get a license first child, Please contact a coordinator");
             return redirect('/');
         }
 
@@ -70,12 +70,21 @@ class ReportsController extends Controller
         }
         
         // Redirect to View all Reports page
-        session()->flash('success',"Report Submitted Successfully");
-        return redirect('/home/report/list');
+        session()->flash('success', "Report Submitted Successfully");
+        return redirect('/');
     }
 
-    public function update(Report $report)   // Check this function once the frontend page is done 
+    public function update()   // Check this function once the frontend page is done
     {
+        $report = Report::findOrFail(request()->report)
+                        ->load('reporting_driver');
+
+        if($report->toArray()['reporting_driver']['user_id'] != Auth::user()->id)
+        {
+            session()->flash('error', "You are not allowed to delete this report");
+            return redirect('/');
+        }
+
         $data = request()->all();
         $report -> reported_against = $data['driver'];
         $report -> lap = $data['lap'];
@@ -115,5 +124,21 @@ class ReportsController extends Controller
         }
 
         return view('user.reportdetails')->with('report', $report);
+    }
+
+    public function delete()
+    {
+        $report = Report::findOrFail(request()->report)
+                        ->load(['reporting_driver', 'reported_against']);
+
+        if($report->toArray()['reporting_driver']['user_id'] != Auth::user()->id)
+        {
+            session()->flash('error', "You are not allowed to delete this report");
+            return redirect('/');
+        }
+
+        $report->delete();
+        session()->flash('success', "Report deleted successfully");
+        return redirect('/');
     }
 }

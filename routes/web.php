@@ -62,9 +62,13 @@ Route::group(['middleware' => 'auth'], function () {
           //Driver Report Routes
           Route::get('/home/report/create','ReportsController@view');
           Route::post('/home/report/submit','ReportsController@create');
+
           Route::get('/home/report/list','ReportsController@listDriverReports');
-          Route::get('/home/view/report/{report}/details','ReportsController@details');
           Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$');
+
+          Route::get('/home/report/edit/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$');
+          Route::put('/home/report/edit/{report}','ReportsController@update')->where('report', '^[-+]?\d*\.?\d*$');
+          Route::delete('/home/report/delete/{report}','ReportsController@delete')->where('report', '^[-+]?\d*\.?\d*$');
 
           //Signup Routes
           Route::get('/signup','SignupsController@view')->middleware('signup');
