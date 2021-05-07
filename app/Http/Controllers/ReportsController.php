@@ -10,6 +10,7 @@ use App\Race;
 use App\Season;
 use App\Report;
 use App\Driver;
+use App\Result;
 
 class ReportsController extends Controller
 {
@@ -54,17 +55,21 @@ class ReportsController extends Controller
     public function create()
     {
         $data = request()->all();
-        $report = new Report();
-        $report -> rid = Auth::user()->id; 
-        $report -> reported_by = Auth::user()->name; 
-        $report->against=$data['against'];
-        $report->track=$data['track'];
-     //   $report->inquali=$data['inquali'];
-        $report->lap=$data['lap'];
-        $report->explained=$data['explained'];
-        $report->proof=$data['proof'];
-        $report->save();
-        return redirect('/home');
+        // array_push($data['driver'],'1');       Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
+        for($i=0;$i<count($data['driver']);$i++)
+        {
+            $report = new Report();
+            $report -> race_id = $data['race'];
+            $report -> reporting_driver = Auth::user()->id;
+            $report -> reported_against = $data['driver'][$i];
+            $report -> lap = $data['lap'];
+            $report -> explanation = $data['explained'];
+            $report -> proof = $data['proof'];
+            $report->save();
+        }
+        
+        // Redirect to View all Reports page
+        return redirect('/');
     }
 
     public function listDriverReports()

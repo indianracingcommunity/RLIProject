@@ -31,7 +31,7 @@
               <label for="against" class="font-semibold">Who are you reporting?</label>
             </td>
             <td>
-              <select class="border rounded py-2 px-3 w-64" id="driver" name="driver">
+              <select class="border rounded py-2 px-3 w-64" id="driver" name="driver[]">
               </select>
             </td>
           </tr>
