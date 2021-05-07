@@ -74,6 +74,16 @@ class ReportsController extends Controller
         return redirect('/home/report/list');
     }
 
+    public function update(Report $report)   // Check this function once the frontend page is done 
+    {
+        $data = request()->all();
+        $report -> reported_against = $data['driver'];
+        $report -> lap = $data['lap'];
+        $report -> explanation = $data['explained'];
+        $report -> proof = $data['proof'];
+        $report->save();
+    }
+
     public function listDriverReports()
     {
         //Search for driver, if not, respond "Need to get a license first child"
