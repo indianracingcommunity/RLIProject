@@ -14,7 +14,6 @@ class RefactorReportsTable extends Migration
     public function up()
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->renameColumn('against', 'reported_against');
             $table->renameColumn('explained', 'explanation');
             $table->renameColumn('verdict', 'verdict_message')->default('NFA');
 
@@ -26,6 +25,7 @@ class RefactorReportsTable extends Migration
             $table->dropColumn('inquali');
             $table->dropColumn('rid');
             $table->dropColumn('reported_by');
+            $table->dropColumn('against');
         });
     }
 
@@ -41,6 +41,7 @@ class RefactorReportsTable extends Migration
             $table->integer('rid')->after('id');
             $table->boolean('inquali');
             $table->string('track');
+            $table->string('against');
 
             $table->dropColumn('stewards_notes');
             $table->dropColumn('verdict_pp');
@@ -48,7 +49,6 @@ class RefactorReportsTable extends Migration
 
             $table->renameColumn('verdict_message', 'verdict');
             $table->renameColumn('explanation', 'explained');
-            $table->renameColumn('reported_against', 'against');
         });
     }
 }

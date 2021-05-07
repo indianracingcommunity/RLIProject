@@ -15,9 +15,12 @@ class AddForiegnKeysToReportsTable extends Migration
     {
         Schema::table('reports', function (Blueprint $table) {
             $table->bigInteger('reporting_driver')->unsigned()->after('id');
-            $table->bigInteger('race_id')->unsigned()->after('reported_against');
+            $table->bigInteger('race_id')->unsigned()->after('id');
+            $table->bigInteger('reported_against')->unsigned()->after('reporting_driver');
 
             $table->foreign('reporting_driver')->references('id')->on('drivers');
+            $table->foreign('reported_against')->references('id')->on('drivers');
+
             $table->foreign('race_id')->references('id')->on('races');
         });
     }
@@ -32,7 +35,8 @@ class AddForiegnKeysToReportsTable extends Migration
         Schema::table('reports', function (Blueprint $table) {
             $table->dropforeign(['race_id']);
             $table->dropForeign(['reporting_driver']);
-
+            $table->dropForeign(['reported_against']);
+            $table->dropColumn('reported_against');
             $table->dropColumn('race_id');
             $table->dropColumn('reporting_driver');
         });
