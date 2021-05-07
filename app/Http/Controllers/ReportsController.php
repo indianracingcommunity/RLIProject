@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Driver;
 use Illuminate\Http\Request;
-use App\Report;
+
 use Auth;
-use App\Season;
 use App\Race;
-use App\Result;
+use App\Season;
+use App\Report;
+use App\Driver;
 
 class ReportsController extends Controller
 {
@@ -64,17 +62,25 @@ class ReportsController extends Controller
         $report->proof=$data['proof'];
         $report->save();
         return redirect('/home');
+    }
 
+    public function listDriverReports()
+    {
+        //Search for driver, if not, respond "Need to get a license first child"
+        $driver = Driver::where('user_id', Auth::user()->id)->firstOrFail();
+        $reports = Report::where('reporting_driver', $driver['id'])
+                         ->orwhere('reported_against', $driver['id'])
+                         ->orderBy('created_at', 'desc')
+                         ->get();
 
+        return view('something')->with('reports', $reports);
     }
 
     public function category(Report $report)
     {
         
-            $report = Report::where('rid','=',Auth::user()->id)
-            ->get();
+        $report = Report::where('rid', '=', Auth::user()->id)->get();
         return view('user.viewreports', compact('report'));
-        
     }
 
     public function details(Report $report)
