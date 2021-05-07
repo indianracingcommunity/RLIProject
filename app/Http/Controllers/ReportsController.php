@@ -16,7 +16,14 @@ class ReportsController extends Controller
 {
     public function view()
     {
-        $seasons = Season::where('status', '<', 2)->get()->toArray();   // Get all active seasons
+        $dr = Driver::where('user_id', Auth::user()->id)->first();
+        if($dr == null)
+        {   
+            session()->flash('error',"Need to get a license first child, Please contact a coordinator");
+            return redirect('/');
+        }
+
+        $seasons = Season::where('status', '<', 2)->get()->toArray();// Get all active seasons   
         $report_races = array();  
         foreach($seasons as $i)
         {
@@ -48,12 +55,13 @@ class ReportsController extends Controller
     public function create()
     {
         $data = request()->all();
+        $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();
         // array_push($data['driver'],'1');       Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
         for($i = 0; $i < count($data['driver']); $i++)
         {
             $report = new Report();
             $report -> race_id = $data['race'];
-            $report -> reporting_driver = Auth::user()->id;
+            $report -> reporting_driver = $dr->id;
             $report -> reported_against = $data['driver'][$i];
             $report -> lap = $data['lap'];
             $report -> explanation = $data['explained'];
@@ -90,12 +98,12 @@ class ReportsController extends Controller
         $report = Report::findOrFail(request()->report)
                         ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit'])->toArray();
 
-        if(!($report->reported_driver->user_id == Auth::user()->id || $report->reporting_against->user_id == Auth::user()->id))
+        if(!($report['reporting_driver']['user_id'] == Auth::user()->id || $report['reported_against']['user_id'] == Auth::user()->id))
         {
-            session()->flash('denied',"You are not allowed to view this report");
+            session()->flash('error', "You are not allowed to view this report");
             return redirect('/home/report/list');
         }
 
-        return view('user.reportdetails')->with('report',$report);
+        return view('user.reportdetails')->with('report', $report);
     }
 }
