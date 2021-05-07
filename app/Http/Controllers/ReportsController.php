@@ -38,14 +38,11 @@ class ReportsController extends Controller
 
     public function driversdata($race)
     {
-        $result = Result::where('race_id',$race)->get()->load('driver')->toArray();
-        $drivers = array();
-        for($i=0; $i<count($result); $i++)
-        {
-            array_push($drivers,$result[$i]['driver']);
-        }
-          
-        return response()->json($drivers);
+        $result = Result::where('race_id', $race)
+                        ->get()->load('driver')
+                        ->pluck('driver')->toArray();
+
+        return response()->json($result);
     }
 
     public function create()
@@ -84,13 +81,15 @@ class ReportsController extends Controller
 
     public function category(Report $report)
     {
-        
         $report = Report::where('rid', '=', Auth::user()->id)->get();
         return view('user.viewreports', compact('report'));
     }
 
-    public function details(Report $report)
+    public function details()
     {
+        $report = Report::findOrFail(request()->report)
+                        ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit']);
+
         return view('user.reportdetails')->with('report',$report);
     }
 }

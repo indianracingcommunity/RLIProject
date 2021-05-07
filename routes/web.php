@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
           Route::post('/home/report/submit','ReportsController@create');
           Route::get('/home/report/list','ReportsController@listDriverReports');
           Route::get('/home/view/report/{report}/details','ReportsController@details');
+          Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$');
 
           //Signup Routes
           Route::get('/signup','SignupsController@view')->middleware('signup');
