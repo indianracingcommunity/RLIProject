@@ -17,6 +17,7 @@ class ReportsController extends Controller
 {
     public function reportDriver()
     {
+        //Check whether a Driver
         $dr = Driver::where('user_id', Auth::user()->id)->first();
         if($dr == null)
         {   
@@ -24,22 +25,45 @@ class ReportsController extends Controller
             return redirect('/');
         }
 
-        $seasons = Season::where('status', '<', 2)->get()->toArray();   // Get all active seasons
-        $report_races = array();  
-        foreach($seasons as $i)
+        //Return All Active Seasons which is Reportable
+        $seasons = Season::where('status', '<', 2)
+                         ->where('reportable', true)
+                         ->whereNotNull('report_window')
+                         ->get()->toArray();
+
+        //Return Seasons with Report Windows still open
+        $seasonlist = array();
+        for($k = 0; $k < count($seasons); $k++)
         {
-            if($i['report_races'] != NULL)
-            {
-                $arr = explode(',', $i['report_races']);
-                for($j = 0; $j < count($arr); $j++)
-                {
-                    array_push($report_races,$arr[$j]);                 // Array of report_races id's from all seasons
-                }
-            }
+            if(time() > strtotime($seasons[$k]['report_window']))
+                continue;
+
+            array_push($seasonlist, $seasons[$k]['id']);
         }
 
-        $races = Race::wherein('id', $report_races)
-                        ->get()->load(['circuit','season'])->toArray();
+        //Get Max Round of Seasons, i.e. Latest Races
+        $race_ids = Race::wherein('season_id', $seasonlist)
+                        ->selectRaw('max(round) as round, season_id')
+                        ->groupBy('season_id')
+                        ->get()->toArray();
+
+        //Get Latest Races
+        $races = [];
+        if(count($race_ids) > 0)
+        {
+            //[round AND season_id] OR [round AND season_id] OR ...
+            $races = Race::where(function($query) use ($race_ids) {
+                for($j = 0; $j < count($race_ids); $j++)
+                {
+                    $query->orWhere(function($orq) use ($j, $race_ids) {
+                        $orq->where('round', $race_ids[$j]['round'])
+                            ->where('season_id', $race_ids[$j]['season_id']);
+                    });
+                }
+            });
+
+            $races = $races->get()->load(['circuit','season'])->toArray();
+        }
 
         return view('user.createreport')->with('data', $races);
     }
@@ -94,7 +118,7 @@ class ReportsController extends Controller
         //2. Check if Report is already Resolved/Published by Stewards
         //3. Check if Report Update is in Reporting Window
         if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
-           !($rA['race']['season']['reportable'] && $rA['race']['season']['reportable_window']
+           !($rA['race']['season']['reportable'] && $rA['race']['season']['report_window'] != null
             && time() < strtotime($rA['race']['season']['report_window'])))
         {
             session()->flash('error', "You are not allowed to Update this report");
@@ -114,7 +138,7 @@ class ReportsController extends Controller
         //Search for driver, if not, respond "Need to get a license first child"
         $driver = Driver::where('user_id', Auth::user()->id)->firstOrFail();
         $reports = Report::where('reporting_driver', $driver['id'])
-                         ->orwhere('reported_against', $driver['id'])
+                         ->orWhere('reported_against', $driver['id'])
                          ->orderBy('created_at', 'desc')
                          ->get()
                          ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit']);
@@ -146,7 +170,7 @@ class ReportsController extends Controller
         //2. Check if Report is already Resolved/Published by Stewards
         //3. Check if Report Update is in Reporting Window
         if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
-           !($rA['race']['season']['reportable'] && $rA['race']['season']['reportable_window']
+           !($rA['race']['season']['reportable'] && $rA['race']['season']['report_window'] != null
             && time() < strtotime($rA['race']['season']['report_window'])))
         {
             session()->flash('error', "You are not allowed to delete this report");
