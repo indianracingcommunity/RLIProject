@@ -514,16 +514,15 @@ return "Done";
    }
 
 
-   public static function publishMessage($message,$channel)
+   public static function publishMessage($message, $channel)
    {
-    
        $adata = array("content" => $message, "tts" => false);
        $postdata = json_encode($adata);
        $params = (['token' => config('services.discord.bot')]);
        $curl = curl_init();
 
        curl_setopt_array($curl, array(
-           CURLOPT_URL => "https://discord.com/api/channels/".$channel."/messages",
+           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages",
            CURLOPT_RETURNTRANSFER => true,
            CURLOPT_ENCODING => "",
            CURLOPT_MAXREDIRS => 10,
@@ -547,21 +546,16 @@ return "Done";
        } 
        else
        {
-           $final = json_decode($response,true);
+           $final = json_decode($response, true);
            if(isset($final['message']))
            {
-               return "Invalid";
+                return "Invalid";
            }
            else
            {
                 return $response;
            }
-   }
-
-
-
-  
- }
-
+        }
+    }
 }
 ?>

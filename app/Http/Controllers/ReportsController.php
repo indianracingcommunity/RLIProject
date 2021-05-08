@@ -11,10 +11,11 @@ use App\Season;
 use App\Report;
 use App\Driver;
 use App\Result;
+use App\Discord;
 
 class ReportsController extends Controller
 {
-    public function view()
+    public function reportDriver()
     {
         $dr = Driver::where('user_id', Auth::user()->id)->first();
         if($dr == null)
@@ -23,7 +24,7 @@ class ReportsController extends Controller
             return redirect('/');
         }
 
-        $seasons = Season::where('status', '<', 2)->get()->toArray();// Get all active seasons   
+        $seasons = Season::where('status', '<', 2)->get()->toArray();   // Get all active seasons
         $report_races = array();  
         foreach($seasons as $i)
         {
@@ -56,6 +57,8 @@ class ReportsController extends Controller
     {
         $data = request()->all();
         $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();
+        $race = Race::where('id', $data['race'])->firstOrFail()->load('season')->toArray();
+
         // array_push($data['driver'],'1');       Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
         for($i = 0; $i < count($data['driver']); $i++)
         {
@@ -67,8 +70,11 @@ class ReportsController extends Controller
             $report -> explanation = $data['explained'];
             $report -> proof = $data['proof'];
             $report->save();
+
+            //Publish Message in Season's Report Channel
+            Discord::publishMessage("", $race['season']['report_channel']);
         }
-        
+
         // Redirect to View all Reports page
         session()->flash('success', "Report Submitted Successfully");
         return redirect('/');
@@ -77,11 +83,19 @@ class ReportsController extends Controller
     public function update()   // Check this function once the frontend page is done
     {
         $report = Report::findOrFail(request()->report)
-                        ->load('reporting_driver');
+                        ->load(['reporting_driver', 'race.season']);
 
-        if($report->toArray()['reporting_driver']['user_id'] != Auth::user()->id)
+        $rA = $report->toArray();
+
+        //Checks for Update:
+        //1. Check if Reporting Driver is the Authenticated User
+        //2. Check if Report is already Resolved/Published by Stewards
+        //3. Check if Report Update is in Reporting Window
+        if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
+           !($rA['race']['season']['reportable'] && $rA['race']['season']['reportable_window']
+            && time() < strtotime($rA['race']['season']['report_window'])))
         {
-            session()->flash('error', "You are not allowed to delete this report");
+            session()->flash('error', "You are not allowed to Update this report");
             return redirect('/');
         }
 
@@ -106,12 +120,6 @@ class ReportsController extends Controller
         return view('user.viewreports')->with('reports', $reports);
     }
 
-    public function category(Report $report)
-    {
-        $report = Report::where('rid', '=', Auth::user()->id)->get();
-        return view('user.viewreports', compact('report'));
-    }
-
     public function details()
     {
         $report = Report::findOrFail(request()->report)
@@ -131,7 +139,13 @@ class ReportsController extends Controller
         $report = Report::findOrFail(request()->report)
                         ->load(['reporting_driver', 'reported_against']);
 
-        if($report->toArray()['reporting_driver']['user_id'] != Auth::user()->id)
+        //Checks for Update:
+        //1. Check if Reporting Driver is the Authenticated User
+        //2. Check if Report is already Resolved/Published by Stewards
+        //3. Check if Report Update is in Reporting Window
+        if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
+           !($rA['race']['season']['reportable'] && $rA['race']['season']['reportable_window']
+            && time() < strtotime($rA['race']['season']['report_window'])))
         {
             session()->flash('error', "You are not allowed to delete this report");
             return redirect('/');
