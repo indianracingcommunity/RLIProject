@@ -87,6 +87,25 @@ class ResultsController extends Controller
             $results[$k] = $result;
         }
 
+        //Update Season Report Window & Reportable
+        $season = Season::where('id', $race->season_id)->get();
+        if($season->report_window != null)
+        {
+            //Advance report_window by 1 Week until it goes over Current Time
+            while(strtotime($season->report_window) < time())
+                $season->report_window = date('Y-m-d H:i:s', strtotime($season->report_window) + 604800);
+
+            $season->reportable = true;
+            $season->save();
+
+            //Publish Report Splitter Message
+            if($season->report_channel != null)
+            {
+                $message = "****-----------------------------*****\n           Round " . $race->round . " Reports\n****-----------------------------*****";
+                Discord::publishMessage($message, $season->report_channel);
+            }
+        }
+
         return response()->json([
             "race" => $race,
             "result" => $results 
