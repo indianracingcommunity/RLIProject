@@ -72,7 +72,9 @@ class ReportsController extends Controller
             $report->save();
 
             //Publish Message in Season's Report Channel
-            Discord::publishMessage("", $race['season']['report_channel']);
+            $userid = Driver::where('id',$data['driver'][$i])->get()->load('user')->toArray();
+            $message = "1. <@".$userid[0]['user']['discord_id']."> \n 2. ".$data['lap']."\n 3. ".$data['explained']."\n 4. ".$data['proof'];
+            Discord::publishMessage($message, $race['season']['report_channel']); 
         }
 
         // Redirect to View all Reports page
