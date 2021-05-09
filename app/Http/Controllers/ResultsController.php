@@ -77,6 +77,8 @@ class ResultsController extends Controller
         $track = new Race($request->validated()['track']);
         $race = $track->insertRace();
 
+        //Check if Race is in Standard Format
+
         //Result Storing
         $results = $request->validated()['results'];
         foreach($results as $k => $res) {

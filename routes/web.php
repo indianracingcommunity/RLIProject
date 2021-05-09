@@ -119,6 +119,8 @@ Route::group(['middleware' => 'allowed:admin,steward'], function () {
      Route::get('/home/admin/report','DriverController@viewreports');
      Route::get('home/admin/report/{report}/details','DriverController@reportdetails');
      Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict');
+
+     Route::post('/home/steward/verdict/publish', 'ReportsController@publishReports');
      Route::put('/position', 'ResultsController@updatePosition');
 });
 

@@ -96,14 +96,131 @@ class ReportsController extends Controller
             $report->save();
 
             //Publish Message in Season's Report Channel
-            $userid = Driver::where('id',$data['driver'][$i])->get()->load('user')->toArray();
-            $message = "1. <@".$userid[0]['user']['discord_id']."> \n 2. ".$data['lap']."\n 3. ".$data['explained']."\n 4. ".$data['proof'];
-            Discord::publishMessage($message, $race['season']['report_channel']); 
+            $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
+            Discord::publishMessage($this->reportMessage(Auth()::user->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
         }
 
         // Redirect to View all Reports page
         session()->flash('success', "Report Submitted Successfully");
         return redirect('/');
+    }
+
+    public function publishReports()
+    {
+        //Requires Season
+        $racelist = Race::where('season_id', request()->season)->pluck('id')->toArray();
+
+        if(count($racelist) == 0)
+            return abort(404);          //Actually should post 400 Error
+
+        //Taking in season instead of Race, in case of Backlog
+        $reports = Report::wherein('race_id', $racelist)
+                         ->where('resolved', 2)
+                         ->orderBy('race_id', 'asc')
+                         ->orderBy('lap', 'asc')
+                         ->get()
+                         ->load(['reporting_driver.user', 'reported_against.user', 'race.season']);
+
+        $prev_race_id = -1;
+        for($i = 0; $i < count($reports); $i++)
+        {
+            //Apply Verdict
+                //Find Result
+                //Update Result status
+                //Update Result Time (many conditions)
+
+            //Update Resolved to 3
+            $reports[$i]->resolved = 3;
+            $reports[$i]->save();
+
+            //Publish Splitter Message
+            if($prev_race_id != $reports[$i]->race->id)
+            {
+                $splitter_message = " **-----------------------------**\n       Round " . $reports[$i]->race->round . " Reports\n **-----------------------------**";
+                Discord::publishMessage($splitter_message, $season->verdict_channel);
+            }
+
+            //Publish Verdict Message
+            Discord::publishMessage($this->verdictMessage($reports[$i]), $season->verdict_channel);
+
+            $prev_race_id = $reports[$i]->race_id;
+        }
+
+        //Season reportable = 0
+        $season = Season::where('id', request()->season)->firstOrFail();
+        $season->reportable = 0;
+        $season->save();
+    }
+
+    private function reportMessage($idfor, $idagainst, $data)
+    {
+        $message = "1. Reporting Driver: <@". $idfor ."> \n2. Against: <@";
+        $message .= $idagainst . "> \n3. ";
+
+        //Lap
+        if($report->lap == -1)
+            $message .= "In Quali";
+        else if($report->lap == 0)
+            $message .= "Formation Lap";
+        else
+            $message .= "Lap " . $data['lap'];
+
+        $message .= "\n4. Explanation: " . $data['explained'];
+        $message .= "\n5. Prood: " . $data['proof'];
+        $message .= "\n-----------------------------";
+
+        return $message;
+    }
+
+    //Assume loaded reporting_driver, reported_against, race.season
+    private function verdictMessage(Report $report)
+    {
+        //Driver
+        $message = "1. Driver: <@" . $report->reporting_driver->user->id . "> \n2. ";
+
+        //Lap
+        if($report->lap == -1)
+            $message .= "In Quali";
+        else if($report->lap == 0)
+            $message .= "Formation Lap";
+        else
+            $message .= "Lap " . $report->lap;
+
+        $message .= "\n3. Verdict: **";
+
+        //Verdict Time
+        if($report->verdict_time == 0 && $report->verdict_pp == 0)
+            $message .= "NFA";
+        if($report->verdict_time > 0)
+            $message .= $report->verdict_time . " seconds Time Penalty ";
+        else if($report->verdict_time < 0)
+            $message .= $report->verdict_time . " seconds Removed";
+
+        //Verdict PP
+        if($report->verdict_time != 0 && $report->verdict_pp != 0)
+            $message .= " + ";
+        if($report->verdict_pp != 0)
+        {
+            $penalties = round((abs($report->verdict_pp) - (int)abs($report->verdict_pp)) * 10, 2);
+
+            //Penalty Points
+            if((int)$penalties != 0)
+                $message .= (int)$penalties . " Penalty Points";
+
+            //Warning
+            if((int)$penalties != 0 && $penalties != (int)$penalties)
+                $message .= " + Warning";
+            else if($penalties != (int)$penalties)
+                $message .= "Warning";
+        }
+
+        $message .= "**\n4. Evidence: " . $report->proof;
+
+        //Explanation
+        if($report->verdict_message != null)
+            $message .= "\n5. Explanation: " . $report->verdict_message;
+
+        return $message;
     }
 
     public function update()   // Check this function once the frontend page is done
@@ -131,6 +248,11 @@ class ReportsController extends Controller
         $report -> explanation = $data['explained'];
         $report -> proof = $data['proof'];
         $report->save();
+
+        //Update Posted Message
+
+        session()->flash('success', "Report updated successfully");
+        return redirect('/');
     }
 
     public function listDriverReports()
@@ -178,6 +300,9 @@ class ReportsController extends Controller
         }
 
         $report->delete();
+
+        //Delete Posted Message
+
         session()->flash('success', "Report deleted successfully");
         return redirect('/');
     }
