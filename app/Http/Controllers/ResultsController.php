@@ -16,6 +16,7 @@ use App\Driver;
 use App\Points;
 use App\Series;
 use App\Season;
+use App\Discord;
 
 class ResultsController extends Controller
 {
@@ -88,7 +89,7 @@ class ResultsController extends Controller
         }
 
         //Update Season Report Window & Reportable
-        $season = Season::where('id', $race->season_id)->get();
+        $season = Season::where('id', $race->season_id)->first();
         if($season->report_window != null)
         {
             //Advance report_window by 1 Week until it goes over Current Time
@@ -101,7 +102,7 @@ class ResultsController extends Controller
             //Publish Report Splitter Message
             if($season->report_channel != null)
             {
-                $message = "****-----------------------------*****\n           Round " . $race->round . " Reports\n****-----------------------------*****";
+                $message = " **-----------------------------**\n       Round " . $race->round . " Reports\n **-----------------------------**";
                 Discord::publishMessage($message, $season->report_channel);
             }
         }
