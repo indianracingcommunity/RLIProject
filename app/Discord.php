@@ -553,9 +553,55 @@ return "Done";
            }
            else
            {
-                return $response;
+                return $final;
            }
         }
     }
+
+
+    public static function editMessage($message, $channel,$msgid)
+   {
+       $adata = array("content" => $message, "tts" => false);
+       $postdata = json_encode($adata);
+       $params = (['token' => config('services.discord.bot')]);
+       $curl = curl_init();
+
+       curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages/".$msgid,
+           CURLOPT_RETURNTRANSFER => true,
+           CURLOPT_ENCODING => "",
+           CURLOPT_MAXREDIRS => 10,
+           CURLOPT_TIMEOUT => 30,
+           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+           CURLOPT_CUSTOMREQUEST => "PATCH",
+           CURLOPT_POSTFIELDS => $postdata,
+           CURLOPT_HTTPHEADER => array(
+               'Content-Type: application/json',
+               "Authorization: Bot ".$params['token']
+           ),
+       ));
+       
+       $response = curl_exec($curl);
+       $err = curl_error($curl);
+       curl_close($curl);
+
+       if ($err) 
+       {
+           return $err;
+       } 
+       else
+       {
+           $final = json_decode($response, true);
+           if(isset($final['message']))
+           {
+                return "Invalid";
+           }
+           else
+           {
+                return $final;
+           }
+        }
+    }
+
 }
 ?>
