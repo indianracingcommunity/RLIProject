@@ -97,7 +97,7 @@ class ReportsController extends Controller
 
             //Publish Message in Season's Report Channel
             $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
-            Discord::publishMessage($this->reportMessage(Auth()::user->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
+            Discord::publishMessage($this->reportMessage(Auth::user()->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
         }
 
         // Redirect to View all Reports page
