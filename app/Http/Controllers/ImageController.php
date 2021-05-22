@@ -306,7 +306,7 @@ class ImageController extends Controller
         return 0;
     }
 
-    public function closest_match($input, $dic) {
+    protected function closest_match($input, $dic) {
 
         // no shortest distance found, yet
         $shortest = -1;

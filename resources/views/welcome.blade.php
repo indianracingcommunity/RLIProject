@@ -10,7 +10,7 @@
         </div>
         <div class="flex">
             <div class="mt-16 text-2xl font-semibold px-4 py-2 bg-purple-600 shadow-lg text-white rounded-md cursor">
-                <a href="/joinus">Join us</a>
+                <a href="{{route('joinus')}}">Join us</a>
             </div>
         </div>
         <div class="mt-10">

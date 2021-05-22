@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Input;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -15,7 +15,7 @@ use App\Series;
 use App\Circuit;
 use App\Constructor;
 
-class AcController extends Controller
+class AcController extends ImageController
 {
     private $output;
     public function __construct() {

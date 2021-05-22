@@ -10,7 +10,7 @@
 		</div>
 		<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> How do I join IRC?</p> 
 		<div class="flex">
-			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">You can head to the our <a href="/joinus" target="_blank" class="hover:underline text-red-800">Join Us</a> Page to become a permanent member.</br>Joining our Discord Server is <span style="color: red;">mandatory</span> to be an IRC member.</div>
+			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">You can head to the our <a href="{{route('joinus')}}" target="_blank" class="hover:underline text-red-800">Join Us</a> Page to become a permanent member.</br>Joining our Discord Server is <span style="color: red;">mandatory</span> to be an IRC member.</div>
 		</div>
 		<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> Do I need to be a gamer to join?</p> 
 		<div class="flex">
