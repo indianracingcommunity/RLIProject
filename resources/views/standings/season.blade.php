@@ -326,7 +326,7 @@
                         {{$k+1}}
                      </td>
                      <td class="font-bold rounded-lg border border-white tracking-wide" @if ($res[$i]['user']==Auth::id()) style="background-color:#2f4353; color:white;" @endif>
-                        <a class="hover:underline" href="/user/profile/view/{{$res[$i]['user']}}">{{$res[$i]['name']}}</a>
+                        <a class="hover:underline" href="{{route('user.profile', ['user' => $res[$i]['user']])}}">{{$res[$i]['name']}}</a>
                      </td>
                      @if($season['season'] - (int)$season['season'] < 0.75) <td class="font-semibold rounded-lg border border-white md:block hidden" @if ($res[$i]['user']==Auth::id()) style="background-color:#2f4353; color:white;" @endif>
                         <span>

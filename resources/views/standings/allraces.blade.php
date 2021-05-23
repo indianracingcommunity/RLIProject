@@ -232,7 +232,7 @@
                   </td>
                   <td>
                      <div class="text-center">
-                        <a href="/{{$code}}/{{$value->season->tier}}/{{$value->season->season}}/race/{{$value->round}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>View</a>
+                        <a href="{{route('raceresults', ['code' => $code, 'tier' => $value->season->tier, 'season' => $value->season->season, 'round' => $value->round])}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>View</a>
                      </div>
                   </td>
                </tr>

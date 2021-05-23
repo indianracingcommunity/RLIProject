@@ -38,7 +38,7 @@
                 <div class="h-screen py-2 text-black">
                     <div class="flex items-center px-4">
                         <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-800 cursor-pointer">
-                            <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" style='height:45px;' width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
+                            <a href="{{route('home')}}"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" style='height:45px;' width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
                         </div>
                         <div class="items-center py-4 px-2 flex-shrink-0 cursor-pointer" onclick="menu()"></div>
                     </div>
@@ -46,13 +46,13 @@
                         <div class="my-8" id="main-menu">
                             <div class="font-bold text-sm px-5 tracking-wide">LEAGUE RACING</div>
                             <div class="my-1">
-                                <a href="/signup/" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign ups</a>
+                                <a href="{{route('driver.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign ups</a>
                             </div>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             <div class="my-1">
                                 <a href="/IRC_Rules__Regs_V1.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC F1</a>
-                                <a href="/accleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
-                                <a href="/f1XBOXleaguerules" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a>
+                                <a href="{{route('rules.acc')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
+                                <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a>
                             </div>
 
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
@@ -66,14 +66,14 @@
                                 @endview
                                 <div class="my-1">
                                     @view('admin,coordinator')  
-                                    <a href="/home/admin/users" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-sort"></i></div>View/Allot Drivers</a>
+                                    <a href="{{route('coordinator.driverlist')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-sort"></i></div>View/Allot Drivers</a>
                                     <a href="#" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-pen-alt"></i></div>Update Standings</a>
                                     @endview
                                     @view('steward,coordinator')
-                                    <a href="/home/admin/report" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a>
+                                    <a href="{{route('steward.list')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a>
                                     @endview
                                     @view('admin,signup')
-                                    <a href="/home/admin/view-signups" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
+                                    <a href="{{route('coordinator.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
                                     @endview
                                 </div>
                                 
@@ -149,7 +149,7 @@
                 <div class="flex items-center">
                     <div class="items-center p-4 flex-shrink-0 cursor-pointer menuButton" onclick="menu()"><i class="fas fa-bars"></i></div>
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                        <a href="/" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 "><img src="/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="py-3 pl-2  md:block hidden">Indian Racing Community</span></a>
+                        <a href="{{route('home')}}" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 "><img src="/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="py-3 pl-2  md:block hidden">Indian Racing Community</span></a>
                     </div>
                     {{-- <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
@@ -173,12 +173,12 @@
                                     <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 17rem; width: 7.5rem;">
                                         @foreach($series['tier'] as $tier)
                                         <li class="dropdown">
-                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
-                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/standings"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}} </a>
+                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
+                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}} </a>
                                             <ul class="dropdown-content absolute hidden text-gray-700 pl-10 -mt-10" style="margin-left:210px">
                                                 @foreach($tier as $season)
                                                 <li>
-                                                    <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
+                                                    <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -200,12 +200,12 @@
                                     <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 11.1rem; width: 7.5rem;">
                                         @foreach($series['tier'] as $tier)
                                         <li class="dropdown">
-                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
-                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$tier[0]['tier']}}/{{$tier[0]['season']}}/races"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}}</a>
+                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
+                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}}</a>
                                             <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:250px">
                                                 @foreach($tier as $season)
                                                 <li>
-                                                    <a class="bg-purple-100 hover:bg-orange-300 px-4 py-2 block whitespace-no-wrap rounded" href="/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
+                                                    <a class="bg-purple-100 hover:bg-orange-300 px-4 py-2 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -219,24 +219,24 @@
                     @guest
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="/faq"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQ</span></a>
+                            <a href="{{route('faq')}}"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQ</span></a>
                         </button>
                     </div>
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="/ourteam"><span><i class="mr-1 text-purple-700 far fas fa-user-friends"></i> Our Team</span></a>
+                            <a href="{{route('ourteam')}}"><span><i class="mr-1 text-purple-700 far fas fa-user-friends"></i> Our Team</span></a>
                         </button>
                     </div>
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="/aboutus"><span><i class="mr-1 text-teal-700 far fa-address-card"></i> About us</span></a>
+                            <a href="{{route('aboutus')}}"><span><i class="mr-1 text-teal-700 far fa-address-card"></i> About us</span></a>
                         </button>
                     </div>
                     @endguest
                 </div>
                 @guest
                     <div class="px-4 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
-                        <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>
+                        <a href="{{route('login.discord')}}"><i class='far fa-user mr-2'></i>Login</a>
                     </div>
                 @endguest
                 @auth
@@ -261,19 +261,19 @@
                                 </div>
 
                             </div>
-                            <a href="/user/profile/" class="flex items-center py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                            <a href="{{route('user.home')}}" class="flex items-center py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
                                 <div class="w-10"><i class="ml-2 far fa-user"></i></div>
                                 <div>Profile</div>
                             </a>
-                            <a href="/faq" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                            <a href="{{route('faq')}}" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
                                 <div class="w-10"><i class="ml-2 far fa-question-circle"></i></div>
                                 <div>FAQ</div>
                             </a>
-                            <a href="/aboutus" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                            <a href="{{route('aboutus')}}" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
                                 <div class="w-10"><i class="ml-2 far fa-address-card"></i></div>
                                 <div>About us</div>
                             </a>
-                            <a href="/ourteam" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
+                            <a href="{{route('ourteam')}}" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
                                 <div class="w-10"><i class="ml-2 fas fa-user-friends"></i></div>
                                 <div>Our Team</div>
                             </a>
@@ -395,13 +395,13 @@
                 </div>
                 <div class="text-sm font-bold text-gray-600 md:my-0 my-0">
                     <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                        <a href="/faq">FAQ</a>
+                        <a href="{{route('faq')}}">FAQ</a>
                     </span>
                     <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                        <a href="/aboutus"> About Us</a>
+                        <a href="{{route('aboutus')}}"> About Us</a>
                     </span>
                     <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                        <a href="/ourteam">Our Team</a>
+                        <a href="{{route('ourteam')}}">Our Team</a>
                     </span>
                 </div>
                 <div>

@@ -30,7 +30,7 @@
    </div>
    <img src="/images/{{ Session::get('path') }}" width="300" />
    @endif
-   <form method="post" action="{{url('/image/quali')}}" enctype="multipart/form-data">
+   <form method="post" action="{{route('f1.imagequaliupload')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
      <table class="table">

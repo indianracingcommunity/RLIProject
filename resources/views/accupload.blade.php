@@ -30,7 +30,7 @@
    </div>
    <img src="/images/{{ Session::get('path') }}" width="300" />
    @endif
-   <form method="post" action="{{url('/acc/upload')}}" enctype="multipart/form-data">
+   <form method="post" action="{{route('acc.parseupload')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
      <div class="form-group">

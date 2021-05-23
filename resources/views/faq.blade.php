@@ -6,7 +6,7 @@
 		<h2 class="text-4xl font-bold text-gray-900 mb-10">Frequently Asked Questions</h2>
 		<p class="font-semibold text-2xl text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> What are the pre-requisites to join?</p> 
 		<div class="flex">
-			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">There is only one criterion to join us: You need to be an Indian racing enthusiast. That's it.</div>
+			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">There is only one criterion to join us:<br>You need to be an Indian racing enthusiast. That's it.</div>
 		</div>
 		<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> How do I join IRC?</p> 
 		<div class="flex">
@@ -14,7 +14,7 @@
 		</div>
 		<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> Do I need to be a gamer to join?</p> 
 		<div class="flex">
-			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">No. Any avid motorsports fan are more than welcome to join us. </br>We also engage in real life motorsport chatter, memes, and everything in between.</div>
+			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-800">No. Any Indian avid motorsports fan is more than welcome to join us. </br>We also engage in real life motorsport chatter, memes, and everything in between.</div>
 		</div>
 		<p class="font-semibold text-2xl mt-8 text-gray-800 mb-2"><i style="font-size: 18px;" class="fa fa-arrow-right"></i> How difficult is the league on the latest official F1 PC game?</p> 
 		<div class="flex">

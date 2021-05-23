@@ -49,8 +49,8 @@ padding-left:10px;
                     </td>
                   <td>
                   <div class="text-center">
-                        <a href="/home/report/view/{{$value->id}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>View</a>
-                        <a href="/home/report/edit/{{$value->id}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>Edit</a>
+                        <a href="{{route('report.view', ['report' => $value->id])}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>View</a>
+                        <a href="{{route('report.edit', ['report' => $value->id])}}" class="bg-gray-100 rounded text-gray-800 font-semibold p-2 hover:bg-indigo-100 hover:text-indigo-800"><i class="far fa-eye mr-2"></i>Edit</a>
                     </div>
                   </td>
                </tr>
