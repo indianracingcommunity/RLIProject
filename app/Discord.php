@@ -559,8 +559,8 @@ return "Done";
     }
 
 
-    public static function editMessage($message, $channel,$msgid)
-   {
+    public static function editMessage($message, $channel, $msgid)
+    {
        $adata = array("content" => $message, "tts" => false);
        $postdata = json_encode($adata);
        $params = (['token' => config('services.discord.bot')]);

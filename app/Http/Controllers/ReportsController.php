@@ -105,6 +105,73 @@ class ReportsController extends Controller
         return redirect('/');
     }
 
+    protected function applyVerdict(Report $report)
+    {
+        //Assume fully loaded Report
+        $result = Result::where('race_id', $report->race->id)
+                             ->where('driver_id', $reported_against->id)
+                             ->firstOrFail();
+
+        $dnfpattern = "^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$";
+        $updatedPos = $result->position;
+        //1. If verdict_time < 0 AND position == 1
+        if($result->position == 1 && $report->verdict_time < 0)
+            continue;
+
+        //2. Else If verdict_time < 0, Load Results before Position
+        else if($report->verdict_time < 0) {
+            //Recurse from position to 1, break if position & time is unchanged
+            $prevResults = Result::where('race_id', $report->race->id)
+                                 ->where('position', '<', $result->position)
+                                 ->orderBy('position', 'desc')
+                                 ->get();
+
+            //Check if position - 1's time > position's time, If yes -> position & time remains unchanged
+            //If no -> Check if position - 1's time > update time, If yes -> update position-1's position
+            for($i = 0; $i < count($prevResults); $i++) {
+                if($prevResults[$i]->position > $result->position)
+                    break;
+
+                if($this->convertStandardtoMillis($prevResults[$i]->position) > $this->convertStandardtoMillis($result->position) + $report->time * 1000) {
+                    $prevResults[$i]->position += 1;
+                    $prevResults[$i]->save();
+                }
+            }
+        }
+
+        //3. Else If verdict_time > 0, Load Results after Position
+        else if($report->verdict_time > 0) {
+            //Recurse from position to Last Position, break if position & time is unchanged
+            $nextResults = Result::where('race_id', $report->race->id)
+                                 ->where('position', '>', $result->position)
+                                 ->orderBy('position', 'asc')
+                                 ->get();
+
+            //Check if position + 1's time == +X Lap(s) OR DSQ OR DNF, break
+            //If no -> Check if position + 1's time > update time, If yes -> update position+1's position
+            for($i = 0; $i < count($nextResults); $i++) {
+                if(preg_match($dnfpattern, $nextResults[$i]->position))
+                    break;
+
+                if($this->convertStandardtoMillis($nextResults[$i]->position) > $this->convertStandardtoMillis($result->position) + $report->time * 1000) {
+                    $nextResults[$i]->position -= 1;
+                    $nextResults[$i]->save();
+                }
+            }
+        }
+
+        //Update position & time from index above
+        //1. If time == +X Lap(s) OR DSQ OR DNF, position & time remains unchanged
+        if(!preg_match($dnfpattern, $result->time)) {
+            $result->time = $this->convertStandardtoMillis($this->convertStandardtoMillis($result->time) + $report->time * 1000);
+            $result->position = $updatedPos;
+        }
+
+        //Add verdict_pp to status
+        $result->status += $report->verdict_pp;
+        $result->save();
+    }
+
     public function publishReports()
     {
         //Requires Season
@@ -128,6 +195,8 @@ class ReportsController extends Controller
                 //Find Result
                 //Update Result status
                 //Update Result Time (many conditions)
+            //Assume Standard Format Race
+            $this->applyVerdict($reports[$i]);
 
             //Update Resolved to 3
             $reports[$i]->resolved = 3;
@@ -250,6 +319,8 @@ class ReportsController extends Controller
         $report->save();
 
         //Update Posted Message
+        $userid = Driver::findOrFail($data['driver'])->load('user')->pluck('user.discord_id');
+        Discord::editMessage($this->reportMessage(Auth::user()->discord_id, $userid, $data), $rA['season']['report_channel'], $rA['message_id']);
 
         session()->flash('success', "Report updated successfully");
         return redirect('/');
@@ -299,9 +370,10 @@ class ReportsController extends Controller
             return redirect('/');
         }
 
-        $report->delete();
 
         //Delete Posted Message
+        Discord::deleteMessage($rA['season']['report_channel'], $rA['message_id']);
+        $report->delete();
 
         session()->flash('success', "Report deleted successfully");
         return redirect('/');
