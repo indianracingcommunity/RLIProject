@@ -112,7 +112,7 @@ class ReportsController extends Controller
                              ->where('driver_id', $reported_against->id)
                              ->firstOrFail();
 
-        $dnfpattern = "^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$";
+        $dnfpattern = "/^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$/";
         $updatedPos = $result->position;
         //1. If verdict_time < 0 AND position == 1
         if($result->position == 1 && $report->verdict_time < 0)
