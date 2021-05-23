@@ -77,10 +77,28 @@ class ResultsController extends Controller
         $track = new Race($request->validated()['track']);
         $race = $track->insertRace();
 
-        //Check if Race is in Standard Format
-
+        $regex = '/^\+?([0-5]?\d\:)?[0-5]?\d[.]\d{3}$|^DNF$|^DSQ$|^DNS$|^\+1 Lap$|^\+[2-9][0-9]* Laps$/';
         //Result Storing
         $results = $request->validated()['results'];
+        for($i=0; $i<count($results); $i++)
+        {
+            if($results[$i]['driver_id'] == '-1')
+            {
+                return response()->json([
+                    "mesage" => "Please check Driver ID's",
+                    "error" => $results[$i],
+                ]);
+            }
+            $check = preg_match($regex, $results[$i]['time']);
+            if($check == '0')
+            {
+                return response()->json([
+                    "message" => "Time Error Found",
+                    "error" => $results[$i],
+                ]);
+            }
+        }
+
         foreach($results as $k => $res) {
             Driver::selfLearn($res['driver'], $res['driver_id']);
 
