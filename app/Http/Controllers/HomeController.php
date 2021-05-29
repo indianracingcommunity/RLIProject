@@ -97,6 +97,6 @@ class HomeController extends Controller
         session()->flash('savedProfile','Details saved successfully.');
         $dis->applyRoles();
 
-        return redirect('/user/profile');
+        return redirect()->route('user.home');
     }
 }

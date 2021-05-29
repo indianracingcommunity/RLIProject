@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <form method="POST" action="/home/admin/user-allot/submit">
+    <form method="POST" action="{{route('driver.allot')}}">
         @csrf
         <input type="hidden" value="{{$user->id}}" name="user_id">
         <span class="font-bold text-gray-700 ">Team</span>
@@ -81,7 +81,7 @@
                 <p>Discord : {{$user->name}}#{{$user->discord_discrim}}</p>
                 Steam : <a href= "{{$user->steam_id}}">{{$user->steam_id}} </a>
                 <br><br>
-                <form method="POST" action="/home/admin/user-allot/submit">
+                <form method="POST" action="{{route('driver.allot')}}">
                     @csrf
                 <input type="hidden" value="{{$user->id}}" name="user_id">
                     Team: <select name="tier" id="tier">

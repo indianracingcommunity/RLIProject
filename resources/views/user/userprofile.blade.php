@@ -149,7 +149,7 @@
     </div>
 
     <div class="md:mx-4 mx-auto w-full">
-        <form action="/user/profile/save/{{Auth::user()->id}}" method="POST" id="submitProfileForm">
+        <form action="{{route('user.saveprofile', ['user' => Auth::user()->id])}}" method="POST" id="submitProfileForm">
             @csrf
             <div class="flex flex-col md:flex-row">
                 <div class="md:w-1/2 w-auto flex-grow-0 md:px-4 bg-white rounded-lg border p-4">

@@ -31,6 +31,6 @@ class SteamLoginController extends AbstractSteamLoginController
         $disc->sendMemberProfile($message);
 
         session()->flash('steamSuccess','Steam Profile Linked Successfully.');
-        return redirect('/user/profile');
+        return redirect()->route('user.home');
     }
 }

@@ -99,7 +99,7 @@
 
       // AJAX request 
       $.ajax({
-        url: '/fetch/drivers/' + id,
+        url: '/fetch/drivers/' + id,            //Need to replace with Named Route
         type: 'get',
         dataType: 'json',
         success: function(response) {

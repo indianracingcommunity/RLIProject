@@ -347,7 +347,7 @@ class ReportsController extends Controller
         if(!($report['reporting_driver']['user_id'] == Auth::user()->id || $report['reported_against']['user_id'] == Auth::user()->id))
         {
             session()->flash('error', "You are not allowed to view this report");
-            return redirect('/home/report/list');
+            return redirect()->route('report.list');
         }
 
         return view('user.reportdetails')->with('report', $report);
