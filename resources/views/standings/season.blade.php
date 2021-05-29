@@ -52,9 +52,9 @@
       <div class="text-4xl font-bold">
          Championship Standings
       </div>
-      <div class="text-sm  px-4 py-2 rounded-md flex items-center font-semibold text-white bg-purple-600 hover:bg-purple-500 cursor-pointer">
+      <!-- <div class="text-sm  px-4 py-2 rounded-md flex items-center font-semibold text-white bg-purple-600 hover:bg-purple-500 cursor-pointer">
          Race Results <i class="fas fa-external-link-alt ml-1"></i>
-      </div>
+      </div> -->
    </div>
    <div class="flex flex-col md:flex-row">
       <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">
