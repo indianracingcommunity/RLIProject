@@ -390,7 +390,7 @@
             @endguest
             <footer class="mx-8 border-t py-8 justify-between md:items-center flex flex-col md:flex-row mt-10">
                 <div class="leading-tight">
-                    <div class="text-gray-700 font-bold">Indian Racing Comunity</div>
+                    <div class="text-gray-700 font-bold">Indian Racing Community</div>
                     <div class="text-gray-600 font-semibold text-sm">A place for every racing enthusiast.</div>
                 </div>
                 <div class="text-sm font-bold text-gray-600 md:my-0 my-0">

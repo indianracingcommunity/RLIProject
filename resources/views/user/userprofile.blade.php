@@ -23,7 +23,7 @@
 
 <div class="container">
 <div class="font-semibold text-center text-orange-800 bg-orange-200 rounded-md p-6 profileAlert" style="display: none;">
-    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Welcome to <strong>Indian Racing Comunity!</strong> Please complete your <strong>Profile.</strong>
+    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Welcome to <strong>Indian Racing Community!</strong> Please complete your <strong>Profile.</strong>
 </div>
 @if(SESSION('savedProfile'))
 <div class="font-semibold text-center text-green-800 bg-blue-100 rounded-md p-6" >
