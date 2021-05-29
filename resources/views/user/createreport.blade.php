@@ -12,7 +12,7 @@
 <div class="container flex w-screen">
   <div class="mx-auto p-4 border rounded-lg w-2/3">
     <div class="font-semibold text-lg tracking-widest uppercase pb-4 ">Create a report</div>
-    <form action="submit" method="POST" class="my-4">
+    <form action="{{route('report.submit')}}" method="POST" class="my-4">
       @csrf
       <table class="w-full">
         <tr>

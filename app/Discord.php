@@ -516,6 +516,8 @@ return "Done";
 
    public static function publishMessage($message, $channel)
    {
+       if($channel == NULL)
+            return 0;
        $adata = array("content" => $message, "tts" => false);
        $postdata = json_encode($adata);
        $params = (['token' => config('services.discord.bot')]);
@@ -561,6 +563,8 @@ return "Done";
 
     public static function editMessage($message, $channel, $msgid)
     {
+       if($channel == NULL)
+            return 0;
        $adata = array("content" => $message, "tts" => false);
        $postdata = json_encode($adata);
        $params = (['token' => config('services.discord.bot')]);

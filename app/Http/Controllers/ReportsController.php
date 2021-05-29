@@ -80,10 +80,11 @@ class ReportsController extends Controller
     public function create()
     {
         $data = request()->all();
+        //array_push($data['driver'],'1');       //Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
+
         $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();
         $race = Race::where('id', $data['race'])->firstOrFail()->load('season')->toArray();
 
-        // array_push($data['driver'],'1');       Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
         for($i = 0; $i < count($data['driver']); $i++)
         {
             $report = new Report();
@@ -105,77 +106,11 @@ class ReportsController extends Controller
         return redirect('/');
     }
 
-    protected function applyVerdict(Report $report)
-    {
-        //Assume fully loaded Report
-        $result = Result::where('race_id', $report->race->id)
-                             ->where('driver_id', $reported_against->id)
-                             ->firstOrFail();
-
-        $dnfpattern = "/^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$/";
-        $updatedPos = $result->position;
-        //1. If verdict_time < 0 AND position == 1
-        if($result->position == 1 && $report->verdict_time < 0)
-            continue;
-
-        //2. Else If verdict_time < 0, Load Results before Position
-        else if($report->verdict_time < 0) {
-            //Recurse from position to 1, break if position & time is unchanged
-            $prevResults = Result::where('race_id', $report->race->id)
-                                 ->where('position', '<', $result->position)
-                                 ->orderBy('position', 'desc')
-                                 ->get();
-
-            //Check if position - 1's time > position's time, If yes -> position & time remains unchanged
-            //If no -> Check if position - 1's time > update time, If yes -> update position-1's position
-            for($i = 0; $i < count($prevResults); $i++) {
-                if($prevResults[$i]->position > $result->position)
-                    break;
-
-                if($this->convertStandardtoMillis($prevResults[$i]->position) > $this->convertStandardtoMillis($result->position) + $report->time * 1000) {
-                    $prevResults[$i]->position += 1;
-                    $prevResults[$i]->save();
-                }
-            }
-        }
-
-        //3. Else If verdict_time > 0, Load Results after Position
-        else if($report->verdict_time > 0) {
-            //Recurse from position to Last Position, break if position & time is unchanged
-            $nextResults = Result::where('race_id', $report->race->id)
-                                 ->where('position', '>', $result->position)
-                                 ->orderBy('position', 'asc')
-                                 ->get();
-
-            //Check if position + 1's time == +X Lap(s) OR DSQ OR DNF, break
-            //If no -> Check if position + 1's time > update time, If yes -> update position+1's position
-            for($i = 0; $i < count($nextResults); $i++) {
-                if(preg_match($dnfpattern, $nextResults[$i]->position))
-                    break;
-
-                if($this->convertStandardtoMillis($nextResults[$i]->position) > $this->convertStandardtoMillis($result->position) + $report->time * 1000) {
-                    $nextResults[$i]->position -= 1;
-                    $nextResults[$i]->save();
-                }
-            }
-        }
-
-        //Update position & time from index above
-        //1. If time == +X Lap(s) OR DSQ OR DNF, position & time remains unchanged
-        if(!preg_match($dnfpattern, $result->time)) {
-            $result->time = $this->convertStandardtoMillis($this->convertStandardtoMillis($result->time) + $report->time * 1000);
-            $result->position = $updatedPos;
-        }
-
-        //Add verdict_pp to status
-        $result->status += $report->verdict_pp;
-        $result->save();
-    }
-
     public function publishReports()
     {
         //Requires Season
         $racelist = Race::where('season_id', request()->season)->pluck('id')->toArray();
+        $season = Season::where('id', request()->season)->firstOrFail();
 
         if(count($racelist) == 0)
             return abort(404);          //Actually should post 400 Error
@@ -210,15 +145,17 @@ class ReportsController extends Controller
             }
 
             //Publish Verdict Message
-            Discord::publishMessage($this->verdictMessage($reports[$i]), $season->verdict_channel);
+            Discord::publishMessage($this->verdictMessage($reports[$i]->toArray()), $season->verdict_channel);
 
             $prev_race_id = $reports[$i]->race_id;
         }
 
         //Season reportable = 0
-        $season = Season::where('id', request()->season)->firstOrFail();
         $season->reportable = 0;
         $season->save();
+
+        session()->flash('success', "Verdicts Applied Successfully");
+        return redirect('/');
     }
 
     private function reportMessage($idfor, $idagainst, $data)
@@ -242,39 +179,41 @@ class ReportsController extends Controller
     }
 
     //Assume loaded reporting_driver, reported_against, race.season
-    private function verdictMessage(Report $report)
+    private function verdictMessage(Array $report)
     {
         //Driver
-        $message = "1. Driver: <@" . $report->reporting_driver->user->id . "> \n2. ";
+        $message = "1. Driver: <@" . $report['reported_against']['user']['discord_id'] . "> \n2. ";
 
         //Lap
-        if($report->lap == -1)
+        if($report['lap'] == -1)
             $message .= "In Quali";
-        else if($report->lap == 0)
+        else if($report['lap'] == 0)
             $message .= "Formation Lap";
         else
-            $message .= "Lap " . $report->lap;
+            $message .= "Lap " . $report['lap'];
 
         $message .= "\n3. Verdict: **";
 
         //Verdict Time
-        if($report->verdict_time == 0 && $report->verdict_pp == 0)
+        if($report['verdict_time'] == 0 && $report['verdict_pp'] == 0)
             $message .= "NFA";
-        if($report->verdict_time > 0)
-            $message .= $report->verdict_time . " seconds Time Penalty ";
-        else if($report->verdict_time < 0)
-            $message .= $report->verdict_time . " seconds Removed";
+        if($report['verdict_time'] > 0)
+            $message .= abs($report['verdict_time']) . " seconds Time Penalty ";
+        else if($report['verdict_time'] < 0)
+            $message .= abs($report['verdict_time']) . " seconds Removed";
 
         //Verdict PP
-        if($report->verdict_time != 0 && $report->verdict_pp != 0)
+        if($report['verdict_time'] != 0 && $report['verdict_pp'] != 0)
             $message .= " + ";
-        if($report->verdict_pp != 0)
+        if($report['verdict_pp'] != 0)
         {
-            $penalties = round((abs($report->verdict_pp) - (int)abs($report->verdict_pp)) * 10, 2);
+            $penalties = round((abs($report['verdict_pp']) - (int)abs($report['verdict_pp'])) * 10, 2);
 
             //Penalty Points
             if((int)$penalties != 0)
-                $message .= (int)$penalties . " Penalty Points";
+                $message .= (int)$penalties . " Penalty Point";
+            if((int)abs($penalties) > 1)
+                $message .= "s";
 
             //Warning
             if((int)$penalties != 0 && $penalties != (int)$penalties)
@@ -283,11 +222,11 @@ class ReportsController extends Controller
                 $message .= "Warning";
         }
 
-        $message .= "**\n4. Evidence: " . $report->proof;
+        $message .= "**\n4. Evidence: " . $report['proof'];
 
         //Explanation
-        if($report->verdict_message != null)
-            $message .= "\n5. Explanation: " . $report->verdict_message;
+        if($report['verdict_message'] != null)
+            $message .= "\n5. Explanation: " . $report['verdict_message'];
 
         return $message;
     }
@@ -377,5 +316,84 @@ class ReportsController extends Controller
 
         session()->flash('success', "Report deleted successfully");
         return redirect('/');
+    }
+
+    protected function applyVerdict(Report $report)
+    {
+
+        //Assume fully loaded Report
+        $result = Result::where('race_id', $report->race->id)
+                             ->where('driver_id', $report->reported_against)
+                             ->firstOrFail();
+
+        $dnfpattern = "/^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$|^-$/";
+        $updatedPos = $result->position;
+
+        //1. If verdict_time < 0 AND position == 1
+        if($result->position == 1 && $report->verdict_time < 0)
+        {}
+
+        //2. Else If verdict_time < 0, Load Results before Position
+        else if($report->verdict_time < 0) {
+            //Recurse from position to 1, break if position & time is unchanged
+            $prevResults = Result::where('race_id', $report->race->id)
+                                 ->where('position', '<', $result->position)
+                                 ->orderBy('position', 'desc')
+                                 ->get();
+
+            //Check if position - 1's time > position's time, If yes -> position & time remains unchanged
+            //If no -> Check if position - 1's time > update time, If yes -> update position-1's position
+            for($i = 0; $i < count($prevResults); $i++) {
+                if(preg_match($dnfpattern, $prevResults[$i]->time))
+                    break;
+                else if($this->convertStandardtoMillis($prevResults[$i]->time) > $this->convertStandardtoMillis($result->time))
+                    break;
+
+                if($this->convertStandardtoMillis($prevResults[$i]->time) > $this->convertStandardtoMillis($result->time) + $report->verdict_time * 1000) {
+                    $updatedPos = $prevResults[$i]->position;
+
+                    $prevResults[$i]->position += 1;
+                    $prevResults[$i]->save();
+                }
+            }
+        }
+
+        //3. Else If verdict_time > 0, Load Results after Position
+        else if($report->verdict_time > 0) {
+            //Recurse from position to Last Position, break if position & time is unchanged
+            $nextResults = Result::where('race_id', $report->race->id)
+                                 ->where('position', '>', $result->position)
+                                 ->orderBy('position', 'asc')
+                                 ->get();
+
+            //Check if position + 1's time == +X Lap(s) OR DSQ OR DNF, break
+            //If no -> Check if position + 1's time > update time, If yes -> update position+1's position
+            for($i = 0; $i < count($nextResults); $i++) {
+                if(preg_match($dnfpattern, $nextResults[$i]->time))
+                    break;
+                else if($this->convertStandardtoMillis($nextResults[$i]->time) < $this->convertStandardtoMillis($result->time))
+                    break;
+
+                if($this->convertStandardtoMillis($nextResults[$i]->time) < $this->convertStandardtoMillis($result->time) + $report->verdict_time * 1000) {
+                    $updatedPos = $nextResults[$i]->position;
+
+                    $nextResults[$i]->position -= 1;
+                    $nextResults[$i]->save();
+                }
+            }
+        }
+
+        //Update position & time from index above
+        //1. If time == +X Lap(s) OR DSQ OR DNF, position & time remains unchanged
+        if(!preg_match($dnfpattern, $result->time)) {
+            $result->time = $this->convertMillisToStandard($this->convertStandardtoMillis($result->time) + $report->verdict_time * 1000);
+            $result->position = $updatedPos;
+        }
+
+        //Add verdict_pp to status
+        $result->status = round($result->status + $report->verdict_pp, 3);
+        $result->save();
+
+        return 0;
     }
 }
