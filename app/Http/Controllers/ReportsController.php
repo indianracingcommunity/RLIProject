@@ -158,6 +158,27 @@ class ReportsController extends Controller
         return redirect('/');
     }
 
+    public function revertVerdict(Report $report)
+    {
+        if($report->resolved == 3) {
+            $this->applyVerdict($report, -1);
+
+            //Delete Verdict Message
+
+
+            //Update Resolved to 1
+            $report->resolved = 1;
+            $report->save();
+
+            session()->flash('success', "Verdict Reverted Successfully");
+            return redirect('/');           //Should revert to previous page.
+        }
+        else {
+            session()->flash('error', "Verdict is not Applied");
+            return redirect('/');           //Should revert to previous page.
+        }
+    }
+
     private function reportMessage($idfor, $idagainst, $data)
     {
         $message = "1. Reporting Driver: <@". $idfor ."> \n2. Against: <@";
@@ -318,13 +339,17 @@ class ReportsController extends Controller
         return redirect('/');
     }
 
-    protected function applyVerdict(Report $report)
+    public function applyVerdict(Report $report, $mul = 1)
     {
+        $report->loadMissing('race.season');
 
         //Assume fully loaded Report
         $result = Result::where('race_id', $report->race->id)
                              ->where('driver_id', $report->reported_against)
                              ->firstOrFail();
+
+        $report->verdict_time *= $mul;
+        $report->verdict_pp *= $mul;
 
         $dnfpattern = "/^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$|^-$/";
         $updatedPos = $result->position;
@@ -393,6 +418,10 @@ class ReportsController extends Controller
         //Add verdict_pp to status
         $result->status = round($result->status + $report->verdict_pp, 3);
         $result->save();
+
+        //Reverse the change, because report is passed by reference.
+        $report->verdict_time *= $mul;
+        $report->verdict_pp *= $mul;
 
         return 0;
     }

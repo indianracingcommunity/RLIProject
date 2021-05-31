@@ -122,8 +122,10 @@ Route::group(['middleware' => 'allowed:admin,steward'], function () {
      Route::get('home/admin/report/{report}/details','DriverController@reportdetails')->name('steward.view');
      Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict')->name('steward.save');
 
+     Route::post('/home/steward/verdict/{report}/revert', 'ReportsController@revertVerdict')->name('steward.revert');
+     Route::post('/home/steward/verdict/{report}/apply', 'ReportsController@applyVerdict')->name('steward.apply');
      Route::post('/home/steward/verdict/publish', 'ReportsController@publishReports')->name('steward.publish');
-     Route::put('/position', 'ResultsController@updatePosition')->name('result.verdict');
+     //Route::put('/position', 'ResultsController@updatePosition')->name('result.verdict');
 });
 
 //Driver Allotment
