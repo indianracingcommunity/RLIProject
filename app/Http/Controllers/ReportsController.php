@@ -359,7 +359,7 @@ class ReportsController extends Controller
         {}
 
         //2. Else If verdict_time < 0, Load Results before Position
-        else if($report->verdict_time < 0) {
+        else if($report->verdict_time < 0 && !preg_match($dnfpattern, $result->time)) {
             //Recurse from position to 1, break if position & time is unchanged
             $prevResults = Result::where('race_id', $report->race->id)
                                  ->where('position', '<', $result->position)
@@ -384,7 +384,7 @@ class ReportsController extends Controller
         }
 
         //3. Else If verdict_time > 0, Load Results after Position
-        else if($report->verdict_time > 0) {
+        else if($report->verdict_time > 0 && !preg_match($dnfpattern, $result->time)) {
             //Recurse from position to Last Position, break if position & time is unchanged
             $nextResults = Result::where('race_id', $report->race->id)
                                  ->where('position', '>', $result->position)
@@ -416,7 +416,7 @@ class ReportsController extends Controller
         }
 
         //Add verdict_pp to status
-        $result->status = round($result->status + $report->verdict_pp, 3);
+        $result->status = round($this->sgnp($result->status) * (abs($result->status) + $report->verdict_pp), 3);
         $result->save();
 
         //Reverse the change, because report is passed by reference.
