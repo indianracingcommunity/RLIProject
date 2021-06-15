@@ -33,4 +33,9 @@ class Report extends Model
     {
         return $this->belongsTo('App\Driver', 'reported_against');
     }
+
+    public function counter_report()
+    {
+        return $this->belongsTo('App\Report', 'counter_report');
+    }
 }

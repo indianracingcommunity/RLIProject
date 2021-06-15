@@ -46,29 +46,33 @@ class DriverController extends StandingsController
 
   public function viewreports(Report $report)
   {
-    return view('admin.reports')->with('report', Report::all());
+      $reports = Report::where('resolved', '>', -1)
+                       ->orderBy('resolved', 'asc')
+                       ->orderBy('created_at', 'desc')->get();
+
+      return view('admin.reports')->with('report', $reports);
   }
 
   public function reportdetails(Report $report)
   {
-    return view('admin.reportdetails')->with('report', $report);
+      return view('admin.reportdetails')->with('report', $report);
   }
 
   public function saveverdict(Report $report)
   {
-    $data = request()->all();
-    $report->verdict = $data['verdict'];
-    $report->resolved = 1;
-    $report->save();
-    return redirect()->back();
+      $data = request()->all();
+      $report->verdict = $data['verdict'];
+      $report->resolved = 1;
+      $report->save();
+      return redirect()->back();
   }
 
   public function allotuser(User $id)
   {
-    $existing = Driver::where('user_id', $id->id)->get();
-    return view('admin.allot')
-      ->with('user', $id)
-      ->with('existing', $existing);
+      $existing = Driver::where('user_id', $id->id)->get();
+      return view('admin.allot')
+              ->with('user', $id)
+              ->with('existing', $existing);
   }
 
   public function saveallotment()
