@@ -116,7 +116,6 @@ class ResultsController extends Controller
             while(strtotime($season->report_window) < time())
                 $season->report_window = date('Y-m-d H:i:s', strtotime($season->report_window) + 604800);
 
-            $season->reportable = true;
             $season->save();
 
             //Publish Report Splitter Message

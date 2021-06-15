@@ -818,8 +818,8 @@
         document.getElementById("drivernum").style.borderColor = "#f56565";
         sendform = false;
       }
-      else if (driverno < 1  || driverno > 99){
-        document.getElementById("errordrivernum").innerHTML = "Expecting too much from Codemasters <br> Enter driver number between 1 and 99";
+      else if (driverno < 1  || driverno > 999){
+        document.getElementById("errordrivernum").innerHTML = "Enter driver number between 1 and 999";
         document.getElementById("drivernum").style.borderColor = "#f56565";
         sendform = false;
       }

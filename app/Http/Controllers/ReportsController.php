@@ -27,7 +27,6 @@ class ReportsController extends Controller
 
         //Return All Active Seasons which is Reportable
         $seasons = Season::where('status', '<', 2)
-                         ->where('reportable', true)
                          ->whereNotNull('report_window')
                          ->get()->toArray();
 
@@ -150,10 +149,6 @@ class ReportsController extends Controller
             $prev_race_id = $reports[$i]->race_id;
         }
 
-        //Season reportable = 0
-        $season->reportable = 0;
-        $season->save();
-
         session()->flash('success', "Verdicts Applied Successfully");
         return redirect('/');
     }
@@ -264,7 +259,7 @@ class ReportsController extends Controller
         //2. Check if Report is already Resolved/Published by Stewards
         //3. Check if Report Update is in Reporting Window
         if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
-           !($rA['race']['season']['reportable'] && $rA['race']['season']['report_window'] != null
+           !($rA['race']['season']['report_window'] != null
             && time() < strtotime($rA['race']['season']['report_window'])))
         {
             session()->flash('error', "You are not allowed to Update this report");
@@ -323,7 +318,7 @@ class ReportsController extends Controller
         //2. Check if Report is already Resolved/Published by Stewards
         //3. Check if Report Update is in Reporting Window
         if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
-           !($rA['race']['season']['reportable'] && $rA['race']['season']['report_window'] != null
+           !($rA['race']['season']['report_window'] != null
             && time() < strtotime($rA['race']['season']['report_window'])))
         {
             session()->flash('error', "You are not allowed to delete this report");
