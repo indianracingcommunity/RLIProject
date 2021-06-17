@@ -278,8 +278,8 @@ class ReportsController extends Controller
         $report->save();
 
         //Update Posted Message
-        $userid = Driver::findOrFail($data['driver'])->load('user')->pluck('user.discord_id');
-        Discord::editMessage($this->reportMessage(Auth::user()->discord_id, $userid, $data), $rA['season']['report_channel'], $rA['message_id']);
+        $userid = Driver::where('id', $data['driver'])->firstOrFail()->load('user');
+        Discord::editMessage($this->reportMessage(Auth::user()->discord_id, $userid['user']['discord_id'], $data), $rA['race']['season']['report_channel'], $rA['message_id']);
 
         session()->flash('success', "Report updated successfully");
         return redirect('/');
