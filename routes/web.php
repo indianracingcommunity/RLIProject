@@ -62,13 +62,13 @@ Route::group(['middleware' => 'auth'], function () {
           SteamLogin::routes(['controller' => SteamLoginController::class]);
 
           //Driver Report Routes
-          Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
-          Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
+          // Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
+          // Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
 
-          Route::get('/home/report/list','ReportsController@listDriverReports')->name('report.list');
-          Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.view');
+          // Route::get('/home/report/list','ReportsController@listDriverReports')->name('report.list');
+          // Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.view');
 
-          Route::get('/home/report/edit/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.edit');
+          // Route::get('/home/report/edit/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.edit');
           Route::put('/home/report/edit/{report}','ReportsController@update')->where('report', '^[-+]?\d*\.?\d*$')->name('report.editsubmit');
           Route::delete('/home/report/delete/{report}','ReportsController@delete')->where('report', '^[-+]?\d*\.?\d*$')->name('report.delete');
 
@@ -89,7 +89,8 @@ Route::get('/fetch/drivers/{race}','ReportsController@driversdata'); // Need to 
 Route::group(['middleware' => 'auth:api'], function () {
      //Fetch Driver & Constructor Details - Telemetry API
      Route::get('/drivers/data','DriverController@driverdata')->name('telemetry.drivers');
-
+     Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
+     
      //Fetch User Info - Discord Bot
      Route::get('/api/users/details/{query}/{id}','BotController@fetchdetails')->name('bot.discord');
 
@@ -118,8 +119,8 @@ Route::group(['middleware' => 'allowed:admin,signup'], function () {
 
 //Stewards Reports
 Route::group(['middleware' => 'allowed:admin,steward'], function () {
-     Route::get('/home/admin/report','DriverController@viewreports')->name('steward.list');
-     Route::get('home/admin/report/{report}/details','DriverController@reportdetails')->name('steward.view');
+     // Route::get('/home/admin/report','DriverController@viewreports')->name('steward.list');
+     // Route::get('home/admin/report/{report}/details','DriverController@reportdetails')->name('steward.view');
      Route::post('/home/admin/verdict/{report}/save','DriverController@saveverdict')->name('steward.save');
 
      Route::post('/home/steward/verdict/{report}/revert', 'ReportsController@revertVerdict')->name('steward.revert');

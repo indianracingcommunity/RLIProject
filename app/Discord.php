@@ -555,7 +555,7 @@ return "Done";
            }
            else
            {
-                return $final;
+                return $final['id'];
            }
         }
     }

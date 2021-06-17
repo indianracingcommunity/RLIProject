@@ -80,8 +80,9 @@ class ReportsController extends Controller
     {
         $data = request()->all();
         //array_push($data['driver'],'1');       //Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
-
-        $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();
+        
+        // $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();  UI Version
+        $dr = Driver::where('user_id', $data['reporting_driver'])->firstOrFail();    // API Version
         $race = Race::where('id', $data['race'])->firstOrFail()->load('season')->toArray();
 
         for($i = 0; $i < count($data['driver']); $i++)
@@ -91,18 +92,21 @@ class ReportsController extends Controller
             $report -> reporting_driver = $dr->id;
             $report -> reported_against = $data['driver'][$i];
             $report -> lap = $data['lap'];
-            $report -> explanation = $data['explained'];
+            $report -> explanation = $data['explanation'];
             $report -> proof = $data['proof'];
-            $report->save();
+            $report -> report_game = $data['report_game'];
+            
 
             //Publish Message in Season's Report Channel
             $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
-            Discord::publishMessage($this->reportMessage(Auth::user()->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
+            // $report -> message_id = Discord::publishMessage($this->reportMessage(Auth::user()->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']); UI Version
+            // $report -> message_id = Discord::publishMessage($this->reportMessage('240431392834453505', $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
+            $report->save();
         }
 
         // Redirect to View all Reports page
-        session()->flash('success', "Report Submitted Successfully");
-        return redirect('/');
+        // session()->flash('success', "Report Submitted Successfully"); UI Version
+        return response()->json(['message'=>"Report Created Successfully"], 200);
     }
 
     public function publishReports()
@@ -180,15 +184,15 @@ class ReportsController extends Controller
         $message .= $idagainst . "> \n3. ";
 
         //Lap
-        if($report->lap == -1)
+        if($data['lap'] == -1)
             $message .= "In Quali";
-        else if($report->lap == 0)
+        else if($data['lap'] == 0)
             $message .= "Formation Lap";
         else
             $message .= "Lap " . $data['lap'];
 
-        $message .= "\n4. Explanation: " . $data['explained'];
-        $message .= "\n5. Prood: " . $data['proof'];
+        $message .= "\n4. Explanation: " . $data['explanation'];
+        $message .= "\n5. Proof: " . $data['proof'];
         $message .= "\n-----------------------------";
 
         return $message;
@@ -269,7 +273,7 @@ class ReportsController extends Controller
         $data = request()->all();
         $report -> reported_against = $data['driver'];
         $report -> lap = $data['lap'];
-        $report -> explanation = $data['explained'];
+        $report -> explanation = $data['explanation'];
         $report -> proof = $data['proof'];
         $report->save();
 
