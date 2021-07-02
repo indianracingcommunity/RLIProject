@@ -27,7 +27,7 @@ class Race extends Model
     }
 
     protected $fillable = [
-        'circuit_id', 'season_id', 'round', 'distance'
+        'circuit_id', 'season_id', 'round', 'distance', 'points'
     ];
 
     public function season()

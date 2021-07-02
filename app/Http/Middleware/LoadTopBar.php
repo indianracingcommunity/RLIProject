@@ -1,46 +1,32 @@
 <?php
 
-namespace App\Providers;
+namespace App\Http\Middleware;
 
-use Session;
-// use App\Season;
-// use App\Series;
-use App\Http\Middleware\PermissionManager;
+use Closure;
+use App\Season;
+use App\Series;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Http\Request;
-class AppServiceProvider extends ServiceProvider
+
+class LoadTopBar
 {
     /**
-     * Register any application services.
+     * Handle an incoming request.
      *
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function register()
+    public function handle($request, Closure $next)
     {
-        //
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot(Request $request)
-    {         
-
-        /* $all_seasons = Season::where([
-                            ['status', '>=', 1],
-                            ['show', '=', 1]
-                        ])
-
-                    ->orderBy('series', 'asc')
-                    ->orderBy('tier', 'asc')
-                    ->orderBy('season', 'desc')
-                    ->get()
-                    ->toArray();
+        $all_seasons = Season::where([
+            ['status', '>=', 1],
+            ['show', '=', 1]
+        ])
+        ->orderBy('series', 'asc')
+        ->orderBy('tier', 'asc')
+        ->orderBy('season', 'desc')
+        ->get()
+        ->toArray();
 
         $prev = -1;
         $prev = 0;
@@ -50,7 +36,6 @@ class AppServiceProvider extends ServiceProvider
             $series = array();
             while($i < count($all_seasons) && $all_seasons[$i]['series'] == $all_seasons[$prev]['series'])
             {
-
                 //if($all_seasons[$i]['season'] == (int)$all_seasons[$i]['season'])
                 array_push($series, $all_seasons[$i]);
 
@@ -89,14 +74,8 @@ class AppServiceProvider extends ServiceProvider
         //session(['topBarSeasons' => $res]);
         view()->composer('*', function(View $view) use ($res) {
             $view->with('topBarSeasons', $res);
-        }); */
-
-        
-        Blade::if('view', function($role) use($request) {
-            $roleArr = explode(",",$role);
-            $PermissionManager = new PermissionManager();
-            $verify = $PermissionManager->verify($request,$roleArr);
-            return $verify;
         });
+
+        return $next($request);
     }
 }
