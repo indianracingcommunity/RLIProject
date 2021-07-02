@@ -23,6 +23,6 @@ class VerifyCsrfToken extends Middleware
         '/results/race',
         '/impel',
         '/recotap',
-        '/home/report/submit'
+        '/api/report/submit'
     ];
 }

@@ -76,13 +76,25 @@ class ReportsController extends Controller
         return response()->json($result);
     }
 
+    public function bulkCreate()
+    {
+        $data = request()->all();
+        for($i = 0; $i < count($data); $i++)
+        {
+            $rp = new Report($data[$i]);
+            $rp->save();
+        }
+
+        return response()->json(['message'=>"Reports Created Successfully"], 200);
+    }
+
     public function create()
     {
         $data = request()->all();
-        //array_push($data['driver'],'1');       //Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
+        //array_push($data['driver'],'1');       // Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
         
-        // $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();  UI Version
-        $dr = Driver::where('user_id', $data['reporting_driver'])->firstOrFail();    // API Version
+        $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();  // UI Version
+        // $dr = Driver::where('user_id', $data['reporting_driver'])->firstOrFail();    // API Version
         $race = Race::where('id', $data['race'])->firstOrFail()->load('season')->toArray();
 
         for($i = 0; $i < count($data['driver']); $i++)
@@ -99,14 +111,21 @@ class ReportsController extends Controller
 
             //Publish Message in Season's Report Channel
             $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
-            // $report -> message_id = Discord::publishMessage($this->reportMessage(Auth::user()->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']); UI Version
+            $report -> message_id = Discord::publishMessage($this->reportMessage(Auth::user()->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']); // UI Version
             // $report -> message_id = Discord::publishMessage($this->reportMessage('240431392834453505', $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
             $report->save();
         }
 
         // Redirect to View all Reports page
-        // session()->flash('success', "Report Submitted Successfully"); UI Version
-        return response()->json(['message'=>"Report Created Successfully"], 200);
+        session()->flash('success', "Report Submitted Successfully"); // UI Version
+        return redirect()->back();
+        //return response()->json(['message'=>"Report Created Successfully"], 200);
+    }
+
+    public function applyReports()
+    {
+        $seasons = Season::where('status', '<', 2)->get()->toArray();
+        return view('user.reportadmin')->with('seasons', $seasons);
     }
 
     public function publishReports()

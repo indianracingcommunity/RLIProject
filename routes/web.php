@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
 
           //Driver Report Routes
           // Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
-          // Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
+          Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
 
           // Route::get('/home/report/list','ReportsController@listDriverReports')->name('report.list');
           // Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.view');
@@ -89,7 +89,7 @@ Route::get('/fetch/drivers/{race}','ReportsController@driversdata'); // Need to 
 Route::group(['middleware' => 'auth:api'], function () {
      //Fetch Driver & Constructor Details - Telemetry API
      Route::get('/drivers/data','DriverController@driverdata')->name('telemetry.drivers');
-     Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
+     Route::post('/api/report/submit','ReportsController@bulkCreate')->name('steward.upload');
      
      //Fetch User Info - Discord Bot
      Route::get('/api/users/details/{query}/{id}','BotController@fetchdetails')->name('bot.discord');
@@ -125,6 +125,8 @@ Route::group(['middleware' => 'allowed:admin,steward'], function () {
 
      Route::post('/home/steward/verdict/{report}/revert', 'ReportsController@revertVerdict')->name('steward.revert');
      Route::post('/home/steward/verdict/{report}/apply', 'ReportsController@applyVerdict')->name('steward.apply');
+
+     Route::get('/home/steward/verdict/publish', 'ReportsController@applyReports')->name('steward.control');
      Route::post('/home/steward/verdict/publish', 'ReportsController@publishReports')->name('steward.publish');
      //Route::put('/position', 'ResultsController@updatePosition')->name('result.verdict');
 });
