@@ -44,6 +44,10 @@
      <label for="exampleFormControlSelect1">Round Select</label>
      <input type="number" name="round" style="width:100px" class="form-control" aria-label="Text input with dropdown button">
      <br>
+     <br>
+     <label for="exampleFormControlSelect1">Parse Mode: 0 for Single Session, 1 for Multi-Session Single Driver</label>
+     <input type="number" name="mode" style="width:100px" class="form-control" aria-label="Text input with dropdown button" value="0">
+     <br>
      <table class="table">
       <tr>
        <td width="40%" align="right"><label>Select File for Upload</label></td>
