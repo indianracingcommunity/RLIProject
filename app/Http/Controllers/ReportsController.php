@@ -160,12 +160,13 @@ class ReportsController extends Controller
             $reports[$i]->save();
 
             //Publish Splitter Message
-            if($prev_race_id != $reports[$i]->race->id)
+            if($prev_race_id != $reports[$i]->race_id)
             {
                 $splitter_message = " **-----------------------------**\n       Round " . $reports[$i]->race->round . " Reports\n **-----------------------------**";
                 Discord::publishMessage($splitter_message, $season->verdict_channel);
             }
-
+            
+            sleep(1);
             //Publish Verdict Message
             Discord::publishMessage($this->verdictMessage($reports[$i]->toArray()), $season->verdict_channel);
 
@@ -268,7 +269,7 @@ class ReportsController extends Controller
         //Explanation
         if($report['verdict_message'] != null)
             $message .= "\n5. Explanation: " . $report['verdict_message'];
-            
+
         $message .= "\n-----------------------------";
         return $message;
     }
