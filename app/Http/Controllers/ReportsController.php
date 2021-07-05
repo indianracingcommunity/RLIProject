@@ -182,7 +182,8 @@ class ReportsController extends Controller
             $this->applyVerdict($report, -1);
 
             //Delete Verdict Message
-
+            $report->loadMissing('race.season');
+            Discord::deleteMessage($race->race->season->report_channel, $report->message_id);
 
             //Update Resolved to 1
             $report->resolved = 1;
