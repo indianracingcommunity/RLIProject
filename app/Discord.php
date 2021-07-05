@@ -607,5 +607,49 @@ return "Done";
         }
     }
 
+    public static function deleteMessage($channel,$msgid)
+   {
+       if($channel == NULL)
+            return 0;
+       $params = (['token' => config('services.discord.bot')]);
+       $curl = curl_init();
+
+       curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages/".$msgid,
+           CURLOPT_RETURNTRANSFER => true,
+           CURLOPT_ENCODING => "",
+           CURLOPT_MAXREDIRS => 10,
+           CURLOPT_TIMEOUT => 30,
+           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+           CURLOPT_CUSTOMREQUEST => "DELETE",
+           CURLOPT_HTTPHEADER => array(
+               'Content-Type: application/json',
+               "Authorization: Bot ".$params['token']
+           ),
+       ));
+
+       $response = curl_exec($curl);
+       $err = curl_error($curl);
+       curl_close($curl);
+
+       if ($err) 
+       {
+           return $err;
+       } 
+       else
+       {
+           $final = json_decode($response, true);
+           if(isset($final['message']))
+           {
+                return "Invalid";
+           }
+           else
+           {
+               // Sucess retruns a empty 204 response put whatever you want to return here! 
+                return "Done!";
+           }
+        }
+    }
+
 }
 ?>

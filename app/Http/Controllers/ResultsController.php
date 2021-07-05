@@ -80,6 +80,24 @@ class ResultsController extends Controller
         $regex = '/^\+?([0-5]?\d\:)?[0-5]?\d[.]\d{3}$|^DNF$|^DSQ$|^DNS$|^\+1 Lap$|^\+[2-9][0-9]* Laps$/';
         //Result Storing
         $results = $request->validated()['results'];
+
+        // Create a array of all the status values in the result json
+        $fastestLapCheck = array();
+        for($i=0; $i<count($results); $i++)
+        {
+        
+            array_push($fastestLapCheck, $results[$i]['status']);
+
+        }
+        // If 1 is not found throw an error
+        if(!in_array(1,$fastestLapCheck))
+        {
+            return response()->json([
+                "mesage" => "No fastest Lap found pls fix",
+            ]);
+        }
+        
+
         for($i=0; $i<count($results); $i++)
         {
             if($results[$i]['driver_id'] == '-1')
@@ -93,7 +111,7 @@ class ResultsController extends Controller
             if($check == '0')
             {
                 return response()->json([
-                    "message" => "Time Error Found",
+                    "message" => "Error Found in Time Format",
                     "error" => $results[$i],
                 ]);
             }
