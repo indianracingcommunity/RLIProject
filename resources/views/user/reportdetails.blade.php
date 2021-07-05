@@ -6,30 +6,22 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-            <div class="card-header">Report Against:{{$report->against}}</div>
-
+            <div class="card-header">Season: {{$report['race']['season']['name']}}</div>
+              {{-- {{dd($report)}} --}}
                 <div class="card-body">
-                  <h1 class="text-center my-5"> Details </h1>
+                  <h1 class="text-center my-5"> Details</h1>
               
-                <p>Reported: {{$report->against}}</p>
+                <p>Reported: {{$report['reported_against']['name']}}</p>
                   <br>
-                <p>Track: {{$report->track}}</p>
+                <p>Session: {{$report['race']['circuit']['name']}}</p>
                 <br>
-                <p>Lap: {{$report->lap}}</p>
+                <p>Lap: {{$report['lap']}}</p>
                 <br>
-                <p>Explanation: {{$report->explained}}</p>
+                <p>Explanation: {{$report['explanation']}}</p>
                 <br>
-                <p>Proof:<a href="{{$report->proof}}">{{$report->proof}}</a></p>
+                <p>Proof:<a href="{{$report['proof']}}">{{ $report['proof'] }}</a></p>
 
-                  @if ($report->resolved==0)
-                Status:<p>Being Reviewed By stewards</p>
-                      @else
-                      Status:   <p class="text-success">Resolved</p>
-                  @endif  
-
-                  @isset($report->verdict)
-                  <p>{{$report->verdict}}</p>
-                    @endisset
+        
                     
             
 

@@ -27,7 +27,7 @@ class Race extends Model
     }
 
     protected $fillable = [
-        'circuit_id', 'season_id', 'round', 'distance'
+        'circuit_id', 'season_id', 'round', 'distance', 'points'
     ];
 
     public function season()
@@ -48,5 +48,10 @@ class Race extends Model
     public function results()
     {
         return $this->hasMany('App\Result');
+    }
+
+    public function report()
+    {
+        return $this->hasMany('App\Report');
     }
 }

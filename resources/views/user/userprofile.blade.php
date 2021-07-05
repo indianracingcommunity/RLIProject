@@ -23,7 +23,7 @@
 
 <div class="container">
 <div class="font-semibold text-center text-orange-800 bg-orange-200 rounded-md p-6 profileAlert" style="display: none;">
-    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Welcome to <strong>Indian Racing Comunity!</strong> Please complete your <strong>Profile.</strong>
+    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Welcome to <strong>Indian Racing Community!</strong> Please complete your <strong>Profile.</strong>
 </div>
 @if(SESSION('savedProfile'))
 <div class="font-semibold text-center text-green-800 bg-blue-100 rounded-md p-6" >
@@ -149,7 +149,7 @@
     </div>
 
     <div class="md:mx-4 mx-auto w-full">
-        <form action="/user/profile/save/{{Auth::user()->id}}" method="POST" id="submitProfileForm">
+        <form action="{{route('user.saveprofile', ['user' => Auth::user()->id])}}" method="POST" id="submitProfileForm">
             @csrf
             <div class="flex flex-col md:flex-row">
                 <div class="md:w-1/2 w-auto flex-grow-0 md:px-4 bg-white rounded-lg border p-4">

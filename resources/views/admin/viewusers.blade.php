@@ -26,10 +26,10 @@
       {{$user->name}}
     </td>
     <td>
-      <a href="/user/profile/view/{{$user->id}}" class="bg-blue-100 rounded py-2 px-4 text-blue-800 cursor-pointer hover:text-blue-900 hover:bg-blue-200 ">View Details</a>
+      <a href="{{route('user.profile', ['user' => $user->id])}}" class="bg-blue-100 rounded py-2 px-4 text-blue-800 cursor-pointer hover:text-blue-900 hover:bg-blue-200 ">View Details</a>
     </td>
     <td>
-      <a href="/home/admin/user-allot/{{$user->id}}" class="bg-yellow-100 rounded py-2 px-4 text-yellow-800 cursor-pointer hover:text-yellow-900 hover:bg-yellow-200 ">Allot Driver</a> 
+      <a href="{{route('driver.allotpage', ['id' => $user->id])}}" class="bg-yellow-100 rounded py-2 px-4 text-yellow-800 cursor-pointer hover:text-yellow-900 hover:bg-yellow-200 ">Allot Driver</a>
     </td>
   </tr>
   @php

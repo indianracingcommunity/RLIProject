@@ -30,7 +30,7 @@
    </div>
    <img src="/images/{{ Session::get('path') }}" width="300" />
    @endif
-   <form method="post" action="{{url('/parse/acc/upload')}}" enctype="multipart/form-data">
+   <form method="post" action="{{route('acc.parseupload')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
      <div class="form-group">
@@ -43,6 +43,10 @@
      <br>
      <label for="exampleFormControlSelect1">Round Select</label>
      <input type="number" name="round" style="width:100px" class="form-control" aria-label="Text input with dropdown button">
+     <br>
+     <br>
+     <label for="exampleFormControlSelect1">Parse Mode: 0 for Single Session, 1 for Multi-Session Single Driver</label>
+     <input type="number" name="mode" style="width:100px" class="form-control" aria-label="Text input with dropdown button" value="0">
      <br>
      <table class="table">
       <tr>

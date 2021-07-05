@@ -455,7 +455,7 @@
           document.getElementById("preference1").value = signup[i].carprefrence.split(",")[0];
           document.getElementById("preference2").value = signup[i].carprefrence.split(",")[1];
           document.getElementById("preference3").value = signup[i].carprefrence.split(",")[2];
-          document.getElementById("formid").action = "/signup/update/" + signup[i].id;
+          document.getElementById("formid").action = "/signup/update/" + signup[i].id;          //Need to be replaced with named route
           
 
           if (signup[i].ttevidence1 !=""){
@@ -818,8 +818,8 @@
         document.getElementById("drivernum").style.borderColor = "#f56565";
         sendform = false;
       }
-      else if (driverno < 1  || driverno > 99){
-        document.getElementById("errordrivernum").innerHTML = "Expecting too much from Codemasters <br> Enter driver number between 1 and 99";
+      else if (driverno < 1  || driverno > 999){
+        document.getElementById("errordrivernum").innerHTML = "Enter driver number between 1 and 999";
         document.getElementById("drivernum").style.borderColor = "#f56565";
         sendform = false;
       }

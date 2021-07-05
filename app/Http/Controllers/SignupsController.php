@@ -107,7 +107,7 @@ class SignupsController extends Controller
         $discord->notifysignup($data['seas']);
         session()->flash('success',"Signup Submitted Successfully");
 
-        return redirect('/signup');
+        return redirect()->route('driver.signup');
     }
 
     public function update(Signup $signup)
@@ -178,7 +178,7 @@ class SignupsController extends Controller
 
           $signup->save();
           session()->flash('success',"Signup Updated Successfully");
-          return redirect('/signup');
+          return redirect()->route('driver.signup');
        }
        else
        {

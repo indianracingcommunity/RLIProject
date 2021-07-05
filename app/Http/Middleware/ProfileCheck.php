@@ -18,8 +18,8 @@ class ProfileCheck
     {
         if (Auth::user() &&  Auth::user()->mothertongue != NULL) {
             return $next($request);
-     }
+        }
 
-    return redirect('/user/profile');
+        return redirect()->route('user.home');
     }
 }

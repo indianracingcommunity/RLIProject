@@ -13,28 +13,28 @@
       <nav class="flex justify-between border-b">
          <div class="flex py-2">
                <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                  <a href="/"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/storage/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="p-3">Indian Racing Comunity</span> </a>
+                  <a href="{{route('home')}}"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/storage/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="p-3">Indian Racing Community</span> </a>
                </div>
                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
-                  <a  href="/joinus"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
+                  <a  href="{{route('joinus')}}"><i class='fas fa-question-circle mx-1 text-blue-500'></i> FAQ</a>
                </div>
                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
-                  <a  href="/standings"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
+                  <a  href="{{route('standings')}}"><i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</a>
                </div>
                <!-- <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
-                  <a  href="/report"><i class='far fa-edit text-red-500 mx-1'></i>Report</a>
+                  <a  href="{{route('report.list')}}"><i class='far fa-edit text-red-500 mx-1'></i>Report</a>
                </div> -->
                <div class="px-4 py-3 font-semibold rounded hover:bg-gray-200 cursor-pointer mx-2">
-                  <a  href="/aboutus"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
+                  <a  href="{{route('aboutus')}}"><i class='far fa-address-card mx-1 text-indigo-500'></i>About Us</a>
                </div>
          </div>
          <div>
             <div class="px-4 flex py-2 m-2 bg-blue-600 text-white rounded font-semibold shadow-lg cursor-pointer hover:bg-blue-700 hover:shadow-none">
                @auth
-               <a  href="/user/profile"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
+               <a  href="{{route('user.home')}}"><i class='far fa-user mr-2'></i>{{Auth::user()->name}}</a>
                @endauth
                 @guest
-                <a href="/login/discord"><i class='far fa-user mr-2'></i>Login</a>
+                <a href="{{route('login.discord')}}"><i class='far fa-user mr-2'></i>Login</a>
                 @endguest
          </div>
          </div>

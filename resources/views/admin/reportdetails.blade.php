@@ -35,7 +35,7 @@
                 </div>
             </div>
 <br>
-        <form action="/home/admin/verdict/{{$report->id}}/save" method="POST">
+        <form action="{{route('steward.save', ['report' => $report->id])}}" method="POST">
     @csrf
 <div class="form-group">
     <label for="verdict">Verdict</label>

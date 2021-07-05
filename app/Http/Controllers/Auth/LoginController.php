@@ -62,7 +62,7 @@ class LoginController extends Controller
          Auth::login($authUser, true);
          }
 
-         return redirect('/user/profile');
+         return redirect()->route('user.home');
      }
 
      private function findOrCreateUser($userr)

@@ -16,6 +16,7 @@ use App\Driver;
 use App\Points;
 use App\Series;
 use App\Season;
+use App\Discord;
 
 class ResultsController extends Controller
 {
@@ -76,8 +77,46 @@ class ResultsController extends Controller
         $track = new Race($request->validated()['track']);
         $race = $track->insertRace();
 
+        $regex = '/^\+?([0-5]?\d\:)?[0-5]?\d[.]\d{3}$|^DNF$|^DSQ$|^DNS$|^\+1 Lap$|^\+[2-9][0-9]* Laps$/';
         //Result Storing
         $results = $request->validated()['results'];
+
+        // Create a array of all the status values in the result json
+        $fastestLapCheck = array();
+        for($i=0; $i<count($results); $i++)
+        {
+        
+            array_push($fastestLapCheck, $results[$i]['status']);
+
+        }
+        // If 1 is not found throw an error
+        if(!in_array(1,$fastestLapCheck))
+        {
+            return response()->json([
+                "mesage" => "No fastest Lap found pls fix",
+            ]);
+        }
+        
+
+        for($i=0; $i<count($results); $i++)
+        {
+            if($results[$i]['driver_id'] == '-1')
+            {
+                return response()->json([
+                    "mesage" => "Please check Driver ID's",
+                    "error" => $results[$i],
+                ]);
+            }
+            $check = preg_match($regex, $results[$i]['time']);
+            if($check == '0')
+            {
+                return response()->json([
+                    "message" => "Error Found in Time Format",
+                    "error" => $results[$i],
+                ]);
+            }
+        }
+
         foreach($results as $k => $res) {
             Driver::selfLearn($res['driver'], $res['driver_id']);
 
@@ -85,6 +124,24 @@ class ResultsController extends Controller
             $result = new Result($res);
             $result->storeResult();
             $results[$k] = $result;
+        }
+
+        //Update Season Report Window & Reportable
+        $season = Season::where('id', $race->season_id)->first();
+        if($season->report_window != null)
+        {
+            //Advance report_window by 1 Week until it goes over Current Time
+            while(strtotime($season->report_window) < time())
+                $season->report_window = date('Y-m-d H:i:s', strtotime($season->report_window) + 604800);
+
+            $season->save();
+
+            //Publish Report Splitter Message
+            if($season->report_channel != null)
+            {
+                $message = " **-----------------------------**\n       Round " . $race->round . " Reports\n **-----------------------------**";
+                Discord::publishMessage($message, $season->report_channel);
+            }
         }
 
         return response()->json([

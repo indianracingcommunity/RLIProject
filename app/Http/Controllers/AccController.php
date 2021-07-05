@@ -46,6 +46,10 @@ class AccController extends Controller
         $race = request()->file('race');
         $quali = request()->file('quali');
 
+        //1 for Multi-Session Single Driver
+        //0 for Single Session
+        $mode = request()->has('mode') ? request()->mode : 0;
+
         //$fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
         //$file8 = mb_convert_encoding($file16, 'utf-8');
         $race_content = file_get_contents($race);
@@ -60,22 +64,36 @@ class AccController extends Controller
         $sp_circuit = Circuit::getTrackByGame($json['trackName'], $season['series']);
         if($sp_circuit == null) return response()->json([]);
 
+        $totalLaps = 0;
+        $results = array();
+        if(count($json['sessionResult']['leaderBoardLines']) > 0)
+            $totalLaps = $json['sessionResult']['leaderBoardLines'][0]['timing']['lapCount'];
+
         $track = array(
             'circuit_id' => $sp_circuit['id'],
             'official' => $sp_circuit['official'],
             'display' => $sp_circuit['name'],
             "season_id" => $season['id'],
+            "distance" => $totalLaps / 10.0,
             "round" => $round
         );
 
         $qualiPosition = array();
         foreach($jq['sessionResult']['leaderBoardLines'] as $k => $driver)
-            $qualiPosition[$driver['car']['carId']] = $k + 1;
+        {
+            //Multi Session, Single Driver Setup
+            if($mode)
+            {
+                if(!array_key_exists($driver['currentDriver']['playerId'], $qualiPosition))
+                    $qualiPosition[$driver['currentDriver']['playerId']] = $k + 1;
+            }
 
-        $totalLaps = 0;
-        $results = array();
-        if(count($json['sessionResult']['leaderBoardLines']) > 0)
-            $totalLaps = $json['sessionResult']['leaderBoardLines'][0]['timing']['lapCount'];
+            //Single Session, Multi Driver Setup
+            else
+            {
+                $qualiPosition[$driver['car']['carId']] = $k + 1;
+            }
+        }
 
         foreach($json['sessionResult']['leaderBoardLines'] as $k => $driver)
         {
@@ -94,8 +112,16 @@ class AccController extends Controller
             $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
 
             //Grid Position
-            if(array_key_exists($driver['car']['carId'], $qualiPosition))
-                $grid = $qualiPosition[$driver['car']['carId']];
+            if($mode)
+            {
+                if(array_key_exists($driver['currentDriver']['playerId'], $qualiPosition))
+                    $grid = $qualiPosition[$driver['currentDriver']['playerId']];
+            }
+            else
+            {
+                if(array_key_exists($driver['car']['carId'], $qualiPosition))
+                    $grid = $qualiPosition[$driver['car']['carId']];
+            }
 
             //Fastest Lap
             if($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10)

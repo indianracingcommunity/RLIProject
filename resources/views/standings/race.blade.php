@@ -50,7 +50,7 @@ td {
             </div>
         </div>
         @if ($prevRace != NULL)
-        <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$prevRace->round}}">
+        <a href="{{route('raceresults', ['code' => $code, 'tier' => $tier, 'season' => $season, 'round' => $prevRace->round])}}">
           <div class="py-2 px-2 bg-white my-3 shadow-md rounded-md border-r-4 border-blue-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="prev-race">
             <div class="text-xs text-center font-semibold text-gray-700">PREVIOUS RACE</div>
             <div class="flex items-center flex-shrink-0 font-semibold justify-between">
@@ -73,7 +73,7 @@ td {
         </a>
         @endif
         @if ($nextRace != NULL)
-        <a href="/{{$code}}/{{$tier}}/{{$season}}/race/{{$nextRace->round}}">
+        <a href="{{route('raceresults', ['code' => $code, 'tier' => $tier, 'season' => $season, 'round' => $nextRace->round])}}">
           <div class="py-2 px-2 bg-white my-3 shadow-md rounded-md border-l-4 border-green-600 cursor-pointer justify-between hover:shadow-none hover:bg-gray-200" id="next-race">
             <div class="text-xs text-center font-semibold text-gray-700">NEXT RACE</div>
             <div class="flex items-center flex-shrink-0 font-bold justify-between">
@@ -116,7 +116,7 @@ td {
         @if((int)$results[$i]['status'] % 10 == 1)
           <tr>
             <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$i+1}}</td>
-            <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+            <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
             <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
             <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['points']}}</td>
           </tr>
@@ -128,9 +128,9 @@ td {
               <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$i+1}}</td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
             @else
-             <td class="font-bold rounded-lg border border-white bg-gray-200"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white bg-gray-200"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['constructor']['name']}}</td>
@@ -148,9 +148,9 @@ td {
               <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
 
               @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-extrabold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-extrabold rounded-lg border border-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
               @else
-              <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
               @endif
 
               <td class="font-semibold rounded-lg border border-white">{{$results[$i]['constructor']['name']}}</td>
@@ -163,9 +163,9 @@ td {
               <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$i+1}}</td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
             @else
-             <td class="font-bold rounded-lg border border-white"><a class="hover:underline" href="/user/profile/view/{{$results[$i]['driver']['user_id']}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white md:block hidden">{{$results[$i]['constructor']['name']}}</td>

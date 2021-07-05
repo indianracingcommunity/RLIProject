@@ -39,6 +39,10 @@ class Controller extends BaseController
         return $res;
     }
 
+    public function sgnp($n) {
+        return ($n >= 0) - ($n < 0);
+    }
+
     public function convertStandardtoMillis($time)
     {
         $seg_time = explode(":", $time);
