@@ -70,7 +70,8 @@
                                     <a href="#" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-pen-alt"></i></div>Update Standings</a>
                                     @endview
                                     @view('steward,coordinator')
-                                    <a href="{{route('steward.list')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a>
+                                    {{-- Enable this route later when we need it otherwise it breaks the site --}}
+                                    {{-- <a href="{{route('steward.list')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a> --}}
                                     @endview
                                     @view('admin,signup')
                                     <a href="{{route('coordinator.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
@@ -408,6 +409,11 @@
                     <span class="mr-2 text-xl text-pink-800 hover:text-gray-900 cursor-pointer">
                         <a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
                             <i class="fab fa-instagram"></i>
+                        </a>
+                    </span>
+                    <span class="mr-2 text-xl text-pink-800 hover:text-gray-900 cursor-pointer">
+                        <a href="https://www.facebook.com/indianracingcommunity/ target="_blank">
+                            <i class="fab fa-facebook"></i>
                         </a>
                     </span>
                     <span class="mr-2 text-xl text-blue-600 hover:text-gray-900 cursor-pointer">
