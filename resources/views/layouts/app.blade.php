@@ -412,7 +412,7 @@
                         </a>
                     </span>
                     <span class="mr-2 text-xl text-pink-800 hover:text-gray-900 cursor-pointer">
-                        <a href="https://www.facebook.com/indianracingcommunity/ target="_blank">
+                        <a href="https://www.facebook.com/indianracingcommunity/" target="_blank">
                             <i class="fab fa-facebook"></i>
                         </a>
                     </span>
