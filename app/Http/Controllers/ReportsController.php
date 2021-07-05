@@ -263,11 +263,13 @@ class ReportsController extends Controller
         }
 
         $message .= "**\n4. Evidence: " . $report['proof'];
+        
 
         //Explanation
         if($report['verdict_message'] != null)
             $message .= "\n5. Explanation: " . $report['verdict_message'];
-
+            
+        $message .= "\n-----------------------------";
         return $message;
     }
 
