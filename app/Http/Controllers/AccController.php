@@ -128,19 +128,21 @@ class AccController extends Controller
                 $status = 1;
 
             //Total Time
-            if($totalLaps == $driver['timing']['lapCount'])
-                $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
-            else if($driver['timing']['lastLap'] == 2147483647)
+            if($driver['timing']['lastLap'] == 2147483647)
             {
                 $status = -2;
                 $total_time = "DNF";
             }
+
+            //if($totalLaps == $driver['timing']['lapCount'])
             else
-            {
-                $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Lap";
-                if($totalLaps - $driver['timing']['lapCount'] > 1)
-                    $total_time .= "s";
-            }
+                $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
+            // else
+            // {
+            //     $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Lap";
+            //     if($totalLaps - $driver['timing']['lapCount'] > 1)
+            //         $total_time .= "s";
+            // }
 
             if($driver['timing']['bestLap'] == 2147483647)
                 $bestLap = "-";
@@ -157,7 +159,7 @@ class AccController extends Controller
                 "constructor_id" => $season['constructors'][$team_ind]['id'],
                 "matched_team" => $season['constructors'][$team_ind]['name'],
                 "grid" => $grid,
-                "stops" => 0,
+                "stops" => $driver['timing']['lapCount'],
                 "status" => $status,
                 "fastestlaptime" => $bestLap,
                 "time" => $total_time
