@@ -134,7 +134,7 @@ class AcController extends ImageController
                 "constructor_id" => $car['id'],
                 "matched_team" => $car['name'],
                 "grid" => ($driver[5] > 1000) ? $driver[5] - 1000 : $driver[5],
-                "stops" => 0,
+                "stops" => $driver[7],
                 "status" => $status,
                 "fastestlaptime" => $fastestLapTime,
                 "time" => $totalTime
