@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth:api'], function () {
      
      //Fetch User Info - Discord Bot
      Route::get('/api/users/details/{query}/{id}','BotController@fetchdetails')->name('bot.discord');
+     Route::get('/api/users/driver/fetch/{id}','BotController@fetchDriverId')->name('bot.driverid');
 
      //Upload Race Results
      Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.upload');

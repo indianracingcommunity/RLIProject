@@ -32,4 +32,19 @@ class BotController extends Controller
     
     }
 
+    public function fetchDriverId($id)
+    {
+        // Fetch data from the DB
+        $data = User::select('id')->where('discord_id',$id)->get()->load('driver')->toArray();
+        if(empty($data))  // If array is empty return an error response
+        {
+            return response()->json(['error'=>'Driver ID not found']);
+        }
+        else
+        {
+            return response()->json(['data'=>$data[0]['driver']]);
+        }
+        
+    }
+
 }
