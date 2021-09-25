@@ -30,6 +30,5 @@ Give a ⭐️ if this project helped you!
 
 ***
 
-
-* [Architecture](resources/docs/architecture.md) - Tech Stack <br>
-* [Modules](resources/docs/modules.md) - Route Groups and APIs
+* [Architecture](./resources/docs/architecture.md) - Tech Stack <br>
+* [Modules](./resources/docs/modules.md) - Route Groups and APIs
