@@ -35,6 +35,8 @@ class Controller extends BaseController
                     $res .= "0";
             }
         }
+        else
+            $res .= ".000";
 
         return $res;
     }
