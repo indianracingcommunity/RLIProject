@@ -105,8 +105,6 @@ td {
           <table class="w-full">
             <thead>
               <tr>
-<<<<<<< Updated upstream
-=======
                 @auth
               @view('admin,coordinator')
               <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">ID</th>
@@ -114,7 +112,6 @@ td {
               @endview
               @endauth    
                 
->>>>>>> Stashed changes
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Pos.</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white md:block hidden">Team</th>
