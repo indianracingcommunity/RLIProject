@@ -105,6 +105,16 @@ td {
           <table class="w-full">
             <thead>
               <tr>
+<<<<<<< Updated upstream
+=======
+                @auth
+              @view('admin,coordinator')
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">ID</th>
+                
+              @endview
+              @endauth    
+                
+>>>>>>> Stashed changes
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Pos.</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white md:block hidden">Team</th>
@@ -184,6 +194,27 @@ td {
       </table>
       </div>
   </div>
+  
+</div>
+<!-- Admin View -->
+<div>
+@auth
+   @view('admin,coordinator')
+   <div class="border-2 p-5 rounded-lg">
+      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+      <div class="flex flex-wrap gap-5">
+        <div class="text-lg font-semibold">Race ID: {{$results[0]['race']['id']}}</div>
+        <div class="text-lg font-semibold">Round: {{$results[0]['race']['round']}}</div>
+        <div class="text-lg font-semibold">Season ID: {{$results[0]['race']['season_id']}}</div>
+        @for ($i = 0; $i < $count; $i++)
+        @if((int)$results[$i]['status'] % 10 == 1)
+        <div class="text-lg font-semibold">Fastest Lap Time: {{$results[$i]['fastestlaptime']}}</div>
+        @endif
+        @endfor
+      </div>
+   </div>
+   @endview
+@endauth
 </div>
 @endsection
 

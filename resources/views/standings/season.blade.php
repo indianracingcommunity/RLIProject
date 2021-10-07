@@ -346,7 +346,18 @@
    @endif
 </div>
 </div>
-</div>
+
+
+<!-- Admin View -->
+
+@auth
+   @view('admin,coordinator')
+   <div class="border-2 p-5  rounded-lg">
+      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+      <div class="text-lg font-semibold">Season ID: {{$season['id']}}</div>
+   </div>
+   @endview
+@endauth
 <script>
    $(document).ready(function() {
       $('.openDriver').click(function(e) {
