@@ -242,6 +242,22 @@
       </div>
    </div>
 </div>
+<!-- Admin View -->
+
+@auth
+   @view('admin,coordinator')
+   <div class="border-2 p-5   rounded-lg">
+      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+      <div class="flex gap-5">
+      <div class="text-lg font-semibold">Season ID: {{$season['id']}}</div>
+      <div class="text-lg font-semibold">Tier: {{$season['tier']}}</div>
+      <div class="text-lg font-semibold">Series: {{$season['series']}}</div>
+      <div class="text-lg font-semibold">Status: {{$season['status']}}</div>
+</div>
+   </div>
+   @endview
+@endauth
+
 </div>
 <script>
    $(document).ready(function() {
