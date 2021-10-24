@@ -125,7 +125,8 @@
                </tbody>
             </table>
          </div>
-         @if($season['season'] - (int)$season['season'] < 0.75) <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
+         @if($season['season'] - (int)$season['season'] < 0.75) 
+         <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
             <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
                Top 3 Constructors
             </div>
@@ -190,8 +191,9 @@
                      @endfor
                </tbody>
             </table>
+            </div>
             @endif
-      </div>
+      
    </div>
 
    <div class="md:w-2/3">
