@@ -108,6 +108,7 @@ td {
                 @auth
               @view('admin,coordinator')
               <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">ID</th>
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Constructor ID</th>
                 
               @endview
               @endauth    
@@ -125,6 +126,7 @@ td {
             @auth
               @view('admin,coordinator')
             <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
                 
               @endview
               @endauth    
@@ -144,6 +146,11 @@ td {
               <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
             @endif
             
+            @if ($results[$i]['driver']['user_id'] == Auth::id())
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @else
+              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @endif
             
                 
               @endview
@@ -190,7 +197,13 @@ td {
             @else
               <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
             @endif
-                
+            
+            @if ($results[$i]['driver']['user_id'] == Auth::id())
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @else
+              <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @endif
+            
               @endview
               @endauth    
         
@@ -238,6 +251,8 @@ td {
         <div class="text-lg font-semibold">Fastest Lap Time: {{$results[$i]['fastestlaptime']}}</div>
         @endif
         @endfor
+        <div class="text-lg font-semibold">Circuit ID: {{$results[0]['race']['circuit_id']}}</div>
+        
       </div>
    </div>
    @endview
