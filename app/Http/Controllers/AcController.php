@@ -126,15 +126,15 @@ class AcController extends ImageController
 
             //Push to Results
             array_push($results, array(
-                "position" => $driver[0],
+                "position" => (int)$driver[0],
                 "driver" => $driver[1],
-                "driver_id" => $matched_driverid,
+                "driver_id" => (int)$matched_driverid,
                 "matched_driver" => $matched_drivername,
                 "team" => $car['name'],
-                "constructor_id" => $car['id'],
+                "constructor_id" => (int)$car['id'],
                 "matched_team" => $car['name'],
                 "grid" => ($driver[5] > 1000) ? $driver[5] - 1000 : $driver[5],
-                "stops" => $driver[7],
+                "stops" => (int)$driver[7],
                 "status" => $status,
                 "fastestlaptime" => $fastestLapTime,
                 "time" => $totalTime
