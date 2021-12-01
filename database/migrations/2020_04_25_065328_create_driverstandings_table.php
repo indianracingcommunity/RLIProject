@@ -19,7 +19,7 @@ class CreateDriverstandingsTable extends Migration
             $table->bigInteger('driver_id')->unsigned();
             $table->integer('points')->default(0);
 
-            //21 is DNS, 22 is DNF, 23 is DSQ
+            // 21 is DNS, 22 is DNF, 23 is DSQ
             $table->integer('position')->default(21);
             $table->timestamps();
 

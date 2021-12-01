@@ -20,7 +20,7 @@ class RemoveReportableInSeasonsTable extends Migration
         Schema::table('reports', function (Blueprint $table) {
             $table->boolean('report_game')->default(0);
             $table->unsignedBigInteger('counter_report')->nullable();
-            //$table->foreign('counter_report')->references('id')->on('reports');
+            // $table->foreign('counter_report')->references('id')->on('reports');
         });
     }
 

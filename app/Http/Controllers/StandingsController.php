@@ -44,14 +44,14 @@ class StandingsController extends Controller
                      ->orderBy('round', 'asc')
                      ->get()->load('season','circuit');
 
-                       //whereHas('season', function (Builder $query) use ($tier, $season) {
+                        hereHas('season', function (Builder $query) use ($tier, $season) {
                        //     $query->where([
                        //         ['tier', $tier],
                        //         ['season', $season]
                        //     ]);
-                       //})
-                       //->orderBy('round', 'asc')
-                       //->get()->load('season','circuit');
+                       // })
+                       // ->orderBy('round', 'asc')
+                       // ->get()->load('season','circuit');
 
         return view('standings.allraces')
                 ->with('code', $code)
@@ -183,10 +183,10 @@ class StandingsController extends Controller
     }
 
     protected function nextRace($seasonid) {
-        //$season = Season::where([
+        // $season = Season::where([
         //    ['tier', $tier],
         //    ['season', $season]
-        //])->firstOrFail();
+        // ])->firstOrFail();
 
         $round = Race::has('results')
                       ->where('season_id', $seasonid)
@@ -215,7 +215,7 @@ class StandingsController extends Controller
     }
     protected function computePoints($results, String $field, $psystem)
     {
-        //Sort $results by $field
+        // Sort $results by $field
         usort($results, function($a, $b) use ($field) {
             if ($a[$field . '_id'] > $b[$field . '_id'])
                 return 1;
@@ -288,7 +288,7 @@ class StandingsController extends Controller
             usort($l, array($this, "sortPos"));
             usort($r, array($this, "sortPos"));
 
-            //Equal Points
+            // Equal Points
             for($j = 0; $j < min(count($l), count($r)); $j++) {
                 if($l[$j]['position'] > $r[$j]['position'])
                     return 1;

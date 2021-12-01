@@ -26,7 +26,7 @@ class CreateResultsTable extends Migration
             $table->string('fastestlaptime')->nullable();
             $table->string('tyres')->nullable();
             
-            //21 is DNS, 22 is DNF, 23 is DSQ
+            // 21 is DNS, 22 is DNF, 23 is DSQ
             $table->integer('position')->default(22);
             $table->timestamps();
 

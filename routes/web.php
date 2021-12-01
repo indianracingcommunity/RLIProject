@@ -20,12 +20,12 @@ Route::get('/home/report/create','ReportsController@reportDriver')->name('report
 Route::get('/', 'WebsiteController@loadhomepage')->name('home');
 Route::get('joinus', 'WebsiteController@loadjoinus')->name('joinus');
 Route::get('teamsanddrivers', 'WebsiteController@loadteamsanddrivers')->name('teams');
-//Route::get('standings', 'WebsiteController@loadstandings');
+// Route::get('standings', 'WebsiteController@loadstandings');
 Route::get('aboutus', 'WebsiteController@loadaboutus')->name('aboutus');
 Route::get('ourteam', 'WebsiteController@loadourteam')->name('ourteam');
 Route::get('faq', 'WebsiteController@loadfaq')->name('faq');
 
-//League Rules
+// League Rules
 Route::get('f1leaguerules', 'WebsiteController@f1leaguerules')->name('rules.pcf1');
 Route::get('f1XBOXleaguerules', 'WebsiteController@f1XBOXleaguerules')->name('rules.xboxf1');
 Route::get('accleaguerules', 'WebsiteController@accleaguerules')->name('rules.acc');
@@ -36,8 +36,7 @@ Route::get('/public/image/race', 'ImageController@pubRace');
 Route::get('/public/image/quali', 'ImageController@pubQuali');
 */
 
-//Farewell Routes
-//To be moved to api.php
+// Farewell Routes
 Route::put('/impel', 'WebsiteController@impelS');
 Route::delete('/impel', 'WebsiteController@impelA');
 
@@ -45,26 +44,26 @@ Route::get('/recotap', 'WebsiteController@recotapB');
 Route::post('/recotap', 'WebsiteController@recotapG');
 //
 
-//League Result Data
-Route::get('/{code}/{tier}/{season}/standings', 'StandingsController@fetchStandings')->name('standings')           //Standings
+// League Result Data
+Route::get('/{code}/{tier}/{season}/standings', 'StandingsController@fetchStandings')->name('standings')           // Standings
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
-Route::get('/{code}/{tier}/{season}/races', 'StandingsController@fetchRaces')->name('allraces')                    //All Races
+Route::get('/{code}/{tier}/{season}/races', 'StandingsController@fetchRaces')->name('allraces')                    // All Races
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$']);
-Route::get('/{code}/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceResults')->name('raceresults')      //Race Results
+Route::get('/{code}/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceResults')->name('raceresults')      // Race Results
 ->where(['tier' => '^[-+]?\d*\.?\d*$', 'season' => '^[-+]?\d*\.?\d*$', 'round' => '^[-+]?\d*\.?\d*$']);
 
-//User Authenticated Routes
+// User Authenticated Routes
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
 
-     //User Profile Routes
+     // User Profile Routes
      Route::get('/user/profile/', 'UserPanel@viewprofile')->name('user.home');
      Route::post('/user/profile/save/{user}','HomeController@savedetails')->name('user.saveprofile');
      Route::group(['middleware' => 'profile'], function () {
           Route::post('/user/profile/setsteam/{user}','UserPanel@SetSteam');
           SteamLogin::routes(['controller' => SteamLoginController::class]);
 
-          //Driver Report Routes
+          // Driver Report Routes
           // Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
           Route::post('/home/report/submit','ReportsController@create')->name('report.submit');
 
@@ -75,38 +74,21 @@ Route::group(['middleware' => 'auth'], function () {
           Route::put('/home/report/edit/{report}','ReportsController@update')->where('report', '^[-+]?\d*\.?\d*$')->name('report.editsubmit');
           Route::delete('/home/report/delete/{report}','ReportsController@delete')->where('report', '^[-+]?\d*\.?\d*$')->name('report.delete');
 
-          //Signup Routes
+          // Signup Routes
           Route::get('/signup','SignupsController@view')->middleware('signup')->name('driver.signup');
           Route::post('/signup/store','SignupsController@store')->name('driver.postsignup');
           Route::post('/signup/update/{signup}','SignupsController@update')->name('driver.editsignup');
 
-          //Profile Routes
+          // Profile Routes
           Route::get('/user/profile/view/{user}','HomeController@viewprofile')->name('user.profile');
      });
-});
-
-//REST APIs
-//To be moved to api.php
-Route::get('/fetch/drivers/{race}','ReportsController@driversdata'); // Need to move this in API middleware later on
-
-Route::group(['middleware' => 'auth:api'], function () {
-     //Fetch Driver & Constructor Details - Telemetry API
-     Route::get('/drivers/data','DriverController@driverdata')->name('telemetry.drivers');
-     Route::post('/api/report/submit','ReportsController@bulkCreate')->name('steward.upload');
-     
-     //Fetch User Info - Discord Bot
-     Route::get('/api/users/details/{query}/{id}','BotController@fetchdetails')->name('bot.discord');
-     Route::get('/api/users/driver/fetch/{id}','BotController@fetchDriverId')->name('bot.driverid');
-
-     //Upload Race Results
-     Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.upload');
 });
 
 // Routes Handling the Discord Login
 Route::get('login/discord', 'Auth\LoginController@redirectToProvider')->name('login.discord');
 Route::get('login/discord/callback', 'Auth\LoginController@handleProviderCallback')->name('login.discordcallback');
 
-//Admin Panel
+// Admin Panel
 Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
      Route::get('/home/admin', 'DriverController@index')->name('admin.home');
      Route::get('/home/admin/users','DriverController@viewusers')->name('coordinator.driverlist');
@@ -116,12 +98,14 @@ Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
      Route::get('/result/upload','SignupsController@temp');
 });
 
-//League Sign Up
+// League Sign Up
 Route::group(['middleware' => 'allowed:admin,signup'], function () {
      Route::get('/home/admin/view-signups','SignupsController@viewsignups')->name('coordinator.signup');
 });
 
-//Stewards Reports
+Route::middleware('auth:api')->get('/drivers/data','DriverController@driverdata')->name('telemetry.drivers');
+
+// Stewards Reports
 Route::group(['middleware' => 'allowed:admin,steward'], function () {
      // Route::get('/home/admin/report','DriverController@viewreports')->name('steward.list');
      // Route::get('home/admin/report/{report}/details','DriverController@reportdetails')->name('steward.view');
@@ -132,27 +116,27 @@ Route::group(['middleware' => 'allowed:admin,steward'], function () {
 
      Route::get('/home/steward/verdict/publish', 'ReportsController@applyReports')->name('steward.control');
      Route::post('/home/steward/verdict/publish', 'ReportsController@publishReports')->name('steward.publish');
-     //Route::put('/position', 'ResultsController@updatePosition')->name('result.verdict');
+     // Route::put('/position', 'ResultsController@updatePosition')->name('result.verdict');
 });
 
-//Driver Allotment
+// Driver Allotment
 Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
      Route::get('/home/admin/user-allot/{id}','DriverController@allotuser')->name('driver.allotpage');
      Route::post('/home/admin/user-allot/submit','DriverController@saveallotment')->name('driver.allot');
 });
 
-//League Results Parsing
+// League Results Parsing
 Route::group(['middleware' => 'allowed:admin,coordinator', 'prefix'=>'parse'], function () {
-     //F1 Results
+     // F1 Results
      Route::get('/f1/quali', 'ImageController@qualiIndex')->name('f1.imagequaliupload');
      Route::get('/f1/race', 'ImageController@raceIndex')->name('f1.imageraceupload');
      Route::post('/f1/race', 'ImageController@ocrRace')->name('f1.parseupload');
      
-     //ACC Results
+     // ACC Results
      Route::get('/acc/upload', 'AccController@raceUpload')->name('acc.raceupload');
      Route::post('/acc/upload', 'AccController@parseJson')->name('acc.parseupload');
      
-     //AC Results
+     // AC Results
      Route::get('/ac/upload', 'AcController@raceUpload')->name('ac.raceupload');
      Route::post('/ac/upload', 'AcController@parseCsv')->name('ac.parseupload');
 });

@@ -11,13 +11,12 @@ class SteamController extends Controller
 {   // Add this check before uploading race results
     public function check()
     {
-        //Get all Users from DB
+        // Get all Users from DB
         $query = Driver::select('*')
                 ->get()->load('user');
 
         $count = count($query);
         $key = config('steam-login.api_key');
-        //dd($key);
 
         for($i = 0; $i < $count; $i++)
         {
