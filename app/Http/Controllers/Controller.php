@@ -60,4 +60,52 @@ class Controller extends BaseController
         $res = $min * 60 + $sec;
         return ceil($res * 1000);
     }
+
+    // Groups By Field
+    // Example: Inputs -> ['season', 'signups', List of Seasons, List of All Signups, 'season']
+    // Returns { season: {}, signups: [{}, {}, ...] }
+    public function groupByField($fieldName, $listName, $idList, $ogList, $field, $id = "id")
+    {
+        $res = array();
+        $sList = array();
+
+        $prev = -1;
+        $cur = 0;
+
+        if(count($ogList) > 0)
+            $prev = $ogList[0][$field];
+
+        // Group by Field
+        // Assumes ogList is sorted by field, so that it can be split by it in order
+        foreach($ogList as $l)
+        {
+            $cur = $l[$field];
+
+            if($prev != $cur)
+            {
+                $elId = array_search($prev, array_column($idList, $id));
+
+                $el = array();
+                $el[$fieldName] = $idList[$elId];
+                $el[$listName] = $sList;
+                array_push($res, $el);
+
+                $sList = array();
+            }
+
+            array_push($sList, $l);
+            $prev = $cur;
+        }
+
+        // Last element push
+        $elId = array_search($cur, array_column($idList, $id));
+
+        $el = array();
+        $el[$fieldName] = $idList[$elId];
+        $el[$listName] = $sList;
+
+        array_push($res, $el);
+
+        return $res;
+    }
 }
