@@ -27,5 +27,5 @@ Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.
 Route::get('/fetch/drivers/{race}','ReportsController@driversdata');
 
 // Signups
-Route::get('/signups', 'SignupsController@index')->name('signups.index');
-Route::get('/signups/{season_id}', 'SignupsController@show')->name('signups.show');
+Route::get('/signups', 'SignupsController@getSignupsApi')->name('signups.index');
+Route::get('/signups/{season_id}', 'SignupsController@getSignupsBySeasonApi')->name('signups.show');

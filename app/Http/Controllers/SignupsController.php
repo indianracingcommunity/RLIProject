@@ -186,16 +186,39 @@ class SignupsController extends Controller
        }
     }
 
-   public function viewsignups()
-   {
-     $data =  Signup::all()->load('user','season')->toArray();
-     $season = Season::all();
-  
-     return view('admin.signups')
-     ->with('data',$data)
-     ->with('season',$season);
-   }
+    public function viewsignups()
+    {
+      $data = Signup::all()->load('user','season')->toArray();
+      $season = Season::all();
+
+      return view('admin.signups')
+      ->with('data',$data)
+      ->with('season',$season);
+    }
  
+    public function getSignupsApi()
+    {
+      $activeSeasons = Season::where('status', '<', 2)->get();
+      $seasonIds = $activeSeasons->pluck('id')->toArray();
+      $signups = Signup::whereIn('season', $seasonIds)
+                       ->orderBy('season')
+                       ->orderBy('created_at')
+                       ->get()
+                       ->toArray();
+
+      return response()->json($signups);
+    }
+
+    public function getSignupsBySeasonApi($season_id)
+    {
+      $signups = Signup::where('season', $season_id)
+                       ->orderBy('created_at')
+                       ->get()
+                       ->toArray();
+
+      // Returns [{id, drivername, discord_id, racenumber, steam_id, attendance, car}, {...} ...]
+      return response()->json($signups);
+    }
 
     public function temp()
     {

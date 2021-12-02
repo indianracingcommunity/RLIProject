@@ -44,7 +44,7 @@ class StandingsController extends Controller
                      ->orderBy('round', 'asc')
                      ->get()->load('season','circuit');
 
-                        hereHas('season', function (Builder $query) use ($tier, $season) {
+                       // whereHas('season', function (Builder $query) use ($tier, $season) {
                        //     $query->where([
                        //         ['tier', $tier],
                        //         ['season', $season]
