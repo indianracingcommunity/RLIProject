@@ -54,7 +54,7 @@ class ResultsController extends Controller
             $results[$oldPos - 1]['time'] = $request->newTime;
 
         $results[$oldPos - 1]['position'] = $newPos;
-        //$results[$oldPos - 1]['time'] = $request->newTime;
+        // $results[$oldPos - 1]['time'] = $request->newTime;
         $results[$oldPos - 1]->save();
         if($newPos > $oldPos) {
             for($i = $oldPos; $i < $newPos; $i++) {
@@ -73,18 +73,18 @@ class ResultsController extends Controller
     }
 
     public function saveRaceResults(RaceResults $request) {
-        //Race Storing
+        // Race Storing
         $track = new Race($request->validated()['track']);
         $race = $track->insertRace();
 
-        //Result Storing
+        // Result Storing
         $results = $request->validated()['results'];
         $regex_time = '/^\+?(\d+\:)?[0-5]?\d[.]\d{3}$|^DNF$|^DSQ$|^DNS$|^\+1 Lap$|^\+[2-9][0-9]* Laps$|^\-$/';
         $regex_fltime = '/^(\d+\:)?[0-5]?\d[.]\d{3}$|^\-$/';
 
         for($i = 0; $i < count($results); $i++)
         {
-            //Need to seaerch from Driver List instead.
+            // Need to seaerch from Driver List instead.
             if($results[$i]['driver_id'] == '-1')
             {
                 return response()->json([
@@ -121,17 +121,17 @@ class ResultsController extends Controller
             $results[$k] = $result;
         }
 
-        //Update Season Report Window & Reportable
+        // Update Season Report Window & Reportable
         $season = Season::where('id', $race->season_id)->first();
         if($season->report_window != null)
         {
-            //Advance report_window by 1 Week until it goes over Current Time
+            // Advance report_window by 1 Week until it goes over Current Time
             while(strtotime($season->report_window) < time())
                 $season->report_window = date('Y-m-d H:i:s', strtotime($season->report_window) + 604800);
 
             $season->save();
 
-            //Publish Report Splitter Message
+            // Publish Report Splitter Message
             if($season->report_channel != null)
             {
                 $message = " **-----------------------------**\n       Round " . $race->round . " Reports\n **-----------------------------**";
@@ -176,13 +176,13 @@ class ResultsController extends Controller
         $points = Points::all()->toArray();
         $race = Race::where('season_id', $season['id'])
             //    whereHas('season',
-            //function (Builder $query) use ($series, $tier, $season) {
+            // function (Builder $query) use ($series, $tier, $season) {
             //    $query->where([
             //        ['series', $series['id']],
             //        ['tier', $tier],
             //        ['season', $season]
             //    ]);
-            //})
+            // })
                     ->where('round', $round)
                     ->firstOrFail();
 

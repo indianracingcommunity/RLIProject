@@ -15,7 +15,7 @@ use App\Season;
 use App\Series;
 use App\Circuit;
 
-//ACC Result Parsing Controller Class
+// ACC Result Parsing Controller Class
 class AccController extends Controller
 {
     private $output;
@@ -23,7 +23,7 @@ class AccController extends Controller
         $this->output = new ConsoleOutput();
     }
 
-    //View to Upload Race Results
+    // View to Upload Race Results
     public function raceUpload() {
         $series = Series::where('code', 'acc')->firstOrFail();
         $seasons = Season::where([
@@ -40,18 +40,18 @@ class AccController extends Controller
              mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
     }
 
-    //TODO: Accept other encodings. Currently only supports UTF-8
-    //ACC Result File are in UTF-16LE encoding
+    // TODO: Accept other encodings. Currently only supports UTF-8
+    // ACC Result File are in UTF-16LE encoding
     public function parseJson(Request $request) {
         $race = request()->file('race');
         $quali = request()->file('quali');
 
-        //1 for Multi-Session Single Driver
-        //0 for Single Session
+        // 1 for Multi-Session Single Driver
+        // 0 for Single Session
         $mode = request()->has('mode') ? request()->mode : 0;
 
-        //$fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
-        //$file8 = mb_convert_encoding($file16, 'utf-8');
+        // $fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
+        // $file8 = mb_convert_encoding($file16, 'utf-8');
         $race_content = file_get_contents($race);
         $quali_content = file_get_contents($quali);
 
@@ -81,14 +81,14 @@ class AccController extends Controller
         $qualiPosition = array();
         foreach($jq['sessionResult']['leaderBoardLines'] as $k => $driver)
         {
-            //Multi Session, Single Driver Setup
+            // Multi Session, Single Driver Setup
             if($mode)
             {
                 if(!array_key_exists($driver['currentDriver']['playerId'], $qualiPosition))
                     $qualiPosition[$driver['currentDriver']['playerId']] = $k + 1;
             }
 
-            //Single Session, Multi Driver Setup
+            // Single Session, Multi Driver Setup
             else
             {
                 $qualiPosition[$driver['car']['carId']] = $k + 1;
@@ -111,7 +111,7 @@ class AccController extends Controller
             $bestLap = "";
             $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
 
-            //Grid Position
+            // Grid Position
             if($mode)
             {
                 if(array_key_exists($driver['currentDriver']['playerId'], $qualiPosition))
@@ -123,18 +123,18 @@ class AccController extends Controller
                     $grid = $qualiPosition[$driver['car']['carId']];
             }
 
-            //Fastest Lap
+            // Fastest Lap
             if($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10)
                 $status = 1;
 
-            //Total Time
+            // Total Time
             if($driver['timing']['lastLap'] == 2147483647)
             {
                 $status = -2;
                 $total_time = "DNF";
             }
 
-            //if($totalLaps == $driver['timing']['lapCount'])
+            // if($totalLaps == $driver['timing']['lapCount'])
             else
                 $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
             // else
@@ -149,7 +149,7 @@ class AccController extends Controller
             else
                 $bestLap = $this->convertMillisToStandard($driver['timing']['bestLap']);
 
-            //Push to Results
+            // Push to Results
             array_push($results, array(
                 "position" => $k + 1,
                 "driver" => $dr['name'],

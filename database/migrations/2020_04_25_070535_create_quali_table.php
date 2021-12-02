@@ -21,7 +21,7 @@ class CreateQualiTable extends Migration
             $table->string('laptime')->nullable();
             $table->string('tyre')->nullable();
 
-            //21 is DNS, 22 is DNF, 23 is DSQ
+            // 21 is DNS, 22 is DNF, 23 is DSQ
             $table->integer('position')->default(21);
             $table->timestamps();
 
