@@ -10,10 +10,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <div class="container flex w-screen">
-  <div class="mx-auto p-4 border rounded-lg w-2/3">
-    <div class="font-semibold text-lg tracking-widest uppercase pb-4 ">Create a report</div>
+  <div class="mx-auto p-4 border rounded-lg w-2/3  m-24">
+    <div class="font-semibold text-lg tracking-widest uppercase pb-4 flex justify-center">Create a report</div>
     <form action="{{route('report.submit')}}" method="POST" class="my-4">
       @csrf
+       {{-- {!! dd($data) !!}  --}}
       <table class="w-full">
         <tr>
           <td>
@@ -54,7 +55,7 @@
             <label for="lap" class="font-semibold">Lap Number</label>
           </td>
           <td>
-            <input type="number" class="border border-black rounded py-2 px-3 w-full" id="lap" placeholder="Lap Number" name="lap">
+            <input type="number" class="border border-black rounded py-2 px-3 w-full" id="lap" placeholder="Lap Number" name="lap" min=0>
           </td>
         </tr>
         <tr>

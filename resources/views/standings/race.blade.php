@@ -105,6 +105,14 @@ td {
           <table class="w-full">
             <thead>
               <tr>
+                @auth
+              @view('admin,coordinator')
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">ID</th>
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Constructor ID</th>
+                
+              @endview
+              @endauth    
+                
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Pos.</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white md:block hidden">Team</th>
@@ -115,13 +123,38 @@ td {
       @for ($i = 0; $i < $count; $i++)
         @if((int)$results[$i]['status'] % 10 == 1)
           <tr>
+            @auth
+              @view('admin,coordinator')
+            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+                
+              @endview
+              @endauth    
+                
             <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$i+1}}</td>
             <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
             <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
             <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['points']}}</td>
           </tr>
         @elseif($i % 2 != 0)
-         <tr>
+        <tr>
+            @auth
+            @view('admin,coordinator')
+            @if ($results[$i]['driver']['user_id'] == Auth::id())
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+            @else
+              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+            @endif
+            
+            @if ($results[$i]['driver']['user_id'] == Auth::id())
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @else
+              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @endif
+            
+                
+              @endview
+              @endauth    
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$i+1}}</td>
             @else
@@ -157,6 +190,23 @@ td {
               <td class="font-semibold rounded-lg border border-white">{{$results[$i]['points']}}</td>
             </tr> -->
             <tr>
+                  @auth
+            @view('admin,coordinator')
+            @if ($results[$i]['driver']['user_id'] == Auth::id())
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+            @else
+              <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+            @endif
+            
+            @if ($results[$i]['driver']['user_id'] == Auth::id())
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @else
+              <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+            @endif
+            
+              @endview
+              @endauth    
+        
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$i+1}}</td>
             @else
@@ -184,6 +234,29 @@ td {
       </table>
       </div>
   </div>
+  
+</div>
+<!-- Admin View -->
+<div>
+@auth
+   @view('admin,coordinator')
+   <div class="border-2 p-5 rounded-lg">
+      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+      <div class="flex flex-wrap gap-5">
+        <div class="text-lg font-semibold">Race ID: {{$results[0]['race']['id']}}</div>
+        <div class="text-lg font-semibold">Round: {{$results[0]['race']['round']}}</div>
+        <div class="text-lg font-semibold">Season ID: {{$results[0]['race']['season_id']}}</div>
+        @for ($i = 0; $i < $count; $i++)
+        @if((int)$results[$i]['status'] % 10 == 1)
+        <div class="text-lg font-semibold">Fastest Lap Time: {{$results[$i]['fastestlaptime']}}</div>
+        @endif
+        @endfor
+        <div class="text-lg font-semibold">Circuit ID: {{$results[0]['race']['circuit_id']}}</div>
+        
+      </div>
+   </div>
+   @endview
+@endauth
 </div>
 @endsection
 

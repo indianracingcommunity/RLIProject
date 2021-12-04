@@ -11,9 +11,9 @@
 
 > A Website Built by Indian Racing Enthusiasts
 
-### 🏠 [Homepage](https://github.com/TheFreeman15/RLIProject)
-
 ### ✨ [Website](https://indianracingcommunity.co.in)
+
+### 🏠 [Source Code](https://github.com/TheFreeman15/RLIProject)
 
 
 
@@ -29,3 +29,6 @@
 Give a ⭐️ if this project helped you!
 
 ***
+
+* [Architecture](./resources/docs/architecture.md) - Tech Stack <br>
+* [Modules](./resources/docs/modules.md) - Route Groups and APIs

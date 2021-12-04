@@ -43,7 +43,7 @@ class DiscordController extends Controller
                 $user->games = unserialize($user->games);
                 $user->platform = unserialize($user->platform);
 
-                //For PC Game Roles
+                // For PC Game Roles
                 foreach($series_all as $series)
                 {
                     if(isset($series->discord_role) && in_array("PC", $user->platform)

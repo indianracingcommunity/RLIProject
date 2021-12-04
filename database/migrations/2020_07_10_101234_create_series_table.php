@@ -24,7 +24,7 @@ class CreateSeriesTable extends Migration
 
         Schema::table('seasons', function (Blueprint $table) {
             $table->integer('series')->unsigned()->change();
-            //$table->foreign('series')->references('id')->on('series');
+            // $table->foreign('series')->references('id')->on('series');
         });
     }
 

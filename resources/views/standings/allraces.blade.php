@@ -125,7 +125,8 @@
                </tbody>
             </table>
          </div>
-         @if($season['season'] - (int)$season['season'] < 0.75) <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
+         @if($season['season'] - (int)$season['season'] < 0.75) 
+         <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
             <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
                Top 3 Constructors
             </div>
@@ -190,8 +191,9 @@
                      @endfor
                </tbody>
             </table>
+            </div>
             @endif
-      </div>
+      
    </div>
 
    <div class="md:w-2/3">
@@ -242,6 +244,22 @@
       </div>
    </div>
 </div>
+<!-- Admin View -->
+
+@auth
+   @view('admin,coordinator')
+   <div class="border-2 p-5   rounded-lg">
+      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+      <div class="flex gap-5">
+      <div class="text-lg font-semibold">Season ID: {{$season['id']}}</div>
+      <div class="text-lg font-semibold">Tier: {{$season['tier']}}</div>
+      <div class="text-lg font-semibold">Series: {{$season['series']}}</div>
+      <div class="text-lg font-semibold">Status: {{$season['status']}}</div>
+</div>
+   </div>
+   @endview
+@endauth
+
 </div>
 <script>
    $(document).ready(function() {

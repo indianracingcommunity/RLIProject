@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Driver;
 use App\Season;
 use App\Series;
+use App\Points;
 use App\Circuit;
 use App\Constructor;
 
@@ -22,7 +23,7 @@ class AcController extends ImageController
         $this->output = new ConsoleOutput();
     }
 
-    //View for CSV Upload
+    // View for CSV Upload
     public function raceUpload() {
         $series = Series::where('code', 'ac')->firstOrFail();
         $seasons = Season::where([
@@ -30,14 +31,18 @@ class AcController extends ImageController
             ['series', $series['id']]
         ])->get();
 
-        return view('acupload')->with('seasons', $seasons);
+        $points = Points::all();
+
+        return view('acupload')
+               ->with('points', $points)
+               ->with('seasons', $seasons);
     }
 
-    //Currently the CSV is generated from an SQLite Query
-    //The Query HAS to be run on a Unix system
+    // Currently the CSV is generated from an SQLite Query
+    // The Query HAS to be run on a Unix system
 
-    //TODO: Handle Windows Line Ending format
-    //TODO: Validate File Format and Columns
+    // TODO: Handle Windows Line Ending format
+    // TODO: Validate File Format and Columns
     public function parseCsv(Request $request) {
         $race = request()->file('race');
         $rcsvlines = file_get_contents($race);
@@ -51,12 +56,12 @@ class AcController extends ImageController
             $l = str_replace("\"", "", $rcsv[$j]);
             $rcsv[$j] = explode(",", $l);
 
-            $rcsv[$j][0] = (int)$rcsv[$j][0]; //Finishing Position, Name, Car
-            $rcsv[$j][3] = (int)$rcsv[$j][3]; //Fastest Lap
-            $rcsv[$j][4] = (int)$rcsv[$j][4]; //Total Time
-            $rcsv[$j][5] = (int)$rcsv[$j][5]; //Grid, Track, Laps
+            $rcsv[$j][0] = (int)$rcsv[$j][0]; // Finishing Position, Name, Car
+            $rcsv[$j][3] = (int)$rcsv[$j][3]; // Fastest Lap
+            $rcsv[$j][4] = (int)$rcsv[$j][4]; // Total Time
+            $rcsv[$j][5] = (int)$rcsv[$j][5]; // Grid, Track, Laps
 
-            //check which driver has fastest lap
+            // Check which driver has fastest lap
             if($rcsv[$j][5] < $mintime) {
                 $minid = $j;
                 $mintime = $rcsv[$j][5];
@@ -64,6 +69,7 @@ class AcController extends ImageController
         }
 
         $round = (int)request()->round;
+        $points = (int)request()->points;
         $season = Season::find(request()->season);
         $sp_circuit = Circuit::getTrackByGame($rcsv[0][6], $season['series']);
         if($sp_circuit == null) return response()->json([]);
@@ -74,15 +80,16 @@ class AcController extends ImageController
             'display' => $sp_circuit['name'],
             "season_id" => $season['id'],
             "distance" => $rcsv[0][7] / 10.0,
+            "points" => (int)$points,
             "round" => $round
         );
 
         $results = array();
-        //Check for Fastest Time, get ID
+        // Check for Fastest Time, get ID
 
         foreach($rcsv as $k => $driver)
         {
-            //Search for Closest Matching Driver
+            // Search for Closest Matching Driver
             $drList = Driver::getNames();
             $drName = array_column($drList, 'name');
 
@@ -102,13 +109,13 @@ class AcController extends ImageController
                 }
             }
 
-            //Search Car
+            // Search Car
             $status = 0;
             $car = Constructor::where('game', $driver[2])->first();
             if($car == null) $car = array("id" => -1, "name" => "NA");
 
-            //if position > 1000, position -= 1000;
-            //if minid (fastest lap), $status = 1;
+            // if position > 1000, position -= 1000;
+            // if minid (fastest lap), $status = 1;
             if($driver[0] > 1000) {
                 $status = -2;
                 $driver[0] -= 1000;
@@ -117,24 +124,24 @@ class AcController extends ImageController
                 $status = 1;
             }
 
-            //Convert Times to Standard Format
+            // Convert Times to Standard Format
             $fastestLapTime = $this->convertMillisToStandard($driver[3]);
             if($fastestLapTime == "00") $fastestLapTime = "-";
 
             $totalTime = $this->convertMillisToStandard($driver[4]);
             if($totalTime == "00") $totalTime = "DNF";
 
-            //Push to Results
+            // Push to Results
             array_push($results, array(
-                "position" => $driver[0],
+                "position" => (int)$driver[0],
                 "driver" => $driver[1],
-                "driver_id" => $matched_driverid,
+                "driver_id" => (int)$matched_driverid,
                 "matched_driver" => $matched_drivername,
                 "team" => $car['name'],
-                "constructor_id" => $car['id'],
+                "constructor_id" => (int)$car['id'],
                 "matched_team" => $car['name'],
                 "grid" => ($driver[5] > 1000) ? $driver[5] - 1000 : $driver[5],
-                "stops" => $driver[7],
+                "stops" => (int)$driver[7],
                 "status" => $status,
                 "fastestlaptime" => $fastestLapTime,
                 "time" => $totalTime
