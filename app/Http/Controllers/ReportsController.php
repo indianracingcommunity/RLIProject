@@ -239,7 +239,7 @@ class ReportsController extends Controller
         if($report['verdict_time'] == 0 && $report['verdict_pp'] == 0)
             $message .= "NFA";
         if($report['verdict_time'] > 0)
-            $message .= abs($report['verdict_time']) . " seconds Time Penalty ";
+            $message .= abs($report['verdict_time']) . " seconds Time Penalty";
         else if($report['verdict_time'] < 0)
             $message .= abs($report['verdict_time']) . " seconds Removed";
 

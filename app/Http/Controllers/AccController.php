@@ -13,6 +13,7 @@ use App\User;
 use App\Driver;
 use App\Season;
 use App\Series;
+use App\Points;
 use App\Circuit;
 
 // ACC Result Parsing Controller Class
@@ -31,7 +32,11 @@ class AccController extends Controller
             ['series', $series['id']]
         ])->get();
 
-        return view('accupload')->with('seasons', $seasons);
+        $points = Points::all();
+
+        return view('accupload')
+               ->with('points', $points)
+               ->with('seasons', $seasons);
     }
 
     public function file_get_contents_utf8($fn) {
@@ -59,6 +64,7 @@ class AccController extends Controller
         $json = json_decode($race_content, true);
 
         $round = (int)request()->round;
+        $points = (int)request()->points;
         $season = Season::find(request()->season);
 
         $sp_circuit = Circuit::getTrackByGame($json['trackName'], $season['series']);
@@ -75,6 +81,7 @@ class AccController extends Controller
             'display' => $sp_circuit['name'],
             "season_id" => $season['id'],
             "distance" => $totalLaps / 10.0,
+            "points" => (int)$points,
             "round" => $round
         );
 

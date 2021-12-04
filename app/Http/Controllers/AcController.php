@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Driver;
 use App\Season;
 use App\Series;
+use App\Points;
 use App\Circuit;
 use App\Constructor;
 
@@ -30,7 +31,11 @@ class AcController extends ImageController
             ['series', $series['id']]
         ])->get();
 
-        return view('acupload')->with('seasons', $seasons);
+        $points = Points::all();
+
+        return view('acupload')
+               ->with('points', $points)
+               ->with('seasons', $seasons);
     }
 
     // Currently the CSV is generated from an SQLite Query
@@ -64,6 +69,7 @@ class AcController extends ImageController
         }
 
         $round = (int)request()->round;
+        $points = (int)request()->points;
         $season = Season::find(request()->season);
         $sp_circuit = Circuit::getTrackByGame($rcsv[0][6], $season['series']);
         if($sp_circuit == null) return response()->json([]);
@@ -74,6 +80,7 @@ class AcController extends ImageController
             'display' => $sp_circuit['name'],
             "season_id" => $season['id'],
             "distance" => $rcsv[0][7] / 10.0,
+            "points" => (int)$points,
             "round" => $round
         );
 
