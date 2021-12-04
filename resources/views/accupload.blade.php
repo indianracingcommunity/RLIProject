@@ -44,6 +44,12 @@
      <label for="exampleFormControlSelect1">Round Select</label>
      <input type="number" name="round" style="width:100px" class="form-control" aria-label="Text input with dropdown button">
      <br>
+     <label for="exampleFormControlSelect1">Points Select</label>
+      <select class="form-control" style="width:350px" name="points" id="exampleFormControlSelect1">
+       @foreach($points as $point)
+        <option value="{{$point['id']}}">{{$point}}</option>
+       @endforeach
+     </select>
      <br>
      <label for="exampleFormControlSelect1">Parse Mode: 0 for Single Session, 1 for Multi-Session Single Driver</label>
      <input type="number" name="mode" style="width:100px" class="form-control" aria-label="Text input with dropdown button" value="0">
