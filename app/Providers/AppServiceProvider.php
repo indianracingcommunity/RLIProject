@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
             while($i < count($all_seasons) && $all_seasons[$i]['series'] == $all_seasons[$prev]['series'])
             {
 
-                //if($all_seasons[$i]['season'] == (int)$all_seasons[$i]['season'])
+                // if($all_seasons[$i]['season'] == (int)$all_seasons[$i]['season'])
                 array_push($series, $all_seasons[$i]);
 
                 $i++;
@@ -86,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
             array_push($res, array("name" => $series_n, "tier" => $tier));
         }
 
-        //session(['topBarSeasons' => $res]);
+        // session(['topBarSeasons' => $res]);
         view()->composer('*', function(View $view) use ($res) {
             $view->with('topBarSeasons', $res);
         }); */

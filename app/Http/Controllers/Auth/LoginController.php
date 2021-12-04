@@ -69,7 +69,7 @@ class LoginController extends Controller
      {
        $discord = new Discord();
        $check = $discord->check($userr);
-       //dd($check);
+
        if($check == "True")
        {
        $userAccount = User::where('discord_id', $userr->id)->first();

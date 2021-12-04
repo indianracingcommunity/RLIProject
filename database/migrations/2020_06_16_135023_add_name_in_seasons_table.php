@@ -15,7 +15,7 @@ class AddNameInSeasonsTable extends Migration
     {
         Schema::table('seasons', function (Blueprint $table) {
             $table->string('name')->nullable();
-            $table->integer('series'); //0 - F1, 1 - AC, 2 - ACC
+            $table->integer('series'); // 0 - F1, 1 - AC, 2 - ACC
             $table->boolean('isactive')->default(0);
         });
     }

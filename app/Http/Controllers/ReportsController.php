@@ -17,7 +17,7 @@ class ReportsController extends Controller
 {
     public function reportDriver()
     {
-        //Check whether a Driver
+        // Check whether a Driver
         $dr = Driver::where('user_id', Auth::user()->id)->first();
         if($dr == null)
         {   
@@ -25,12 +25,12 @@ class ReportsController extends Controller
             return redirect('/');
         }
 
-        //Return All Active Seasons which is Reportable
+        // Return All Active Seasons which is Reportable
         $seasons = Season::where('status', '<', 2)
                          ->whereNotNull('report_window')
                          ->get()->toArray();
 
-        //Return Seasons with Report Windows still open
+        // Return Seasons with Report Windows still open
         $seasonlist = array();
         for($k = 0; $k < count($seasons); $k++)
         {
@@ -40,17 +40,17 @@ class ReportsController extends Controller
             array_push($seasonlist, $seasons[$k]['id']);
         }
 
-        //Get Max Round of Seasons, i.e. Latest Races
+        // Get Max Round of Seasons, i.e. Latest Races
         $race_ids = Race::wherein('season_id', $seasonlist)
                         ->selectRaw('max(round) as round, season_id')
                         ->groupBy('season_id')
                         ->get()->toArray();
 
-        //Get Latest Races
+        // Get Latest Races
         $races = [];
         if(count($race_ids) > 0)
         {
-            //[round AND season_id] OR [round AND season_id] OR ...
+            // [round AND season_id] OR [round AND season_id] OR ...
             $races = Race::where(function($query) use ($race_ids) {
                 for($j = 0; $j < count($race_ids); $j++)
                 {
@@ -91,7 +91,7 @@ class ReportsController extends Controller
     public function create()
     {
         $data = request()->all();
-        //array_push($data['driver'],'1');       // Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
+        // array_push($data['driver'],'1');       // Uncomment this line to test reports with multiple drivers being reported | Will remove this after frontend is done
         
         $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();  // UI Version
         // $dr = Driver::where('user_id', $data['reporting_driver'])->firstOrFail();    // API Version
@@ -109,7 +109,7 @@ class ReportsController extends Controller
             $report -> report_game = $data['report_game'];
             
 
-            //Publish Message in Season's Report Channel
+            // Publish Message in Season's Report Channel
             $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
             $report -> message_id = Discord::publishMessage($this->reportMessage(Auth::user()->discord_id, $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']); // UI Version
             // $report -> message_id = Discord::publishMessage($this->reportMessage('240431392834453505', $userid[0]['user']['discord_id'], $data), $race['season']['report_channel']);
@@ -119,7 +119,7 @@ class ReportsController extends Controller
         // Redirect to View all Reports page
         session()->flash('success', "Report Submitted Successfully"); // UI Version
         return redirect()->back();
-        //return response()->json(['message'=>"Report Created Successfully"], 200);
+        // return response()->json(['message'=>"Report Created Successfully"], 200);
     }
 
     public function applyReports()
@@ -130,14 +130,14 @@ class ReportsController extends Controller
 
     public function publishReports()
     {
-        //Requires Season
+        // Requires Season
         $racelist = Race::where('season_id', request()->season)->pluck('id')->toArray();
         $season = Season::where('id', request()->season)->firstOrFail();
 
         if(count($racelist) == 0)
-            return abort(404);          //Actually should post 400 Error
+            return abort(404);          // Actually should post 400 Error
 
-        //Taking in season instead of Race, in case of Backlog
+        // Taking in season instead of Race, in case of Backlog
         $reports = Report::wherein('race_id', $racelist)
                          ->where('resolved', 2)
                          ->orderBy('race_id', 'asc')
@@ -148,18 +148,18 @@ class ReportsController extends Controller
         $prev_race_id = -1;
         for($i = 0; $i < count($reports); $i++)
         {
-            //Apply Verdict
-                //Find Result
-                //Update Result status
-                //Update Result Time (many conditions)
-            //Assume Standard Format Race
+            // Apply Verdict
+                // Find Result
+                // Update Result status
+                // Update Result Time (many conditions)
+            // Assume Standard Format Race
             $this->applyVerdict($reports[$i]);
 
-            //Update Resolved to 3
+            // Update Resolved to 3
             $reports[$i]->resolved = 3;
             $reports[$i]->save();
 
-            //Publish Splitter Message
+            // Publish Splitter Message
             if($prev_race_id != $reports[$i]->race_id)
             {
                 $splitter_message = " **-----------------------------**\n       Round " . $reports[$i]->race->round . " Reports\n **-----------------------------**";
@@ -167,7 +167,7 @@ class ReportsController extends Controller
             }
             
             sleep(1);
-            //Publish Verdict Message
+            // Publish Verdict Message
             Discord::publishMessage($this->verdictMessage($reports[$i]->toArray()), $season->verdict_channel);
 
             $prev_race_id = $reports[$i]->race_id;
@@ -182,20 +182,20 @@ class ReportsController extends Controller
         if($report->resolved == 3) {
             $this->applyVerdict($report, -1);
 
-            //Delete Verdict Message
+            // Delete Verdict Message
             $report->loadMissing('race.season');
             Discord::deleteMessage($race->race->season->report_channel, $report->message_id);
 
-            //Update Resolved to 1
+            // Update Resolved to 1
             $report->resolved = 1;
             $report->save();
 
             session()->flash('success', "Verdict Reverted Successfully");
-            return redirect('/');           //Should revert to previous page.
+            return redirect('/');           // Should revert to previous page.
         }
         else {
             session()->flash('error', "Verdict is not Applied");
-            return redirect('/');           //Should revert to previous page.
+            return redirect('/');           // Should revert to previous page.
         }
     }
 
@@ -204,7 +204,7 @@ class ReportsController extends Controller
         $message = "1. Reporting Driver: <@". $idfor ."> \n2. Against: <@";
         $message .= $idagainst . "> \n3. ";
 
-        //Lap
+        // Lap
         if($data['lap'] == -1)
             $message .= "In Quali";
         else if($data['lap'] == 0)
@@ -219,13 +219,13 @@ class ReportsController extends Controller
         return $message;
     }
 
-    //Assume loaded reporting_driver, reported_against, race.season
+    // Assume loaded reporting_driver, reported_against, race.season
     private function verdictMessage(Array $report)
     {
-        //Driver
+        // Driver
         $message = "1. Driver: <@" . $report['reported_against']['user']['discord_id'] . "> \n2. ";
 
-        //Lap
+        // Lap
         if($report['lap'] == -1)
             $message .= "In Quali";
         else if($report['lap'] == 0)
@@ -235,7 +235,7 @@ class ReportsController extends Controller
 
         $message .= "\n3. Verdict: **";
 
-        //Verdict Time
+        // Verdict Time
         if($report['verdict_time'] == 0 && $report['verdict_pp'] == 0)
             $message .= "NFA";
         if($report['verdict_time'] > 0)
@@ -243,20 +243,20 @@ class ReportsController extends Controller
         else if($report['verdict_time'] < 0)
             $message .= abs($report['verdict_time']) . " seconds Removed";
 
-        //Verdict PP
+        // Verdict PP
         if($report['verdict_time'] != 0 && $report['verdict_pp'] != 0)
             $message .= " + ";
         if($report['verdict_pp'] != 0)
         {
             $penalties = round((abs($report['verdict_pp']) - (int)abs($report['verdict_pp'])) * 10, 2);
 
-            //Penalty Points
+            // Penalty Points
             if((int)$penalties != 0)
                 $message .= (int)$penalties . " Penalty Point";
             if((int)abs($penalties) > 1)
                 $message .= "s";
 
-            //Warning
+            // Warning
             if((int)$penalties != 0 && $penalties != (int)$penalties)
                 $message .= " + Warning";
             else if($penalties != (int)$penalties)
@@ -266,7 +266,7 @@ class ReportsController extends Controller
         $message .= "**\n4. Evidence: " . $report['proof'];
         
 
-        //Explanation
+        // Explanation
         if($report['verdict_message'] != null)
             $message .= "\n5. Explanation: " . $report['verdict_message'];
 
@@ -281,10 +281,10 @@ class ReportsController extends Controller
 
         $rA = $report->toArray();
 
-        //Checks for Update:
-        //1. Check if Reporting Driver is the Authenticated User
-        //2. Check if Report is already Resolved/Published by Stewards
-        //3. Check if Report Update is in Reporting Window
+        // Checks for Update:
+        // 1. Check if Reporting Driver is the Authenticated User
+        // 2. Check if Report is already Resolved/Published by Stewards
+        // 3. Check if Report Update is in Reporting Window
         if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
            !($rA['race']['season']['report_window'] != null
             && time() < strtotime($rA['race']['season']['report_window'])))
@@ -300,7 +300,7 @@ class ReportsController extends Controller
         $report -> proof = $data['proof'];
         $report->save();
 
-        //Update Posted Message
+        // Update Posted Message
         $userid = Driver::where('id', $data['driver'])->firstOrFail()->load('user');
         Discord::editMessage($this->reportMessage(Auth::user()->discord_id, $userid['user']['discord_id'], $data), $rA['race']['season']['report_channel'], $rA['message_id']);
 
@@ -310,7 +310,7 @@ class ReportsController extends Controller
 
     public function listDriverReports()
     {
-        //Search for driver, if not, respond "Need to get a license first child"
+        // Search for driver, if not, respond "Need to get a license first child"
         $driver = Driver::where('user_id', Auth::user()->id)->firstOrFail();
         $reports = Report::where('reporting_driver', $driver['id'])
                          ->orWhere('reported_against', $driver['id'])
@@ -340,10 +340,10 @@ class ReportsController extends Controller
         $report = Report::findOrFail(request()->report)
                         ->load(['reporting_driver', 'reported_against']);
 
-        //Checks for Update:
-        //1. Check if Reporting Driver is the Authenticated User
-        //2. Check if Report is already Resolved/Published by Stewards
-        //3. Check if Report Update is in Reporting Window
+        // Checks for Update:
+        // 1. Check if Reporting Driver is the Authenticated User
+        // 2. Check if Report is already Resolved/Published by Stewards
+        // 3. Check if Report Update is in Reporting Window
         if($rA['reporting_driver']['user_id'] != Auth::user()->id || $rA['resolved'] > 0 ||
            !($rA['race']['season']['report_window'] != null
             && time() < strtotime($rA['race']['season']['report_window'])))
@@ -353,7 +353,7 @@ class ReportsController extends Controller
         }
 
 
-        //Delete Posted Message
+        // Delete Posted Message
         Discord::deleteMessage($rA['season']['report_channel'], $rA['message_id']);
         $report->delete();
 
@@ -365,7 +365,7 @@ class ReportsController extends Controller
     {
         $report->loadMissing('race.season');
 
-        //Assume fully loaded Report
+        // Assume fully loaded Report
         $result = Result::where('race_id', $report->race->id)
                              ->where('driver_id', $report->reported_against)
                              ->firstOrFail();
@@ -376,20 +376,20 @@ class ReportsController extends Controller
         $dnfpattern = "/^DNF$|^DSQ$|^\+1 Lap$|^\+[2-9][0-9]* Laps$|^-$/";
         $updatedPos = $result->position;
 
-        //1. If verdict_time < 0 AND position == 1
+        // 1. If verdict_time < 0 AND position == 1
         if($result->position == 1 && $report->verdict_time < 0)
         {}
 
-        //2. Else If verdict_time < 0, Load Results before Position
+        // 2. Else If verdict_time < 0, Load Results before Position
         else if($report->verdict_time < 0 && !preg_match($dnfpattern, $result->time)) {
-            //Recurse from position to 1, break if position & time is unchanged
+            // Recurse from position to 1, break if position & time is unchanged
             $prevResults = Result::where('race_id', $report->race->id)
                                  ->where('position', '<', $result->position)
                                  ->orderBy('position', 'desc')
                                  ->get();
 
-            //Check if position - 1's time > position's time, If yes -> position & time remains unchanged
-            //If no -> Check if position - 1's time > update time, If yes -> update position-1's position
+            // Check if position - 1's time > position's time, If yes -> position & time remains unchanged
+            // If no -> Check if position - 1's time > update time, If yes -> update position-1's position
             for($i = 0; $i < count($prevResults); $i++) {
                 if(preg_match($dnfpattern, $prevResults[$i]->time))
                     break;
@@ -405,16 +405,16 @@ class ReportsController extends Controller
             }
         }
 
-        //3. Else If verdict_time > 0, Load Results after Position
+        // 3. Else If verdict_time > 0, Load Results after Position
         else if($report->verdict_time > 0 && !preg_match($dnfpattern, $result->time)) {
-            //Recurse from position to Last Position, break if position & time is unchanged
+            // Recurse from position to Last Position, break if position & time is unchanged
             $nextResults = Result::where('race_id', $report->race->id)
                                  ->where('position', '>', $result->position)
                                  ->orderBy('position', 'asc')
                                  ->get();
 
-            //Check if position + 1's time == +X Lap(s) OR DSQ OR DNF, break
-            //If no -> Check if position + 1's time > update time, If yes -> update position+1's position
+            // Check if position + 1's time == +X Lap(s) OR DSQ OR DNF, break
+            // If no -> Check if position + 1's time > update time, If yes -> update position+1's position
             for($i = 0; $i < count($nextResults); $i++) {
                 if(preg_match($dnfpattern, $nextResults[$i]->time))
                     break;
@@ -430,18 +430,18 @@ class ReportsController extends Controller
             }
         }
 
-        //Update position & time from index above
-        //1. If time == +X Lap(s) OR DSQ OR DNF, position & time remains unchanged
+        // Update position & time from index above
+        // 1. If time == +X Lap(s) OR DSQ OR DNF, position & time remains unchanged
         if(!preg_match($dnfpattern, $result->time)) {
             $result->time = $this->convertMillisToStandard($this->convertStandardtoMillis($result->time) + $report->verdict_time * 1000);
             $result->position = $updatedPos;
         }
 
-        //Add verdict_pp to status
+        // Add verdict_pp to status
         $result->status = round($this->sgnp($result->status) * (abs($result->status) + $report->verdict_pp), 3);
         $result->save();
 
-        //Reverse the change, because report is passed by reference.
+        // Reverse the change, because report is passed by reference.
         $report->verdict_time *= $mul;
         $report->verdict_pp *= $mul;
 

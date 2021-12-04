@@ -69,7 +69,7 @@ class ImageController extends Controller
             for($j = 0; $j < $img->height(); $j++) {
                 $colorA = $img->pickColor($i, $j);
                 if($colorA[0] > $thres && $colorA[1] > $thres && $colorA[2] > $thres) {
-                //if($color != 4287993237) {
+                // if($color != 4287993237) {
                     $img->pixel('#000000', $i, $j);
                     $black++;
                 }
@@ -83,14 +83,14 @@ class ImageController extends Controller
         if($black > $white)
             $img->invert();
 
-        //$this->thicken($img);
+        // $this->thicken($img);
         $img->save('storage/img/race_results/' . microtime(). '.png');
         return $img;
     }
 
     protected function getImage(String $src, String $sec, Int $pos=0) {
 
-        //Name
+        // Name
         if($sec == "name") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -101,7 +101,7 @@ class ImageController extends Controller
         }
 
 
-        /*//Standings
+        /*// Standings
         $img = Image::make($src)
              ->resize(1920, 1080)
              ->crop(1290, 570, 530, 360)
@@ -111,14 +111,14 @@ class ImageController extends Controller
              ->crop(150, 33, 150, 7)
              ->save('storage/img/race_results/SD.png');*/
 
-        //$img->crop(1, 10, 5, 9);
-        //$img->save('storage/img/race_results/SDI.png');
+        // $img->crop(1, 10, 5, 9);
+        // $img->save('storage/img/race_results/SDI.png');
         //    $this->two_tone($img);
         //  $img->save('storage/img/race_results/SDI.png');
 
         $row_width = 40.2142;
 
-        //Position
+        // Position
         if($sec == "pos") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -129,7 +129,7 @@ class ImageController extends Controller
             return $img;
         }
     
-        //Driver
+        // Driver
         if($sec == "driver") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -140,7 +140,7 @@ class ImageController extends Controller
             return $img;
         }
     
-        //Team
+        // Team
         if($sec == "team") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -151,7 +151,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Grid
+        // Grid
         if($sec == "grid") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -162,7 +162,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Stops
+        // Stops
         if($sec == "stops") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -173,7 +173,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Fastest Lap
+        // Fastest Lap
         if($sec == "best") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -184,7 +184,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Finishing Time
+        // Finishing Time
         if($sec == "time") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -199,7 +199,7 @@ class ImageController extends Controller
 
     protected function getImage2018(String $src, String $sec, Int $pos=0) {
 
-        //Name
+        // Name
         if($sec == "name") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -210,7 +210,7 @@ class ImageController extends Controller
         }
 
 
-        /*//Standings
+        /*// Standings
         $img = Image::make($src)
              ->resize(1920, 1080)
              ->crop(1290, 570, 530, 360)
@@ -220,14 +220,14 @@ class ImageController extends Controller
              ->crop(150, 33, 150, 7)
              ->save('storage/img/race_results/SD.png');*/
 
-        //$img->crop(1, 10, 5, 9);
-        //$img->save('storage/img/race_results/SDI.png');
+        // $img->crop(1, 10, 5, 9);
+        // $img->save('storage/img/race_results/SDI.png');
         //    $this->two_tone($img);
         //  $img->save('storage/img/race_results/SDI.png');
 
         $row_width = 40.2142;
 
-        //Position
+        // Position
         if($sec == "pos") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -238,7 +238,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Driver
+        // Driver
         if($sec == "driver") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -249,7 +249,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Team
+        // Team
         if($sec == "team") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -260,7 +260,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Grid
+        // Grid
         if($sec == "grid") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -271,7 +271,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Stops
+        // Stops
         if($sec == "stops") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -282,7 +282,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Fastest Lap
+        // Fastest Lap
         if($sec == "best") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -293,7 +293,7 @@ class ImageController extends Controller
             return $img;
         }
 
-        //Finishing Time
+        // Finishing Time
         if($sec == "time") {
             $img = Image::make($src)
                         ->resize(1920, 1080)
@@ -323,7 +323,7 @@ class ImageController extends Controller
             if ($lev == 0) {
 
                 // closest word is this one (exact match)
-                //$closest = $word;
+                // $closest = $word;
                 $index = $i;
                 $shortest = 0;
 
@@ -335,7 +335,7 @@ class ImageController extends Controller
             // distance, OR if a next shortest word has not yet been found
             if ($lev <= $shortest || $shortest < 0) {
                 // set the closest match, and shortest distance
-                //$closest  = $word;
+                // $closest  = $word;
                 $index = $i;
                 $shortest = $lev;
             }
@@ -373,19 +373,19 @@ class ImageController extends Controller
             $row = array();
             $this->output->writeln("<info>Driver " . ($i + 1) . " : " . "</info>");
 
-            //Position
+            // Position
             $img = $this->getImage($src, "pos", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
             unlink($img->dirname . '/' . $img->basename);
 
-            //If No More Results
+            // If No More Results
             if($tr == "-") break;
 
             $row["position"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            //Driver
+            // Driver
             $img = $this->getImage($src, "driver", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
@@ -415,7 +415,7 @@ class ImageController extends Controller
                 }
             }
 
-            //Team
+            // Team
             $img = $this->getImage($src, "team", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
@@ -431,7 +431,7 @@ class ImageController extends Controller
                 $row["matched_team"] = $constructors[$index[0]]['name'];
             }
 
-            //Grid
+            // Grid
             $img = $this->getImage($src, "grid", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
@@ -440,7 +440,7 @@ class ImageController extends Controller
             $row["grid"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            //Stops
+            // Stops
             $img = $this->getImage($src, "stops", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
@@ -449,7 +449,7 @@ class ImageController extends Controller
             $row["stops"] = (int)$tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            //Best
+            // Best
             $img = $this->getImage($src, "best", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
@@ -458,7 +458,7 @@ class ImageController extends Controller
             $row["fastestlaptime"] = $tr;
             $this->output->writeln("<info>" . $tr . "</info>");
 
-            //Time
+            // Time
             $img = $this->getImage($src, "time", $i);
             $tess->image($img->dirname . '/' . $img->basename);
             $tr = $tess->run();
@@ -470,8 +470,8 @@ class ImageController extends Controller
             array_push($results, $row);
         }
     
-        //$tess->image('storage/img/race_results/Standings.png');
-        return $results; //$tess->response('png');
+        // $tess->image('storage/img/race_results/Standings.png');
+        return $results; // $tess->response('png');
     }
 
     public function race_name(String $src, Bool $pub=false) {
@@ -483,7 +483,7 @@ class ImageController extends Controller
         $tr = $tess->run();
         unlink($imag->dirname . '/' . $imag->basename);
 
-        //Replace Series of '\n' with a single '$'
+        // Replace Series of '\n' with a single '$'
         $tri = preg_replace('/\n+/', '$', $tr);
         $track = explode("$", $tri);
 

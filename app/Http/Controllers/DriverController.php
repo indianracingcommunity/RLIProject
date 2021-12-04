@@ -104,25 +104,25 @@ class DriverController extends StandingsController
     $seasons = Season::where('status', '<', 2)->get()->toArray();
     $ts = array();
 
-    //Iterate through all Active Seasons
+    // Iterate through all Active Seasons
     for ($i = 0; $i < count($seasons); ++$i) {
       for ($j = 0; $j < count($driver); ++$j)
         $driver[$j][$seasons[$i]['id']] = 0;
       for ($j = 0; $j < count($constructor); ++$j)
         $constructor[$j][$seasons[$i]['id']] = 0;
 
-      //Results for this Season
+      // Results for this Season
       $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
       if ($ts['code'] != 200)
         continue;
 
-      //Add Points to Drivers
+      // Add Points to Drivers
       for ($j = 0; $j < count($ts['drivers']); ++$j) {
         $d_id = array_search($ts['drivers'][$j]['id'], array_column($driver, "id"));
         $driver[$d_id][$seasons[$i]['id']] = $ts['drivers'][$j]['points'];
       }
 
-      //Add Points to Constructors
+      // Add Points to Constructors
       for ($j = 0; $j < count($ts['constructors']); ++$j) {
         $c_id = array_search($ts['constructors'][$j]['id'], array_column($constructor, "id"));
         $constructor[$c_id][$seasons[$i]['id']] = $ts['constructors'][$j]['points'];

@@ -31,7 +31,7 @@ class CreatePointsTable extends Migration
 
         Schema::table('races', function (Blueprint $table) {
             $table->unsignedInteger('points')->default(1);
-            //$table->foreign('point_id')->references('id')->on('points');
+            // $table->foreign('point_id')->references('id')->on('points');
         });
     }
 
@@ -43,7 +43,7 @@ class CreatePointsTable extends Migration
     public function down()
     {
         Schema::table('races', function (Blueprint $table) {
-            //$table->dropForeign('races_point_id_foreign');
+            // $table->dropForeign('races_point_id_foreign');
             $table->dropColumn('points');
         });
 
