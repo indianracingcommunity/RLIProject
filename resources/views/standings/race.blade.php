@@ -107,8 +107,8 @@ td {
               <tr>
                 @auth
               @view('admin,coordinator')
-              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">ID</th>
-              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Constructor ID</th>
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">D.ID</th>
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">C.ID</th>
                 
               @endview
               @endauth    
