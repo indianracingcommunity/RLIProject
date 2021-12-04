@@ -13,9 +13,6 @@ use kanalumaddela\LaravelSteamLogin\Facades\SteamLogin;
 |
 */
 
-// Temp Routes
-Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
-
 // Public Routes
 Route::get('/', 'WebsiteController@loadhomepage')->name('home');
 Route::get('joinus', 'WebsiteController@loadjoinus')->name('joinus');
