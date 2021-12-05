@@ -58,7 +58,7 @@
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             <div class="my-1 ">
                                 <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
-                                <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag"></i></div>Race Results</div>
+                                <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag-checkered"></i></div>Race Results</div>
                             </div>
                             @auth
                                 @view('admin,coordinator,steward,signup')
@@ -159,7 +159,7 @@
                     </div>
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button data-origin='race' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span><i class="fa fa-flag mx-1 text-green-500"></i> Race Results</span>
+                            <span><i class="fa fa-flag-checkered mx-1 text-green-500"></i> Race Results</span>
                         </button>
                     </div> --}}
 
@@ -192,7 +192,7 @@
                     </div>
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span><i class="fa fa-flag mx-1 text-green-500"></i> Race Results</span>
+                            <span><i class="fa fa-flag-checkered mx-1 text-dark-500"></i> Race Results</span>
                         </button>
                         <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 11.2rem;">
                             @foreach($topBarSeasons as $series)
@@ -240,8 +240,8 @@
                         <a href="{{route('login.discord')}}"><i class='far fa-user mr-2'></i>Login</a>
                     </div>
                 @endguest
+                
                 @auth
-
                 <div class="flex items-center">
                     <div class="py-2 items-center flex-shrink-0 font-semibold px-4 dropdown cursor-pointer">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
