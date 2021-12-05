@@ -352,7 +352,7 @@
 
 @auth
    @view('admin,coordinator')
-   <div class="border-2 p-5   rounded-lg">
+   <div class="border p-5 mt-2 confTable rounded-lg">
       <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
       <div class="flex gap-5">
       <div class="text-lg font-semibold">Season ID: {{$season['id']}}</div>
@@ -372,5 +372,11 @@
          window.open('/user/profile/view/' + linkId, '_blank');
       });
    });
+   $('body').keypress(function (e) { 
+      if(e.keyCode == 72 || e.keyCode == 104){
+         $('.confTable').toggle();
+      }
+   });
+   $('.confTable').toggle();
 </script>
 @endsection

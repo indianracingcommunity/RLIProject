@@ -159,7 +159,7 @@
                     </div>
                     <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button data-origin='race' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span><i class="fa fa-flag-checkered mx-1 text-green-500"></i> Race Results</span>
+                            <span><i class="fa fa-flag-checkered mx-1 text-black-500"></i> Race Results</span>
                         </button>
                     </div> --}}
 
@@ -235,6 +235,12 @@
                     </div>
                     @endguest
                 </div>
+                <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-1 text-xl md:hidden rounded inline-flex items-center">
+                    <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i></span>
+                </button>
+                <button data-origin='race' class="subMenuShow font-semibold cursor-default px-1 text-xl md:hidden rounded inline-flex items-center">
+                    <span><i class="fa fa-flag-checkered mx-1 text-black-500"></i></span>
+                </button>
                 @guest
                     <div class="px-4 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
                         <a href="{{route('login.discord')}}"><i class='far fa-user mr-2'></i>Login</a>
