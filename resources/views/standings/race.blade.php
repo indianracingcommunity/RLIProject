@@ -246,7 +246,7 @@ td {
 @auth
    @view('admin,coordinator')
    <div class="border p-5 rounded-lg confTable">
-      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+      <div class="text-2xl font-bold text-center">Admin/Coordinator Information</div>
       <div class="flex flex-wrap gap-5">
         <div class="text-lg font-semibold">Race ID: {{$results[0]['race']['id']}}</div>
         <div class="text-lg font-semibold">Round: {{$results[0]['race']['round']}}</div>
