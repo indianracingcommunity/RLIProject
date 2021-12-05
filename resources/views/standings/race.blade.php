@@ -99,8 +99,13 @@ td {
   <div class="md:w-3/4 mb-4 md:m-">
   <div class="bg-white p-4 rounded-lg border">
 
-    <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
-            Race Results
+    <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
+      <span class='text-xs pt-2'>
+        Race Results
+      </span> 
+      <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
+      </a>
     </div>
           <table class="w-full">
             <thead>

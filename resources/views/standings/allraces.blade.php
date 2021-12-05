@@ -198,8 +198,13 @@
 
    <div class="md:w-2/3">
       <div class="bg-white p-4 rounded-lg border leading-none overflow-y-auto mb-4">
-         <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
+         <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
+            <span class='text-xs pt-2'>
             All Races
+            </span> 
+            <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+               <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
+            </a>
          </div>
          <table class="w-full">
             <thead>
