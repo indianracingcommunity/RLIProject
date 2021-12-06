@@ -94,7 +94,7 @@ class DriverController extends StandingsController
     return redirect()->back();
   }
 
-  public function driverdata()
+  public function driverData()
   {
     $driver = Driver::select('id', 'name', 'tier', 'team', 'drivernumber', 'user_id')
       ->get()->load('user:id,name,avatar,steam_id,xbox')->toArray();
@@ -133,5 +133,30 @@ class DriverController extends StandingsController
       "drivers" => $driver,
       "constructors" => $constructor
     ]);
+  }
+
+  public function seasonData()
+  {
+    $driver = Driver::select('id', 'name', 'tier', 'team', 'drivernumber', 'user_id')
+                    ->get()->load('user:id,name,avatar,steam_id,xbox')->toArray();
+
+    $constructor = Constructor::all()->toArray();
+
+    $seasons = Season::select('id', 'game', 'season', 'tier', 'name', 'series', 'constructors', 'tttracks')
+                     ->where('status', '<', 2)->get()->toArray();
+
+    // Iterate through all Active Seasons
+    for ($i = 0; $i < count($seasons); ++$i)
+    {
+      // Results for this Season
+      $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
+      if ($ts['code'] != 200)
+        continue;
+
+      $seasons[$i]['drivers'] = $ts['drivers'];
+      $seasons[$i]['constructors'] = $ts['constructors'];
+    }
+
+    return response()->json($seasons);
   }
 }
