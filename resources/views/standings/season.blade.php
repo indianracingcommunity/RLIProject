@@ -262,12 +262,12 @@
          <span class='text-xs pt-2'>
             Drivers' Standings
          </span>
-         <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+         <!-- <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
             <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
          </a>
          <a title='Jump to Latest Race' href="{{route('raceresults', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season'], 'round' => $latestRound])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
             <span class='bg-green-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
-         </a>
+         </a> -->
       </div>
       <div class="overflow-y-auto pb-4">
          <table>
