@@ -207,7 +207,7 @@ class StandingsController extends Controller
     protected function computePoints($results, String $field, $psystem)
     {
         // Sort $results by $field
-        $this->sortByKey($results, $field . '_id');
+        $this->sortByKey($results, $field . '_id', -1);
 
         $prev = $results[0][$field . '_id'];
         $dres = array(array(
