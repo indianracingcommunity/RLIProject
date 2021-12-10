@@ -62,12 +62,12 @@ class Controller extends BaseController
     }
 
     // Sort by a key in associative array
-    public function sortByKey(&$arr, $field)
+    public function sortByKey(&$arr, $field, $mul = 1)
     {
-        usort($arr, function($a, $b) use ($field) {
-            if ($a[$field] < $b[$field])
+        usort($arr, function($a, $b) use ($field, $mul) {
+            if ($a[$field] * $mul < $b[$field] * $mul)
                 return 1;
-            elseif ($a[$field] > $b[$field])
+            elseif ($a[$field] * $mul > $b[$field] * $mul)
                 return -1;
             else
                 return 0;
