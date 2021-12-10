@@ -61,6 +61,19 @@ class Controller extends BaseController
         return ceil($res * 1000);
     }
 
+    // Sort by a key in associative array
+    public function sortByKey(&$arr, $field)
+    {
+        usort($arr, function($a, $b) use ($field) {
+            if ($a[$field] < $b[$field])
+                return 1;
+            elseif ($a[$field] > $b[$field])
+                return -1;
+            else
+                return 0;
+        });
+    }
+
     // Groups By Field
     // Example: Inputs -> ['season', 'signups', List of Seasons, List of All Signups, 'season']
     // Returns { season: {}, signups: [{}, {}, ...] }

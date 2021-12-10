@@ -198,8 +198,13 @@
 
    <div class="md:w-2/3">
       <div class="bg-white p-4 rounded-lg border leading-none overflow-y-auto mb-4">
-         <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
+         <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
+            <span class='text-xs pt-2'>
             All Races
+            </span>
+            <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+               <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
+            </a>
          </div>
          <table class="w-full">
             <thead>
@@ -248,8 +253,8 @@
 
 @auth
    @view('admin,coordinator')
-   <div class="border-2 p-5   rounded-lg">
-      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+   <div class="border p-5 confTable rounded-lg">
+      <div class="text-2xl font-bold text-center">Admin/Coordinator Information</div>
       <div class="flex gap-5">
       <div class="text-lg font-semibold">Season ID: {{$season['id']}}</div>
       <div class="text-lg font-semibold">Tier: {{$season['tier']}}</div>
@@ -270,5 +275,11 @@
          window.open('/user/profile/view/' + linkId, '_blank');   //Need to replace with named route
       });
    });
+   $('body').keypress(function (e) { 
+      if(e.keyCode == 72 || e.keyCode == 104){
+         $('.confTable').toggle();
+      }
+   });
+   $('.confTable').toggle();
 </script>
 @endsection

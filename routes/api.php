@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 // Fetch Driver & Constructor Details - Telemetry API
-Route::get('/drivers/data','DriverController@driverdata')->name('telemetry.drivers');
+Route::get('/drivers/data','DriverController@seasonData')->name('telemetry.drivers');
 Route::post('/report/submit','ReportsController@bulkCreate')->name('steward.upload');
 
 // Fetch User Info - Discord Bot

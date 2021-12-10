@@ -233,8 +233,9 @@ class SignupsController extends Controller
       {
         // Assumes Car Preferences have been set with valid values
         $cars = explode(',', $signup['carprefrence']);
-        foreach($cars as $car)
-          $car = $constructors[array_search($car, array_column($constructors, "id"))]['game'];
+
+        for($i = 0; $i < count($cars); $i++)
+          $cars[$i] = $constructors[array_search($cars[$i], array_column($constructors, "id"))]['game'];
 
         $driver = $signup['user']['driver'];
         $el = [

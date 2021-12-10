@@ -427,6 +427,8 @@ class ReportsController extends Controller
                     $nextResults[$i]->position -= 1;
                     $nextResults[$i]->save();
                 }
+                else
+                    break;
             }
         }
 

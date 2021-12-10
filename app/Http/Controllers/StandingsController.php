@@ -126,22 +126,8 @@ class StandingsController extends Controller
                 $countReserves++;
         }
 
-        usort($flaps, function($a, $b) {
-            if ($a["flaps"] < $b["flaps"])
-                return 1;
-            elseif ($a["flaps"] > $b["flaps"])
-                return -1;
-            else
-                return 0;
-        });
-        usort($penalties, function($a, $b) {
-            if ($a["penalties"] < $b["penalties"])
-                return 1;
-            elseif ($a["penalties"] > $b["penalties"])
-                return -1;
-            else
-                return 0;
-        });
+        $this->sortByKey($flaps, "flaps");
+        $this->sortByKey($penalties, "penalties");
 
         $cres = $this->computePoints($results, 'constructor', $psystem);
         return array(
@@ -164,7 +150,11 @@ class StandingsController extends Controller
         if($cs['code'] != 200)
             return abort(404);
 
+        $latestRound = Race::where('season_id', $cs['season']['id'])
+                           ->max('round');
+
         $nextRace = $this->nextRace($cs['season']['id']);
+
         return view('standings.season')
                ->with('code', $code)
 
@@ -179,6 +169,7 @@ class StandingsController extends Controller
                ->with('ccount', count($cs['constructors']))
 
                ->with('season', $cs['season'])
+               ->with('latestRound', $latestRound)
                ->with('nextRace', $nextRace);
     }
 
@@ -216,14 +207,7 @@ class StandingsController extends Controller
     protected function computePoints($results, String $field, $psystem)
     {
         // Sort $results by $field
-        usort($results, function($a, $b) use ($field) {
-            if ($a[$field . '_id'] > $b[$field . '_id'])
-                return 1;
-            elseif ($a[$field . '_id'] < $b[$field . '_id'])
-                return -1;
-            else
-                return 0;
-        });
+        $this->sortByKey($results, $field . '_id');
 
         $prev = $results[0][$field . '_id'];
         $dres = array(array(

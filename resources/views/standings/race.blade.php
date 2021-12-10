@@ -99,16 +99,24 @@ td {
   <div class="md:w-3/4 mb-4 md:m-">
   <div class="bg-white p-4 rounded-lg border">
 
-    <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
-            Race Results
+    <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
+      <span class='text-xs pt-2'>
+        Race Results
+      </span>
+      <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
+      </a>
+      <!-- <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
+      </a> -->
     </div>
           <table class="w-full">
             <thead>
               <tr>
                 @auth
               @view('admin,coordinator')
-              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">D.ID</th>
-              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">C.ID</th>
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12 confTable">D.ID</th>
+              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12 confTable">C.ID</th>
                 
               @endview
               @endauth    
@@ -125,31 +133,31 @@ td {
           <tr>
             @auth
               @view('admin,coordinator')
-            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
-            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
                 
               @endview
               @endauth    
                 
-            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$i+1}}</td>
-            <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
-            <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
-            <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['points']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$i+1}}</td>
+              <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
+              <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['points']}}</td>
           </tr>
         @elseif($i % 2 != 0)
         <tr>
             @auth
             @view('admin,coordinator')
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
             @else
-              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
             @endif
             
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
             @else
-              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
             @endif
             
                 
@@ -193,15 +201,15 @@ td {
                   @auth
             @view('admin,coordinator')
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
             @else
-              <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$results[$i]['driver']['id']}}</td>
+              <td class="font-semibold rounded-lg border border-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
             @endif
             
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
             @else
-              <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$results[$i]['constructor_id']}}</td>
+              <td class="font-semibold rounded-lg border border-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
             @endif
             
               @endview
@@ -240,8 +248,8 @@ td {
 <div>
 @auth
    @view('admin,coordinator')
-   <div class="border-2 p-5 rounded-lg">
-      <div class="text-2xl font-bold text-center">Admin/Coordinatior Information</div>
+   <div class="border p-5 rounded-lg confTable">
+      <div class="text-2xl font-bold text-center">Admin/Coordinator Information</div>
       <div class="flex flex-wrap gap-5">
         <div class="text-lg font-semibold">Race ID: {{$results[0]['race']['id']}}</div>
         <div class="text-lg font-semibold">Round: {{$results[0]['race']['round']}}</div>
@@ -258,9 +266,18 @@ td {
    @endview
 @endauth
 </div>
+
+@auth
+   @view('admin,coordinator')
+    <script>
+      $('body').keypress(function (e) { 
+        if(e.keyCode == 72 || e.keyCode == 104){
+          $('.confTable').toggle();
+        }
+      });
+      $('.confTable').toggle();
+    </script>
+  @endview
+@endauth
+
 @endsection
-
-
-
-
-
