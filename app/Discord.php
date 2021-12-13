@@ -1,6 +1,6 @@
 <?php
 
-// Check if user is in IRC or not 
+// Check if user is in IRC or not
 namespace App;
 
 use Auth;
@@ -8,10 +8,12 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\Traits\LogsActivity;
+
 class Discord
 {
     use LogsActivity;
-    protected static $logName = 'discord';  // Name for the log 
+
+    protected static $logName = 'discord';  // Name for the log
     protected static $logAttributes = ['*']; // Log All fields in the table
     protected static $logOnlyDirty = true; // Only log the fields that have been updated
 
@@ -41,7 +43,7 @@ class Discord
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                "Authorization: Bearer ".$params['access_token']
+                "Authorization: Bearer " . $params['access_token']
             ),
         ));
 
@@ -50,21 +52,16 @@ class Discord
 
         curl_close($curl);
 
-        if ($err)
-        {
+        if ($err) {
             return $err;
-        }
-        else
-        {
-            $final = json_decode($response,true);
+        } else {
+            $final = json_decode($response, true);
             $irc = $this->irc_guild;
             $check = 'False';
-            for($i = 0; $i < count($final); $i++)
-            {
-               if($final[$i]['id'] == $irc)
-               {
-                   $check = 'True';
-               }
+            for ($i = 0; $i < count($final); $i++) {
+                if ($final[$i]['id'] == $irc) {
+                    $check = 'True';
+                }
             }
             return $check;
         }
@@ -78,72 +75,7 @@ class Discord
         $server = $this->irc_guild;
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://discord.com/api/guilds/".$server."/roles",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                "Authorization: Bot ".$params['token']
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err)
-        {
-            return $err;
-        }
-        else
-        {
-            $final = json_decode($response, true);
-            return $this->checkRoles($final, $id);
-        }
-    }
-
-    public function checkRoles($roles, $id)
-    {
-        $data = $this->getMemberRoles($id);
-        if($data != "Invalid")
-        {
-            $arr = array();
-
-            $crole = 0;
-            for($i = 0; $i < count($roles); $i++)
-            {
-                for($j = 0; $j < count($data); $j++)
-                {
-                    if($roles[$i]['id'] == $data[$j])
-                    {
-                        array_push($arr, ['name' => $roles[$i]['name'],
-                                          'color' => dechex($roles[$i]['color'])]);
-                        $crole++;
-                    }
-                }
-            }
-            return $arr;
-        }
-        else
-        {
-            return "Error Fetching Roles";
-        }
-    }
-
-    public function getMemberRoles($id)
-    {
-        $userdata = $id;
-        $params = (['token' => config('services.discord.bot')]);
-
-        $curl = curl_init();
-        $server = $this->irc_guild;
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$userdata,
+            CURLOPT_URL => "https://discord.com/api/guilds/" . $server . "/roles",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -161,20 +93,70 @@ class Discord
 
         curl_close($curl);
 
-        if ($err)
-        {
+        if ($err) {
             return $err;
+        } else {
+            $final = json_decode($response, true);
+            return $this->checkRoles($final, $id);
         }
-        else
-        {
-            $final = json_decode($response,true);
-            if(isset($final['message']))
-            {
-                return "Invalid";
+    }
+
+    public function checkRoles($roles, $id)
+    {
+        $data = $this->getMemberRoles($id);
+        if ($data != "Invalid") {
+            $arr = array();
+
+            $crole = 0;
+            for ($i = 0; $i < count($roles); $i++) {
+                for ($j = 0; $j < count($data); $j++) {
+                    if ($roles[$i]['id'] == $data[$j]) {
+                        array_push($arr, ['name' => $roles[$i]['name'],
+                                          'color' => dechex($roles[$i]['color'])]);
+                        $crole++;
+                    }
+                }
             }
-            else
-            {
-              return $final['roles'];
+            return $arr;
+        } else {
+            return "Error Fetching Roles";
+        }
+    }
+
+    public function getMemberRoles($id)
+    {
+        $userdata = $id;
+        $params = (['token' => config('services.discord.bot')]);
+
+        $curl = curl_init();
+        $server = $this->irc_guild;
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://discord.com/api/guilds/" . $server . "/members/" . $userdata,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                "Authorization: Bot " . $params['token']
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            return $err;
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
+                return "Invalid";
+            } else {
+                return $final['roles'];
             }
         }
     }
@@ -186,7 +168,7 @@ class Discord
         $curl = curl_init();
         $server = $this->irc_guild; //irc
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$applicantrole,
+            CURLOPT_URL => "https://discord.com/api/guilds/" . $server . "/members/" . $id . "/roles/" . $applicantrole,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -195,7 +177,7 @@ class Discord
             CURLOPT_CUSTOMREQUEST => "DELETE",
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                "Authorization: Bot ".$params['token']
+                "Authorization: Bot " . $params['token']
             ),
         ));
 
@@ -203,20 +185,14 @@ class Discord
         $err = curl_error($curl);
         curl_close($curl);
 
-        if ($err) 
-        {
+        if ($err) {
             return $err;
-        } 
-        else
-        {
-            $final = json_decode($response,true);
-            if(isset($final['message']))
-            {
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
                 return "Invalid";
-            }
-            else
-            {
-              return $response;
+            } else {
+                return $response;
             }
         }
     }
@@ -224,24 +200,20 @@ class Discord
     public function addroles($roles, $id, $data)
     {
         $params = (['token' => config('services.discord.bot')]);
-        if(in_array($this->applicantRole, $data))
-        {
+        if (in_array($this->applicantRole, $data)) {
             $var =  $this->removeApplicantRole($id, $this->applicantRole);
-            if($var == "Invalid")
-            {
+            if ($var == "Invalid") {
                 return "Error Removing applicant role";
             }
         }
     
-        if(!empty($roles))
-        {
-            foreach($roles as $value)
-            {
+        if (!empty($roles)) {
+            foreach ($roles as $value) {
                 sleep(1);
                 $curl = curl_init();
                 $server = $this->irc_guild; //irc
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members/".$id."/roles/".$value,
+                CURLOPT_URL => "https://discord.com/api/guilds/" . $server . "/members/" . $id . "/roles/" . $value,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -251,7 +223,7 @@ class Discord
                 CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Content-Length: 0',
-                "Authorization: Bot ".$params['token']
+                "Authorization: Bot " . $params['token']
                     ),
                 ));
 
@@ -260,21 +232,15 @@ class Discord
                 curl_close($curl);
             }
 
-            if ($err)
-            {
+            if ($err) {
                 return $err;
-            }
-            else
-            {
-                $final = json_decode($response,true);
+            } else {
+                $final = json_decode($response, true);
                 return $response;
 
-                if(isset($final['message']))
-                {
+                if (isset($final['message'])) {
                     return "Invalid";
-                }
-                else
-                {
+                } else {
                     return $final;
                 }
             }
@@ -294,7 +260,7 @@ class Discord
         $profileschannel = $this->profilesChannel;
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://discord.com/api/channels/".$profileschannel."/messages",
+            CURLOPT_URL => "https://discord.com/api/channels/" . $profileschannel . "/messages",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -304,7 +270,7 @@ class Discord
             CURLOPT_POSTFIELDS => $postdata,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                "Authorization: Bot ".$params['token']
+                "Authorization: Bot " . $params['token']
             ),
         ));
 
@@ -312,36 +278,29 @@ class Discord
         $err = curl_error($curl);
         curl_close($curl);
 
-        if ($err) 
-        {
+        if ($err) {
             return $err;
-        } 
-        else
-        {
-            $final = json_decode($response,true);
-            if(isset($final['message']))
-            {
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
                 return "Invalid";
-            }
-            else
-            {
-              return $response;
+            } else {
+                return $response;
             }
         }
     }
 
 
-   public function updatedetails()
+    public function updatedetails()
     {
-       $users = User::select('discord_id','id')->get();
-      // dd($users);
-       foreach($users as $user)
-       {
-        sleep(2);
-        $params = (['token' => config('services.discord.bot')]);
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://discord.com/api/users/ ".$user->discord_id,
+        $users = User::select('discord_id', 'id')->get();
+       // dd($users);
+        foreach ($users as $user) {
+            sleep(2);
+            $params = (['token' => config('services.discord.bot')]);
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://discord.com/api/users/ " . $user->discord_id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -350,41 +309,33 @@ class Discord
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                "Authorization: Bot ".$params['token']
+                "Authorization: Bot " . $params['token']
             ),
-        ));
+            ));
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
 
-        if ($err) 
-        {
-            return $err;
+            if ($err) {
+                return $err;
+            } else {
+                  $final = json_decode($response, true);
+                  $this->savedetails($final, $user->id);
+            }
         }
-        else 
-        {
-            $final = json_decode($response,true);
-            $this->savedetails($final,$user->id);
-            
-        } 
-   }
-   return "Done";
-}   
+        return "Done";
+    }
 
-
-
-
-
-public function updatedetailstest()
-{
-    $userid = 53;
-    $discord_id = 692252150058844231;
-   // dd($users);
-     $params = (['token' => config('services.discord.bot')]);
-     $curl = curl_init();
-     curl_setopt_array($curl, array(
-         CURLOPT_URL => "https://discord.com/api/users/ ".$discord_id,
+    public function updatedetailstest()
+    {
+        $userid = 53;
+        $discord_id = 692252150058844231;
+       // dd($users);
+         $params = (['token' => config('services.discord.bot')]);
+         $curl = curl_init();
+         curl_setopt_array($curl, array(
+         CURLOPT_URL => "https://discord.com/api/users/ " . $discord_id,
          CURLOPT_RETURNTRANSFER => true,
          CURLOPT_ENCODING => "",
          CURLOPT_MAXREDIRS => 10,
@@ -393,91 +344,82 @@ public function updatedetailstest()
          CURLOPT_CUSTOMREQUEST => "GET",
          CURLOPT_HTTPHEADER => array(
              'Content-Type: application/json',
-             "Authorization: Bot ".$params['token']
+             "Authorization: Bot " . $params['token']
          ),
-     ));
+         ));
 
-     $response = curl_exec($curl);
-     $err = curl_error($curl);
-     curl_close($curl);
+         $response = curl_exec($curl);
+         $err = curl_error($curl);
+         curl_close($curl);
 
-     if ($err) 
-     {
-         return $err;
-     }
-     else 
-     {
-         $final = json_decode($response,true);
-         $this->savedetails($final,$userid);
-         
-     } 
+        if ($err) {
+            return $err;
+        } else {
+            $final = json_decode($response, true);
+            $this->savedetails($final, $userid);
+        }
 
-return "Done";
-}   
+        return "Done";
+    }
 
 
 
 
-   public function savedetails($final,$userid)
-   {
-      // dd($final);
-      if(isset($final['username']) && $final['avatar'] == NULL)
-      {
-         $avatar = "https://cdn.discordapp.com/embed/avatars/3.png"; 
-         DB::table('users')
-         ->where('id', $userid)
-         ->update([
-            'name' => $final['username'],
-            'avatar'=> $avatar,
-            'discord_discrim' => $final['discriminator']
+    public function savedetails($final, $userid)
+    {
+       // dd($final);
+        if (isset($final['username']) && $final['avatar'] == null) {
+            $avatar = "https://cdn.discordapp.com/embed/avatars/3.png";
+            DB::table('users')
+              ->where('id', $userid)
+              ->update([
+                  'name' => $final['username'],
+                  'avatar' => $avatar,
+                  'discord_discrim' => $final['discriminator']
+            ]);
+        }
 
-        ]);
-      }
+        if (isset($final['message'])) {
+            $avatar = "https://cdn.discordapp.com/embed/avatars/3.png";
+            DB::table('users')
+            ->where('id', $userid)
+            ->update([
+                'avatar' => $avatar,
+            ]);
+        }
 
-      if(isset($final['message']))
-      {
-         $avatar = "https://cdn.discordapp.com/embed/avatars/3.png";
-         DB::table('users')
-         ->where('id', $userid)
-         ->update([ 
-                'avatar'=> $avatar,
-                ]); 
-      }
-
-      if(isset($final['avatar']) && $final['avatar'] != NULL)
-      {  
-          $avatar = "https://cdn.discordapp.com/avatars/".$final['id']."/".$final['avatar'].".jpg";
-          DB::table('users')
-         ->where('id', $userid)
-         ->update([
-            'name' => $final['username'],
-            'avatar'=> $avatar,
-            'discord_discrim' => $final['discriminator']
-
-        ]);
-      }
-   }
+        if (isset($final['avatar']) && $final['avatar'] != null) {
+            $avatar = "https://cdn.discordapp.com/avatars/" . $final['id'] . "/" . $final['avatar'] . ".jpg";
+            DB::table('users')
+              ->where('id', $userid)
+              ->update([
+                  'name' => $final['username'],
+                  'avatar' => $avatar,
+                  'discord_discrim' => $final['discriminator']
+            ]);
+        }
+    }
 
 
 
-   public function notifysignup($season)
-   {
-       $seasonname = Season::where('id',$season)->select('game','name')->get()->toArray();
+    public function notifysignup($season)
+    {
+        $seasonname = Season::where('id', $season)->select('game', 'name')->get()->toArray();
        
-       $discordid = Auth::user()->discord_id;
-       $sname = $seasonname[0]['name'];
-       $gname = $seasonname[0]['game'];
-       $message = "<@$discordid> has signed up for **$sname** !";
-       $adata = array("content" => $message, "tts" => false);
-       $postdata = json_encode($adata);
+        $discordid = Auth::user()->discord_id;
+        $sname = $seasonname[0]['name'];
+        $gname = $seasonname[0]['game'];
+        $message = "<@$discordid> has signed up for **$sname** !";
+        $adata = array("content" => $message, "tts" => false);
+        $postdata = json_encode($adata);
 
-       $params = (['token' => config('services.discord.bot')]);
-       $curl = curl_init();
+        $params = (['token' => config('services.discord.bot')]);
+        $curl = curl_init();
 
-       $esports= $this->notificationchannel;
+        $esports = $this->notificationchannel;
 
-       curl_setopt_array($curl, array(
-           CURLOPT_URL => "https://discord.com/api/channels/".$esports."/messages",
+        curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/" . $esports . "/messages",
            CURLOPT_RETURNTRANSFER => true,
            CURLOPT_ENCODING => "",
            CURLOPT_MAXREDIRS => 10,
@@ -487,43 +429,38 @@ return "Done";
            CURLOPT_POSTFIELDS => $postdata,
            CURLOPT_HTTPHEADER => array(
                'Content-Type: application/json',
-               "Authorization: Bot ".$params['token']
+               "Authorization: Bot " . $params['token']
            ),
-       ));
+        ));
 
-       $response = curl_exec($curl);
-       $err = curl_error($curl);
-       curl_close($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
 
-       if ($err) 
-       {
-           return $err;
-       } 
-       else
-       {
-           $final = json_decode($response,true);
-           if(isset($final['message']))
-           {
-               return "Invalid";
-           }
-           else
-           {
-             return $response;
-           }
-       }
-   }
+        if ($err) {
+            return $err;
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
+                return "Invalid";
+            } else {
+                return $response;
+            }
+        }
+    }
 
 
-   public static function publishMessage($message, $channel)
-   {
-       if($channel == NULL)
+    public static function publishMessage($message, $channel)
+    {
+        if ($channel == null) {
             return 0;
-       $adata = array("content" => $message, "tts" => false);
-       $postdata = json_encode($adata);
-       $params = (['token' => config('services.discord.bot')]);
-       $curl = curl_init();
+        }
+        $adata = array("content" => $message, "tts" => false);
+        $postdata = json_encode($adata);
+        $params = (['token' => config('services.discord.bot')]);
+        $curl = curl_init();
 
-       curl_setopt_array($curl, array(
+        curl_setopt_array($curl, array(
            CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages",
            CURLOPT_RETURNTRANSFER => true,
            CURLOPT_ENCODING => "",
@@ -534,44 +471,39 @@ return "Done";
            CURLOPT_POSTFIELDS => $postdata,
            CURLOPT_HTTPHEADER => array(
                'Content-Type: application/json',
-               "Authorization: Bot ".$params['token']
+               "Authorization: Bot " . $params['token']
            ),
-       ));
+        ));
 
-       $response = curl_exec($curl);
-       $err = curl_error($curl);
-       curl_close($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
 
-       if ($err) 
-       {
-           return $err;
-       } 
-       else
-       {
-           $final = json_decode($response, true);
-           if(isset($final['message']))
-           {
+        if ($err) {
+            return $err;
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
                 return "Invalid";
-           }
-           else
-           {
+            } else {
                 return $final['id'];
-           }
+            }
         }
     }
 
 
     public static function editMessage($message, $channel, $msgid)
     {
-       if($channel == NULL)
+        if ($channel == null) {
             return 0;
-       $adata = array("content" => $message, "tts" => false);
-       $postdata = json_encode($adata);
-       $params = (['token' => config('services.discord.bot')]);
-       $curl = curl_init();
+        }
+        $adata = array("content" => $message, "tts" => false);
+        $postdata = json_encode($adata);
+        $params = (['token' => config('services.discord.bot')]);
+        $curl = curl_init();
 
-       curl_setopt_array($curl, array(
-           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages/".$msgid,
+        curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages/" . $msgid,
            CURLOPT_RETURNTRANSFER => true,
            CURLOPT_ENCODING => "",
            CURLOPT_MAXREDIRS => 10,
@@ -581,41 +513,36 @@ return "Done";
            CURLOPT_POSTFIELDS => $postdata,
            CURLOPT_HTTPHEADER => array(
                'Content-Type: application/json',
-               "Authorization: Bot ".$params['token']
+               "Authorization: Bot " . $params['token']
            ),
-       ));
+        ));
        
-       $response = curl_exec($curl);
-       $err = curl_error($curl);
-       curl_close($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
 
-       if ($err) 
-       {
-           return $err;
-       } 
-       else
-       {
-           $final = json_decode($response, true);
-           if(isset($final['message']))
-           {
+        if ($err) {
+            return $err;
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
                 return "Invalid";
-           }
-           else
-           {
+            } else {
                 return $final;
-           }
+            }
         }
     }
 
-    public static function deleteMessage($channel,$msgid)
-   {
-       if($channel == NULL)
+    public static function deleteMessage($channel, $msgid)
+    {
+        if ($channel == null) {
             return 0;
-       $params = (['token' => config('services.discord.bot')]);
-       $curl = curl_init();
+        }
+        $params = (['token' => config('services.discord.bot')]);
+        $curl = curl_init();
 
-       curl_setopt_array($curl, array(
-           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages/".$msgid,
+        curl_setopt_array($curl, array(
+           CURLOPT_URL => "https://discord.com/api/channels/" . $channel . "/messages/" . $msgid,
            CURLOPT_RETURNTRANSFER => true,
            CURLOPT_ENCODING => "",
            CURLOPT_MAXREDIRS => 10,
@@ -624,32 +551,24 @@ return "Done";
            CURLOPT_CUSTOMREQUEST => "DELETE",
            CURLOPT_HTTPHEADER => array(
                'Content-Type: application/json',
-               "Authorization: Bot ".$params['token']
+               "Authorization: Bot " . $params['token']
            ),
-       ));
+        ));
 
-       $response = curl_exec($curl);
-       $err = curl_error($curl);
-       curl_close($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
 
-       if ($err) 
-       {
-           return $err;
-       } 
-       else
-       {
-           $final = json_decode($response, true);
-           if(isset($final['message']))
-           {
+        if ($err) {
+            return $err;
+        } else {
+            $final = json_decode($response, true);
+            if (isset($final['message'])) {
                 return "Invalid";
-           }
-           else
-           {
-               // Sucess retruns a empty 204 response put whatever you want to return here! 
+            } else {
+                // Sucess retruns a empty 204 response put whatever you want to return here!
                 return "Done!";
-           }
+            }
         }
     }
-
 }
-?>

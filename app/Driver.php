@@ -4,20 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+
 class Driver extends Model
 {
     use LogsActivity;
-    protected static $logName = 'driver';  // Name for the log 
+
+    protected static $logName = 'driver';  // Name for the log
     protected static $logAttributes = ['*']; // Log All fields in the table // Log when a driver is Created or Updated
     protected static $logOnlyDirty = true; // Only log the fields that have been updated
 
-    const delimiter = '~$~';
-    static public function getAliases() {
+    private const DELIMITER = '~$~';
+    public static function getAliases()
+    {
         $alias_list = Driver::pluck('alias');
 
-        foreach($alias_list as $i => $alias) {
+        foreach ($alias_list as $i => $alias) {
             $arr = array();
-            $arr = explode(self::delimiter, $alias);
+            $arr = explode(self::DELIMITER, $alias);
 
             $alias_list[$i] = $arr;
         }
@@ -25,17 +28,19 @@ class Driver extends Model
         return $alias_list;
     }
 
-    static public function selfLearn(String $predicted, Int $id) {
+    public static function selfLearn(string $predicted, int $id)
+    {
         $driver = Driver::find($id);
         $driver->insertAlias($predicted);
         return 0;
     }
 
-    static public function getNames() {
+    public static function getNames()
+    {
         $driver_list = Driver::select('id', 'name', 'alias')->get();
-        foreach($driver_list as $i => $driver) {
+        foreach ($driver_list as $i => $driver) {
             $arr = array();
-            $arr = explode(self::delimiter, $driver['alias']);
+            $arr = explode(self::DELIMITER, $driver['alias']);
 
             $driver_list[$i]['alias'] = $arr;
         }
@@ -47,10 +52,11 @@ class Driver extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function insertAlias(String $newAlias) {
-        $aliases = explode(self::delimiter, $this->alias);
-        if(!in_array($newAlias, $aliases)) {
-            $this->alias = $this->alias . self::delimiter . $newAlias;
+    public function insertAlias(string $newAlias)
+    {
+        $aliases = explode(self::DELIMITER, $this->alias);
+        if (!in_array($newAlias, $aliases)) {
+            $this->alias = $this->alias . self::DELIMITER . $newAlias;
             $this->save();
             return 1;
         }

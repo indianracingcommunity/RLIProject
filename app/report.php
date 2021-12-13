@@ -8,6 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Report extends Model
 {
     use LogsActivity;
+
     protected static $logName = 'report';    // Name for the log
     protected static $logAttributes = ['*']; // Log All fields in the table
     protected static $logOnlyDirty = true;   // Only log the fields that have been updated

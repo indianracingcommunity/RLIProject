@@ -30,7 +30,7 @@ class SteamLoginController extends AbstractSteamLoginController
         $message = "Steam profile for <@$discord_id> : https://steamcommunity.com/profiles/$steamid";
         $disc->sendMemberProfile($message);
 
-        session()->flash('steamSuccess','Steam Profile Linked Successfully.');
+        session()->flash('steamSuccess', 'Steam Profile Linked Successfully.');
         return redirect()->route('user.home');
     }
 }

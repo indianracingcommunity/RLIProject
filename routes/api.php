@@ -14,17 +14,17 @@ use Illuminate\Http\Request;
 */
 
 // Fetch Driver & Constructor Details - Telemetry API
-Route::get('/drivers/data','DriverController@seasonData')->name('telemetry.drivers');
-Route::post('/report/submit','ReportsController@bulkCreate')->name('steward.upload');
+Route::get('/drivers/data', 'DriverController@seasonData')->name('telemetry.drivers');
+Route::post('/report/submit', 'ReportsController@bulkCreate')->name('steward.upload');
 
 // Fetch User Info - Discord Bot
-Route::get('/users/details/{query}/{discord_id}','BotController@fetchdetails')->name('bot.discord');
-Route::get('/users/driver/{discord_id}','BotController@fetchDriverId')->name('bot.driverid');
+Route::get('/users/details/{query}/{discord_id}', 'BotController@fetchdetails')->name('bot.discord');
+Route::get('/users/driver/{discord_id}', 'BotController@fetchDriverId')->name('bot.driverid');
 
 // Upload Race Results
 Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.upload');
 
-Route::get('/fetch/drivers/{race}','ReportsController@driversdata');
+Route::get('/fetch/drivers/{race}', 'ReportsController@driversdata');
 
 // Signups
 Route::get('/signups', 'SignupsController@getSignupsApi')->name('signups.index');
