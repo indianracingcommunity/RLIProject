@@ -31,7 +31,7 @@ class UserPanel extends Controller
                 ->with('series', $series);
     }
 
-    public function SetSteam(user $user)
+    public function setSteam(user $user)
     {
         $data = request()->all();
         $user->steam_id = $data['steamid'];
@@ -39,9 +39,9 @@ class UserPanel extends Controller
         return redirect('/user/profile/' . $user->id);
     }
 
-    public function ResetSteamLink(user $user)
+    public function resetSteamLink(user $user)
     {
-        $user->update(['steam_id' => NULL]);
+        $user->update(['steam_id' => null]);
         $user->save();
     }
 }

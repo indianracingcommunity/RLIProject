@@ -8,7 +8,6 @@ use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Symfony\Component\Console\Output\ConsoleOutput;
-
 use App\User;
 use App\Driver;
 use App\Season;
@@ -20,12 +19,14 @@ use App\Circuit;
 class AccController extends Controller
 {
     private $output;
-    public function __construct() {
+    public function __construct()
+    {
         $this->output = new ConsoleOutput();
     }
 
     // View to Upload Race Results
-    public function raceUpload() {
+    public function raceUpload()
+    {
         $series = Series::where('code', 'acc')->firstOrFail();
         $seasons = Season::where([
             ['status', '<', 2],
@@ -39,15 +40,20 @@ class AccController extends Controller
                ->with('seasons', $seasons);
     }
 
-    public function file_get_contents_utf8($fn) {
+    public function fileGetContentsUtf8($fn)
+    {
         $content = file_get_contents($fn);
-         return mb_convert_encoding($content, 'UTF-8',
-             mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
+         return mb_convert_encoding(
+             $content,
+             'UTF-8',
+             mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true)
+         );
     }
 
     // TODO: Accept other encodings. Currently only supports UTF-8
     // ACC Result File are in UTF-16LE encoding
-    public function parseJson(Request $request) {
+    public function parseJson(Request $request)
+    {
         $race = request()->file('race');
         $quali = request()->file('quali');
 
@@ -68,12 +74,15 @@ class AccController extends Controller
         $season = Season::find(request()->season);
 
         $sp_circuit = Circuit::getTrackByGame($json['trackName'], $season['series']);
-        if($sp_circuit == null) return response()->json([]);
+        if ($sp_circuit == null) {
+            return response()->json([]);
+        }
 
         $totalLaps = 0;
         $results = array();
-        if(count($json['sessionResult']['leaderBoardLines']) > 0)
+        if (count($json['sessionResult']['leaderBoardLines']) > 0) {
             $totalLaps = $json['sessionResult']['leaderBoardLines'][0]['timing']['lapCount'];
+        }
 
         $track = array(
             'circuit_id' => $sp_circuit['id'],
@@ -86,28 +95,22 @@ class AccController extends Controller
         );
 
         $qualiPosition = array();
-        foreach($jq['sessionResult']['leaderBoardLines'] as $k => $driver)
-        {
-            // Multi Session, Single Driver Setup
-            if($mode)
-            {
-                if(!array_key_exists($driver['currentDriver']['playerId'], $qualiPosition))
+        foreach ($jq['sessionResult']['leaderBoardLines'] as $k => $driver) {
+            if ($mode) {
+                // Multi Session, Single Driver Setup
+                if (!array_key_exists($driver['currentDriver']['playerId'], $qualiPosition)) {
                     $qualiPosition[$driver['currentDriver']['playerId']] = $k + 1;
-            }
-
-            // Single Session, Multi Driver Setup
-            else
-            {
+                }
+            } else {
+                // Single Session, Multi Driver Setup
                 $qualiPosition[$driver['car']['carId']] = $k + 1;
             }
         }
 
-        foreach($json['sessionResult']['leaderBoardLines'] as $k => $driver)
-        {
+        foreach ($json['sessionResult']['leaderBoardLines'] as $k => $driver) {
             $user = User::where('steam_id', substr($driver['currentDriver']['playerId'], 1))->first();
             $dr = Driver::where('user_id', $user['id'])->first();
-            if($dr == null)
-            {
+            if ($dr == null) {
                 $dr['name'] = $driver['currentDriver']['shortName'];
                 $dr['id'] = -1;
             }
@@ -119,31 +122,29 @@ class AccController extends Controller
             $team_ind = array_search($driver['car']['carModel'], array_column($season['constructors'], "game"));
 
             // Grid Position
-            if($mode)
-            {
-                if(array_key_exists($driver['currentDriver']['playerId'], $qualiPosition))
+            if ($mode) {
+                if (array_key_exists($driver['currentDriver']['playerId'], $qualiPosition)) {
                     $grid = $qualiPosition[$driver['currentDriver']['playerId']];
-            }
-            else
-            {
-                if(array_key_exists($driver['car']['carId'], $qualiPosition))
+                }
+            } else {
+                if (array_key_exists($driver['car']['carId'], $qualiPosition)) {
                     $grid = $qualiPosition[$driver['car']['carId']];
+                }
             }
 
             // Fastest Lap
-            if($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10)
+            if ($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10) {
                 $status = 1;
-
-            // Total Time
-            if($driver['timing']['lastLap'] == 2147483647)
-            {
-                $status = -2;
-                $total_time = "DNF";
             }
 
+            // Total Time
             // if($totalLaps == $driver['timing']['lapCount'])
-            else
+            if ($driver['timing']['lastLap'] == 2147483647) {
+                $status = -2;
+                $total_time = "DNF";
+            } else {
                 $total_time = $this->convertMillisToStandard($driver['timing']['totalTime']);
+            }
             // else
             // {
             //     $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Lap";
@@ -151,10 +152,11 @@ class AccController extends Controller
             //         $total_time .= "s";
             // }
 
-            if($driver['timing']['bestLap'] == 2147483647)
+            if ($driver['timing']['bestLap'] == 2147483647) {
                 $bestLap = "-";
-            else
+            } else {
                 $bestLap = $this->convertMillisToStandard($driver['timing']['bestLap']);
+            }
 
             // Push to Results
             array_push($results, array(

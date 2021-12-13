@@ -36,11 +36,12 @@ class WebsiteController extends Controller
         return $this->impel($request, $encString, "post");
     }
 
-    private function impel(Request $request, String $encryptedString, String $secret)
+    private function impel(Request $request, string $encryptedString, string $secret)
     {
         $safeword = $request->query('safe_word');
-        if($safeword === null)
-          return response()->json(["errorMessage" => "Pass the safe_word in the Query Params"]);
+        if ($safeword === null) {
+            return response()->json(["errorMessage" => "Pass the safe_word in the Query Params"]);
+        }
 
         $safeword = str_replace("_", "", strtolower($safeword));
         $safeword = str_replace("-", "", strtolower($safeword));
@@ -54,8 +55,7 @@ class WebsiteController extends Controller
             $decryptedFromString = $encrypterTo->decryptString($encryptedString);
             $resp = json_decode($decryptedFromString);
             return response()->json($resp);
-        }
-        catch (DecryptException $e) {
+        } catch (DecryptException $e) {
             return response()->json(["errorMessage" => "Incorrect Key"]);
         }
     }
@@ -72,7 +72,7 @@ class WebsiteController extends Controller
 
     public function loadstandings()
     {
-    	return view('standings');
+        return view('standings');
     }
 
     public function loadaboutus()
@@ -82,18 +82,17 @@ class WebsiteController extends Controller
 
     public function loadourteam()
     {
-        $var = User::select('id','name','avatar')
+        $var = User::select('id', 'name', 'avatar')
                   ->where('role_id', 3)
                   ->get()->toArray();
 
         $fieldsTeams = array();
-        for ($i = 0; $i < count($var); $i++)
-        {
+        for ($i = 0; $i < count($var); $i++) {
             # code...
             $id = $var[$i]['id'];
             $fieldsTeams[$id] = $var[$i];
         }
-        return view('ourteam',compact('fieldsTeams'));
+        return view('ourteam', compact('fieldsTeams'));
     }
 
     public function loadfaq()
@@ -118,11 +117,11 @@ class WebsiteController extends Controller
     
     public function loadlogin()
     {
-    	return view('login');
+        return view('login');
     }
 
     public function f1tournament()
     {
-    	return view('f1tournament');
+        return view('f1tournament');
     }
 }
