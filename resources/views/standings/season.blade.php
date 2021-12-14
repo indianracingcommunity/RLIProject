@@ -258,10 +258,18 @@
 
 <div class="md:w-2/3 md:ml-4 md:mt-4">
    <div class="bg-white p-4 rounded-lg border">
-      <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
+      <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
          <span class='text-xs pt-2'>
             Drivers' Standings
          </span>
+         <div>
+            <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+               <span class='bg-gray-200 hover:bg-gray-900 text-dark-500 hover:text-white rounded p-1'> <i class='fa fa-flag-checkered p-1 '></i></span>
+            </a>
+            <a title='Jump to Latest Race' href="{{route('raceresults', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season'], 'round' => $latestRound])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+               <span class='bg-gray-200 hover:bg-gray-900 text-dark-500 hover:text-white rounded p-1'> <i class='fas fa-angle-double-right p-1'></i></span>
+            </a>
+         </div>
          <!-- <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
             <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
          </a>
