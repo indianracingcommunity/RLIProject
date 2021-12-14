@@ -46,7 +46,6 @@
    }
 </style>
 @section('content')
-
 <div class="container mx-auto px-4 md:p-0">
    <div class="pb-6 md:mb-4 leading-none md:p-0 flex items-center justify-between">
       <div class="text-4xl font-bold">
@@ -128,12 +127,21 @@
       </div>
       @endif
       @endfor
-
+      @if((int)$season['status'] < 2)
+         <div class="rounded-lg border md:hidden font-semibold text-left text-black-800 rounded-md p-4 w-auto mb-4" >
+            <i class="fas fa-trophy pr-2"></i> Standings as of Round {{$latestRound}} 
+         </div>
+      @endif
    </div>
 </div>
 
 <div class="flex flex-col-reverse md:flex-row">
    <div class="md:w-1/3">
+      @if((int)$season['status'] < 2)
+      <div class="rounded-lg border hidden md:block font-semibold text-left text-black-800 rounded-md p-4 w-auto my-4" >
+         <i class="fas fa-trophy pr-2"></i> Standings as of Round {{$latestRound}} 
+      </div>
+      @endif
       @if($season['season'] - (int)$season['season'] < 0.75) <div class="my-4 leading-none bg-white p-4 rounded-lg border">
          <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">
             Constructors` Standings
@@ -270,12 +278,6 @@
                <span class='bg-gray-200 hover:bg-gray-900 text-dark-500 hover:text-white rounded p-1'> <i class='fas fa-angle-double-right p-1'></i></span>
             </a>
          </div>
-         <!-- <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season']])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
-            <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
-         </a>
-         <a title='Jump to Latest Race' href="{{route('raceresults', ['code' => $code, 'tier' => $season['tier'], 'season' => $season['season'], 'round' => $latestRound])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
-            <span class='bg-green-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
-         </a> -->
       </div>
       <div class="overflow-y-auto pb-4">
          <table>

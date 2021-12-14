@@ -100,15 +100,19 @@ td {
   <div class="bg-white p-4 rounded-lg border">
 
     <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
-      <span class='text-xs pt-2'>
-        Race Results
-      </span>
-      <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
-          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
-      </a>
-      <!-- <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
-          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
-      </a> -->
+      <div>
+        <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 rounded inline-flex items-center ">
+          <span class='bg-gray-200 hover:bg-gray-900 text-dark-500 hover:text-white rounded p-1'> <i class="fas fa-angle-left p-1"></i></i></span>
+        </a>
+        <span class='text-xs pt-2'>
+          Race Results
+        </span>
+      </div>
+      <div>
+        <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+            <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
+        </a>
+      </div>
     </div>
           <table class="w-full">
             <thead>
