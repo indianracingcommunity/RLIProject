@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Http\Request;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -29,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot(Request $request)
-    {         
+    {
 
         /* $all_seasons = Season::where([
                             ['status', '>=', 1],
@@ -91,11 +92,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('topBarSeasons', $res);
         }); */
 
-        
-        Blade::if('view', function($role) use($request) {
-            $roleArr = explode(",",$role);
+
+        Blade::if('view', function ($role) use ($request) {
+            $roleArr = explode(",", $role);
             $PermissionManager = new PermissionManager();
-            $verify = $PermissionManager->verify($request,$roleArr);
+            $verify = $PermissionManager->verify($request, $roleArr);
             return $verify;
         });
     }

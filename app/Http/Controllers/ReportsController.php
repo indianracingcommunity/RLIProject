@@ -89,7 +89,7 @@ class ReportsController extends Controller
         // array_push($data['driver'],'1');
         // Uncomment above line to test reports with multiple drivers being reported
         // Will remove this after frontend is done
-        
+
         $dr = Driver::where('user_id', Auth::user()->id)->firstOrFail();  // UI Version
         // $dr = Driver::where('user_id', $data['reporting_driver'])->firstOrFail();    // API Version
         $race = Race::where('id', $data['race'])->firstOrFail()->load('season')->toArray();
@@ -103,7 +103,7 @@ class ReportsController extends Controller
             $report -> explanation = $data['explanation'];
             $report -> proof = $data['proof'];
             $report -> report_game = $data['report_game'];
-            
+
 
             // Publish Message in Season's Report Channel
             $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
@@ -115,7 +115,7 @@ class ReportsController extends Controller
                 ),
                 $race['season']['report_channel']
             ); // UI Version
-            
+
             /* $report -> message_id = Discord::publishMessage(
                 $this->reportMessage(
                     '240431392834453505',
@@ -178,7 +178,7 @@ class ReportsController extends Controller
                 $splitter_message .= " Reports\n **-----------------------------**";
                 Discord::publishMessage($splitter_message, $season->verdict_channel);
             }
-            
+
             sleep(1);
             // Publish Verdict Message
             Discord::publishMessage($this->verdictMessage($reports[$i]->toArray()), $season->verdict_channel);
@@ -283,7 +283,7 @@ class ReportsController extends Controller
         }
 
         $message .= "**\n4. Evidence: " . $report['proof'];
-        
+
 
         // Explanation
         if ($report['verdict_message'] != null) {
@@ -445,7 +445,7 @@ class ReportsController extends Controller
             }
         } elseif ($report->verdict_time > 0 && !preg_match($dnfpattern, $result->time)) {
             // 3. Else If verdict_time > 0, Load Results after Position
-            
+
             // Recurse from position to Last Position, break if position & time is unchanged
             $nextResults = Result::where('race_id', $report->race->id)
                                  ->where('position', '>', $result->position)

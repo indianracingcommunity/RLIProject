@@ -19,17 +19,17 @@ class SignupsController extends Controller
     public function view()
     {
         $signups = Signup::where('user_id', Auth::user()->id)->get()->toArray();
-    
+
         $allseason = Season::all();
         $seasons = array();
-      
+
         foreach ($allseason as $i => $particular_season) {
             $status = $particular_season->status;
             if ($status - (int)$status > 0) {
                 array_push($seasons, $particular_season);
             }
         }
-      
+
         return view('signup.home')
              ->with('seasons', $seasons)
              ->with('signup', $signups);
@@ -58,7 +58,7 @@ class SignupsController extends Controller
         } else {
             $assists = '';
         }
-          
+
         $signup = new Signup();
 
         $signup->user_id = Auth::user()->id;
@@ -102,7 +102,7 @@ class SignupsController extends Controller
     public function update(Signup $signup)
     {
         $data = request()->all();
-   
+
         if ($signup->user_id == Auth::user()->id) {
             if ($data['attendance'] == "YES") {
                 $attendance = 1;
@@ -133,7 +133,7 @@ class SignupsController extends Controller
                 $signup->timetrial3 = '';
             }
             $signup->attendance = $attendance;
-       
+
             $signup->assists = $assists;
             $signup->drivernumber = $data['drivernumber'];
 
@@ -170,7 +170,7 @@ class SignupsController extends Controller
         ->with('data', $data)
         ->with('season', $season);
     }
- 
+
     public function getSignupsApi()
     {
         $activeSeasons = Season::where('status', '<', 2)->get();
@@ -313,14 +313,14 @@ class SignupsController extends Controller
       }
     ';
 
-    
+
         $season = Season::where('status', '>', 0)->get();
-     
-      
+
+
         $tracks = Circuit::select('*')->get();
         $constructor = Constructor::select('*')->get();
         $driver = Driver::select('id', 'name')->get();
-      
+
         return view('standings.upload')
         ->with('data', $data)
         ->with('season', $season)

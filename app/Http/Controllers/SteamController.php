@@ -24,7 +24,7 @@ class SteamController extends Controller
                 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $key
                 . '&steamids=' . $query[$i]['user']['steam_id']
             );
- 
+
             if ($str['response']['players'] == null) {
                 echo "Invalid Steam ID";
             } else {

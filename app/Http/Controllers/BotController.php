@@ -12,10 +12,10 @@ class BotController extends Controller
     {
         // Check if the column requested exists in the DB or no
         $doesItExist = Schema::hasColumn('users', $query);
-        
+
         // Columns API is not allowed to access
         $list = ['email','remember_token','location','mothertongue'];
- 
+
         if (in_array($query, $list)) {
             return response()->json(['message' => 'Forbidden']);
         }

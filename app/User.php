@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use LogsActivity;
-    
+
     public static function updateAlias()
     {
         $user = User::all();
@@ -28,7 +28,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    
+
 
     protected $fillable = [
         'name', 'email', 'password','discord_discrim','discord_id','avatar'

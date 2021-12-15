@@ -45,7 +45,7 @@ class LoginController extends Controller
     {
         return Socialite::driver('discord')->scopes(['identify', 'email', 'guilds', 'connections'])->redirect();
     }
-    
+
     public function handleProviderCallback()
     {
         $userr = Socialite::driver('discord')->user();
@@ -70,7 +70,7 @@ class LoginController extends Controller
             $userAccount = User::where('discord_id', $userr->id)->first();
             if ($userAccount) {
                 //  dd($userr->user['discriminator']);
-            
+
                 $userAccount->update([
                     'name' => $userr->name,
                     'avatar' => $userr->avatar,
@@ -81,7 +81,7 @@ class LoginController extends Controller
                 ]);
                 return $userAccount;
             }
-       
+
             $newUser = User::create([
                 'name' => $userr->name,
                 'avatar' => $userr->avatar,

@@ -16,7 +16,7 @@ class ProfileCheck
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->mothertongue != NULL) {
+        if (Auth::user() &&  Auth::user()->mothertongue != null) {
             return $next($request);
         }
 

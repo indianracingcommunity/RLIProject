@@ -81,7 +81,7 @@ class ImageController extends Controller
                 }
             }
         }
-    
+
         if ($black > $white) {
             $img->invert();
         }
@@ -132,7 +132,7 @@ class ImageController extends Controller
             $this->twoTone($img);
             return $img;
         }
-    
+
         // Driver
         if ($sec == "driver") {
             $img = Image::make($src)
@@ -143,7 +143,7 @@ class ImageController extends Controller
             $this->twoTone($img);
             return $img;
         }
-    
+
         // Team
         if ($sec == "team") {
             $img = Image::make($src)
@@ -364,7 +364,7 @@ class ImageController extends Controller
         }
         return $res;
     }
-    
+
     public function raceprep(string $src, bool $pub = false, $seasonid = null)
     {
         $tess = new TesseractOCR();
@@ -477,7 +477,7 @@ class ImageController extends Controller
 
             array_push($results, $row);
         }
-    
+
         // $tess->image('storage/img/race_results/Standings.png');
         return $results; // $tess->response('png');
     }

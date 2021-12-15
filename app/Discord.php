@@ -206,7 +206,7 @@ class Discord
                 return "Error Removing applicant role";
             }
         }
-    
+
         if (!empty($roles)) {
             foreach ($roles as $value) {
                 sleep(1);
@@ -405,7 +405,7 @@ class Discord
     public function notifysignup($season)
     {
         $seasonname = Season::where('id', $season)->select('game', 'name')->get()->toArray();
-       
+
         $discordid = Auth::user()->discord_id;
         $sname = $seasonname[0]['name'];
         $gname = $seasonname[0]['game'];
@@ -516,7 +516,7 @@ class Discord
                "Authorization: Bot " . $params['token']
            ),
         ));
-       
+
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
