@@ -65,14 +65,12 @@ Route::group(['middleware' => 'auth'], function () {
           // Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
           Route::post('/home/report/submit', 'ReportsController@create')->name('report.submit');
 
-          // phpcs:disable Generic.Files.LineLength.TooLong
           // Route::get('/home/report/list','ReportsController@listDriverReports')->name('report.list');
           // Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.view');
 
           // Route::get('/home/report/edit/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.edit');
           Route::put('/home/report/edit/{report}', 'ReportsController@update')->where('report', '^[-+]?\d*\.?\d*$')->name('report.editsubmit');
           Route::delete('/home/report/delete/{report}', 'ReportsController@delete')->where('report', '^[-+]?\d*\.?\d*$')->name('report.delete');
-          //phpcs:enable
 
           // Signup Routes
           Route::get('/signup', 'SignupsController@view')->middleware('signup')->name('driver.signup');

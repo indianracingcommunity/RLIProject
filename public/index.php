@@ -6,7 +6,7 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
+// phpcs:ignoreFile
 define('LARAVEL_START', microtime(true));
 
 /*
