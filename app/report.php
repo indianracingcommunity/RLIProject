@@ -25,16 +25,19 @@ class Report extends Model
         return $this->belongsTo('App\Race');
     }
 
+    // phpcs:ignore
     public function reporting_driver()
     {
         return $this->belongsTo('App\Driver', 'reporting_driver');
     }
 
+    // phpcs:ignore
     public function reported_against()
     {
         return $this->belongsTo('App\Driver', 'reported_against');
     }
 
+    // phpcs:ignore
     public function counter_report()
     {
         return $this->belongsTo('App\Report', 'counter_report');
