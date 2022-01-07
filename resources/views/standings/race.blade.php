@@ -234,7 +234,7 @@ td {
             </td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['constructor']['name']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white md:block hidden">{{$results[$i]['constructor']['name']}}</td>
             @else
               <td class="font-semibold rounded-lg border border-white bg-gray-200 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
             @endif
