@@ -31,11 +31,9 @@ class LoadTopBar
         $prev = -1;
         $prev = 0;
         $seasons = array();
-        for($i = 0; $i < count($all_seasons); $i++)
-        {
+        for ($i = 0; $i < count($all_seasons); $i++) {
             $series = array();
-            while($i < count($all_seasons) && $all_seasons[$i]['series'] == $all_seasons[$prev]['series'])
-            {
+            while ($i < count($all_seasons) && $all_seasons[$i]['series'] == $all_seasons[$prev]['series']) {
                 // if($all_seasons[$i]['season'] == (int)$all_seasons[$i]['season'])
                 array_push($series, $all_seasons[$i]);
 
@@ -44,20 +42,18 @@ class LoadTopBar
 
             $prev = $i;
             $i--;
-            if(count($series) > 0)
+            if (count($series) > 0) {
                 array_push($seasons, $series);
+            }
         }
 
         $res = array();
-        for($i = 0; $i < count($seasons); $i++)
-        {
+        for ($i = 0; $i < count($seasons); $i++) {
             $tier = array();
             $prev = 0;
-            for($j = 0; $j < count($seasons[$i]); $j++)
-            {
+            for ($j = 0; $j < count($seasons[$i]); $j++) {
                 $seq = array();
-                while($j < count($seasons[$i]) && $seasons[$i][$j]['tier'] == $seasons[$i][$prev]['tier'])
-                {
+                while ($j < count($seasons[$i]) && $seasons[$i][$j]['tier'] == $seasons[$i][$prev]['tier']) {
                     array_push($seq, $seasons[$i][$j]);
                     $j++;
                 }
@@ -72,7 +68,7 @@ class LoadTopBar
         }
 
         // session(['topBarSeasons' => $res]);
-        view()->composer('*', function(View $view) use ($res) {
+        view()->composer('*', function (View $view) use ($res) {
             $view->with('topBarSeasons', $res);
         });
 

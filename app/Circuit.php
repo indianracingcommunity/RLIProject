@@ -4,20 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+
 class Circuit extends Model
 {
     use LogsActivity;
 
-    protected static $logName = 'circuit';  // Name for the log 
+    protected static $logName = 'circuit';   // Name for the log
     protected static $logAttributes = ['*']; // Log All fields in the table
-    protected static $logOnlyDirty = true; // Only log the fields that have been updated
+    protected static $logOnlyDirty = true;   // Only log the fields that have been updated
 
-    static public function getOfficial() {
+    public static function getOfficial()
+    {
         $official_list = Circuit::select('id', 'official')->get();
         return json_decode(json_encode($official_list), true);
     }
 
-    static public function getTrackByGame($game, $series) {
+    public static function getTrackByGame($game, $series)
+    {
         $track = Circuit::where('game', $game)
                         ->where('series', $series)
                         ->first();

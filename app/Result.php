@@ -4,29 +4,35 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+
 class Result extends Model
 {
     use LogsActivity;
-    protected static $logName = 'result';  // Name for the log 
-    protected static $logAttributes = ['*']; // Log All fields in the table
-    protected static $logOnlyDirty = true; // Only log the fields that have been updated
 
-    public function storeResult() {
+    protected static $logName = 'result';       // Name for the log
+    protected static $logAttributes = ['*'];    // Log All fields in the table
+    protected static $logOnlyDirty = true;      // Only log the fields that have been updated
+
+    public function storeResult()
+    {
         $result = Result::where([
             ['race_id', '=', $this->race_id],
             ['driver_id', '=', $this->driver_id]
         ])->first();
 
-        if($result)
+        if ($result) {
             return $result;
-        else {
+        } else {
             $this->save();
             return $this;
         }
     }
 
     protected $fillable = [
-        'constructor_id', 'driver_id', 'race_id', 'grid', 'points', 'status', 'fastestlaptime', 'position', 'tyres', 'stops', 'time'
+        'constructor_id', 'driver_id', 'race_id',
+        'grid', 'points', 'status',
+        'fastestlaptime', 'position', 'tyres',
+        'stops', 'time'
     ];
 
     public function race()

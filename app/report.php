@@ -8,6 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Report extends Model
 {
     use LogsActivity;
+
     protected static $logName = 'report';    // Name for the log
     protected static $logAttributes = ['*']; // Log All fields in the table
     protected static $logOnlyDirty = true;   // Only log the fields that have been updated
@@ -24,16 +25,19 @@ class Report extends Model
         return $this->belongsTo('App\Race');
     }
 
+    // phpcs:ignore
     public function reporting_driver()
     {
         return $this->belongsTo('App\Driver', 'reporting_driver');
     }
 
+    // phpcs:ignore
     public function reported_against()
     {
         return $this->belongsTo('App\Driver', 'reported_against');
     }
 
+    // phpcs:ignore
     public function counter_report()
     {
         return $this->belongsTo('App\Report', 'counter_report');

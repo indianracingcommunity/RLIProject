@@ -53,30 +53,27 @@ class HomeController extends Controller
         // Dank code for auto roles
 
         // Save query
-        $location = $request->city."~".$request->state;
-        if(isset($request->game))
-        {
+        $location = $request->city . "~" . $request->state;
+        if (isset($request->game)) {
             $games = serialize($request->game);
             $user->games = $games;
-        }
-        else
+        } else {
             $user->games = '';
+        }
 
-        if(isset($request->platform))
-        {
+        if (isset($request->platform)) {
             $platformdata = serialize($request->platform);
-            $user->platform = $platformdata;        
-        }
-        else
+            $user->platform = $platformdata;
+        } else {
             $user->platform = '';
-
-        if(isset($request->device))
-        {
-            $devicedata = serialize($request->device);
-            $user->device = $devicedata; 
         }
-        else
+
+        if (isset($request->device)) {
+            $devicedata = serialize($request->device);
+            $user->device = $devicedata;
+        } else {
             $user->device = '';
+        }
 
         $user->mothertongue = trim($request->mothertongue);
         $user->location = $location;
@@ -91,10 +88,10 @@ class HomeController extends Controller
         $user->xbox = $request->xbox;
         $user->psn = $request->psn;
         $user->spotify = $request->spotify;
-        $user->devicename = trim($request->devicename); 
+        $user->devicename = trim($request->devicename);
         $user->save();
 
-        session()->flash('savedProfile','Details saved successfully.');
+        session()->flash('savedProfile', 'Details saved successfully.');
         $dis->applyRoles();
 
         return redirect()->route('user.home');

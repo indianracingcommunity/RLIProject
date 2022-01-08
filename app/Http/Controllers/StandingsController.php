@@ -14,7 +14,6 @@ use App\Series;
 
 class StandingsController extends Controller
 {
-    const POINTS = array(25, 18, 15, 12, 10, 8, 6, 4, 2, 1, 0);
     public function fetchDrivers()
     {
         $query = Driver::all();
@@ -27,7 +26,8 @@ class StandingsController extends Controller
         return $query;
     }
 
-    public function fetchRaces($code, $tier, $season) {
+    public function fetchRaces($code, $tier, $season)
+    {
         $series = Series::where("code", $code)->firstOrFail();
         $season = Season::where([
             ['series', $series['id']],
@@ -36,13 +36,14 @@ class StandingsController extends Controller
         ])->firstOrFail();
 
         $cs = $this->computeStandings($series['id'], $tier, $season['season']);
-        if($cs['code'] != 200)
+        if ($cs['code'] != 200) {
             return abort(404);
+        }
 
         $races = Race::where('season_id', $season['id'])
                      ->has('results')
                      ->orderBy('round', 'asc')
-                     ->get()->load('season','circuit');
+                     ->get()->load('season', 'circuit');
 
                        // whereHas('season', function (Builder $query) use ($tier, $season) {
                        //     $query->where([
@@ -66,15 +67,13 @@ class StandingsController extends Controller
                 ->with('season', $season);
     }
 
-    protected function latest_race($array, $start, $end)
+    protected function latestRace($array, $start, $end)
     {
         $max = $array[$start]['race']['round'];
         $maxi = $start;
-        for($i = $start + 1; $i < $end; $i++)
-        {
+        for ($i = $start + 1; $i < $end; $i++) {
             $cur = $array[$i]['race']['round'];
-            if($cur > $max)
-            {
+            if ($cur > $max) {
                 $max = $cur;
                 $maxi = $i;
             }
@@ -83,18 +82,23 @@ class StandingsController extends Controller
         return $maxi;
     }
 
-    protected function computeStandings($series, $tier, $season) {
+    protected function computeStandings($series, $tier, $season)
+    {
         $season = Season::where([
             ['series', $series],
             ['tier', $tier],
             ['season', $season]
         ])->first();
-        if($season == null) return array("code" => 404);
+        if ($season == null) {
+            return array("code" => 404);
+        }
 
         $psystem = Points::all()->toArray();
         $races = Race::where('season_id', $season['id'])
                      ->pluck("id");
-        if(!count($races)) return array("code" => 404);
+        if (!count($races)) {
+            return array("code" => 404);
+        }
 
         $results = Result::whereIn('race_id', $races)
                          ->orderBy('driver_id')
@@ -102,28 +106,35 @@ class StandingsController extends Controller
                          ->get()
                          ->load('driver:id,name,user_id', 'constructor', 'race')
                          ->toArray();
-        if(!count($results)) return array("code" => 404);
+        if (!count($results)) {
+            return array("code" => 404);
+        }
 
         $countReserves = 0;
         $flaps = array();
         $penalties = array();
         $dres = $this->computePoints($results, 'driver', $psystem);
-        for($i = 0; $i < count($dres); $i++)
-        {
-            $ind = $this->latest_race($results, $dres[$i]['start'], $dres[$i]['end']);
+        for ($i = 0; $i < count($dres); $i++) {
+            $ind = $this->latestRace($results, $dres[$i]['start'], $dres[$i]['end']);
             $dres[$i]['team'] = $results[$ind]['constructor'];
             $dres[$i]['status'] = $results[$ind]['status'];
             $dres[$i]['user'] = $results[$ind]['driver']['user_id'];
 
-            if($dres[$i]['flaps'] > 0)
+            if ($dres[$i]['flaps'] > 0) {
                 array_push($flaps, array("name" => $dres[$i]["name"],
                                          "flaps" => $dres[$i]["flaps"]));
-            if($dres[$i]['penalties'] > 0)
+            }
+            if ($dres[$i]['penalties'] > 0) {
                 array_push($penalties, array("name" => $dres[$i]["name"],
                                              "penalties" => $dres[$i]["penalties"]));
+            }
 
-            if((abs($dres[$i]['status']) >= 10 && abs($dres[$i]['status']) < 20) || $dres[$i]['team']['name'] == 'Reserve')
+            if (
+                (abs($dres[$i]['status']) >= 10 && abs($dres[$i]['status']) < 20)
+                    || ($dres[$i]['team']['name'] == 'Reserve')
+            ) {
                 $countReserves++;
+            }
         }
 
         $this->sortByKey($flaps, "flaps");
@@ -141,14 +152,17 @@ class StandingsController extends Controller
         );
     }
 
-    public function fetchStandings($code, $tier, $season) {
+    public function fetchStandings($code, $tier, $season)
+    {
         $series = Series::where("code", $code)->first();
-        if($series == null)
+        if ($series == null) {
             return abort(404);
+        }
 
         $cs = $this->computeStandings($series['id'], $tier, $season);
-        if($cs['code'] != 200)
+        if ($cs['code'] != 200) {
             return abort(404);
+        }
 
         $latestRound = Race::where('season_id', $cs['season']['id'])
                            ->max('round');
@@ -173,7 +187,8 @@ class StandingsController extends Controller
                ->with('nextRace', $nextRace);
     }
 
-    protected function nextRace($seasonid) {
+    protected function nextRace($seasonid)
+    {
         // $season = Season::where([
         //    ['tier', $tier],
         //    ['season', $season]
@@ -188,7 +203,7 @@ class StandingsController extends Controller
                         ['round', ($round + 1)]
                     ])->first();
 
-        if($nextRace) {
+        if ($nextRace) {
             $circuit = Circuit::find($nextRace['circuit_id']);
             $circuit['laps'] = ceil($circuit['laps'] * $nextRace['distance']);
             return $circuit;
@@ -196,15 +211,17 @@ class StandingsController extends Controller
         return $nextRace;
     }
 
-    protected function sortPos($a, $b) {
-        if ($a['position'] > $b['position'])
+    protected function sortPos($a, $b)
+    {
+        if ($a['position'] > $b['position']) {
             return 1;
-        elseif ($a['position'] < $b['position'])
+        } elseif ($a['position'] < $b['position']) {
             return -1;
-        else
+        } else {
             return 0;
+        }
     }
-    protected function computePoints($results, String $field, $psystem)
+    protected function computePoints($results, string $field, $psystem)
     {
         // Sort $results by $field
         $this->sortByKey($results, $field . '_id', -1);
@@ -220,8 +237,8 @@ class StandingsController extends Controller
         $points = 0;
         $flaps = 0;
         $penalties = 0;
-        foreach($results as $k => $driver) {
-            if($prev != $driver[$field . '_id']) {
+        foreach ($results as $k => $driver) {
+            if ($prev != $driver[$field . '_id']) {
                 $cur = array(
                     "id" => $driver[$field . '_id'],
                     "name" => $driver[$field]['name'],
@@ -243,16 +260,19 @@ class StandingsController extends Controller
             $prev = $driver[$field . '_id'];
             $penalties += round((abs($driver['status']) - (int)abs($driver['status'])) * 10, 2);
             $points += $driver['points'];
-            if($driver['status'] >= 0) {
+            if ($driver['status'] >= 0) {
                 $rpoints = 0;
                 $ps_ind = array_search($results[$k]['race']['points'], array_column($psystem, "id"));
-                if(array_key_exists((string)($pos - 1), $psystem[$ps_ind]))
+                if (array_key_exists((string)($pos - 1), $psystem[$ps_ind])) {
                     $rpoints = $psystem[$ps_ind][(string)($pos - 1)];
+                }
 
                 $points += $rpoints;
-                if(((int)abs($driver['status']) % 10) == 1) {
+                if (((int)abs($driver['status']) % 10) == 1) {
                     $flaps += 1;
-                    if($rpoints > 0) $points += 1;
+                    if ($rpoints > 0) {
+                        $points += 1;
+                    }
                 }
             }
         }
@@ -261,11 +281,12 @@ class StandingsController extends Controller
         $dres[count($dres) - 1]['penalties'] = $penalties;
         $dres[count($dres) - 1]['end'] = count($results);
 
-        usort($dres, function($a, $b) use ($results) {
-            if ($a['points'] < $b['points'])
+        usort($dres, function ($a, $b) use ($results) {
+            if ($a['points'] < $b['points']) {
                 return 1;
-            elseif ($a['points'] > $b['points'])
+            } elseif ($a['points'] > $b['points']) {
                 return -1;
+            }
 
             $l = array_slice($results, $a['start'], $a['end'] - $a['start']);
             $r = array_slice($results, $b['start'], $b['end'] - $b['start']);
@@ -273,19 +294,22 @@ class StandingsController extends Controller
             usort($r, array($this, "sortPos"));
 
             // Equal Points
-            for($j = 0; $j < min(count($l), count($r)); $j++) {
-                if($l[$j]['position'] > $r[$j]['position'])
+            for ($j = 0; $j < min(count($l), count($r)); $j++) {
+                if ($l[$j]['position'] > $r[$j]['position']) {
                     return 1;
-                if($l[$j]['position'] < $r[$j]['position'])
+                }
+                if ($l[$j]['position'] < $r[$j]['position']) {
                     return -1;
+                }
             }
 
-            if(count($l) < count($r))
+            if (count($l) < count($r)) {
                 return 1;
-            elseif(count($l) < count($r))
+            } elseif (count($l) < count($r)) {
                 return -1;
-            else
+            } else {
                 return 0;
+            }
         });
         return $dres;
     }
