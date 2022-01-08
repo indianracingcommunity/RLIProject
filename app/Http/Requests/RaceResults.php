@@ -28,7 +28,7 @@ class RaceResults extends FormRequest
             'track.circuit_id' => 'required',
             'track.season_id' => 'required',
             'track.round' => 'required',
-            
+
             'results' => 'required'
         ];
     }

@@ -8,7 +8,8 @@ use App\User;
 use App\Driver;
 
 class SteamController extends Controller
-{   // Add this check before uploading race results
+{
+   // Add this check before uploading race results
     public function check()
     {
         // Get all Users from DB
@@ -18,30 +19,31 @@ class SteamController extends Controller
         $count = count($query);
         $key = config('steam-login.api_key');
 
-        for($i = 0; $i < $count; $i++)
-        {
-            $str = $this->querySteam('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='.$key.'&steamids='.$query[$i]['user']['steam_id']);
- 
-            if($str['response']['players'] == NULL)
+        for ($i = 0; $i < $count; $i++) {
+            $str = $this->querySteam(
+                'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $key
+                . '&steamids=' . $query[$i]['user']['steam_id']
+            );
+
+            if ($str['response']['players'] == null) {
                 echo "Invalid Steam ID";
-            else
-            {
+            } else {
                 $checkalias = $str['response']['players']['0']['personaname'];
-                echo "<br>".$checkalias." Driver id ".$query[$i]['id']."<br>";
+                echo "<br>" . $checkalias . " Driver id " . $query[$i]['id'] . "<br>";
                 $query[$i]->insertAlias($checkalias);
             }
         }
     }
 
-    protected function querySteam(String $query)
+    protected function querySteam(string $query)
     {
         $connect = curl_init();
         curl_setopt($connect, CURLOPT_URL, $query);
         curl_setopt($connect, CURLOPT_RETURNTRANSFER, true);
 
-        $str = curl_exec($connect);  
+        $str = curl_exec($connect);
 
-        curl_close ($connect);
+        curl_close($connect);
         return json_decode($str, true);
     }
 }

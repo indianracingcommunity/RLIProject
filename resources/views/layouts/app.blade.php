@@ -22,6 +22,7 @@
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('/css/custom.css')}}">
         <script src="{{ asset('js/jquery35.js')}}"></script>
+        <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
             * {
@@ -31,7 +32,7 @@
     </head>
 
 
-    <body class="">
+    <body class="bodyClass">
 
         <div class="" id="screen">
             <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
@@ -50,9 +51,9 @@
                             </div>
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             <div class="my-1">
-                                <a href="/IRC_Rules__Regs_V1.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC F1</a>
+                                <a href="/IRC_Rules__Regs_V2.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
                                 <a href="{{route('rules.acc')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
-                                <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a>
+                                <!-- <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a> -->
                             </div>
 
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
@@ -448,10 +449,23 @@
 
     </body>
     <script type="text/javascript">
+        function openPopover(event,popoverID){
+            $('.insidePopDiv').each(function (index, element) {
+                if(!$(this).hasClass('hidden') && $(this).attr('id') !== popoverID){
+                    $(this).addClass('hidden');
+                }
+            });
+            let element = event.target;
+            while(element.nodeName !== "A"){
+                element = element.parentNode;
+            }
+            var popper = Popper.createPopper(element, document.getElementById(popoverID), {
+                placement: 'bottom'
+            });
+            document.getElementById(popoverID).classList.toggle("hidden");
+        }
         $( document ).ready(function() {
             $('.pageBody').show('slow', function() {});
-
-            // sidebar menu
             $(document).on('click', '.subMenuShow', function() {
                 if($(this).attr('data-origin') == 'champ'){
                     $('.modalTitle').html('Championship Standings');
@@ -464,8 +478,6 @@
                 $('#seasonSelectDiv').hide();
                 $('.lickAndSend').hide();
                 $('#lickAndSend').removeAttr('data-origin');
-                // $('#main-menu').hide('slow', function() {});
-                // $('#sub-menu').show('slow', function() {});
                 $('.seriesOptions').val('');
                 $('.tierOptions').val('');
                 $('.seasonOptions').val('');
@@ -475,7 +487,6 @@
                 $('.allSeasonOptions').attr('disabled','disabled');
                 $('#lickAndSend').attr('data-origin', $(this).attr('data-origin'));
             });
-
 
             $(document).on('click', '#closeModal', function() {
                 $('.champResModal').fadeOut();
@@ -536,24 +547,27 @@
             });
 
             $(document).on('click', '#content', function(e) {
-                var notTheDiv = $("#sidebar");
-                var notThisEither = $(".menuButton");
-
+                // for sidebarmenu
+                let notTheDiv = $("#sidebar");
+                let notThisEither = $(".menuButton");
                 if (!notTheDiv.is(e.target)  && notTheDiv.has(e.target).length === 0 && !notThisEither.is(e.target)  && notThisEither.has(e.target).length === 0 )
                 {
                     sidebarVisible = 1
                     $('#sidebar').hide('slow', function() {});
                 }
+                // for popovers
+                let notThePop = $(".popOverBtn");
+                let notThisPop = $(".insidePopDiv");
+                if (!notThePop.is(e.target)  && notThePop.has(e.target).length === 0 && !notThisPop.is(e.target)  && notThisPop.has(e.target).length === 0 )
+                {
+                    $('.insidePopDiv').addClass('hidden');
+                }
             });
-            // sidebar menu
         });
 
         let sidebarVisible = 1;
         function menu() {
             $('#main-menu').show();
-            // $('#sub-menu').hide();
-
-            console.log("function called")
             let element = document.getElementById("sidebar");
             let element2 = document.getElementById("customMargin");
             if (sidebarVisible == 1) {

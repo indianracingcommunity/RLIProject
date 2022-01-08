@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Symfony\Component\Console\Output\ConsoleOutput;
-
 use App\Http\Requests\RaceResults;
 use Illuminate\Database\Eloquent\Builder;
-
 use App\Race;
 use App\Result;
 use App\Driver;
@@ -21,12 +19,13 @@ use App\Discord;
 class ResultsController extends Controller
 {
     private $output;
-    const POINTS = array(25, 18, 15, 12, 10, 8, 6, 4, 2, 1, 0);
-    public function __construct() {
+    public function __construct()
+    {
         $this->output = new ConsoleOutput();
     }
 
-    public function updatePosition(Request $request) {
+    public function updatePosition(Request $request)
+    {
         $request->validate([
             'newPos' => 'required|integer|gt:0',
             'driverid' => 'required|integer|gt:0',
@@ -38,32 +37,35 @@ class ResultsController extends Controller
                          ->orderBy('position')
                          ->get();
 
-        if($request->newPos > count($results))
+        if ($request->newPos > count($results)) {
             return -1;
+        }
 
         $race_arr = json_decode($results, true);
         $driver_ind = array_search($request->driverid, array_column($race_arr, "driver_id"));
-        if($driver_ind === null)
+        if ($driver_ind === null) {
             return -1;
+        }
 
         $oldPos = $results[$driver_ind]['position'];
 
-        if($request->has('status'))
+        if ($request->has('status')) {
             $results[$oldPos - 1]['status'] = $request->status;
-        if($request->has('newTime'))
+        }
+        if ($request->has('newTime')) {
             $results[$oldPos - 1]['time'] = $request->newTime;
+        }
 
         $results[$oldPos - 1]['position'] = $newPos;
         // $results[$oldPos - 1]['time'] = $request->newTime;
         $results[$oldPos - 1]->save();
-        if($newPos > $oldPos) {
-            for($i = $oldPos; $i < $newPos; $i++) {
+        if ($newPos > $oldPos) {
+            for ($i = $oldPos; $i < $newPos; $i++) {
                 $results[$i]['position'] = $results[$i]['position'] - 1;
                 $results[$i]->save();
             }
-        }
-        elseif($newPos < $oldPos) {
-            for($i = $newPos - 1; $i < $oldPos - 1; $i++) {
+        } elseif ($newPos < $oldPos) {
+            for ($i = $newPos - 1; $i < $oldPos - 1; $i++) {
                 $results[$i]['position'] = $results[$i]['position'] + 1;
                 $results[$i]->save();
             }
@@ -72,7 +74,8 @@ class ResultsController extends Controller
         return $results;
     }
 
-    public function saveRaceResults(RaceResults $request) {
+    public function saveRaceResults(RaceResults $request)
+    {
         // Race Storing
         $track = new Race($request->validated()['track']);
         $race = $track->insertRace();
@@ -82,11 +85,9 @@ class ResultsController extends Controller
         $regex_time = '/^\+?(\d+\:)?[0-5]?\d[.]\d{3}$|^DNF$|^DSQ$|^DNS$|^\+1 Lap$|^\+[2-9][0-9]* Laps$|^\-$/';
         $regex_fltime = '/^(\d+\:)?[0-5]?\d[.]\d{3}$|^\-$/';
 
-        for($i = 0; $i < count($results); $i++)
-        {
+        for ($i = 0; $i < count($results); $i++) {
             // Need to seaerch from Driver List instead.
-            if($results[$i]['driver_id'] == '-1')
-            {
+            if ($results[$i]['driver_id'] == '-1') {
                 return response()->json([
                     "mesage" => "Please check Driver ID's",
                     "error" => $results[$i],
@@ -94,8 +95,7 @@ class ResultsController extends Controller
             }
 
             $check = preg_match($regex_time, $results[$i]['time']);
-            if($check == '0')
-            {
+            if ($check == '0') {
                 return response()->json([
                     "message" => "Error Found in Time Format",
                     "error" => $results[$i],
@@ -103,8 +103,7 @@ class ResultsController extends Controller
             }
 
             $check = preg_match($regex_fltime, $results[$i]['fastestlaptime']);
-            if($check == '0')
-            {
+            if ($check == '0') {
                 return response()->json([
                     "message" => "Error Found in Fastest Lap Time Format",
                     "error" => $results[$i],
@@ -112,7 +111,7 @@ class ResultsController extends Controller
             }
         }
 
-        foreach($results as $k => $res) {
+        foreach ($results as $k => $res) {
             Driver::selfLearn($res['driver'], $res['driver_id']);
 
             $res['race_id'] = $race['id'];
@@ -123,29 +122,30 @@ class ResultsController extends Controller
 
         // Update Season Report Window & Reportable
         $season = Season::where('id', $race->season_id)->first();
-        if($season->report_window != null)
-        {
+        if ($season->report_window != null) {
             // Advance report_window by 1 Week until it goes over Current Time
-            while(strtotime($season->report_window) < time())
+            while (strtotime($season->report_window) < time()) {
                 $season->report_window = date('Y-m-d H:i:s', strtotime($season->report_window) + 604800);
+            }
 
             $season->save();
 
             // Publish Report Splitter Message
-            if($season->report_channel != null)
-            {
-                $message = " **-----------------------------**\n       Round " . $race->round . " Reports\n **-----------------------------**";
+            if ($season->report_channel != null) {
+                $message = " **-----------------------------**\n       Round ";
+                $message .= $race->round . " Reports\n **-----------------------------**";
                 Discord::publishMessage($message, $season->report_channel);
             }
         }
 
         return response()->json([
             "race" => $race,
-            "result" => $results 
+            "result" => $results
         ]);
     }
 
-    protected function surroundingRaces($seasonid, $round) {
+    protected function surroundingRaces($seasonid, $round)
+    {
         $prevRace = Race::has('results')
                         ->where([
                             ['season_id', $seasonid],
@@ -159,13 +159,18 @@ class ResultsController extends Controller
                           ])
                         ->first();
 
-        if($prevRace) $prevRace->load('circuit');
-        if($nextRace) $nextRace->load('circuit');
+        if ($prevRace) {
+            $prevRace->load('circuit');
+        }
+        if ($nextRace) {
+            $nextRace->load('circuit');
+        }
 
         return array($prevRace, $nextRace);
     }
 
-    public function fetchRaceResults($code, $tier, $season, $round) {
+    public function fetchRaceResults($code, $tier, $season, $round)
+    {
         $series = Series::where("code", $code)->firstOrFail();
         $season = Season::where([
             ['series', $series['id']],
@@ -189,25 +194,29 @@ class ResultsController extends Controller
         $results = Result::where('race_id', $race['id'])
                          ->orderBy('position', 'asc')
                          ->get()
-                         ->load('driver','race.circuit', 'constructor:id,name')
+                         ->load('driver', 'race.circuit', 'constructor:id,name')
                          ->toArray();
 
-        if(count($results) > 0)
-            $results[0]['race']['circuit']['laps'] = ceil($results[0]['race']['circuit']['laps'] * $results[0]['race']['distance']);
+        if (count($results) > 0) {
+            $cl = $results[0]['race']['circuit']['laps'] * $results[0]['race']['distance'];
+            $results[0]['race']['circuit']['laps'] = ceil($cl);
+        }
 
-        foreach($results as $i => $res) {
+        foreach ($results as $i => $res) {
             $pos = $res['position'];
             $results[$i]['points'] = $res['points'];
 
-            if($res['status'] >= 0) {
+            if ($res['status'] >= 0) {
                 $rpoints = 0;
                 $ps_ind = array_search($results[$i]['race']['points'], array_column($points, "id"));
-                if(array_key_exists((string)($pos - 1), $points[$ps_ind]))
+                if (array_key_exists((string)($pos - 1), $points[$ps_ind])) {
                     $rpoints = $points[$ps_ind][$pos - 1];
+                }
 
                 $results[$i]['points'] += $rpoints;
-                if(((int)abs($results[$i]['status']) % 10) == 1 && $rpoints > 0)
+                if (((int)abs($results[$i]['status']) % 10) == 1 && $rpoints > 0) {
                     $results[$i]['points'] += 1;
+                }
             }
         }
 

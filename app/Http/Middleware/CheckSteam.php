@@ -16,11 +16,10 @@ class CheckSteam
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() && Auth::user()->steam_id != NULL)
-        {
+        if (Auth::user() && Auth::user()->steam_id != null) {
             return $next($request);
         }
-       session()->flash('error','Please link your Steam before accessing this page');
-       return redirect()->route('user.home');
+        session()->flash('error', 'Please link your Steam before accessing this page');
+        return redirect()->route('user.home');
     }
 }

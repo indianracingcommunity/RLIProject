@@ -25,7 +25,7 @@ class CreateReportsTable extends Migration
             $table->text('verdict')->nullable();
             $table->string('proof');
             $table->boolean('resolved')->default(0);
-            
+
             $table->timestamps();
         });
     }

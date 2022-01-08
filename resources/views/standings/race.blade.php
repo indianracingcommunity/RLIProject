@@ -100,15 +100,19 @@ td {
   <div class="bg-white p-4 rounded-lg border">
 
     <div class="font-semibold my-1 leading-none uppercase tracking-widest border-b pb-2 flex justify-between font-semibold">
-      <span class='text-xs pt-2'>
-        Race Results
-      </span>
-      <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
-          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
-      </a>
-      <!-- <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
-          <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-flag-checkered  p-1 text-dark-500'></i></span>
-      </a> -->
+      <div>
+        <a title='Jump to Race Results' href="{{route('allraces', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 rounded inline-flex items-center ">
+          <span class='bg-gray-200 hover:bg-gray-900 text-dark-500 hover:text-white rounded p-1'> <i class="fas fa-angle-left p-1"></i></i></span>
+        </a>
+        <span class='text-xs pt-2'>
+          Race Results
+        </span>
+      </div>
+      <div>
+        <a title='Jump to Championship Standings' href="{{route('standings', ['code' => $code, 'tier' => $tier, 'season' => $season])}}" class="font-semibold cursor-pointer px-1 float-right rounded inline-flex items-center ">
+            <span class='bg-yellow-200 hover:bg-gray-900 rounded p-1'> <i class='fas fa-trophy  p-1 text-yellow-500'></i></span>
+        </a>
+      </div>
     </div>
           <table class="w-full">
             <thead>
@@ -140,7 +144,26 @@ td {
               @endauth    
                 
               <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$i+1}}</td>
-              <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700"><a class="popOverBtn hover:underline cursor-pointer" onclick="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+                <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
+                </button>
+                <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
+                  <div>
+                    <div class="bg-gray-800 rounded-t-lg text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                      Fastest Lap : {{$results[$i]['fastestlaptime']}}
+                    </div>
+                    <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                      Race Time : {{$results[$i]['time']}}
+                    </div>
+                    <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                      Starting Position : {{$results[$i]['grid']}}
+                    </div>
+                    <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
+                      <a class='hover:underline text-black' href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"> <i class="fas fa-user pr-1"></i> Go to Profile</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
               <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
               <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$results[$i]['points']}}</td>
           </tr>
@@ -148,33 +171,70 @@ td {
         <tr>
             @auth
             @view('admin,coordinator')
-            @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
-            @else
-              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
-            @endif
+              @if ($results[$i]['driver']['user_id'] == Auth::id())
+                <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
+              @else
+                <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
+              @endif
+              
+              @if ($results[$i]['driver']['user_id'] == Auth::id())
+                <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
+              @else
+                <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
+              @endif    
+            @endview
+            @endauth    
             
-            @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
-            @else
-              <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
-            @endif
-            
-                
-              @endview
-              @endauth    
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$i+1}}</td>
             @else
               <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$i+1}}</td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="popOverBtn hover:underline cursor-pointer" onclick="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+              <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
+              </button>
+              <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
+                <div>
+                  <div class="bg-gray-800 rounded-t-lg text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Fastest Lap : {{$results[$i]['fastestlaptime']}}
+                  </div>
+                  <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Race Time : {{$results[$i]['time']}}
+                  </div>
+                  <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Starting Position : {{$results[$i]['grid']}}
+                  </div>
+                  <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
+                    <a class='hover:underline text-black' href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"> <i class="fas fa-user pr-1"></i> Go to Profile</a>
+                  </div>
+                </div>
+              </div>
+            </td>
             @else
-             <td class="font-bold rounded-lg border border-white bg-gray-200"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white bg-gray-200"><a class="popOverBtn hover:underline cursor-pointer" onclick="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a> 
+              <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
+              </button>
+              <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
+                <div>
+                  <div class="bg-gray-800 rounded-t-lg text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Fastest Lap : {{$results[$i]['fastestlaptime']}}
+                  </div>
+                  <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Race Time : {{$results[$i]['time']}}
+                  </div>
+                  <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Starting Position : {{$results[$i]['grid']}}
+                  </div>
+                  <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
+                    <a class='hover:underline text-black' href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"> <i class="fas fa-user pr-1"></i> Go to Profile</a>
+                  </div>
+                </div>
+              </div>
+            </td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white">{{$results[$i]['constructor']['name']}}</td>
+              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white md:block hidden">{{$results[$i]['constructor']['name']}}</td>
             @else
               <td class="font-semibold rounded-lg border border-white bg-gray-200 md:block hidden">{{$results[$i]['constructor']['name']}}</td>
             @endif
@@ -189,9 +249,9 @@ td {
               <td class="font-semibold rounded-lg border border-white">{{$i+1}}</td>
 
               @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-extrabold rounded-lg border border-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-extrabold rounded-lg border border-white"><a class="hover:underline cursor-pointer">{{$results[$i]['driver']['name']}}</a></td>
               @else
-              <td class="font-semibold rounded-lg border border-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-semibold rounded-lg border border-white"><a class="hover:underline cursor-pointer">{{$results[$i]['driver']['name']}}</a></td>
               @endif
 
               <td class="font-semibold rounded-lg border border-white">{{$results[$i]['constructor']['name']}}</td>
@@ -221,9 +281,47 @@ td {
               <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$i+1}}</td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white"><a class="popOverBtn hover:underline cursor-pointer" onclick="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+              <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
+              </button>
+              <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
+                <div>
+                  <div class="bg-gray-800 rounded-t-lg text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Fastest Lap : {{$results[$i]['fastestlaptime']}}
+                  </div>
+                  <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Race Time : {{$results[$i]['time']}}
+                  </div>
+                  <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    Starting Position : {{$results[$i]['grid']}}
+                  </div>
+                  <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
+                    <a class='hover:underline text-black' href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"> <i class="fas fa-user pr-1"></i> Go to Profile</a>
+                  </div>
+                </div>
+              </div>
+            </td>
             @else
-             <td class="font-bold rounded-lg border border-white"><a class="hover:underline" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}">{{$results[$i]['driver']['name']}}</a></td>
+              <td class="font-bold rounded-lg border border-white"><a class="popOverBtn hover:underline cursor-pointer" onclick="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+                <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
+                </button>
+                <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
+                  <div>
+                    <div class="bg-gray-800 rounded-t-lg text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                      Fastest Lap : {{$results[$i]['fastestlaptime']}}
+                    </div>
+                    <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                      Race Time : {{$results[$i]['time']}}
+                    </div>
+                    <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                      Starting Position : {{$results[$i]['grid']}}
+                    </div>
+                    <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
+                      <a class='hover:underline text-black' href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"> <i class="fas fa-user pr-1"></i> Go to Profile</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white md:block hidden">{{$results[$i]['constructor']['name']}}</td>
