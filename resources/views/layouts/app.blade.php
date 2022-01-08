@@ -464,6 +464,17 @@
             });
             document.getElementById(popoverID).classList.toggle("hidden");
         }
+        function openPopoverOut(event,popoverID){
+            // $(`#${popoverID}`).toggle('hidden');
+            let element = event.target;
+            while(element.nodeName !== "A"){
+                element = element.parentNode;
+            }
+            var popper = Popper.createPopper(element, document.getElementById(popoverID), {
+                placement: 'bottom'
+            });
+            document.getElementById(popoverID).classList.toggle("hidden");
+        }
         $( document ).ready(function() {
             $('.pageBody').show('slow', function() {});
             $(document).on('click', '.subMenuShow', function() {
