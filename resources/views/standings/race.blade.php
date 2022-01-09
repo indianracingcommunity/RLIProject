@@ -144,7 +144,7 @@ td {
               @endauth    
                 
               <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest">{{$i+1}}</td>
-              <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700" ><a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')"   onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+              <td class="font-bold rounded-lg border border-white bg-purple-200 text-purple-700" > <a title="Go to Profile" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"><i class="fas fa-user pr-2"></i></a> <a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')" onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
                 <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
                 <!-- </button> -->
                 <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
@@ -155,7 +155,7 @@ td {
                     <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
                       Race Time : {{$results[$i]['time']}}
                     </div>
-                    <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    <div class="bg-gray-600 text-white rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
                       Starting Position : {{$results[$i]['grid']}}
                     </div>
                     <!-- <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
@@ -191,7 +191,7 @@ td {
               <td class="font-semibold rounded-lg border border-white bg-gray-200 text-center tracking-widest">{{$i+1}}</td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white" ><a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')"   onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white" > <a title="Go to Profile" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"><i class="fas fa-user pr-2"></i></a> <a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')" onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
               <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
               <!-- </button> -->
               <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
@@ -202,7 +202,7 @@ td {
                   <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
                     Race Time : {{$results[$i]['time']}}
                   </div>
-                  <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                  <div class="bg-gray-600 text-white rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
                     Starting Position : {{$results[$i]['grid']}}
                   </div>
                   <!-- <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
@@ -212,7 +212,7 @@ td {
               </div>
             </td>
             @else
-             <td class="font-bold rounded-lg border border-white bg-gray-200" ><a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')"    onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a> 
+             <td class="font-bold rounded-lg border border-white bg-gray-200" > <a title="Go to Profile" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"><i class="fas fa-user pr-2"></i></a> <a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')"  onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a> 
               <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
               <!-- </button> -->
               <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
@@ -223,7 +223,7 @@ td {
                   <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
                     Race Time : {{$results[$i]['time']}}
                   </div>
-                  <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                  <div class="bg-gray-600 text-white rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
                     Starting Position : {{$results[$i]['grid']}}
                   </div>
                   <!-- <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
@@ -281,7 +281,7 @@ td {
               <td class="font-semibold rounded-lg border border-white text-center tracking-widest">{{$i+1}}</td>
             @endif
             @if ($results[$i]['driver']['user_id'] == Auth::id())
-             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white" ><a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')"   onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+             <td class="font-bold rounded-lg border border-white bg-gray-700 text-white" > <a title="Go to Profile" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"><i class="fas fa-user pr-2"></i></a> <a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')" onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
               <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
               <!-- </button> -->
               <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
@@ -292,7 +292,7 @@ td {
                   <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
                     Race Time : {{$results[$i]['time']}}
                   </div>
-                  <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                  <div class="bg-gray-600 text-white rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
                     Starting Position : {{$results[$i]['grid']}}
                   </div>
                   <!-- <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
@@ -302,7 +302,7 @@ td {
               </div>
             </td>
             @else
-              <td class="font-bold rounded-lg border border-white" ><a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')"   onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
+              <td class="font-bold rounded-lg border border-white" > <a title="Go to Profile" href="{{route('user.profile', ['user' => $results[$i]['driver']['user_id']])}}"><i class="fas fa-user pr-2"></i></a> <a class="popOverBtn hover:underline cursor-pointer" onmouseout="openPopoverOut(event,'popover-id_{{$results[$i]['driver']['id']}}')" onmouseover="openPopover(event,'popover-id_{{$results[$i]['driver']['id']}}')">{{$results[$i]['driver']['name']}}</a>
                 <!-- <button class="popOverBtn float-right text-gray p-1 mr-2 font-bold uppercase text-sm rounded outline-none focus:outline-none ease-linear transition-all duration-150" type="button" ><i class="fas fa-info-circle"></i> -->
                 <!-- </button> -->
                 <div class="insidePopDiv hidden shadow-lg bg-gray-500 border-0 mb-3 block z-50 font-normal leading-normal text-sm max-w-xs text-left no-underline break-words rounded-lg border" id="popover-id_{{$results[$i]['driver']['id']}}">
@@ -313,7 +313,7 @@ td {
                     <div class="bg-gray-700 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
                       Race Time : {{$results[$i]['time']}}
                     </div>
-                    <div class="bg-gray-600 text-white font-semibold p-3 mb-0 border-b border-solid border-white">
+                    <div class="bg-gray-600 text-white rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
                       Starting Position : {{$results[$i]['grid']}}
                     </div>
                     <!-- <div class="bg-gray-500 rounded-b-lg font-semibold p-3 mb-0 border-b border-solid border-white">
