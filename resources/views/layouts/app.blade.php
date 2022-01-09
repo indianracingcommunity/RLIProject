@@ -465,7 +465,6 @@
             document.getElementById(popoverID).classList.toggle("hidden");
         }
         function openPopoverOut(event,popoverID){
-            // $(`#${popoverID}`).toggle('hidden');
             let element = event.target;
             while(element.nodeName !== "A"){
                 element = element.parentNode;
