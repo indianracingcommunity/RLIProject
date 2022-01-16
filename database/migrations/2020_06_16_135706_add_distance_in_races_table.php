@@ -26,7 +26,7 @@ class AddDistanceInRacesTable extends Migration
     public function down()
     {
         Schema::table('races', function (Blueprint $table) {
-            $table->dropColumn('flags');
+            $table->dropColumn('distance');
         });
     }
 }

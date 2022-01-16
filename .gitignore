@@ -3,5 +3,6 @@
 .env
 node_modules/
 vendor/
+setup/
 composer.lock
 .vscode

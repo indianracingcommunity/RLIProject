@@ -98,15 +98,15 @@ class AcController extends ImageController
             $drList = Driver::getNames();
             $drName = array_column($drList, 'name');
 
-            $index = $this->closest_match($driver[1], $drName);
-            $flat_drivers = $this->crude_flatten((array)$drList);
+            $index = $this->closestMatch($driver[1], $drName);
+            $flat_drivers = $this->crudeFlatten((array)$drList);
 
             $matched_driverid = $drList[$index[0]]['id'];
             $matched_drivername = $drList[$index[0]]['name'];
 
             if ($index[1] != 0) {
                 $fname = array_column($flat_drivers, 'alias');
-                $findex = $this->closest_match($driver[1], $fname);
+                $findex = $this->closestMatch($driver[1], $fname);
 
                 if ($findex[1] < $index[1]) {
                     $matched_driverid = $flat_drivers[$findex[0]]['id'];
