@@ -404,11 +404,11 @@ class ImageController extends Controller
 
             if (!$pub) {
                 $name = array_column($drivers, 'name', $i);
-                $index = $this->closest_match($tr, $name);
+                $index = $this->closestMatch($tr, $name);
                 $used = true;
                 if ($index[1] != 0) {
                     $fname = array_column($flat_drivers, 'alias');
-                    $findex = $this->closest_match($tr, $fname);
+                    $findex = $this->closestMatch($tr, $fname);
 
                     if ($findex[1] < $index[1]) {
                         $row["driver_id"] = $flat_drivers[$findex[0]]['id'];
@@ -434,7 +434,7 @@ class ImageController extends Controller
 
             if (!$pub) {
                 $name = array_column($constructors, 'name');
-                $index = $this->closest_match($tr, $name);
+                $index = $this->closestMatch($tr, $name);
                 $row["constructor_id"] = $constructors[$index[0]]['id'];
                 $row["matched_team"] = $constructors[$index[0]]['name'];
             }
@@ -510,7 +510,7 @@ class ImageController extends Controller
         }
 
         $official = array_column($circuits, 'official');
-        $index = $this->closest_match($track[1], $official);
+        $index = $this->closestMatch($track[1], $official);
         return array(
             'circuit_id' => $circuits[$index[0]]['id'],
             'official' => $track[1],
