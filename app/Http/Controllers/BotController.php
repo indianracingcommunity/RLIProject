@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Driver;
 use Illuminate\Support\Facades\Schema;
 
 class BotController extends Controller
@@ -36,5 +37,11 @@ class BotController extends Controller
         } else {
             return response()->json(['data' => $data[0]['driver']]);
         }
+    }
+
+    public function fetchDrivers()
+    {
+        $data = Driver::select("id","user_id")->get()->load('user:id,discord_id,name')->toArray();
+        return response()->json($data);
     }
 }

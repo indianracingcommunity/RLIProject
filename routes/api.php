@@ -20,6 +20,7 @@ Route::post('/report/submit', 'ReportsController@bulkCreate')->name('steward.upl
 // Fetch User Info - Discord Bot
 Route::get('/users/details/{query}/{discord_id}', 'BotController@fetchdetails')->name('bot.discord');
 Route::get('/users/driver/{discord_id}', 'BotController@fetchDriverId')->name('bot.driverid');
+Route::get('/drivers',"BotController@fetchDrivers")->name("bot.drivers");
 
 // Upload Race Results
 Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.upload');
