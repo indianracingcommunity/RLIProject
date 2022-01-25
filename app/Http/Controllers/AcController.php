@@ -160,4 +160,111 @@ class AcController extends ImageController
 
         return response()->json(["track" => $track, "results" => $results]);
     }
+
+    private function memoizeLaps($json)
+    {
+        $res = array();
+
+        // Iterate through Cars
+        for($json['Cars'] as $k => $cars) {
+            array_push($res, [$cars["CarId"] => 0]);
+        }
+
+        // Iterate through Laps and add models
+        for($json['Laps'] as $k => $laps) {
+            $res[$laps["CarId"]]++;
+        }
+
+        return $res;
+    }
+
+    public function parseJson(Request $request)
+    {
+        $race = request()->file('race');
+        $race_content = file_get_contents($race);
+        $json = json_decode($race_content, true);
+
+        $round = (int)request()->round;
+        $points = (int)request()->points;
+        $season = Season::find(request()->season);
+
+        $sp_circuit = Circuit::getTrackByGame($json['TrackName'], $season['series']);
+        if ($sp_circuit == null) {
+            return response()->json([]);
+        }
+
+        // Total Lap Calculation
+        $lapsMap = $this->memoizeLaps($json);
+        $totalLaps = $lapsMap[$json['Result'][0]['CarId']];
+
+        $track = array(
+            'circuit_id' => $sp_circuit['id'],
+            'official' => $sp_circuit['official'],
+            'display' => $sp_circuit['name'],
+            "season_id" => $season['id'],
+            "distance" => $totalLaps / 10.0,
+            "points" => (int)$points,
+            "round" => $round
+        );
+
+        // Cycle through Results
+        foreach ($json['Result'] as $k => $driver) {
+            $user = User::where('steam_id', $driver['DriverGuid'])->first();
+            $dr = Driver::where('user_id', $user['id'])->first();
+            if ($dr == null) {
+                $dr['name'] = $driver['DriverName'];
+                $dr['id'] = -1;
+            }
+
+            $grid = 0;
+            $status = 0;
+            $total_time = "";
+            $bestLap = "";
+            $team_ind = array_search($driver['CarModel'], array_column($season['constructors'], "game"));
+
+            // Fastest Lap
+            if ($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10) {
+                $status = 1;
+            }
+
+            // Total Time
+            // if($totalLaps == $driver['timing']['lapCount'])
+            if ($driver['TotalTime'] == 0) {
+                $status = -2;
+                $total_time = "DNF";
+            } else {
+                $total_time = $this->convertMillisToStandard($driver['TotalTime']);
+            }
+            // else
+            // {
+            //     $total_time = "+" . ($totalLaps - $driver['timing']['lapCount']) . " Lap";
+            //     if($totalLaps - $driver['timing']['lapCount'] > 1)
+            //         $total_time .= "s";
+            // }
+
+            if ($driver['BestLap'] == 999999999) {
+                $bestLap = "-";
+            } else {
+                $bestLap = $this->convertMillisToStandard($driver['BestLap']);
+            }
+
+            // Push to Results
+            array_push($results, array(
+                "position" => $k + 1,
+                "driver" => $dr['name'],
+                "driver_id" => $dr['id'],
+                "matched_driver" => $dr['name'],
+                "team" => $season['constructors'][$team_ind]['name'],
+                "constructor_id" => $season['constructors'][$team_ind]['id'],
+                "matched_team" => $season['constructors'][$team_ind]['name'],
+                "grid" => $grid,
+                "stops" => $lapsMap[$driver['CarId']],
+                "status" => $status,
+                "fastestlaptime" => $bestLap,
+                "time" => $total_time
+            ));
+        }
+
+        return response()->json(["track" => $track, "results" => $results]);
+    }
 }
