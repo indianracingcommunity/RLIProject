@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Input;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use App\User;
 use App\Driver;
 use App\Season;
 use App\Series;
@@ -166,12 +167,12 @@ class AcController extends ImageController
         $res = array();
 
         // Iterate through Cars
-        for($json['Cars'] as $k => $cars) {
-            array_push($res, [$cars["CarId"] => 0]);
+        foreach ($json['Cars'] as $k => $cars) {
+            $res[$cars["CarId"]] = 0;
         }
 
         // Iterate through Laps and add models
-        for($json['Laps'] as $k => $laps) {
+        foreach ($json['Laps'] as $k => $laps) {
             $res[$laps["CarId"]]++;
         }
 
@@ -193,10 +194,12 @@ class AcController extends ImageController
             return response()->json([]);
         }
 
+
         // Total Lap Calculation
         $lapsMap = $this->memoizeLaps($json);
         $totalLaps = $lapsMap[$json['Result'][0]['CarId']];
 
+        $results = array();
         $track = array(
             'circuit_id' => $sp_circuit['id'],
             'official' => $sp_circuit['official'],
@@ -209,6 +212,10 @@ class AcController extends ImageController
 
         // Cycle through Results
         foreach ($json['Result'] as $k => $driver) {
+            if ($driver['DriverName'] == "") {
+                break;
+            }
+
             $user = User::where('steam_id', $driver['DriverGuid'])->first();
             $dr = Driver::where('user_id', $user['id'])->first();
             if ($dr == null) {
@@ -220,12 +227,8 @@ class AcController extends ImageController
             $status = 0;
             $total_time = "";
             $bestLap = "";
-            $team_ind = array_search($driver['CarModel'], array_column($season['constructors'], "game"));
 
-            // Fastest Lap
-            if ($json['sessionResult']['bestlap'] == $driver['timing']['bestLap'] && $k < 10) {
-                $status = 1;
-            }
+            $team_ind = 2;
 
             // Total Time
             // if($totalLaps == $driver['timing']['lapCount'])
