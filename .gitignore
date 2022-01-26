@@ -6,3 +6,4 @@ vendor/
 setup/
 composer.lock
 .vscode
+.DS_Store
