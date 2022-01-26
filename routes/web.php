@@ -136,5 +136,5 @@ Route::group(['middleware' => 'allowed:admin,coordinator', 'prefix' => 'parse'],
 
      // AC Results
      Route::get('/ac/upload', 'AcController@raceUpload')->name('ac.raceupload');
-     Route::post('/ac/upload', 'AcController@parseJson')->name('ac.parseupload');
+     Route::post('/ac/upload', 'AcController@parseCsv')->name('ac.parseupload');
 });

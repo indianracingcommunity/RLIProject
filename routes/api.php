@@ -30,26 +30,3 @@ Route::get('/fetch/drivers/{race}', 'ReportsController@driversdata');
 // Signups
 Route::get('/signups', 'SignupsController@getSignupsApi')->name('signups.index');
 Route::get('/signups/{season_id}', 'SignupsController@getSignupsBySeasonApi')->name('signups.show');
-
-Route::get('/grid/{season_id}', function() {
-    $data = '[
-        {
-            "discord_id": "673085408644562984",
-            "constructor_id": "45"
-        },
-        {
-            "discord_id": "462185592843796491",
-            "constructor_id": "58"
-        },
-        {
-            "discord_id": "502897314432548875",
-            "constructor_id": "58"
-        },
-        {
-            "discord_id": "292652108656672769",
-            "constructor_id": "73"
-        }
-    ]';
-
-    return response()->json(json_decode($data, true));
-});
