@@ -214,12 +214,12 @@ class SignupsController extends Controller
 
             $driver = $signup['user']['driver'];
             $el = [
-            'id' => (is_null($driver)) ? null : $driver['id'],
-            'drivername' => (is_null($driver)) ? null : $driver['name'],
-            'discord_id' => $signup['user']['discord_id'],
-            'racenumber' => $signup['drivernumber'],
-            'steam_id' => $signup['user']['steam_id'],
-            'attendance' => $signup['attendance'],
+                'id' => (is_null($driver)) ? null : $driver['id'],
+                'drivername' => (is_null($driver)) ? null : $driver['name'],
+                'discord_id' => $signup['user']['discord_id'],
+                'racenumber' => $signup['drivernumber'],
+                'steam_id' => $signup['user']['steam_id'],
+                'attendance' => $signup['attendance'],
             ];
 
           // In-game car value
