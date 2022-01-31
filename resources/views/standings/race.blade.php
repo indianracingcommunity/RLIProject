@@ -117,12 +117,12 @@ td {
           <table class="w-full">
             <thead>
               <tr>
-                @auth
-              @view('admin,coordinator')
-              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12 confTable">D.ID</th>
-              <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12 confTable">C.ID</th>
-                
-              @endview
+              @auth
+                @view('admin,coordinator,steward')
+                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12 confTable">D.ID</th>
+                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12 confTable">C.ID</th>
+                  
+                @endview
               @endauth    
                 
                 <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center w-1/12">Pos.</th>
@@ -136,7 +136,7 @@ td {
         @if((int)$results[$i]['status'] % 10 == 1)
           <tr>
             @auth
-              @view('admin,coordinator')
+              @view('admin,coordinator,steward')
               <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
               <td class="font-semibold rounded-lg border border-white bg-purple-200 text-purple-700 text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
                 
@@ -170,7 +170,7 @@ td {
         @elseif($i % 2 != 0)
         <tr>
             @auth
-            @view('admin,coordinator')
+            @view('admin,coordinator,steward')
               @if ($results[$i]['driver']['user_id'] == Auth::id())
                 <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
               @else
@@ -258,22 +258,22 @@ td {
               <td class="font-semibold rounded-lg border border-white">{{$results[$i]['points']}}</td>
             </tr> -->
             <tr>
-                  @auth
-            @view('admin,coordinator')
-            @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
-            @else
-              <td class="font-semibold rounded-lg border border-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
-            @endif
-            
-            @if ($results[$i]['driver']['user_id'] == Auth::id())
-              <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
-            @else
-              <td class="font-semibold rounded-lg border border-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
-            @endif
-            
+            @auth
+              @view('admin,coordinator,steward')
+                @if ($results[$i]['driver']['user_id'] == Auth::id())
+                  <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
+                @else
+                  <td class="font-semibold rounded-lg border border-white text-center tracking-widest confTable">{{$results[$i]['driver']['id']}}</td>
+                @endif
+                
+                @if ($results[$i]['driver']['user_id'] == Auth::id())
+                  <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
+                @else
+                  <td class="font-semibold rounded-lg border border-white text-center tracking-widest confTable">{{$results[$i]['constructor_id']}}</td>
+                @endif
+              
               @endview
-              @endauth    
+            @endauth    
         
             @if ($results[$i]['driver']['user_id'] == Auth::id())
               <td class="font-semibold rounded-lg border border-white bg-gray-700 text-white text-center tracking-widest">{{$i+1}}</td>
@@ -345,7 +345,7 @@ td {
 <!-- Admin View -->
 <div>
 @auth
-   @view('admin,coordinator')
+   @view('admin,coordinator,steward')
    <div class="border p-5 rounded-lg confTable">
       <div class="text-2xl font-bold text-center">Admin/Coordinator Information</div>
       <div class="flex flex-wrap gap-5">
@@ -366,7 +366,7 @@ td {
 </div>
 
 @auth
-   @view('admin,coordinator')
+   @view('admin,coordinator,steward')
     <script>
       $('body').keypress(function (e) { 
         if(e.keyCode == 72 || e.keyCode == 104){
