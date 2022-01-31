@@ -252,7 +252,7 @@
 <!-- Admin View -->
 
 @auth
-   @view('admin,coordinator')
+   @view('admin,coordinator,steward')
    <div class="border p-5 confTable rounded-lg">
       <div class="text-2xl font-bold text-center">Admin/Coordinator Information</div>
       <div class="flex gap-5">
