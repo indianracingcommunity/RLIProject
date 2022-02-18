@@ -167,10 +167,6 @@ class ReportsController extends Controller
             // Assume Standard Format Race
             $this->applyVerdict($reports[$i]);
 
-            // Update Resolved to 3
-            $reports[$i]->resolved = 3;
-            $reports[$i]->save();
-
             // Publish Splitter Message
             if ($prev_race_id != $reports[$i]->race_id) {
                 $splitter_message = " **-----------------------------**\n       Round ";
@@ -181,8 +177,14 @@ class ReportsController extends Controller
 
             sleep(1);
             // Publish Verdict Message
-            Discord::publishMessage($this->verdictMessage($reports[$i]->toArray()), $season->verdict_channel);
+            $message_id = Discord::publishMessage($this->verdictMessage($reports[$i]->toArray()), $season->verdict_channel);
 
+            // Update report status to resolved
+            $reports[$i]->resolved = 3;
+            if ($message_id != "Invalid") {
+                $reports[i]->message_id = $message_id;
+            }
+            $reports[$i]->save();
             $prev_race_id = $reports[$i]->race_id;
         }
 
@@ -197,7 +199,7 @@ class ReportsController extends Controller
 
             // Delete Verdict Message
             $report->loadMissing('race.season');
-            Discord::deleteMessage($race->race->season->report_channel, $report->message_id);
+            Discord::deleteMessage($report->race->season->report_channel, $report->message_id);
 
             // Update Resolved to 1
             $report->resolved = 1;
