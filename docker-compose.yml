@@ -1,0 +1,49 @@
+# tell docker what version of the docker-compose.yml we're using
+version: '3'
+
+networks:
+  irc-network:
+    name: irc-network
+
+services:
+  irc-server:
+    image: nginx:latest
+    container_name: irc-server
+    ports:
+      - "8080:80"
+    tty: true
+    volumes:
+      - .:/var/www/RLIProject
+      - ./setup/${APP_ENV}/nginx.conf:/etc/nginx/nginx.conf
+      - ./setup/${APP_ENV}/default:/etc/nginx/sites-available/default
+    networks:
+      - irc-network
+    depends_on:
+      - irc-app
+
+  irc-app:
+    build: ./setup/${APP_ENV}/php
+    container_name: irc-app
+    tty: true
+    volumes:
+      - .:/var/www/RLIProject
+      - ./setup/${APP_ENV}/php/php.ini:/etc/php/7.4/fpm/php.ini
+    networks:
+      - irc-network
+    depends_on:
+      - irc-db
+
+  irc-db:
+    image: mariadb:latest
+    container_name: irc-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ircproject
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - ./setup/${APP_ENV}/db:/var/lib/mysql
+    networks:
+      - irc-network
