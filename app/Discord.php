@@ -655,15 +655,22 @@ class Discord
     $users = array_merge(...$users);
     
     # Fetch color of all the roles we are about to display
-    // return $roles;
+    // return $serverRoles;
     for($i=0; $i< count($roles); $i++)
     {
         $roles[$i]["role_color"] = "";
+        $roles[$i]["icon"] = null;
         for($j=0; $j< count($serverRoles); $j++)
         {
             if($roles[$i]['role_id'] == $serverRoles[$j]['id'])
             {
                 $roles[$i]["role_color"] = str_pad(dechex($serverRoles[$j]['color']), 6, "0" , STR_PAD_LEFT);
+                
+                if($serverRoles[$j]['icon'] != null)
+                {
+                    $roles[$i]["icon"] = "https://cdn.discordapp.com/role-icons/".$serverRoles[$j]['id']."/".$serverRoles[$j]['icon'].".png";
+                }
+
                 break;
             }
         }
