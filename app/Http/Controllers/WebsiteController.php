@@ -113,8 +113,9 @@ class WebsiteController extends Controller
     }
 
     public function loadourteam(){
-        $roles = Role::select('id','role_id','role_name')
+        $roles = Role::select('id','role_id','role_name','priority')
                 ->where('priority', '!=', 0)
+                ->orderBy('priority', 'asc')
                 ->get()
                 ->toArray();
 
