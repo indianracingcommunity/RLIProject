@@ -571,4 +571,117 @@ class Discord
             }
         }
     }
+
+    public function getServerDetails()
+    {
+        //https://discord.com/api/guilds/533143665921622017?with_counts=true
+        $server = $this->irc_guild;
+        $params = (['token' => config('services.discord.bot')]);
+        $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://discord.com/api/guilds/".$server."?with_counts=true",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                "Authorization: Bot " . $params['token']
+            ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                return $err;
+            } else {
+                $final = json_decode($response, true);
+                if (isset($final['message'])) {
+                    return "Invalid";
+                } else {
+                    return $final;
+                }
+
+            }
+
+    }
+    public function getMembersByRoles($roles)
+    {
+        $serverDetails = $this->getServerDetails();
+        $serverRoles = $serverDetails['roles'];
+        $limit = ceil($serverDetails['approximate_member_count'] / 1000);
+        $limit = intval($limit);
+        $users = array();
+        $after = 0;
+        $params = (['token' => config('services.discord.bot')]);
+        $server = $this->irc_guild;
+        for($i =0; $i < $limit; $i++)
+        {
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://discord.com/api/guilds/".$server."/members?limit=1000&after=".$after,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                "Authorization: Bot " . $params['token']
+            ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                return $err;
+            } else {
+                $final = json_decode($response, true);
+                if (isset($final['message'])) {
+                    return "Invalid";
+                } else {
+                    array_push($users, $final);
+                    $lastElement = end($final);
+                    $after = $lastElement['user']['id'];
+                }
+
+            }
+        }
+    $users = array_merge(...$users);
+    
+    # Fetch color of all the roles we are about to display
+    // return $roles;
+    for($i=0; $i< count($roles); $i++)
+    {
+        $roles[$i]["role_color"] = "";
+        for($j=0; $j< count($serverRoles); $j++)
+        {
+            if($roles[$i]['role_id'] == $serverRoles[$j]['id'])
+            {
+                $roles[$i]["role_color"] = str_pad(dechex($serverRoles[$j]['color']), 6, "0" , STR_PAD_LEFT);
+                break;
+            }
+        }
+    }
+    
+    for($i=0; $i< count($roles); $i++)
+    {
+        $roles[$i]["users"] = array();
+        for($j=0; $j< count($users); $j++)
+        {
+            if(in_array($roles[$i]['role_id'], $users[$j]['roles']))
+            {
+                $pushThis = array("name"=>$users[$j]['user']['username'], "avatar"=>"https://cdn.discordapp.com/avatars/".$users[$j]['user']['id']."/".$users[$j]['user']['avatar']);
+                array_push($roles[$i]["users"], $pushThis);
+            }
+        }
+    }
+
+    return $roles;
+    }
 }
