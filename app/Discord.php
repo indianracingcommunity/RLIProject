@@ -668,7 +668,7 @@ class Discord
                 
                 if($serverRoles[$j]['icon'] != null)
                 {
-                    $roles[$i]["icon"] = "https://cdn.discordapp.com/role-icons/".$serverRoles[$j]['id']."/".$serverRoles[$j]['icon'].".png";
+                    // $roles[$i]["icon"] = "https://cdn.discordapp.com/role-icons/".$serverRoles[$j]['id']."/".$serverRoles[$j]['icon'].".png";
                 }
 
                 break;
