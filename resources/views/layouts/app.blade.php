@@ -397,7 +397,8 @@
                     @yield('body')
                 </main>
             @endguest
-            <footer class="mx-8 border-t py-8 justify-between md:items-center flex flex-col md:flex-row mt-10">
+            <div class='clearfixFooter'></div>
+            <footer class="border-t p-8 justify-between md:items-center fixed bg-white inset-x-0 bottom-0 flex flex-col md:flex-row mt-10 w-full">
                 <div class="leading-tight">
                     <div class="text-gray-700 font-bold">Indian Racing Community</div>
                     <div class="text-gray-600 font-semibold text-sm">A place for every racing enthusiast.</div>
