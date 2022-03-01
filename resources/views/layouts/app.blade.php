@@ -365,40 +365,41 @@
                     </div>
                 </div>
             </div>
-
-            @auth
-
-                @if (session()->has('error'))
-                    <div class="container mx-auto">
-                        <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
-                            <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
+            <div class='mainContent'>
+                @auth
+    
+                    @if (session()->has('error'))
+                        <div class="container mx-auto">
+                            <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
+                                <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
+                            </div>
                         </div>
-                    </div>
-                @endif
-                @if (session()->has('success'))
-                    <div class="container mx-auto">
-                        <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
-                            <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
+                    @endif
+                    @if (session()->has('success'))
+                        <div class="container mx-auto">
+                            <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
+                                <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
+                            </div>
                         </div>
-                    </div>
-                @endif
-                <main class="container mx-auto my-4">
-                    @yield('content')
-                </main>
-                <main class="w-full">
-                    @yield('body')
-                </main>
-            @endauth
-            @guest
-                <main class="container mx-auto">
-                    @yield('content')
-                </main>
-                <main class="w-full">
-                    @yield('body')
-                </main>
-            @endguest
-            <div class='clearfixFooter'></div>
-            <footer class="border-t p-8 justify-between md:items-center fixed bg-white inset-x-0 bottom-0 flex flex-col md:flex-row mt-10 w-full">
+                    @endif
+                    <main class="container mx-auto my-4">
+                        @yield('content')
+                    </main>
+                    <main class="w-full">
+                        @yield('body')
+                    </main>
+                @endauth
+                @guest
+                    <main class="container mx-auto">
+                        @yield('content')
+                    </main>
+                    <main class="w-full">
+                        @yield('body')
+                    </main>
+                @endguest
+            </div>
+            <!-- <div class='clearfixFooter'></div> -->
+            <footer class="border-t p-8 justify-between md:items-center bg-white flex flex-col md:flex-row mt-10 w-full">
                 <div class="leading-tight">
                     <div class="text-gray-700 font-bold">Indian Racing Community</div>
                     <div class="text-gray-600 font-semibold text-sm">A place for every racing enthusiast.</div>

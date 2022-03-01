@@ -66,6 +66,9 @@
 .clearfixFooter {
   height: 130px;
 }
+.mainContent{
+  min-height: 72vh;
+}
 @media only screen and (max-width: 600px) {
   .clearfixFooter {
     height: 160px;
