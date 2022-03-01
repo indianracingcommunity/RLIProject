@@ -4,7 +4,7 @@
 
 <div class="mx-4 my-10 md:mx-16 lg:mx-16">
 	<div class="flex font-extrabold text-4xl mb-4">
-		Meet the Team!!!!
+		Meet the Team!
 	</div>
 	<div class="grid grid-cols-2 mb-8 md:grid-cols-4 lg:grid-cols-8" id="role_tab"></div>
 
