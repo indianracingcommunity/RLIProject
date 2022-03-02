@@ -19,6 +19,7 @@
 
     <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>storage/*</exclude-pattern>
+    <exclude-pattern>bootstrap/*</exclude-pattern>
     <exclude-pattern>resources/views/*</exclude-pattern>
 
     <arg name="extensions" value="php" />
