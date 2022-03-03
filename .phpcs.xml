@@ -11,6 +11,9 @@
             <property name="lineLimit" value="145" />
         </properties>
     </rule>
+    <rule ref="Generic.Files.LineEndings.InvalidEOLChar">
+        <severity>0</severity>
+    </rule>
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
         <exclude-pattern>database/migrations/*</exclude-pattern>
     </rule>

@@ -20,7 +20,7 @@ services:
     image: nginx:${NGINX_VERSION}
     container_name: irc-server
     ports:
-      - 80:80
+      - 8000:80
     tty: true
     volumes:
       - .:/var/www/RLIProject
