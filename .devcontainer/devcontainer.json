@@ -4,28 +4,35 @@
 	"name": "IRC Website",
 
 	// Sets the run context to one level up instead of the .devcontainer folder.
-	"context": "..",
+	// "context": "..",
 
 	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-	"dockerFile": "../Dockerfile",
+	// "dockerFile": "../Dockerfile",
+
+	"dockerComposeFile": "../docker-compose.dev.yml",
+	"service": "irc-app",
+	"workspaceFolder": "/var/www/RLIProject",
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": {},
+	"settings": {
+		"phpSniffer.autoDetect": true,
+		"phpSniffer.run": "onSave",
+	},
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-azuretools.vscode-docker",
 		"eamodio.gitlens",
 		"amiralizadeh9480.laravel-extra-intellisense",
-		"felixfbecker.php-intellisense",
+		"zobo.php-intellisense",
 		"wongjn.php-sniffer"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [ 8000, 80 ],
+	// "forwardPorts": [ 8000, 80 ],
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
-	"postStartCommand": "/bin/sh /usr/service_run.sh && composer install",
+	// "postStartCommand": "/bin/sh",
 
 	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
 	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],

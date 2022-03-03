@@ -21,7 +21,7 @@ server {
     }
 
     location ^~ /phpmyadmin {
-        alias /var/www/PMA/;
+        alias /var/www/html/;
         index index.php;
         location ~ \.php$ {
             try_files $uri = 404;

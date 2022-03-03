@@ -30,8 +30,7 @@ services:
     networks:
       - irc-network
     depends_on:
-      irc-compose:
-        condition: service_completed_successfully
+      - irc-app
 
   irc-app:
     build: .
@@ -56,16 +55,16 @@ services:
     networks:
       - irc-network
 
-  irc-compose:
-    image: composer:${COMPOSER_VERSION}
-    container_name: irc-compose
-    volumes:
-      - .:/app
-    command: composer install --ignore-platform-reqs
-    networks:
-      - irc-network
-    depends_on:
-      - irc-app
+  # irc-compose:
+  #   image: composer:${COMPOSER_VERSION}
+  #   container_name: irc-compose
+  #   volumes:
+  #     - .:/app
+  #   command: composer install --ignore-platform-reqs
+  #   networks:
+  #     - irc-network
+  #   depends_on:
+  #     - irc-app
 
   irc-admin:
     image: phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
