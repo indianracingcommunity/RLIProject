@@ -25,7 +25,10 @@
 		"eamodio.gitlens",
 		"amiralizadeh9480.laravel-extra-intellisense",
 		"zobo.php-intellisense",
-		"wongjn.php-sniffer"
+		"wongjn.php-sniffer",
+		"cssho.vscode-svgviewer",
+		"pomdtr.excalidraw-editor",
+		"vivaxy.vscode-conventional-commits"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

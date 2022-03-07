@@ -11,8 +11,8 @@
 
 > A Website Built by Indian Racing Enthusiasts
 
-### ✨ [Website](https://indianracingcommunity.co.in)
-
+### 🌐 [Website](https://indianracingcommunity.co.in)
+### 🛠️ [Setup](./resources/docs/setup.md)
 ### 🏠 [Source Code](https://github.com/TheFreeman15/RLIProject)
 
 
