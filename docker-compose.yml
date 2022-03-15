@@ -1,0 +1,84 @@
+version: '3.7'
+
+networks:
+  irc-network:
+    name: irc-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET_IPRANGE}
+          gateway: ${NETWORK_GATEWAY}
+
+volumes:
+  irc-pma:
+    driver: local
+    name: irc-pma
+
+services:
+  irc-server:
+    image: nginx:${NGINX_VERSION}
+    container_name: irc-server
+    ports:
+      - 80:80
+    tty: true
+    volumes:
+      - .:/var/www/RLIProject
+      - irc-pma:/var/www/html
+      - ./build/${APP_ENV}/nginx.conf:/etc/nginx/nginx.conf
+      - ./build/${APP_ENV}/default:/etc/nginx/sites-available/default
+    networks:
+      - irc-network
+    depends_on:
+      irc-compose:
+        condition: service_completed_successfully
+
+  irc-app:
+    build: .
+    image: rli
+    container_name: irc-app
+    tty: true
+    volumes:
+      - .:/var/www/RLIProject
+      - ./build/${APP_ENV}/php.ini:/etc/php/${PHP_VERSION}/fpm/php.ini
+    networks:
+      - irc-network
+    depends_on:
+      - irc-db
+
+  irc-db:
+    image: mariadb:${MARIADB_VERSION}
+    container_name: irc-db
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./setup/${APP_ENV}/db:/var/lib/mysql
+    networks:
+      - irc-network
+
+  irc-compose:
+    image: composer:${COMPOSER_VERSION}
+    container_name: irc-compose
+    volumes:
+      - .:/app
+    command: composer install --ignore-platform-reqs
+    networks:
+      - irc-network
+    depends_on:
+      - irc-app
+
+  irc-admin:
+    image: phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
+    container_name: irc-admin
+    restart: always
+    environment:
+      PMA_HOST: irc-db
+      PMA_PORT: ${DB_PORT}
+      PMA_USER: ${PMA_USERNAME}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+    networks:
+      - irc-network
+    volumes:
+      - irc-pma:/var/www/html
+    depends_on:
+      - irc-db

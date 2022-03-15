@@ -41,7 +41,7 @@ class BotController extends Controller
 
     public function fetchDrivers()
     {
-        $data = Driver::select("id","user_id")->get()->load('user:id,discord_id,name')->toArray();
+        $data = Driver::select("id", "user_id")->get()->load('user:id,discord_id,name')->toArray();
         return response()->json($data);
     }
 }
