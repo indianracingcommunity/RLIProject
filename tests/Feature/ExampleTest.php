@@ -4,18 +4,27 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Series;
 
 class ExampleTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testInsertSeries()
     {
-        $response = $this->get('/');
+        // $this->assertTrue(true);
+        // $response = $this->get('/');
 
-        $response->assertStatus(200);
+        // $response->assertStatus(200);
+        $s = Series::all()->toArray();
+        $this->assertEquals(count($s), 0);
+
+        $s = factory(Series::class, 1)->create();
+        $this->assertEquals(1, count(Series::all()->toArray()));
     }
 }

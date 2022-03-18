@@ -16,7 +16,7 @@ The project has been setup with Docker Compose. You can modify the [`docker-comp
 **Avoid pushing changes to this file on upstream**
 
 1. Create a feature branch and create PRs whenever building a new feature.
-1. If there is a change or error in build or state of any of the services, you can restart the project with `Ctrl+Shift+P -> Rebuilt Container`
+1. If there is a change or error in build or state of any of the services, you can restart the project with `Ctrl+Shift+P -> Rebuild Container`
 1. The project has been setup with a [linter](./lint.md). Files will show up in red when saved if it does not conform to the coding standard.
 1. Use `Ctrl+Shift+P -> Format Document` to correct any resolvable errors by PHPCBF. If there are problems that persist, reach out to the team to appropriately resolve the problems.
 1. Use `Ctrl+Shift+P -> Conventional Commits` when commiting code. It follows a standardized format, which will help in automating and adding to the Changelog.
