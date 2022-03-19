@@ -112,8 +112,9 @@ class WebsiteController extends Controller
         return view('f1tournament');
     }
 
-    public function loadourteam(){
-        $roles = Role::select('id','role_id','role_name','priority')
+    public function loadourteam()
+    {
+        $roles = Role::select('id', 'role_id', 'role_name', 'priority')
                 ->where('priority', '!=', 0)
                 ->orderBy('priority', 'asc')
                 ->get()
