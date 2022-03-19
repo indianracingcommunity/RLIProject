@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Contracts\Encryption\DecryptException;
+use App\Discord;
+use App\Role;
 
 class WebsiteController extends Controller
 {
@@ -80,21 +82,6 @@ class WebsiteController extends Controller
         return view('aboutus')->with('irc_guild', config('services.discord.irc_guild'));
     }
 
-    public function loadourteam()
-    {
-        $var = User::select('id', 'name', 'avatar')
-                  ->where('role_id', 3)
-                  ->get()->toArray();
-
-        $fieldsTeams = array();
-        for ($i = 0; $i < count($var); $i++) {
-            # code...
-            $id = $var[$i]['id'];
-            $fieldsTeams[$id] = $var[$i];
-        }
-        return view('ourteam', compact('fieldsTeams'));
-    }
-
     public function loadfaq()
     {
         return view('faq');
@@ -123,5 +110,17 @@ class WebsiteController extends Controller
     public function f1tournament()
     {
         return view('f1tournament');
+    }
+
+    public function loadourteam(){
+        $roles = Role::select('id','role_id','role_name','priority')
+                ->where('priority', '!=', 0)
+                ->orderBy('priority', 'asc')
+                ->get()
+                ->toArray();
+
+        $discord = new Discord();
+        $data = $discord->getMembersByRoles($roles);
+        return view('ourteam', compact('data'));
     }
 }
