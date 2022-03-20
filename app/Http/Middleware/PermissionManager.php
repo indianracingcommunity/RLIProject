@@ -57,13 +57,14 @@ class PermissionManager
 
     public function checkRole(Request $request, $roles)
     {
-        if ($request->session()->has('userRoles') != true) {
+        
+        if ($request->session()->has('userRoles') != true or $request->session()->get('userRoles') == "Invalid") {
             $discord = new Discord();
             $userArray = $discord->getMemberRoles(Auth::user()->discord_id);
             PermissionManager::runCache($request, $userArray);
         };
         $cacheArr = $request->session()->get('userRoles');
-        // dd($cacheArr);
+
         for ($i = 0; $i < count($roles); $i++) {
             if (in_array($roles[$i], $cacheArr)) {
                 return "Verified";

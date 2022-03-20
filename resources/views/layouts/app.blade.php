@@ -53,7 +53,7 @@
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             <div class="my-1">
                                 <a href="/IRC_Rules__Regs_V4.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
-                                <a href="{{route('rules.acc')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
+                                <a href="/IRC_ACC_Rules_Regs_V1.pdf" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
                                 <!-- <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a> -->
                             </div>
 
@@ -365,39 +365,41 @@
                     </div>
                 </div>
             </div>
-
-            @auth
-
-                @if (session()->has('error'))
-                    <div class="container mx-auto">
-                        <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
-                            <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
+            <div class='mainContent'>
+                @auth
+    
+                    @if (session()->has('error'))
+                        <div class="container mx-auto">
+                            <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
+                                <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
+                            </div>
                         </div>
-                    </div>
-                @endif
-                @if (session()->has('success'))
-                    <div class="container mx-auto">
-                        <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
-                            <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
+                    @endif
+                    @if (session()->has('success'))
+                        <div class="container mx-auto">
+                            <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
+                                <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
+                            </div>
                         </div>
-                    </div>
-                @endif
-                <main class="container mx-auto my-4">
-                    @yield('content')
-                </main>
-                <main class="w-full">
-                    @yield('body')
-                </main>
-            @endauth
-            @guest
-                <main class="container mx-auto">
-                    @yield('content')
-                </main>
-                <main class="w-full">
-                    @yield('body')
-                </main>
-            @endguest
-            <footer class="mx-8 border-t py-8 justify-between md:items-center flex flex-col md:flex-row mt-10">
+                    @endif
+                    <main class="container mx-auto my-4">
+                        @yield('content')
+                    </main>
+                    <main class="w-full">
+                        @yield('body')
+                    </main>
+                @endauth
+                @guest
+                    <main class="container mx-auto">
+                        @yield('content')
+                    </main>
+                    <main class="w-full">
+                        @yield('body')
+                    </main>
+                @endguest
+            </div>
+            <!-- <div class='clearfixFooter'></div> -->
+            <footer class="border-t p-8 justify-between md:items-center bg-white flex flex-col md:flex-row mt-10 w-full">
                 <div class="leading-tight">
                     <div class="text-gray-700 font-bold">Indian Racing Community</div>
                     <div class="text-gray-600 font-semibold text-sm">A place for every racing enthusiast.</div>
