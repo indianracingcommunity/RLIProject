@@ -209,8 +209,8 @@ class ResultsController extends Controller
             if ($res['status'] >= 0) {
                 $rpoints = 0;
                 $ps_ind = array_search($results[$i]['race']['points'], array_column($points, "id"));
-                if (array_key_exists((string)($pos - 1), $points[$ps_ind])) {
-                    $rpoints = $points[$ps_ind][$pos - 1];
+                if (array_key_exists('P' . $pos, $points[$ps_ind])) {
+                    $rpoints = $points[$ps_ind]['P' . $pos];
                 }
 
                 $results[$i]['points'] += $rpoints;

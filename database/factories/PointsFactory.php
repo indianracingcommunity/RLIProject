@@ -4,20 +4,26 @@
 
 use App\Points;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Schema;
 
 // Only to be used with make()
 $factory->define(Points::class, function (Faker $faker) {
+    $faker->unique($reset = true);
+
     $points = array();
-    for ($i = 0; i < 10; ++i) {
-        $points[] = $faker->unique()->numberBetween(0, 25);
+    for ($i = 0; $i < 30; ++$i) {
+        $points[] = $faker->unique()->numberBetween(0, 115);
     }
-    sort($points);
+    rsort($points);
+
+    $createdAt = $faker->optional()->datetime();
+    $updatedAt = $faker->optional()->datetime();
 
     $fact = array();
-    $fact['created_at'] = $faker->optional()->datetime()->format('Y-m-d H:i:s');
-    $fact['updated_at'] = $faker->optional()->datetime()->format('Y-m-d H:i:s');
-    for ($i = 0; i < 10; ++i) {
-        $fact[(string) $i] = $points[$i];
+    $fact['created_at'] = $createdAt;
+    $fact['updated_at'] = $updatedAt;
+    for ($i = 1; $i < 31; ++$i) {
+        $fact['P' . $i] = $points[$i - 1];
     }
 
     return $fact;

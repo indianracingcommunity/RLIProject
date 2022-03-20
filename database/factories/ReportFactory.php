@@ -8,6 +8,9 @@ use App\Driver;
 use Faker\Generator as Faker;
 
 $factory->define(Report::class, function (Faker $faker) {
+    $createdAt = $faker->optional()->datetime();
+    $updatedAt = $faker->optional()->datetime();
+
     return [
         'race_id' => factory(Race::class)->create(),
         'reporting_driver' => factory(Driver::class)->create(),
@@ -21,8 +24,8 @@ $factory->define(Report::class, function (Faker $faker) {
         'verdict_time' => $faker->randomFloat(2),
         'resolved' => $faker->numberBetween(0, 3),
         'message_id' => $faker->optional()->regexify('[1-9][0-9]{17}'),
-        'created_at' => $faker->optional()->datetime()->format('Y-m-d H:i:s'),
-        'updated_at' => $faker->optional()->datetime()->format('Y-m-d H:i:s'),
+        'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
+        'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt,
         'report_game' => (int)$faker->boolean,
     ];
 });

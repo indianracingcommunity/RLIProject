@@ -17,18 +17,20 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $createdAt = $faker->optional()->datetime();
+    $updatedAt = $faker->optional()->datetime();
+
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
         'role_id' => $faker->numberBetween(1, 3),
         'discord_discrim' => $faker->numerify('####'),
         'avatar' => $faker->optional()->url,
         'discord_id' => $faker->unique()->regexify('[1-9][0-9]{17}'),
         'steam_id' => $faker->unique()->regexify('[1-9][0-9]{16}'),
         'remember_token' => $faker->regexify('[a-zA-Z0-9]{60}'),
-        'created_at' => $faker->optional()->datetime()->format('Y-m-d H:i:s'),
-        'updated_at' => $faker->optional()->datetime()->format('Y-m-d H:i:s'),
+        'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
+        'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt,
         'isadmin' => (int)$faker->boolean(1),
         'location' => $faker->city . "~" . $faker->state,
         'mothertongue' => $faker->languageCode,
