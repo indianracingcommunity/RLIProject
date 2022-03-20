@@ -11,16 +11,18 @@ $factory->define(Circuit::class, function (Faker $faker) {
     $updatedAt = $faker->optional()->datetime();
 
     return [
+        'series' => factory(Series::class)->create(),
+
         'name' => $faker->country . " Grand Prix",
+        'official' => $faker->state,
+        'laps' => $faker->randomNumber,
+        'track_length' => (string)$faker->randomFloat(3) . " km",
+
         'location' => $faker->optional()->city,
         'country' => $faker->optional()->country,
-        'official' => $faker->state,
         'display' => $faker->optional()->url,
-        'track_length' => (string)$faker->randomFloat(3) . " km",
-        'laps' => $faker->randomNumber,
         'flag' => $faker->optional()->url,
         'game' => $faker->optional()->word,
-        'series' => factory(Series::class)->create(),
         'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
         'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt
     ];

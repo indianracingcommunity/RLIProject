@@ -6,13 +6,12 @@ use App\Points;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Schema;
 
-// Only to be used with make()
 $factory->define(Points::class, function (Faker $faker) {
     $faker->unique($reset = true);
 
     $points = array();
     for ($i = 0; $i < 30; ++$i) {
-        $points[] = $faker->unique()->numberBetween(0, 115);
+        $points[] = $faker->unique()->randomNumber;
     }
     rsort($points);
 

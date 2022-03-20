@@ -11,6 +11,7 @@ $factory->define(Constructor::class, function (Faker $faker) {
 
     return [
         'name' => $faker->company,
+
         'official' => $faker->optional()->hexcolor,
         'game' => $faker->optional()->word,
         'logo' => $faker->optional()->url,

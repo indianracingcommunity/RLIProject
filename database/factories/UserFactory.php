@@ -21,25 +21,27 @@ $factory->define(User::class, function (Faker $faker) {
     $updatedAt = $faker->optional()->datetime();
 
     return [
-        'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'role_id' => $faker->numberBetween(1, 3),
-        'discord_discrim' => $faker->numerify('####'),
-        'avatar' => $faker->optional()->url,
         'discord_id' => $faker->unique()->regexify('[1-9][0-9]{17}'),
         'steam_id' => $faker->unique()->regexify('[1-9][0-9]{16}'),
+        'api_token' => $faker->unique()->regexify('[1-9][0-9]{16,24}'),
+
+        'name' => $faker->name,
+        'role_id' => $faker->numberBetween(1, 3),
+        'discord_discrim' => $faker->numerify('####'),
         'remember_token' => $faker->regexify('[a-zA-Z0-9]{60}'),
-        'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
-        'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt,
         'isadmin' => (int)$faker->boolean(1),
         'location' => $faker->city . "~" . $faker->state,
         'mothertongue' => $faker->languageCode,
         'motorsport' => $faker->company,
         'driversupport' => $faker->name,
-        'games' => 'a:4:{i:0;s:2:"f1";i:1;s:2:"ac";i:2;s:3:"acc";i:3;s:2:"pc";}',
         'source' => $faker->sentence,
+
         'platform' => 'a:1:{i:0;s:2:"PC";}',
         'device' => 'a:2:{i:0;s:10:"Controller";i:1;s:5:"Wheel";}',
+        'games' => 'a:4:{i:0;s:2:"f1";i:1;s:2:"ac";i:2;s:3:"acc";i:3;s:2:"pc";}',
+
+        'avatar' => $faker->optional()->url,
         'devicename' => $faker->optional()->word,
         'instagram' => $faker->optional()->randomElement(['https://www.instagram.com/' . $faker->slug]),
         'twitter' => $faker->optional()->randomElement([' https://twitter.com/' . $faker->slug]),
@@ -48,6 +50,7 @@ $factory->define(User::class, function (Faker $faker) {
         'xbox' => $faker->optional()->userName,
         'psn' => $faker->optional()->userName,
         'reddit' => $faker->optional()->randomElement(['https://www.reddit.com/user/' . $faker->slug]),
-        'api_token' => $faker->unique()->regexify('[1-9][0-9]{16,24}')
+        'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
+        'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt
     ];
 });

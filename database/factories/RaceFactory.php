@@ -15,9 +15,11 @@ $factory->define(Race::class, function (Faker $faker) {
     return [
         'season_id' => factory(Season::class)->create(),
         'circuit_id' => factory(Circuit::class)->create(),
+        'points' => factory(Points::class)->create(),
+
         'round' => $faker->randomNumber,
         'distance' => $faker->randomFloat(2, 0, 1),
-        'points' => factory(Points::class)->create(),
+
         'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
         'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt
     ];
