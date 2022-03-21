@@ -17,7 +17,7 @@ class TierSeeder extends Seeder
      *
      * @return void
      */
-    public function run($seriesId = null)
+    public function run($seriesId = null, $sn = null, $tier = null)
     {
         // 1 series
         if ($seriesId == null) {
@@ -25,10 +25,18 @@ class TierSeeder extends Seeder
         }
 
         // pass series_id -> 1 season -> 1 - 15 constructors (note), (pass series_id) 3 circuits
-        $season = factory(Season::class)->create([
+        $seasonParams = [
             'series' => $seriesId,
             'show' => 1
-        ]);
+        ];
+        if ($sn != null) {
+            $seasonParams['season'] = $sn;
+        }
+        if ($tier != null) {
+            $seasonParams['tier'] = $tier;
+        }
+
+        $season = factory(Season::class)->create($seasonParams);
 
         // 30 signups -> 30 users
         $signups = array();
@@ -56,20 +64,33 @@ class TierSeeder extends Seeder
         $races = array();
         $raceCount = mt_rand(8, 16);
         for ($i = 0; $i < $raceCount; ++$i) {
-            $races[] = factory(Race::class)->create(['season_id' => $season->id]);
+            $races[] = factory(Race::class)->create([
+                'season_id' => $season->id,
+                'round' => $i + 1
+            ]);
         }
         echo "Races Count -> " . count($races) . "\n\n";
 
         // pass race_ids, constructor_ids, driver_ids -> 15 - 22 results
         for ($i = 0; $i < $raceCount; ++$i) {
             $resultCount = mt_rand($driverCount - 5, $driverCount);
+            $dnfCount = mt_rand($driverCount - 3, $driverCount - 1);
             echo "Results Count -> " . $resultCount . " for Race " . ($i + 1) . "\n";
 
             for ($j = 0; $j < $resultCount; ++$j) {
+                $status = 0;
+                if ($j == 0) {
+                    $status = 1;
+                } elseif ($j >= $dnfCount) {
+                    $status = -2;
+                }
+
                 factory(Result::class)->create([
                     'race_id' => $races[$i]->id,
                     'driver_id' => $drivers[$j]->id,
-                    'constructor_id' => $season->constructors[$j % count($season->constructors)]["id"]
+                    'constructor_id' => $season->constructors[$j % count($season->constructors)]["id"],
+                    'position' => $j + 1,
+                    'status' => $status
                 ]);
             }
         }
@@ -86,11 +107,11 @@ class TierSeeder extends Seeder
             }
         }
 
-        echo '/' . $season->tier . '/' . $season->season . '/standings' . "\n";
         // Season has multiple signups
         // Signups become drivers
         // Season has many Races
         // Season has a list of Constructors
         // Each Race has result
+        echo '/' . $season->tier . '/' . $season->season . '/standings' . "\n\n";
     }
 }

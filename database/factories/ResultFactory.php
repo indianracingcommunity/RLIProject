@@ -24,10 +24,10 @@ $factory->define(Result::class, function (Faker $faker, $params) {
         'constructor_id' => $constructorId,
 
         'position' => $faker->randomNumber,
-        'points' => $faker->randomNumber,
+        'points' => 0,
         'time' => $controller->convertMillisToStandard($faker->randomNumber),
         'fastestlaptime' => $controller->convertMillisToStandard($faker->randomNumber),
-        'status' => $faker->numberBetween(-2, 1) + $faker->randomFloat(2, 0, 0.5),
+        'status' => 0,
 
         'grid' => $faker->optional()->randomNumber,
         'stops' => $faker->optional()->randomNumber,

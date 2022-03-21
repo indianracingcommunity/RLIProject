@@ -16,7 +16,7 @@ $factory->define(Race::class, function (Faker $faker, $params) {
     if (array_key_exists('circuit_id', $params)) {
         $circuitId = $params['circuit_id'];
     } else {
-        $seriesId = Season::find($seasonId)->id;
+        $seriesId = Season::find($seasonId)->series;
         $circuitId = factory(Circuit::class)->create(['series' => $seriesId]);
     }
 
