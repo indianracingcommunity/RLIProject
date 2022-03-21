@@ -16,6 +16,8 @@
 
 # Code Structure
 
+![IRC Code Structure](./code-structure.svg)
+
 ## Build
 * Dev Container -> [.devcontainer/devcontainer.json](../../.devcontainer/devcontainer.json)
 * Docker Compose Dev -> [docker-compose.dev.yml](../../docker-compose.dev.yml)
