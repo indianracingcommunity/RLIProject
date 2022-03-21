@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Season;
 
+// phpcs:ignore
 class SeasonTableSeeder extends Seeder
 {
     /**

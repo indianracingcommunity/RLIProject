@@ -8,22 +8,35 @@ use App\Circuit;
 use App\Constructor;
 use Faker\Generator as Faker;
 
-$factory->define(Season::class, function (Faker $faker) {
+$factory->define(Season::class, function (Faker $faker, $params) {
     $createdAt = $faker->optional()->datetime();
     $updatedAt = $faker->optional()->datetime();
-
-    $tttracks = factory(Circuit::class)->create()->id . ',';
-    $tttracks .= factory(Circuit::class)->create()->id . ',' . factory(Circuit::class)->create()->id;
     $reportWindow = $faker->optional()->datetime();
 
-    $constructorCount = $faker->numberBetween(0, 15);
-    $constructors = factory(Constructor::class)->create()->id;
-    for ($i = 0; $i < $constructorCount; ++$i) {
-        $constructors .= "," . factory(Constructor::class)->create()->id;
+    $ttracks = "";
+    $constructors = "";
+    $seriesId = (array_key_exists("series", $params)) ? $params['series'] : factory(Series::class)->create();
+
+    if (array_key_exists('constructors', $params)) {
+        $constructors = $params['constructors'];
+    } else {
+        $constructorCount = $faker->numberBetween(2, 15);
+        $constructors = factory(Constructor::class)->create()->id;
+        for ($i = 0; $i < $constructorCount; ++$i) {
+            $constructors .= "," . factory(Constructor::class)->create()->id;
+        }
+    }
+
+    if (array_key_exists('ttracks', $params)) {
+        $ttracks = $params['ttracks'];
+    } else {
+        $tttracks = factory(Circuit::class)->create(['series' => $seriesId])->id . ',';
+        $tttracks .= factory(Circuit::class)->create(['series' => $seriesId])->id . ',';
+        $tttracks .= factory(Circuit::class)->create(['series' => $seriesId])->id;
     }
 
     return [
-        'series' => factory(Series::class)->create(),
+        'series' => $seriesId,
         'constructors' => $constructors,                        // List of comma separated Constructor IDs
         'tttracks' => $tttracks,                                // List of 3 Circuit IDs
 

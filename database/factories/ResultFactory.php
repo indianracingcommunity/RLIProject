@@ -9,15 +9,19 @@ use App\Constructor;
 use Faker\Generator as Faker;
 use App\Http\Controllers\Controller;
 
-$factory->define(Result::class, function (Faker $faker) {
+$factory->define(Result::class, function (Faker $faker, $params) {
+    $raceId = (array_key_exists('race_id', $params)) ? $params['race_id'] : factory(Race::class)->create();
+    $driverId = (array_key_exists('driver_id', $params)) ? $params['driver_id'] : factory(Driver::class)->create();
+    $constructorId = (array_key_exists('constructor_id', $params)) ? $params['constructor_id'] : factory(Constructor::class)->create();
+
     $controller = new Controller();
     $createdAt = $faker->optional()->datetime();
     $updatedAt = $faker->optional()->datetime();
 
     return [
-        'race_id' => factory(Race::class)->create(),
-        'driver_id' => factory(Driver::class)->create(),
-        'constructor_id' => factory(Constructor::class)->create(),
+        'race_id' => $raceId,
+        'driver_id' => $driverId,
+        'constructor_id' => $constructorId,
 
         'position' => $faker->randomNumber,
         'points' => $faker->randomNumber,

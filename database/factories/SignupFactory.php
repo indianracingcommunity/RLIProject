@@ -5,19 +5,27 @@
 use App\User;
 use App\Season;
 use App\Signup;
+use App\Constructor;
 use Faker\Generator as Faker;
 use App\Http\Controllers\Controller;
 
-$factory->define(Signup::class, function (Faker $faker) {
+$factory->define(Signup::class, function (Faker $faker, $params) {
     $controller = new Controller();
-    $carpref = factory(Season::class)->create()->id . ',';
-    $carpref .= factory(Season::class)->create()->id . ',' . factory(Season::class)->create()->id;
     $createdAt = $faker->optional()->datetime();
     $updatedAt = $faker->optional()->datetime();
 
+    $userId = (array_key_exists('user_id', $params)) ? $params['user_id'] : factory(User::class)->create();
+    $seasonId = (array_key_exists('season', $params)) ? $params['season'] : factory(Season::class)->create();
+    if (array_key_exists('carprefrence', $params)) {
+        $carpref = $params['carprefrence'];
+    } else {
+        $carpref = factory(Constructor::class)->create()->id . ',';
+        $carpref .= factory(Constructor::class)->create()->id . ',' . factory(Constructor::class)->create()->id;
+    }
+
     return [
-        'user_id' => factory(User::class)->create(),
-        'season' => factory(Season::class)->create(),
+        'user_id' => $userId,
+        'season' => $seasonId,
         'carprefrence' => $carpref,                                                                         // 3 Constructor IDs
 
         'attendance' => (int)$faker->boolean,

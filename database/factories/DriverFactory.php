@@ -6,7 +6,9 @@ use App\Driver;
 use App\User;
 use Faker\Generator as Faker;
 
-$factory->define(Driver::class, function (Faker $faker) {
+$factory->define(Driver::class, function (Faker $faker, $params) {
+    $userId = (array_key_exists("user_id", $params)) ? $params['user_id'] : factory(User::class)->create();
+
     $alias = $faker->userName;
     $aliasCount = $faker->numberBetween(0, 8);
     for ($i = 0; $i < $aliasCount; ++$i) {
@@ -17,7 +19,7 @@ $factory->define(Driver::class, function (Faker $faker) {
     $updatedAt = $faker->optional()->datetime();
 
     return [
-        'user_id' => factory(User::class)->create(),
+        'user_id' => $userId,
 
         'name' => $faker->userName,
         'retired' => (int)$faker->boolean,

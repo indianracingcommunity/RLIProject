@@ -5,6 +5,7 @@
 use Illuminate\Database\Seeder;
 use App\Series;
 
+// phpcs:ignore
 class SeriesTableSeeder extends Seeder
 {
     /**

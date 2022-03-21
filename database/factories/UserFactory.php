@@ -41,7 +41,9 @@ $factory->define(User::class, function (Faker $faker) {
         'device' => 'a:2:{i:0;s:10:"Controller";i:1;s:5:"Wheel";}',
         'games' => 'a:4:{i:0;s:2:"f1";i:1;s:2:"ac";i:2;s:3:"acc";i:3;s:2:"pc";}',
 
-        'avatar' => $faker->optional()->url,
+        'avatar' => $faker->optional()->randomElement([
+            'https://cdn.discordapp.com/avatars/251955629026050049/bda441e5c61614d815d6d3800760194d.jpg'
+        ]),
         'devicename' => $faker->optional()->word,
         'instagram' => $faker->optional()->randomElement(['https://www.instagram.com/' . $faker->slug]),
         'twitter' => $faker->optional()->randomElement([' https://twitter.com/' . $faker->slug]),

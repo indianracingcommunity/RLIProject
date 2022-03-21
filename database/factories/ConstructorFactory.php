@@ -14,8 +14,12 @@ $factory->define(Constructor::class, function (Faker $faker) {
 
         'official' => $faker->optional()->hexcolor,
         'game' => $faker->optional()->word,
-        'logo' => $faker->optional()->url,
-        'car' => $faker->optional()->url,
+        'logo' => $faker->optional()->randomElement([
+            'https://cdn.discordapp.com/attachments/635742492192669696/939176367159910470/1.png'
+        ]),
+        'car' => $faker->optional()->randomElement([
+            'https://www.f1gamesetup.com/img/teams/2021/ferrari-2021.png'
+        ]),
         'created_at' => ($createdAt != null) ? $createdAt->format('Y-m-d H:i:s') : $createdAt,
         'updated_at' => ($updatedAt != null) ? $updatedAt->format('Y-m-d H:i:s') : $updatedAt
     ];

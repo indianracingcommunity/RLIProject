@@ -4,7 +4,7 @@
 
 use Illuminate\Database\Seeder;
 
-//phpcs:ignore
+// phpcs:ignore
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
-        $this->call(SeriesTableSeeder::class);
-        $this->call(SeasonTableSeeder::class);
+        // $this->call(SeriesTableSeeder::class);
+        $this->call(TierSeeder::class);
     }
 }

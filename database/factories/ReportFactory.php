@@ -7,14 +7,18 @@ use App\Report;
 use App\Driver;
 use Faker\Generator as Faker;
 
-$factory->define(Report::class, function (Faker $faker) {
+$factory->define(Report::class, function (Faker $faker, $params) {
+    $raceId = (array_key_exists('race_id', $params)) ? $params['race_id'] : factory(Driver::class)->create();
+    $reportingId = (array_key_exists('reporting_driver', $params)) ? $params['reporting_driver'] : factory(Driver::class)->create();
+    $reportedId = (array_key_exists('reported_against', $params)) ? $params['reported_against'] : factory(Driver::class)->create();
+
     $createdAt = $faker->optional()->datetime();
     $updatedAt = $faker->optional()->datetime();
 
     return [
-        'race_id' => factory(Race::class)->create(),
-        'reporting_driver' => factory(Driver::class)->create(),
-        'reported_against' => factory(Driver::class)->create(),
+        'race_id' => $raceId,
+        'reporting_driver' => $reportingId,
+        'reported_against' => $reportedId,
 
         'proof' => $faker->url,
         'lap' => $faker->randomNumber,
