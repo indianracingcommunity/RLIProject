@@ -34,7 +34,7 @@
     // console.log(data);
     function displayThis(roleId){
         $('.userPills').hide();
-        $(`.role_${roleId}`).show();
+        $(`.role_${roleId}`).fadeIn();
         $(`.buttonAll`).removeClass('activeBtn');
         $(`.buttonAll`).removeClass('bg-gray-800 hover:bg-gray-900');
         $(`.buttonAll`).addClass('bg-purple-600 hover:bg-purple-800');
