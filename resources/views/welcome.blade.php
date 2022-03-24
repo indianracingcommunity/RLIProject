@@ -8,11 +8,13 @@
         <div class="block text-3xl font-semibold text-gray-700">
             A place for every Indian Racing Enthusiast.
         </div>
+        @guest
         <div class="flex">
             <div class="mt-16 text-2xl font-semibold px-4 py-2 bg-purple-600 shadow-lg text-white rounded-md cursor">
                 <a href="{{route('joinus')}}">Join us</a>
             </div>
         </div>
+        @endguest
         <div class="mt-10">
             <div class="text-xl font-semibold text-gray-600">
                 Follow Us
