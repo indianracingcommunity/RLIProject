@@ -3,7 +3,7 @@
 @component('layouts.slickCarousal')@endcomponent
 
 <div class="mx-4 my-10 md:mx-16 lg:mx-16">
-	<div class="font-extrabold text-center text-4xl mb-4">
+	<div class="font-extrabold md:text-left text-center text-4xl mb-4">
 		Meet the Team!
 	</div>
     <div class="font-extrabold text-center text-4xl mb-4 md:hidden">
