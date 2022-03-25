@@ -8,13 +8,15 @@
 	</div>
 	<div class="grid grid-cols-2 mb-8 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7" id="role_tab">
         @foreach($data as $roleData)
+        <div>
             <button class="items-center justify-center mr-4 my-4 px-4 flex py-2 bg-purple-600 text-white text-lg rounded-full font-semibold shadow-md cursor-pointer hover:bg-purple-800 hover:text-white hover:shadow-none @if($loop->first) activeBtn @endif buttonAll btn_{{$roleData['role_id']}}" onclick="displayThis('{{$roleData['role_id']}}')">
                 <span class="mx-2">{{$roleData['role_name']}}</span>
             </button>
+        </div>
         @endforeach
     </div>
 
-    <div class="w-full grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="team_container">
+    <div class="w-full grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" style='display:none;' id="team_container">
         @foreach($data as $indData)
             @foreach($indData['users'] as $insideUsers)
             <div class="role_{{$indData['role_id']}} userPills flex items-center shadow-xl shadow-gray-800 border-2 border-gray-200 rounded-full" style="border-color:#{{$indData['role_color']}}">
@@ -34,7 +36,7 @@
     // console.log(data);
     function displayThis(roleId){
         $('.userPills').hide();
-        $(`.role_${roleId}`).show();
+        $(`.role_${roleId}`).fadeIn();
         $(`.buttonAll`).removeClass('activeBtn');
         $(`.buttonAll`).removeClass('bg-gray-800 hover:bg-gray-900');
         $(`.buttonAll`).addClass('bg-purple-600 hover:bg-purple-800');
@@ -43,7 +45,37 @@
     }
     $(document).ready(function () {
         $('.userPills').hide();
+        $('#team_container').fadeIn();
         $('.activeBtn').trigger('click');
+        $('#role_tab').slick({
+            dots: false,
+            infinite: false,
+            prevArrow: false,
+            nextArrow: false,
+            speed: 300,
+            slidesToShow: 5,
+            centerMode: false,
+            variableWidth: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        centerPadding: '40px',
+                        slidesToShow: 3
+                        }
+                    },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        centerPadding: '40px',
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+                            
     });
 </script>
 
