@@ -1,5 +1,6 @@
 .dropdown:hover > .dropdown-content {
     display: block;
+    z-index: 100;
 }
 .box {
   position:absolute;
