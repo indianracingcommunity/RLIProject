@@ -49,14 +49,18 @@
         $('.activeBtn').trigger('click');
         $('#role_tab').slick({
             dots: false,
+            arrows: false,
             infinite: false,
             prevArrow: false,
             nextArrow: false,
-            speed: 300,
-            slidesToShow: 5,
+            speed: 700,
+            slidesToShow: 4,
             centerMode: false,
             variableWidth: true,
             autoplay: true,
+            edgeFriction: 2,
+            swipeToSlide: true,
+            pauseOnFocus: true,
             autoplaySpeed: 2000,
             responsive: [
                 {
