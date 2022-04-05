@@ -296,7 +296,7 @@
 * [c058d22c](https://github.com/indianracingcommunity/RLIProject/commit/c058d22c) - `fix`: 🐛 added team in driver data API
 
 
-[3.1.0](https://github.com/indianracingcommunity/RLIProject/commit/3e627e83)
+[v3.1.0](https://github.com/indianracingcommunity/RLIProject/commit/3e627e83)
 --
 * [77f608b9](https://github.com/indianracingcommunity/RLIProject/commit/77f608b9) - `fix`: 🐛 corrected status in signup view
 * [f2c57fa4](https://github.com/indianracingcommunity/RLIProject/commit/f2c57fa4) - `fix`: 🐛 returned driver ID for ACC results
@@ -312,7 +312,7 @@
 * [937fbce9](https://github.com/indianracingcommunity/RLIProject/commit/937fbce9) - `feat`: 🛂 added API authentication middleware
 
 
-[v3.0.0](https://github.com/indianracingcommunity/RLIProject/commit/724b4c1)
+[v3.0.0 - League Signups](https://github.com/indianracingcommunity/RLIProject/commit/724b4c1)
 --
 * [6b15fb2e](https://github.com/indianracingcommunity/RLIProject/commit/6b15fb2e) - `fix`: 🔥 removed cursor pointer when button not clickable
 * [71c4bde2](https://github.com/indianracingcommunity/RLIProject/commit/71c4bde2) - `feat`: ✨ added meta tags
