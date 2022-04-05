@@ -1,5 +1,19 @@
+.loaderCircle{
+  -webkit-animation: spin 0.8s linear infinite;
+  animation: spin 0.8s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .dropdown:hover > .dropdown-content {
     display: block;
+    z-index: 100;
 }
 .box {
   position:absolute;
