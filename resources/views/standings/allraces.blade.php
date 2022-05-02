@@ -252,7 +252,7 @@
 <!-- Admin View -->
 
 @auth
-   @view('admin,coordinator,steward')
+   @can('admin|coordinator|steward')
    <div class="border p-5 confTable rounded-lg">
       <div class="text-2xl font-bold text-center">Admin/Coordinator Information</div>
       <div class="flex gap-5">
@@ -262,7 +262,7 @@
       <div class="text-lg font-semibold">Status: {{$season['status']}}</div>
 </div>
    </div>
-   @endview
+   @endcan
 @endauth
 
 </div>

@@ -12,4 +12,6 @@ class Role extends Model
     protected static $logName = 'role';         // Name for the log
     protected static $logAttributes = ['*'];    // Log All fields in the table
     protected static $logOnlyDirty = true;      // Only log the fields that have been updated
+
+    public $timestamps = false;
 }
