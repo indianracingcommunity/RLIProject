@@ -48,23 +48,41 @@
     }
 </style>
 
-<div class="bg-black bg-opacity-50 absolute inset-0 flex justify-center items-center w-screen h-screen" id="overlay">
+<div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center w-screen" id="overlay">
     <div class="bg-gray-200 rounded-lg w-3/4 sm:w-auto py-2 px-3 shadow-xl">
         <div class="flex justify-between items-center border-b border-gray-400">
-            <h4 class="p-2 text-md sm:text-lg md:text-xl lg:text-2xl font-bold">One final step...</h4>
-            <svg class="w-4 h-4 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <h4 class="p-2 text-lg md:text-xl lg:text-2xl font-bold">One final step...</h4>
+            <svg class="w-6 h-7 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </div>
         <div>
-            <p class="text-center text-red-600 text-sm sm:text-md md:text-lg lg:text-xl font-bold pt-4 pb-1">Link your STEAM account by clicking on the icon</p>
+            <p class="text-center text-red-600 text-md md:text-lg lg:text-xl font-bold pt-4 pb-1">Link your gaming ACCOUNTS by clicking on the icons</p>
         </div>
-        <div class="flex justify-center pt-1 pb-4">
+        <div class="flex justify-center pt-1 pb-4 gap-5">
             <button class="rounded-md">
-                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
+                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="py-2" alt=""> </a>
+            </button>
+            <button class="my-2 bg-green-500 rounded-lg">
+                <i class="px-3 fab fa-xbox fa-2x text-white"></i>
+            </button>
+            <button class="my-2 bg-blue-600 rounded-lg">
+                <i class="px-3 fab fa-playstation fa-2x text-white"></i>
             </button>
         </div>
+        <div class="flex content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto mb-5">
+            <div>
+                <label for="xbox" class="text-white"><i class="fab fa-xbox mr-1 text-white"></i>XBOX ID</label>
+            </div>
+            <input maxlength="40" type="text" name="xbox" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+        </div>
+        <div class="flex content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto mb-5">
+            <div>
+                <label for="psn" class="text-white"><i class="fab fa-playstation text-white mr-1"></i></i>PSN ID</label>
+            </div>
+            <input maxlength="40" type="text" name="psn" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+        </div>
         <div class="border-t border-gray-400 p-2">
-            <p class="text-xs sm:text-sm font-bold">Why do I need to do this?</p>
-            <p class="text-xs sm:text-sm text-gray-800">Game roles related to PC will be alloted only after your steam profile has been linked.</p>
+            <p class="text-sm font-bold">Why do I need to do this?</p>
+            <p class="text-sm text-gray-800">Game roles related to platform will be alloted only after your gaming profiles have been linked.</p>
         </div>
     </div>
 </div>
