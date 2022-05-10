@@ -47,6 +47,29 @@
         background: grey;
     }
 </style>
+
+<div class="bg-black bg-opacity-50 absolute inset-0 flex justify-center items-center w-screen h-screen" id="overlay">
+    <div class="bg-gray-200 rounded-lg w-3/4 sm:w-auto py-2 px-3 shadow-xl">
+        <div class="flex justify-between items-center border-b border-gray-400">
+            <h4 class="p-2 text-md sm:text-lg md:text-xl lg:text-2xl font-bold">One final step...</h4>
+            <svg class="w-4 h-4 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </div>
+        <div>
+            <p class="text-center text-red-600 text-sm sm:text-md md:text-lg lg:text-xl font-bold pt-4 pb-1">Link your STEAM account by clicking on the icon</p>
+        </div>
+        <div class="flex justify-center pt-1 pb-4">
+            <button class="rounded-md">
+                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
+            </button>
+        </div>
+        <div class="border-t border-gray-400 p-2">
+            <p class="text-xs sm:text-sm font-bold">Why do I need to do this?</p>
+            <p class="text-xs sm:text-sm text-gray-800">Game roles related to PC will be alloted only after your steam profile has been linked.</p>
+        </div>
+    </div>
+</div>
+
+
 <div class="text-4xl font-bold tracking-wide md:mb-2 p-4 md:p-0">User Profile</div>
 <div class="flex md:flex-row flex-col px-4 md:p-0">
     <div class="flex bg-white rounded-lg p-4 items-center border">
@@ -131,7 +154,7 @@
         @if (Auth::user()->steam_id == NULL)
         <hr>
         @endif
-        <div class="mt-2">
+        <!-- <div class="mt-2">
             <form method="POST" @if ("{{Auth::user()->mothertongue}}" != "") action="setsteam/{{Auth::user()->id}}" @endif>
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
@@ -144,7 +167,7 @@
                     @endif
                 @endif
             </form>
-        </div>
+        </div> -->
 
     </div>
 
