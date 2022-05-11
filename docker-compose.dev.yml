@@ -23,7 +23,7 @@ services:
       - 8000:80
     tty: true
     volumes:
-      - .:/var/www/RLIProject
+      - .:${PROJECT_DIR}
       - irc-pma:/var/www/html
       - ./build/${APP_ENV}/nginx.conf:/etc/nginx/nginx.conf
       - ./build/${APP_ENV}/default:/etc/nginx/sites-available/default
@@ -38,7 +38,7 @@ services:
     container_name: irc-app
     tty: true
     volumes:
-      - .:/var/www/RLIProject
+      - .:${PROJECT_DIR}
       - ./build/${APP_ENV}/php.ini:/etc/php/${PHP_VERSION}/fpm/php.ini
     networks:
       - irc-network
@@ -56,17 +56,6 @@ services:
       - ./setup/${APP_ENV}/db:/var/lib/mysql
     networks:
       - irc-network
-
-  # irc-compose:
-  #   image: composer:${COMPOSER_VERSION}
-  #   container_name: irc-compose
-  #   volumes:
-  #     - .:/app
-  #   command: composer install --ignore-platform-reqs
-  #   networks:
-  #     - irc-network
-  #   depends_on:
-  #     - irc-app
 
   irc-admin:
     image: phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
