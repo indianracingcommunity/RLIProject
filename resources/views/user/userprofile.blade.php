@@ -68,17 +68,23 @@
                 <i class="px-3 fab fa-playstation fa-2x text-white"></i>
             </button>
         </div>
-        <div class="flex content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto mb-5">
+        <div class="hidden content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto mb-6">
             <div>
-                <label for="xbox" class="text-white"><i class="fab fa-xbox mr-1 text-white"></i>XBOX ID</label>
+                <label for="xbox" class="text-white"><i class="fab fa-xbox mr-1 text-white shadow-xl"></i>XBOX ID</label>
             </div>
-            <input maxlength="40" type="text" name="xbox" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+            <div class="flex flex-col items-center">
+                <input maxlength="40" type="text" name="xbox" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-green-500 font-semibold hover:bg-green-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
+            </div>
         </div>
-        <div class="flex content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto mb-5">
+        <div class="flex content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto mb-6">
             <div>
-                <label for="psn" class="text-white"><i class="fab fa-playstation text-white mr-1"></i></i>PSN ID</label>
+                <label for="psn" class="text-white"><i class="fab fa-playstation text-white mr-1 shadow-xl"></i></i>PSN ID</label>
             </div>
-            <input maxlength="40" type="text" name="psn" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+            <div class="flex flex-col items-center">
+                <input maxlength="40" type="text" name="psn" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+                <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-blue-600 font-semibold hover:bg-blue-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
+            </div>
         </div>
         <div class="border-t border-gray-400 p-2">
             <p class="text-sm font-bold">Why do I need to do this?</p>
