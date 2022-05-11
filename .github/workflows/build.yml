@@ -1,0 +1,27 @@
+name: CI
+
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  ci:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy .env
+        run: 'echo "$STAGING_ENV" > .env'
+        shell: bash
+        env:
+          STAGING_ENV: ${{secrets.STAGING_ENV}}
+
+      - name: Docker Compose Build
+        run: docker compose -f docker-compose.test.yml up --build -d
+
+      - name: Install dependencies
+        run: docker exec irc-app composer install
+
+      - name: Run tests
+        run: docker exec irc-app composer test
