@@ -52,7 +52,7 @@
     <div class="bg-gray-200 rounded-lg w-3/4 sm:w-auto py-2 px-3 shadow-xl">
         <div class="flex justify-between items-center border-b border-gray-400">
             <h4 class="p-2 text-lg md:text-xl lg:text-2xl font-bold">One final step...</h4>
-            <svg class="w-6 h-7 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <svg id="cross" class="w-6 h-7 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </div>
         <div>
             <p class="text-center text-red-600 text-md md:text-lg lg:text-xl font-bold pt-4 pb-1">Link your gaming ACCOUNTS by clicking on the icons</p>
@@ -61,14 +61,14 @@
             <button class="rounded-md">
                 <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="py-2" alt=""> </a>
             </button>
-            <button class="my-2 bg-green-500 rounded-lg">
+            <button id="xboxPopup" class="my-2 bg-green-500 rounded-lg">
                 <i class="px-3 fab fa-xbox fa-2x text-white"></i>
             </button>
-            <button class="my-2 bg-blue-600 rounded-lg">
+            <button id="psPopup" class="my-2 bg-blue-600 rounded-lg">
                 <i class="px-3 fab fa-playstation fa-2x text-white"></i>
             </button>
         </div>
-        <div class="hidden content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto mb-6">
+        <div id="xboxPopupEntry" class="hidden content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto mb-6">
             <div>
                 <label for="xbox" class="text-white"><i class="fab fa-xbox mr-1 text-white shadow-xl"></i>XBOX ID</label>
             </div>
@@ -77,7 +77,7 @@
                 <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-green-500 font-semibold hover:bg-green-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
             </div>
         </div>
-        <div class="flex content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto mb-6">
+        <div id="psPopupEntry" class="hidden content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto mb-6">
             <div>
                 <label for="psn" class="text-white"><i class="fab fa-playstation text-white mr-1 shadow-xl"></i></i>PSN ID</label>
             </div>
@@ -531,6 +531,41 @@
                     $('#submitProfileForm').submit();
                 }
             }
+        });
+        $('#xboxPopup').click(function(event) {
+            if($('#psPopupEntry').hasClass('isOpen')){
+                $('#psPopupEntry').toggleClass('hidden');
+                $('#psPopupEntry').removeClass('isOpen');
+                $('#xboxPopupEntry').addClass('isOpen');
+                $('#xboxPopupEntry').toggleClass('hidden');
+            } else {
+                if($('#xboxPopupEntry').hasClass('isOpen')){
+                    $('#xboxPopupEntry').removeClass('isOpen');
+                    $('#xboxPopupEntry').toggleClass('hidden');
+                } else {
+                    $('#xboxPopupEntry').addClass('isOpen');
+                    $('#xboxPopupEntry').toggleClass('hidden');
+                }
+            }
+        });
+        $('#psPopup').click(function(event) {
+            if($('#xboxPopupEntry').hasClass('isOpen')){
+                $('#xboxPopupEntry').removeClass('isOpen');
+                $('#xboxPopupEntry').toggleClass('hidden');
+                $('#psPopupEntry').addClass('isOpen');
+                $('#psPopupEntry').toggleClass('hidden');
+            } else {
+                if($('#psPopupEntry').hasClass('isOpen')){
+                    $('#psPopupEntry').removeClass('isOpen');
+                    $('#psPopupEntry').toggleClass('hidden');
+                } else {
+                    $('#psPopupEntry').addClass('isOpen');
+                    $('#psPopupEntry').toggleClass('hidden');
+                }
+            }
+        });
+        $('#cross').click(function(event) {
+            $('#overlay').toggleClass('hidden');
         });
     });
 </script>
