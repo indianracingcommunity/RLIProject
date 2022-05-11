@@ -6,7 +6,6 @@ use Auth;
 use Closure;
 use App\Role;
 use App\Discord;
-use Illuminate\Support\Facades\Log;
 
 class AddRoles
 {
@@ -19,8 +18,6 @@ class AddRoles
      */
     public function handle($request, Closure $next)
     {
-        Log::info("AR");
-
         // skip if guest
         if (is_null(Auth::user())) {
             return $next($request);
