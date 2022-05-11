@@ -33,10 +33,16 @@ services:
       - irc-app
 
   irc-app:
-    build: .
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        PROJECT_DIR: ${PROJECT_DIR}
     image: rli
     container_name: irc-app
     tty: true
+    environment:
+      PROJECT_DIR: ${PROJECT_DIR}
     volumes:
       - .:${PROJECT_DIR}
       - ./build/${APP_ENV}/php.ini:/etc/php/${PHP_VERSION}/fpm/php.ini
@@ -51,7 +57,16 @@ services:
     restart: unless-stopped
     tty: true
     environment:
-      MARIADB_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      DB_TEST_DATABASE: ${DB_TEST_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PMA_USERNAME: ${PMA_USERNAME}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: 172.16.238.%
     volumes:
       - ./setup/${APP_ENV}/db:/var/lib/mysql
     networks:
