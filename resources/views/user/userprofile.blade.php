@@ -48,23 +48,25 @@
     }
 </style>
 
-<div class="bg-black bg-opacity-50 fixed inset-0 flex justify-center items-center w-screen" id="overlay">
-    <div class="bg-gray-200 rounded-lg w-3/4 sm:w-auto py-2 px-3 shadow-xl">
+<div class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen" id="overlay">
+    <div class="bg-gray-200 rounded-lg w-3/4 sm:w-auto py-2 px-3 shadow-xl md:mt-48">
         <div class="flex justify-between items-center border-b border-gray-400">
             <h4 class="p-2 text-lg md:text-xl lg:text-2xl font-bold">One final step...</h4>
             <svg id="cross" class="w-6 h-7 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </div>
         <div>
-            <p class="text-center text-red-600 text-md md:text-lg lg:text-xl font-bold pt-4 pb-1">Link your gaming ACCOUNTS by clicking on the icons</p>
+            <p class="text-center text-red-600 text-md md:text-lg lg:text-xl font-bold pt-3 pb-1">Link your gaming accounts</p>
         </div>
-        <div class="flex justify-center pt-1 pb-4 gap-5">
-            <button class="rounded-md">
-                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="py-2" alt=""> </a>
+        <div class="flex justify-center pt-3 pb-6 gap-6">
+            <button id="steamPopup" class="hidden py-2 bg-black rounded-lg">
+                <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> 
+                    <i class="px-3 fab fa-steam fa-2x text-white" alt=""></i> 
+                </a>
             </button>
-            <button id="xboxPopup" class="my-2 bg-green-500 rounded-lg">
+            <button id="xboxPopup" class="hidden py-2 bg-green-500 rounded-lg">
                 <i class="px-3 fab fa-xbox fa-2x text-white"></i>
             </button>
-            <button id="psPopup" class="my-2 bg-blue-600 rounded-lg">
+            <button id="psPopup" class="hidden py-2 bg-blue-600 rounded-lg">
                 <i class="px-3 fab fa-playstation fa-2x text-white"></i>
             </button>
         </div>
@@ -88,7 +90,7 @@
         </div>
         <div class="border-t border-gray-400 p-2">
             <p class="text-sm font-bold">Why do I need to do this?</p>
-            <p class="text-sm text-gray-800">Game roles related to platform will be alloted only after your gaming profiles have been linked.</p>
+            <p class="text-sm text-gray-800">Discord roles related to platform will be alloted only after your gaming profiles have been linked.</p>
         </div>
     </div>
 </div>
@@ -178,7 +180,7 @@
         @if (Auth::user()->steam_id == NULL)
         <hr>
         @endif
-        <!-- <div class="mt-2">
+        <div class="mt-2">
             <form method="POST" @if ("{{Auth::user()->mothertongue}}" != "") action="setsteam/{{Auth::user()->id}}" @endif>
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
@@ -191,7 +193,7 @@
                     @endif
                 @endif
             </form>
-        </div> -->
+        </div>
 
     </div>
 
@@ -393,6 +395,7 @@
     var games = <?php echo json_encode($games); ?>;
     var platform = <?php echo json_encode($platform); ?>;
     var device = <?php echo json_encode($device); ?>;
+    var accounts = <?php echo json_encode($accounts); ?>;
     $( document ).ready(function() {
         $('#restfieldsid').hide();
         $('.tildeNotValid').keydown(function(event) {
@@ -532,41 +535,62 @@
                 }
             }
         });
+        
+        var accountClassIds = ['#xboxPopup', '#psPopup', '#steamPopup'];
+        // for(i in accountClassIds) {
+        //     $(accountClassIds[i]).click(function(event) {
+                
+        //     });
+        // }
+        
+        
         $('#xboxPopup').click(function(event) {
             if($('#psPopupEntry').hasClass('isOpen')){
-                $('#psPopupEntry').toggleClass('hidden');
+                $('#psPopupEntry').hide('500');
                 $('#psPopupEntry').removeClass('isOpen');
                 $('#xboxPopupEntry').addClass('isOpen');
-                $('#xboxPopupEntry').toggleClass('hidden');
+                $('#xboxPopupEntry').show('500');
             } else {
                 if($('#xboxPopupEntry').hasClass('isOpen')){
                     $('#xboxPopupEntry').removeClass('isOpen');
-                    $('#xboxPopupEntry').toggleClass('hidden');
+                    $('#xboxPopupEntry').hide('500');
                 } else {
                     $('#xboxPopupEntry').addClass('isOpen');
-                    $('#xboxPopupEntry').toggleClass('hidden');
+                    $('#xboxPopupEntry').show('500');
                 }
             }
         });
         $('#psPopup').click(function(event) {
             if($('#xboxPopupEntry').hasClass('isOpen')){
                 $('#xboxPopupEntry').removeClass('isOpen');
-                $('#xboxPopupEntry').toggleClass('hidden');
+                $('#xboxPopupEntry').hide('500');
                 $('#psPopupEntry').addClass('isOpen');
-                $('#psPopupEntry').toggleClass('hidden');
+                $('#psPopupEntry').show('500');
             } else {
                 if($('#psPopupEntry').hasClass('isOpen')){
                     $('#psPopupEntry').removeClass('isOpen');
-                    $('#psPopupEntry').toggleClass('hidden');
+                    $('#psPopupEntry').hide('500');
                 } else {
                     $('#psPopupEntry').addClass('isOpen');
-                    $('#psPopupEntry').toggleClass('hidden');
+                    $('#psPopupEntry').show('500');
                 }
             }
         });
+        
         $('#cross').click(function(event) {
-            $('#overlay').toggleClass('hidden');
+            $('#overlay').removeClass('flex');
+            $('#overlay').addClass('hidden');
         });
+
+        //var whichAccount = [4, 2, 1];
+        for(i in accountClassIds) {
+            console.log(1 << i);
+            if(accounts & (1 << i))  {
+                $('#overlay').removeClass('hidden');
+                $('#overlay').addClass('flex');
+                $(accountClassIds[i]).toggleClass('hidden');
+            }
+        }
     });
 </script>
 @endsection

@@ -58,21 +58,21 @@ class HomeController extends Controller
             $games = serialize($request->game);
             $user->games = $games;
         } else {
-            $user->games = '';
+            $user->games = null;
         }
 
         if (isset($request->platform)) {
             $platformdata = serialize($request->platform);
             $user->platform = $platformdata;
         } else {
-            $user->platform = '';
+            $user->platform = null;
         }
 
         if (isset($request->device)) {
             $devicedata = serialize($request->device);
             $user->device = $devicedata;
         } else {
-            $user->device = '';
+            $user->device = null;
         }
 
         $user->mothertongue = trim($request->mothertongue);

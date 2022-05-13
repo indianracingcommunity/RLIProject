@@ -30,13 +30,13 @@ class UserPanel extends Controller
         $accounts = -1;
 
         if (!is_null($platform)) {
-            $accounts = in_array("PC", $platform) & isset(Auth::user()->steam_id);
+            $accounts = in_array("PC", $platform) & !isset(Auth::user()->steam_id);
             $accounts <<= 1;
 
-            $accounts |= in_array("PlayStation", $platform) & isset(Auth::user()->psn);
+            $accounts |= in_array("PlayStation", $platform) & !isset(Auth::user()->psn);
             $accounts <<= 1;
 
-            $accounts |= in_array("Xbox", $platform) & isset(Auth::user()->xbox);
+            $accounts |= in_array("Xbox", $platform) & !isset(Auth::user()->xbox);
         }
 
         return view('user.userprofile')
