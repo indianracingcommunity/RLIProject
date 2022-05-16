@@ -41,7 +41,7 @@ input[type="checkbox"]:checked+label span::before {
     height: 42px;
 }
 
-.dropdown {
+.dropdown-form {
     height: 42px;
     position: relative;
 }
@@ -133,7 +133,7 @@ input[type="checkbox"]:checked+label span::before {
                     <div class="grid row-gap-2 md:grid-cols-2 mb-8 md:mb-2">
                         <label class="text-gray-700 text-base font-bold">Select Driver(s)
                         </label>
-                        <div class="w-96 dropdown">
+                        <div class="w-96 dropdown-form">
                             <label
                                 class="dropdown-label overflow-auto bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:outline-none focus:bg-white focus:border-green-600">
                                 No Drivers Selected
@@ -226,7 +226,7 @@ var selectedRace = $("#race");
 var reportingAgainstDriver = $('#radio_driver');
 var reportingAgainstGame = $('#radio_game');
 
-var driverDropdown = $('.dropdown');
+var driverDropdown = $('.dropdown-form');
 var driverDropdownLabel = $('.dropdown-label');
 var driverDropdownList = $('.dropdown-list');
 var driverSelectCheckboxes = null;
@@ -337,7 +337,7 @@ $(document).ready(function() {
         if (!dropdownOpen) {
             dropdownOpen = true;
             $(document).on('click', (e) => {
-                if ($(e.target).closest('.dropdown').length === 0) {
+                if ($(e.target).closest('.dropdown-form').length === 0) {
                     toggleDropdown();
                 }
             });
