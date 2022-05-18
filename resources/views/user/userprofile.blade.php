@@ -214,13 +214,13 @@
                         <div>
                             <label for="psn" class="font-semibold text-gray-800"><i class="fab fa-playstation text-blue-700 mr-1"></i></i>PSN ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for PS Users)</label>
                         </div>
-                        <input maxlength="40" type="text" name="psn" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
+                        <input maxlength="40" type="text" id="psInp" name="psn" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value='@if(isset(Auth::user()->psn)) {{Auth::user()->psn}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
                             <label for="xbox" class="font-semibold text-gray-800"><i class="fab fa-xbox mr-1 text-green-500"></i>Xbox ID<i class="fas fa-globe-americas text-gray-600 ml-2"></i> (Mandatory for Xbox Users)</label>
                         </div>
-                        <input maxlength="40" type="text" name="xbox" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
+                        <input maxlength="40" type="text" id="xboxInp" name="xbox" placeholder="Username" class="border shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value='@if(isset(Auth::user()->xbox)) {{Auth::user()->xbox}} @endif'>
                     </div>
                     <div class="mb-4">
                         <div>
@@ -364,7 +364,7 @@
                             <label for="xbox" class="text-white"><i class="fab fa-xbox mr-1 text-white shadow-xl"></i>XBOX ID</label>
                         </div>
                         <div class="flex flex-col items-center">
-                            <input maxlength="40" type="text" name="xbox" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value="{{Auth::user()->xbox}}">
+                            <input maxlength="40" type="text" id="xboxPopupInp" name="xbox" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value="{{Auth::user()->xbox}}">
                             <button type="button" id="submitXboxPopup" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-green-500 font-semibold hover:bg-green-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
                         </div>
                     </div>
@@ -373,7 +373,7 @@
                             <label for="psn" class="text-white"><i class="fab fa-playstation text-white mr-1 shadow-xl"></i></i>PSN ID</label>
                         </div>
                         <div class="flex flex-col items-center">
-                            <input maxlength="40" type="text" name="psn" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value="{{Auth::user()->psn}}">
+                            <input maxlength="40" type="text" id="psPopupInp" name="psn" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value="{{Auth::user()->psn}}">
                             <button type="button" id="submitPsPopup" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-blue-600 font-semibold hover:bg-blue-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
                         </div>
                     </div>
@@ -589,6 +589,18 @@
         $('#cross').click(function(event) {
             $('#overlay').removeClass('flex');
             $('#overlay').addClass('hidden');
+        });
+        $(function () {
+            var $psInpForm = $('#psInp'),
+                $xboxInpForm = $('#xboxInp'),
+                $psInpPopup = $('#psPopupInp');
+                $xboxInpPopup = $('#xboxPopupInp'),
+            $psInpForm.on('input', function () {
+                $psInpPopup.val($psInpForm.val());
+            });
+            $xboxInpForm.on('input', function () {
+                $xboxInpPopup.val($xboxInpForm.val());
+            });
         });
         //Popup/Dialog Box functionality(jquery) code ends here
     });
