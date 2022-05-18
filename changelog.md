@@ -1,5 +1,9 @@
-[v5.0.0 - Seeders](https://github.com/indianracingcommunity/RLIProject/commit/f34a31)
+[v5.0.0 - CI/CD](https://github.com/indianracingcommunity/RLIProject/commit/f34a31)
 --
+* [216d5b93](https://github.com/indianracingcommunity/RLIProject/commit/216d5b93) - `ci`: 👷 added CI to project
+* [6abad2dc](https://github.com/indianracingcommunity/RLIProject/commit/6abad2dc) - `build`: 🧱 upgraded php to 8 and composer to 2
+* [6cd01683](https://github.com/indianracingcommunity/RLIProject/commit/6cd01683) - `refactor`: 🗑️ deprecated PermissionManager with new AuthServiceProvider
+* [6dc360b2](https://github.com/indianracingcommunity/RLIProject/commit/6dc360b2) - `ci`: 🚀 added CD github workflow
 * [c6e9c95](https://github.com/indianracingcommunity/RLIProject/commit/c6e9c95) - `build`: 🌱 completed db seeders
 * [5acbe14](https://github.com/indianracingcommunity/RLIProject/commit/5acbe14) - `build`: 🌱 added tier seeder
 * [e29a0f5](https://github.com/indianracingcommunity/RLIProject/commit/e29a0f5) - `test`: 🌱 updated season factory to create assets for valid season

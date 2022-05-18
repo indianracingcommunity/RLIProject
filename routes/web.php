@@ -53,6 +53,7 @@ Route::get('/{code}/{tier}/{season}/race/{round}', 'ResultsController@fetchRaceR
 // User Authenticated Routes
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
+     Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
      // User Profile Routes
      Route::get('/user/profile/', 'UserPanel@viewprofile')->name('user.home');
@@ -87,7 +88,7 @@ Route::get('login/discord', 'Auth\LoginController@redirectToProvider')->name('lo
 Route::get('login/discord/callback', 'Auth\LoginController@handleProviderCallback')->name('login.discordcallback');
 
 // Admin Panel
-Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
+Route::group(['middleware' => 'can:admin|coordinator'], function () {
      Route::get('/home/admin', 'DriverController@index')->name('admin.home');
      Route::get('/home/admin/users', 'DriverController@viewusers')->name('coordinator.driverlist');
      Route::get('/home/admin/user/{user}', 'DriverController@viewdetails')->name('coordinator.driverview');
@@ -97,14 +98,14 @@ Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
 });
 
 // League Sign Up
-Route::group(['middleware' => 'allowed:admin,signup'], function () {
+Route::group(['middleware' => 'can:admin|signup'], function () {
      Route::get('/home/admin/view-signups', 'SignupsController@viewsignups')->name('coordinator.signup');
 });
 
 Route::middleware('auth:api')->get('/drivers/data', 'DriverController@driverdata')->name('telemetry.drivers');
 
 // Stewards Reports
-Route::group(['middleware' => 'allowed:admin,steward'], function () {
+Route::group(['middleware' => 'can:admin|steward'], function () {
      // Route::get('/home/admin/report','DriverController@viewreports')->name('steward.list');
      // Route::get('home/admin/report/{report}/details','DriverController@reportdetails')->name('steward.view');
      Route::post('/home/admin/verdict/{report}/save', 'DriverController@saveverdict')->name('steward.save');
@@ -118,13 +119,13 @@ Route::group(['middleware' => 'allowed:admin,steward'], function () {
 });
 
 // Driver Allotment
-Route::group(['middleware' => 'allowed:admin,coordinator'], function () {
+Route::group(['middleware' => 'can:admin|coordinator'], function () {
      Route::get('/home/admin/user-allot/{id}', 'DriverController@allotuser')->name('driver.allotpage');
      Route::post('/home/admin/user-allot/submit', 'DriverController@saveallotment')->name('driver.allot');
 });
 
 // League Results Parsing
-Route::group(['middleware' => 'allowed:admin,coordinator', 'prefix' => 'parse'], function () {
+Route::group(['middleware' => 'can:admin|coordinator', 'prefix' => 'parse'], function () {
      // F1 Results
      Route::get('/f1/quali', 'ImageController@qualiIndex')->name('f1.imagequaliupload');
      Route::get('/f1/race', 'ImageController@raceIndex')->name('f1.imageraceupload');
