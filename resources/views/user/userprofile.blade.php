@@ -137,7 +137,11 @@
                 @csrf
                 @if (Auth::user()->steam_id == NULL)
                     <span class=" font-semibold text-gray-600 mt-1">STEAM PROFILE LINK</span>
-                    <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> <img src="{{url('/img/steam.png')}}" class="p-2" alt=""> </a>
+                    <button type="button" class="flex py-2 mt-1 mb-2 bg-black rounded-lg">
+                        <a @if ("{{Auth::user()->mothertongue}}" != "") href="/login/steam" @endif> 
+                            <i class="px-3 fab fa-steam fa-3x text-white" alt=""></i> 
+                        </a>
+                    </button>
                     <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none"><strong>Mandatory for PC Users.</strong></span></br>
                     <span class="text-black-600 pt-2 mr-2">●</span><span class=" font-semibold text-gray-700 leading-none">Roles related to PC will be alloted only after your steam profile has been linked.</span></br>
                     @if (!isset(Auth::user()->mothertongue))
