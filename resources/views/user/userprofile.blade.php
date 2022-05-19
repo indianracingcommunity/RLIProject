@@ -359,16 +359,17 @@
                             <i class="px-3 fab fa-playstation fa-2x text-white"></i>
                         </button>
                     </div>
-                    <div id="xboxPopupEntry" class="hidden content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto mb-6">
+                    <div id="xboxPopupEntry" class="hidden content-center flex-col justify-center md:w-2/3 bg-green-500 rounded-lg p-3 mx-auto">
                         <div>
                             <label for="xbox" class="text-white"><i class="fab fa-xbox mr-1 text-white shadow-xl"></i>XBOX ID</label>
                         </div>
                         <div class="flex flex-col items-center">
                             <input maxlength="40" type="text" id="xboxPopupInp" name="xbox" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 xboxLink" value="{{Auth::user()->xbox}}">
+                            <!-- <span class="mt-3 px-2 errormsg bg-white rounded-md">Please enter required details.</span> -->
                             <button type="button" id="submitXboxPopup" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-green-500 font-semibold hover:bg-green-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
                         </div>
                     </div>
-                    <div id="psPopupEntry" class="hidden content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto mb-6">
+                    <div id="psPopupEntry" class="hidden content-center flex-col justify-center md:w-2/3 bg-blue-600 rounded-lg p-3 mx-auto">
                         <div>
                             <label for="psn" class="text-white"><i class="fab fa-playstation text-white mr-1 shadow-xl"></i></i>PSN ID</label>
                         </div>
@@ -376,6 +377,11 @@
                             <input maxlength="40" type="text" id="psPopupInp" name="psn" placeholder="Username" class="shadow-inner px-2 py-1 mt-1 w-full rounded border-gray-700 playstLink" value="{{Auth::user()->psn}}">
                             <button type="button" id="submitPsPopup" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-white rounded text-blue-600 font-semibold hover:bg-blue-800 hover:text-white shadow-xl" style="display: block;">Submit</button>
                         </div>
+                    </div>
+                    <div id="errorPopup" class="hidden text-center text-red-600 text-sm lg:text-md font-semibold mt-1 mb-3">
+                        <span class="mb-2">Please enter required details.</span>
+                    </div>
+                    <div id="marginDiv" class="hidden mb-6">
                     </div>
                     <div class="border-t border-gray-400 p-2">
                         <p class="text-sm font-bold">Why do I need to do this?</p>
@@ -532,75 +538,69 @@
             }
         });
         
-        //Popup/Dialog Box functionality(jquery) code starts here
+        //Popup/Dialog Box functionality code starts here
         var accountClassIds = ['#xboxPopup', '#psPopup', '#steamPopup'];
+        var popupSubmitBtns = ['#submitXboxPopup', '#submitPsPopup'];
+        var accountEntryPopups = ['#xboxPopupEntry','#psPopupEntry'];
+        var accountFormInp = ['#xboxInp', '#psInp'];
+        var accountPopupInp = ['#xboxPopupInp', '#psPopupInp'];
+        var popupIndex = 0;
         //var whichAccount = [1, 2, 4];
+        
         for(i in accountClassIds) {
-            //console.log((1 << i));
             if(accounts != -1 && (accounts & (1 << i)))  {
                 $('#overlay').removeClass('hidden');
                 $('#overlay').addClass('flex');
                 $(accountClassIds[i]).toggleClass('hidden');
             }
         }
-        // for(i in accountClassIds) {
-        //     $(accountClassIds[i]).click(function(event) {
-                
-        //     });
-        // }
-        $('#xboxPopup').click(function(event) {
-            if($('#psPopupEntry').hasClass('isOpen')){
-                $('#psPopupEntry').hide('500');
-                $('#psPopupEntry').removeClass('isOpen');
-                $('#xboxPopupEntry').addClass('isOpen');
-                $('#xboxPopupEntry').show('500');
-            } else {
-                if($('#xboxPopupEntry').hasClass('isOpen')){
-                    $('#xboxPopupEntry').removeClass('isOpen');
-                    $('#xboxPopupEntry').hide('500');
+
+        for(let i = 0; i < accountClassIds.length; i++){
+            $(accountClassIds[i]).click(function(event){
+                $('#errorPopup').hide('500');
+                if(popupIndex == i + 1){
+                    $(accountEntryPopups[i]).removeClass('isOpen');
+                    $(accountEntryPopups[i]).hide('500');
+                    $('#marginDiv').addClass('hidden');
+                    popupIndex = 0;
                 } else {
-                    $('#xboxPopupEntry').addClass('isOpen');
-                    $('#xboxPopupEntry').show('500');
+                    if(popupIndex){
+                        $(accountEntryPopups[popupIndex - 1]).removeClass('isOpen');
+                        $(accountEntryPopups[popupIndex - 1]).hide('500');
+                        $('#marginDiv').addClass('hidden');
+                    }
+                    $(accountEntryPopups[i]).addClass('isOpen');
+                    $(accountEntryPopups[i]).show('500');
+                    $('#marginDiv').removeClass('hidden');
+                    popupIndex = i + 1;
                 }
-            }
-        });
-        $('#psPopup').click(function(event) {
-            if($('#xboxPopupEntry').hasClass('isOpen')){
-                $('#xboxPopupEntry').removeClass('isOpen');
-                $('#xboxPopupEntry').hide('500');
-                $('#psPopupEntry').addClass('isOpen');
-                $('#psPopupEntry').show('500');
-            } else {
-                if($('#psPopupEntry').hasClass('isOpen')){
-                    $('#psPopupEntry').removeClass('isOpen');
-                    $('#psPopupEntry').hide('500');
+            });
+        }
+
+        for(let i = 0; i < popupSubmitBtns.length; i++){
+            $(popupSubmitBtns[i]).click(function(event) {
+                $('#errorPopup').hide('500');
+                if($(accountPopupInp[i]).val() == ''){
+                    $('#marginDiv').addClass('hidden');
+                    $("#errorPopup").show('slow/400/fast', function() {});
                 } else {
-                    $('#psPopupEntry').addClass('isOpen');
-                    $('#psPopupEntry').show('500');
+                    $('#marginDiv').removeClass('hidden');
+                    $('#submitProfileForm').submit();
                 }
-            }
-        });
-        $('#submitXboxPopup').click(function(event) {
-            $('#submitProfileForm').submit(); 
-        });
-        $('#submitPsPopup').click(function(event) {
-            $('#submitProfileForm').submit(); 
-        });
+            });
+        }
+        
         $('#cross').click(function(event) {
             $('#overlay').removeClass('flex');
             $('#overlay').addClass('hidden');
         });
+        
         $(function () {
-            var $psInpForm = $('#psInp'),
-                $xboxInpForm = $('#xboxInp'),
-                $psInpPopup = $('#psPopupInp');
-                $xboxInpPopup = $('#xboxPopupInp'),
-            $psInpForm.on('input', function () {
-                $psInpPopup.val($psInpForm.val());
-            });
-            $xboxInpForm.on('input', function () {
-                $xboxInpPopup.val($xboxInpForm.val());
-            });
+            for(let i = 0; i < accountFormInp.length; i++){
+                $(accountFormInp[i]).on('input', function () {
+                    $(accountPopupInp[i]).val($(accountFormInp[i]).val());
+                });
+            }
         });
         //Popup/Dialog Box functionality(jquery) code ends here
     });
