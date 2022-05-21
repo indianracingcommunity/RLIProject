@@ -63,11 +63,11 @@ Route::group(['middleware' => 'auth'], function () {
           SteamLogin::routes(['controller' => SteamLoginController::class]);
 
           // Driver Report Routes
-          // Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
+          Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
           Route::post('/home/report/submit', 'ReportsController@create')->name('report.submit');
 
-          // Route::get('/home/report/list','ReportsController@listDriverReports')->name('report.list');
-          // Route::get('/home/report/view/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.view');
+          Route::get('/home/report/list', 'ReportsController@listDriverReports')->name('report.list');
+          Route::get('/home/report/view/{report}', 'ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.view');
 
           // Route::get('/home/report/edit/{report}','ReportsController@details')->where('report', '^[-+]?\d*\.?\d*$')->name('report.edit');
           Route::put('/home/report/edit/{report}', 'ReportsController@update')->where('report', '^[-+]?\d*\.?\d*$')->name('report.editsubmit');

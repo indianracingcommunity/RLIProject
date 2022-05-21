@@ -342,13 +342,21 @@ class ReportsController extends Controller
     {
         // Search for driver, if not, respond "Need to get a license first child"
         $driver = Driver::where('user_id', Auth::user()->id)->firstOrFail();
+
         $reports = Report::where('reporting_driver', $driver['id'])
                          ->orWhere('reported_against', $driver['id'])
+                         ->orWhere('race_id', $driver['id'])
+                         ->orWhere('explanation', $driver['id'])
+                         ->orWhere('resolved', $driver['id'])
                          ->orderBy('created_at', 'desc')
                          ->get()
-                         ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit']);
-
-        return view('user.viewreports')->with('reports', $reports);
+                         ->load(['reporting_driver', 'reported_against', 'race.season', 'race.circuit'])
+                         ->toArray();
+        //dd($reports);
+        //dd($driver);
+        return view('user.viewallreports')
+                ->with('driver', $driver)
+                ->with('reports', $reports);
     }
 
     public function details()
