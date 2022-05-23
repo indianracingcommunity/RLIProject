@@ -177,7 +177,7 @@ input[type="checkbox"]:checked+label span::before {
                     <div class="grid row-gap-2 md:grid-cols-2 mb-6 md:mb-2">
                         <label class="text-gray-700 text-base font-bold">Lap Number</label>
                         <div>
-                            <input id="lap_num" name="lap_num" type="number"
+                            <input id="lap" name="lap" type="number"
                                 class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:outline-none focus:bg-white focus:border-green-600"
                                 placeholder="Lap Number" min=-1>
                             <div class="block w-auto text-red-600 text-sm italic" id="errorLap"></div>
@@ -235,7 +235,7 @@ var driverSelectError = $("#errorDriver");
 var incidentOccuredQuali = $('#radio_quali');
 var incidentOccuredRace = $('#radio_race');
 
-var lap_number = $("#lap_num");
+var lap_number = $("#lap");
 var lapNumberError = $("#errorLap");
 
 var explanation = $("#explanation");
@@ -289,12 +289,9 @@ $(document).ready(function() {
         driverDropdownList.empty();
 
         $.ajax({
-            url: '/api/fetch/drivers/' + race_id,
+            url: '/fetch/drivers/' + race_id,
             type: 'get',
             dataType: 'json',
-            beforeSend: function(request) {
-                request.setRequestHeader("Authorization", 'Bearer MyAPITOken');
-            },
             success: function(response) {
                 var len = 0;
                 if (response != null) {
@@ -440,9 +437,7 @@ function validateYouTubeUrl() {
         var regExp =
             /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/gm;
         var match = url.match(regExp);
-        console.log(match);
         if (match) {
-            console.log(url);
             return true;
         }
     } else {

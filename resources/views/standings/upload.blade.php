@@ -191,7 +191,6 @@
         jsondata.track.season_id = parseInt(document.getElementById("seasonid").value);
         
         index = index + 1;
-        console.log(index);
     }
 
     function drivernextFunction(){
@@ -234,7 +233,6 @@
     document.getElementById("gridid").value = jsondata.results[0].grid;
     document.getElementById("stopsid").value = jsondata.results[0].stops;
     document.getElementById("timeid").value = jsondata.results[0].time;
-    console.log(jsondata);
 
 </script>
 

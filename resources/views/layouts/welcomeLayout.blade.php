@@ -229,7 +229,6 @@ NOT USED ANYMORE
             });
             let sidebarVisible = 1
             function menu() {
-                console.log("function called")
                 let element = document.getElementById("sidebar");
                 let element2 = document.getElementById("customMargin");
                 if (sidebarVisible == 1) {

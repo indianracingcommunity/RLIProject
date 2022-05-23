@@ -63,7 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
           SteamLogin::routes(['controller' => SteamLoginController::class]);
 
           // Driver Report Routes
-          Route::get('/home/report/create','ReportsController@reportDriver')->name('report.create');
+          Route::get('/home/report/create', 'ReportsController@reportDriver')->name('report.create');
+          Route::get('/fetch/drivers/{race}', 'ReportsController@driversdata')->name('report.driverfetch');
           Route::post('/home/report/submit', 'ReportsController@create')->name('report.submit');
 
           // Route::get('/home/report/list','ReportsController@listDriverReports')->name('report.list');

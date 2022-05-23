@@ -94,19 +94,19 @@ class ReportsController extends Controller
         // $dr = Driver::where('user_id', $data['reporting_driver'])->firstOrFail();    // API Version
         $race = Race::where('id', $data['race'])->firstOrFail()->load('season')->toArray();
 
-        for ($i = 0; $i < count($data['driver']); $i++) {
+        for ($i = 0; $i < count($data['drivers']); $i++) {
             $report = new Report();
             $report -> race_id = $data['race'];
             $report -> reporting_driver = $dr->id;
-            $report -> reported_against = $data['driver'][$i];
+            $report -> reported_against = $data['drivers'][$i];
             $report -> lap = $data['lap'];
             $report -> explanation = $data['explanation'];
             $report -> proof = $data['proof'];
-            $report -> report_game = $data['report_game'];
+            $report -> report_game = ($data['reporting_against'] == "GAME") ? 1 : 0;
 
 
             // Publish Message in Season's Report Channel
-            $userid = Driver::where('id', $data['driver'][$i])->get()->load('user')->toArray();
+            $userid = Driver::where('id', $data['drivers'][$i])->get()->load('user')->toArray();
             $report -> message_id = Discord::publishMessage(
                 $this->reportMessage(
                     Auth::user()->discord_id,
