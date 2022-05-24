@@ -1,6 +1,275 @@
 @extends('layouts.app')
 @section('content')
-<div class="w-full" id="info" style="display: none;">{{$data}}</div>
+
+<!-- <form class="hidden bg-white w-full shadow-lg rounded-md px-5" method="POST" action="/testform" enctype="multipart/form-data">
+    <div class="flex-row pb-5">
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Tier</label>
+            <div class="inline-block relative">
+                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                    @foreach ($season as $value)
+                    <option value="{{$value->id}}">{{$value->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Round Number</label>
+            <input maxlength="4" type="number" placeholder="Round number" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Circuit</label>
+            <div class="inline-block relative">
+                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                    @foreach ($tracks as $value)
+                    <option value="{{$value->id}}">{{$value->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Points Scheme</label>
+            <input maxlength="3" type="number" placeholder="9 for season 8" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+    </div>
+
+    <div class="flex-row pb-5">
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Driver</label>
+            <div class="inline-block relative">
+                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                    @foreach ($driver as $value)
+                    <option value="{{$value->id}}">{{$value->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Constructor</label>
+            <div class="inline-block relative">
+                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                    @foreach ($constructor as $value)
+                    <option value="{{$value->id}}">{{$value->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Grid</label>
+            <input maxlength="3" type="number" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Laps completed</label>
+            <input maxlength="3" type="number" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter fastest lap</label>
+            <input maxlength="40" type="text" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter race time/interval</label>
+            <input maxlength="40" type="text" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+        <div>
+            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter status</label>
+            <input maxlength="3" type="number" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+        </div>
+    </div>
+
+    <div class="flex gap-5 justify-center items-center">
+        <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-purple-600 rounded text-white font-semibold hover:bg-white hover:text-purple-600 shadow-xl" style="display: block;">Add Driver</button>
+        <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-purple-600 rounded text-white font-semibold hover:bg-white hover:text-purple-600 shadow-xl" style="display: block;">Verify</button>
+    </div>
+</form> -->
+
+<div class="mb-10">
+    <input type="file" id="fileInput">
+</div>
+
+<div class="bg-gray-200 w-1/2 shadow-lg rounded mb-10">
+    <table id="jsonTableTrack" class="w-full table-auto">
+    <thead class="text-center bg-purple-500 text-white">
+        <tr>
+        <th class="border rounded px-4 py-2">season_id</th>
+        <th class="border rounded px-4 py-2">round</th>
+        <th class="border rounded px-4 py-2">circuit_id</th>
+        <th class="border rounded px-4 py-2">points_scheme</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white" id="trackTableBody">
+        <!-- <tr class="text-center">
+            <td class="border rounded p-1" contenteditable="true" id="trackBodySeason"></td>
+            <td class="border rounded p-1" contenteditable="true" id="trackBodyRound"></td>
+            <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit"></td>
+            <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints"></td>
+        </tr> -->
+    </tbody>
+    </table>
+</div>
+
+<div class="bg-gray-200 w-full shadow-lg rounded">
+    <table id="jsonTableResult" class="w-full table-auto">
+    <thead class="text-center bg-purple-500 text-white">
+        <tr>
+        <th class="border rounded px-4 py-2">position</th>
+        <th class="border rounded px-4 py-2">driver</th>
+        <th class="border rounded px-4 py-2">constructor_id</th>
+        <th class="border rounded px-4 py-2">grid</th>
+        <th class="border rounded px-4 py-2">stops</th>
+        <th class="border rounded px-4 py-2">fasterstlaptime</th>
+        <th class="border rounded px-4 py-2">time</th>
+        <th class="border rounded px-4 py-2">status</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white" id="resultsTableBody">
+        <!-- <tr id="resultsRow">
+            <td class="border rounded" id="resultsBodyPosition"></td>
+            <td class="border rounded" id="resultsBodyDriver"></td>
+            <td class="border rounded" id="resultsBodyConstructor"></td>
+            <td class="border rounded" id="resultsBodyGrid"></td>
+            <td class="border rounded" id="resultsBodyStops"></td>
+            <td class="border rounded" id="resultsBodyFastestLap"></td>
+            <td class="border rounded" id="resultsBodyTime"></td>
+            <td class="border rounded" id="resultsBodyStatus"></td>
+        </tr> -->
+    </tbody>
+    </table>
+</div>
+
+<div>
+    <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 border border-red-700 rounded">Cancel</button>
+    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Save</button>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        //JS to upload JSON, slot values into table
+        var upload = document.getElementById('fileInput');
+        upload.addEventListener('change', function() {
+            //Execute only when a file is selected/uploaded
+            if(upload.files.length > 0) {
+                var reader = new FileReader();
+                //Reading the uploaded JSON
+                reader.readAsText(upload.files[0]);
+                //Execute when reader has read the file
+                reader.addEventListener('load', function() {
+                    //Parse the JSON into an object
+                    var json = JSON.parse(reader.result);
+                    console.log(json);
+                    
+                    //Printing values of track key of json in table
+                    // var trackSeason = document.getElementById('trackBodySeason');
+                    // var trackRound = document.getElementById('trackBodyRound');
+                    // var trackCircuit = document.getElementById('trackBodyCircuit');
+                    // var trackPoints = document.getElementById('trackBodyPoints');
+                    
+                    // trackSeason.innerHTML = json.track.season_id;
+                    // trackRound.innerHTML = json.track.round;
+                    // trackCircuit.innerHTML = json.track.circuit_id;
+                    // trackPoints.innerHTML = json.track.points;
+                    var rowTrack = `<tr class="text-center">
+                                        <td class="border rounded p-1" contenteditable="true" id="trackBodySeason">${json.track.season_id}</td>
+                                        <td class="border rounded p-1" contenteditable="true" id="trackBodyRound">${json.track.round}</td>
+                                        <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit">${json.track.circuit_id}</td>
+                                        <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints">${json.track.points}</td>
+                                    </tr>`;
+                    $('#trackTableBody').append(rowTrack);
+
+                    //Printing values of results key of json in table
+                    // var resultsPosition = document.getElementById('resultsBodyPosition');
+                    // var resultsDriver = document.getElementById('resultsBodyDriver');
+                    // var resultsConstructor = document.getElementById('resultsBodyConstructor');
+                    // var resultsGrid = document.getElementById('resultsBodyGrid');
+                    // var resultsStops = document.getElementById('resultsBodyStops');
+                    // var resultsFastestLap = document.getElementById('resultsBodyFastestLap');
+                    // var resultsTime = document.getElementById('resultsBodyTime');
+                    // var resultsStatus = document.getElementById('resultsBodyStatus');
+                    // var resultsRow = document.getElementById('resultsRow');
+
+                    // for (let i = 0; i < Object.keys(json.results).length; i++){
+                    //     resultsPosition.innerHTML = json.results[i].position;
+                    //     resultsDriver.innerHTML = json.results[i].driver;
+                    //     resultsConstructor.innerHTML = json.results[i].constructor_id;
+                    //     resultsGrid.innerHTML = json.results[i].grid;
+                    //     resultsStops.innerHTML = json.results[i].stops;
+                    //     resultsFastestLap.innerHTML = json.results[i].fastestlaptime;
+                    //     resultsTime.innerHTML = json.results[i].time;
+                    //     resultsStatus.innerHTML = json.results[i].status;
+                    // }
+                    for (let i = 0; i < Object.keys(json.results).length; i++){
+                        var rowResult = `<tr class="text-center">
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].driver}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].constructor_id}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].grid}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].fastestlaptime}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].time}</td>
+                                            <td class="border rounded p-2" contenteditable="true">${json.results[i].status}</td>
+                                        </tr>`;
+                        $('#resultsTableBody').append(rowResult);
+                    }
+                    
+
+                });
+            }
+        });
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // window.addEventListener('load', function() {
+    // var upload = document.getElementById('fileInput');
+    
+    // // Make sure the DOM element exists
+    // if (upload) 
+    // {
+    //     upload.addEventListener('change', function() {
+    //     // Make sure a file was selected
+    //     if (upload.files.length > 0) 
+    //     {
+    //         var reader = new FileReader(); // File reader to read the file 
+            
+    //         // This event listener will happen when the reader has read the file
+    //         reader.addEventListener('load', function() {
+    //         var result = JSON.parse(reader.result); // Parse the result into an object 
+            
+    //         console.log(result);
+    //         // console.log(result.name);
+    //         });
+            
+    //         reader.readAsText(upload.files[0]); // Read the uploaded file
+    //     }
+    //     });
+    // }
+    // });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="w-full" id="info" style="display: none;">{{$data}}</div>
 
 <form class="bg-white w-full shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform" enctype="multipart/form-data">
     <label class="block text-gray-700 text-2xl font-bold mb-2">Standings verification</label>
@@ -236,6 +505,6 @@
     document.getElementById("timeid").value = jsondata.results[0].time;
     console.log(jsondata);
 
-</script>
+</script> -->
 
 @endsection
