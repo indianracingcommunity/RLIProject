@@ -385,7 +385,7 @@
                     <div id="errorPopup" class="hidden text-center text-red-600 text-sm lg:text-md font-semibold mt-1 mb-3">
                         <span class="mb-2">Please enter required details.</span>
                     </div>
-                    <div id="marginDiv" class="hidden mb-6">
+                        <div id="marginDiv" class="hidden mb-6">
                     </div>
                     <div class="border-t border-gray-400 p-2">
                         <p class="text-sm font-bold">Why do I need to do this?</p>
@@ -542,49 +542,84 @@
             }
         });
         
-        //Popup/Dialog Box functionality code starts here
-        var accountClassIds = ['#xboxPopup', '#psPopup', '#steamPopup'];
-        var popupSubmitBtns = ['#submitXboxPopup', '#submitPsPopup'];
-        var accountEntryPopups = ['#xboxPopupEntry','#psPopupEntry'];
-        var accountFormInp = ['#xboxInp', '#psInp'];
-        var accountPopupInp = ['#xboxPopupInp', '#psPopupInp'];
+        // popup script
         var popupIndex = 0;
-        //var whichAccount = [1, 2, 4];
+        var accountDetails = [
+                    {
+                        classId: '#xboxPopup',
+                        submitBtn: '#submitXboxPopup',
+                        entryPopup: '#xboxPopupEntry',
+                        formInp: '#xboxInp',
+                        popupInp: '#xboxPopupInp',
+                    },
+                    {
+                        classId: '#psPopup',
+                        submitBtn: '#submitPsPopup',
+                        entryPopup: '#psPopupEntry',
+                        formInp: '#psInp',
+                        popupInp: '#psPopupInp',
+                    },
+                    {
+                        classId: '#steamPopup',
+                        submitBtn: null,
+                        entryPopup: null,
+                        formInp: null,
+                        popupInp: null,
+                    }
+                ];
+
+        for(let i = 0; i < accountDetails.length; i++){
+            popupOpen(i, accountDetails);
+            openPopupFields(i, accountDetails);
+            popupSubmit(i, accountDetails);
+            copyTextFields(i, accountDetails);
+        }
         
-        for(i in accountClassIds) {
+        // closes popup on button click on cross
+        $('#cross').click(function(event) {
+            $('#overlay').removeClass('flex');
+            $('#overlay').addClass('hidden');
+        });
+        
+        // opens popup as per accounts value
+        function popupOpen(i, accountDetails) {
             if(accounts != -1 && (accounts & (1 << i)))  {
                 $('#overlay').removeClass('hidden');
                 $('#overlay').addClass('flex');
-                $(accountClassIds[i]).toggleClass('hidden');
+                $(accountDetails[i].classId).toggleClass('hidden');
             }
         }
 
-        for(let i = 0; i < accountClassIds.length; i++){
-            $(accountClassIds[i]).click(function(event){
+        // opens popup entry field as per button press
+        function openPopupFields(i, accountDetails) {
+            $(accountDetails[i].classId).click(function(event){
                 $('#errorPopup').hide('500');
                 if(popupIndex == i + 1){
-                    $(accountEntryPopups[i]).removeClass('isOpen');
-                    $(accountEntryPopups[i]).hide('500');
+                    $(accountDetails[i].entryPopup).removeClass('isOpen');
+                    $(accountDetails[i].entryPopup).hide('500');
                     $('#marginDiv').addClass('hidden');
                     popupIndex = 0;
                 } else {
                     if(popupIndex){
-                        $(accountEntryPopups[popupIndex - 1]).removeClass('isOpen');
-                        $(accountEntryPopups[popupIndex - 1]).hide('500');
+                        $(accountDetails[popupIndex - 1].entryPopup).removeClass('isOpen');
+                        $(accountDetails[popupIndex - 1].entryPopup).hide('500');
                         $('#marginDiv').addClass('hidden');
                     }
-                    $(accountEntryPopups[i]).addClass('isOpen');
-                    $(accountEntryPopups[i]).show('500');
-                    $('#marginDiv').removeClass('hidden');
+                    if(accountDetails[i].entryPopup != null) {
+                        $(accountDetails[i].entryPopup).addClass('isOpen');
+                        $(accountDetails[i].entryPopup).show('500');
+                        $('#marginDiv').removeClass('hidden');
+                    }
                     popupIndex = i + 1;
                 }
             });
         }
 
-        for(let i = 0; i < popupSubmitBtns.length; i++){
-            $(popupSubmitBtns[i]).click(function(event) {
+        // submits details entered in the popup
+        function popupSubmit(i, accountDetails) {
+            $(accountDetails[i].submitBtn).click(function(event) {
                 $('#errorPopup').hide('500');
-                if($(accountPopupInp[i]).val() == ''){
+                if($(accountDetails[i].popupInp).val() == ''){
                     $('#marginDiv').addClass('hidden');
                     $("#errorPopup").show('slow/400/fast', function() {});
                 } else {
@@ -594,19 +629,14 @@
             });
         }
         
-        $('#cross').click(function(event) {
-            $('#overlay').removeClass('flex');
-            $('#overlay').addClass('hidden');
-        });
-        
-        $(function () {
-            for(let i = 0; i < accountFormInp.length; i++){
-                $(accountFormInp[i]).on('input', function () {
-                    $(accountPopupInp[i]).val($(accountFormInp[i]).val());
+        // copies text fields in the form to the popup
+        function copyTextFields(i, accountDetails) {
+            for(let i = 0; i < accountDetails.length; i++){
+                $(accountDetails[i].formInp).on('input', function () {
+                    $(accountDetails[i].popupInp).val($(accountDetails[i].formInp).val());
                 });
             }
-        });
-        //Popup/Dialog Box functionality(jquery) code ends here
+        }
     });
 </script>
 @endsection
