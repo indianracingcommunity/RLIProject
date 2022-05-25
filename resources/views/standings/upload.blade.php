@@ -117,7 +117,7 @@
             <th class="border rounded px-4 py-2">constructor_id</th>
             <th class="border rounded px-4 py-2">grid</th>
             <th class="border rounded px-4 py-2">stops</th>
-            <th class="border rounded px-4 py-2">fasterstlaptime</th>
+            <th class="border rounded px-4 py-2">fastestlaptime</th>
             <th class="border rounded px-4 py-2">time</th>
             <th class="border rounded px-4 py-2">status</th>
             </tr>
@@ -137,11 +137,11 @@
     </table>
 </div>
 
-<div>
-
 <div class="flex justify-center items-center my-3">
     <button id="submit" class="bg-purple-500 hover:bg-purple-700 text-white font-semibold py-2 px-4 border border-purple-700 rounded">Submit</button>
 </div>
+
+<div>
     <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 border border-red-700 rounded">Cancel</button>
     <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Save</button>
 </div>
@@ -161,7 +161,6 @@
                 reader.addEventListener('load', function() {
                     //Parse the JSON into an object
                     var json = JSON.parse(reader.result);
-                    console.log(json);
                     
                     //Printing values of track key of json in table
                     // var trackSeason = document.getElementById('trackBodySeason');
@@ -224,7 +223,7 @@
                             track: trackContent[0],
                             results: resultsContent
                     }
-                        console.log(newJson);
+                        postJson(JSON.stringify(newJson));
                     });
 
                     function tableToJSON(table){
@@ -245,44 +244,24 @@
                         return data;
                     }
                 
+                    function postJson(json){
+                        $.ajax({
+                            type: "POST",
+                            url: "/results/race",
+                            data: json,
+                            contentType: "application/json",
+                            success: function (result) {
+                                console.log(result);
+                            },
+                            error: function (result, status) {
+                                console.log(result);
+                            }
+                        });
+                    }
                 });
             }
         });
     });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // window.addEventListener('load', function() {
-    // var upload = document.getElementById('fileInput');
-    
-    // // Make sure the DOM element exists
-    // if (upload) 
-    // {
-    //     upload.addEventListener('change', function() {
-    //     // Make sure a file was selected
-    //     if (upload.files.length > 0) 
-    //     {
-    //         var reader = new FileReader(); // File reader to read the file 
-            
-    //         // This event listener will happen when the reader has read the file
-    //         reader.addEventListener('load', function() {
-    //         var result = JSON.parse(reader.result); // Parse the result into an object 
-            
-    //         console.log(result);
-    //         // console.log(result.name);
-    //         });
-            
-    //         reader.readAsText(upload.files[0]); // Read the uploaded file
-    //     }
-    //     });
-    // }
-    // });
 </script>
 
 
