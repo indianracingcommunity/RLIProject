@@ -88,55 +88,60 @@
 
 <div class="bg-gray-200 w-1/2 shadow-lg rounded mb-10">
     <table id="jsonTableTrack" class="w-full table-auto">
-    <thead class="text-center bg-purple-500 text-white">
-        <tr>
-        <th class="border rounded px-4 py-2">season_id</th>
-        <th class="border rounded px-4 py-2">round</th>
-        <th class="border rounded px-4 py-2">circuit_id</th>
-        <th class="border rounded px-4 py-2">points_scheme</th>
-        </tr>
-    </thead>
-    <tbody class="bg-white" id="trackTableBody">
-        <!-- <tr class="text-center">
-            <td class="border rounded p-1" contenteditable="true" id="trackBodySeason"></td>
-            <td class="border rounded p-1" contenteditable="true" id="trackBodyRound"></td>
-            <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit"></td>
-            <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints"></td>
-        </tr> -->
-    </tbody>
+        <thead class="text-center bg-purple-500 text-white">
+            <tr>
+            <th class="border rounded px-4 py-2">season_id</th>
+            <th class="border rounded px-4 py-2">round</th>
+            <th class="border rounded px-4 py-2">circuit_id</th>
+            <th class="border rounded px-4 py-2">points</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white" id="trackTableBody">
+            <!-- <tr class="text-center">
+                <td class="border rounded p-1" contenteditable="true" id="trackBodySeason"></td>
+                <td class="border rounded p-1" contenteditable="true" id="trackBodyRound"></td>
+                <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit"></td>
+                <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints"></td>
+            </tr> -->
+        </tbody>
     </table>
 </div>
 
 <div class="bg-gray-200 w-full shadow-lg rounded">
     <table id="jsonTableResult" class="w-full table-auto">
-    <thead class="text-center bg-purple-500 text-white">
-        <tr>
-        <th class="border rounded px-4 py-2">position</th>
-        <th class="border rounded px-4 py-2">driver</th>
-        <th class="border rounded px-4 py-2">constructor_id</th>
-        <th class="border rounded px-4 py-2">grid</th>
-        <th class="border rounded px-4 py-2">stops</th>
-        <th class="border rounded px-4 py-2">fasterstlaptime</th>
-        <th class="border rounded px-4 py-2">time</th>
-        <th class="border rounded px-4 py-2">status</th>
-        </tr>
-    </thead>
-    <tbody class="bg-white" id="resultsTableBody">
-        <!-- <tr id="resultsRow">
-            <td class="border rounded" id="resultsBodyPosition"></td>
-            <td class="border rounded" id="resultsBodyDriver"></td>
-            <td class="border rounded" id="resultsBodyConstructor"></td>
-            <td class="border rounded" id="resultsBodyGrid"></td>
-            <td class="border rounded" id="resultsBodyStops"></td>
-            <td class="border rounded" id="resultsBodyFastestLap"></td>
-            <td class="border rounded" id="resultsBodyTime"></td>
-            <td class="border rounded" id="resultsBodyStatus"></td>
-        </tr> -->
-    </tbody>
+        <thead class="text-center bg-purple-500 text-white">
+            <tr>
+            <th class="border rounded px-4 py-2">position</th>
+            <th class="border rounded px-4 py-2">driver</th>
+            <th class="hidden border rounded px-4 py-2">driver_id</th>
+            <th class="border rounded px-4 py-2">constructor_id</th>
+            <th class="border rounded px-4 py-2">grid</th>
+            <th class="border rounded px-4 py-2">stops</th>
+            <th class="border rounded px-4 py-2">fasterstlaptime</th>
+            <th class="border rounded px-4 py-2">time</th>
+            <th class="border rounded px-4 py-2">status</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white" id="resultsTableBody">
+            <!-- <tr id="resultsRow">
+                <td class="border rounded" id="resultsBodyPosition"></td>
+                <td class="border rounded" id="resultsBodyDriver"></td>
+                <td class="border rounded" id="resultsBodyConstructor"></td>
+                <td class="border rounded" id="resultsBodyGrid"></td>
+                <td class="border rounded" id="resultsBodyStops"></td>
+                <td class="border rounded" id="resultsBodyFastestLap"></td>
+                <td class="border rounded" id="resultsBodyTime"></td>
+                <td class="border rounded" id="resultsBodyStatus"></td>
+            </tr> -->
+        </tbody>
     </table>
 </div>
 
 <div>
+
+<div class="flex justify-center items-center my-3">
+    <button id="submit" class="bg-purple-500 hover:bg-purple-700 text-white font-semibold py-2 px-4 border border-purple-700 rounded">Submit</button>
+</div>
     <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 border border-red-700 rounded">Cancel</button>
     <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Save</button>
 </div>
@@ -201,6 +206,7 @@
                         var rowResult = `<tr class="text-center">
                                             <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
                                             <td class="border rounded p-2" contenteditable="true">${json.results[i].driver}</td>
+                                            <td class="hidden border rounded p-2" contenteditable="true">${json.results[i].driver_id}</td>
                                             <td class="border rounded p-2" contenteditable="true">${json.results[i].constructor_id}</td>
                                             <td class="border rounded p-2" contenteditable="true">${json.results[i].grid}</td>
                                             <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
@@ -211,7 +217,34 @@
                         $('#resultsTableBody').append(rowResult);
                     }
                     
+                    $('#submit').click(function(event) {
+                        var trackContent = tableToJSON(document.getElementById('jsonTableTrack'));
+                        var resultsContent = tableToJSON(document.getElementById('jsonTableResult'));
+                        var newJson = {
+                            track: trackContent[0],
+                            results: resultsContent
+                    }
+                        console.log(newJson);
+                    });
 
+                    function tableToJSON(table){
+                        var data = [];
+                        var headers = [];
+                        for(var i = 0; i < table.rows[0].cells.length; i++){
+                            headers[i] = table.rows[0].cells[i].innerHTML;
+                        }
+                        for(var i = 1; i < table.rows.length; i++){
+                            var tableRow = table.rows[i];
+                            var rowData = {};
+                            for(var j = 0; j < tableRow.cells.length; j++){
+                                var status = Number(tableRow.cells[j].innerHTML);
+                                rowData[headers[j]] = (isNaN(status)) ? (tableRow.cells[j].textContent) : status;
+                            }
+                            data.push(rowData);
+                        }
+                        return data;
+                    }
+                
                 });
             }
         });
