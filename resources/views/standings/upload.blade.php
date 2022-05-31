@@ -176,9 +176,11 @@
                 reader.addEventListener('load', function() {
                     //Parse the JSON into an object
                     var json = JSON.parse(reader.result);
+                    // console.log(json);
 
                     if(checkJsonKeys(json)) {   
-                        checkExistence(json, season, tracks, points, driver, constructor);            
+                        checkExistence(json, season, tracks, points, driver, constructor);
+                        isValidTimeFormat(json);            
                         //Printing values of track key of json in table
                         // var trackSeason = document.getElementById('trackBodySeason');
                         // var trackRound = document.getElementById('trackBodyRound');
@@ -292,31 +294,31 @@
                     }
 
                     function checkExistence(json, season, tracks, points, driver, constructor) {
-                        var checkFields = [
+                        let checkFields = [
                                             {
                                                 input: json.track.season_id,
                                                 stored: season,
-                                                message: 'Season  ID = ' + json.track.season_id + ' not present in DB'
+                                                message: 'Season  ID ' + json.track.season_id + ' not present in DB'
                                             },
                                             {
                                                 input: json.track.circuit_id,
                                                 stored: tracks,
-                                                message: 'Circuit ID = ' + json.track.circuit_id + ' not present in DB'
+                                                message: 'Circuit ID ' + json.track.circuit_id + ' not present in DB'
                                             },
                                             {
                                                 input: json.track.points,
                                                 stored: points,
-                                                message: 'Points ID = ' + json.track.points + ' not present in DB'
+                                                message: 'Points ID ' + json.track.points + ' not present in DB'
                                                 },
                                             {
                                                 input: json.results,
                                                 stored: driver,
-                                                message: 'Driver ID not present in DB'
+                                                message: 'Driver ID not present in DB for position '
                                             },
                                             {
                                                 input: json.results,
                                                 stored: constructor,
-                                                message: 'Constructor ID not present in DB'
+                                                message: 'Constructor ID not present in DB for position '
                                             }
                                         ];
                         
@@ -328,11 +330,46 @@
                         
                         for(let i = 0; i < Object.keys(json.results).length; i++) {
                             if(checkFields[3].stored.find(item => {return item.id == checkFields[3].input[i].driver_id}) == undefined) {
-                                console.log(checkFields[3].message);
+                                let positionId = checkFields[3].input[i].position;
+                                let messagePrint = checkFields[3].message;
+                                console.log(messagePrint + positionId);
                             }
 
                             if(checkFields[4].stored.find(item => {return item.id == checkFields[4].input[i].constructor_id}) == undefined) {
-                                console.log(checkFields[4].message);
+                                let positionId = checkFields[4].input[i].position;
+                                let messagePrint = checkFields[4].message;
+                                console.log(messagePrint + positionId);
+                            }
+                        }
+                    }
+
+                    function isValidTimeFormat(json) {
+                        let timeExpRace = "^((([0-9]|[1-9][0-9]|[1-9][0-9][0-9])\:)?[0-5][0-9][.][0-9]{3}$)|[DNF]|[DSQ]";
+                        let timeCheckRace = new RegExp(timeExpRace);
+                        let timeExpFl = "^(([0-9]|[12][0-9]|3[01])\:)?[0-5][0-9][.][0-9]{3}$";
+                        let timeCheckFl = new RegExp(timeExpFl);
+                        let timeCheckFields = [
+                                                {
+                                                    input: json.results,
+                                                    message: 'Fastest lap format wrong for position '
+                                                },
+                                                {
+                                                    input: json.results,
+                                                    message: 'Race time format wrong for position '
+                                                }
+                                            ];
+
+                        for(let i = 0; i < Object.keys(json.results).length; i++) {
+                            if(!(timeCheckFl.test(timeCheckFields[0].input[i].fastestlaptime))) {
+                                let positionId = timeCheckFields[0].input[i].position;
+                                let messagePrint = timeCheckFields[0].message;
+                                console.log(messagePrint + positionId);
+                            }
+                            
+                            if(!(timeCheckRace.test(timeCheckFields[1].input[i].time))) {
+                                let positionId = timeCheckFields[1].input[i].position;
+                                let messagePrint = timeCheckFields[1].message;
+                                console.log(messagePrint + positionId);
                             }
                         }
                     }

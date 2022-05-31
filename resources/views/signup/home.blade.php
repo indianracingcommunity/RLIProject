@@ -653,7 +653,7 @@
       var imaget1 = document.getElementById("imgt1").value;
       var imaget3 = document.getElementById("imgt3").value;
       var speedlink = document.getElementById("speedlinkid").value;
-      var patt = new RegExp("^([0-5]?[0-9]\:)?[0-5]?[0-9][.][0-9]{3}$");;
+      var patt = new RegExp("^([0-5]?[0-9]\:)?[0-5]?[0-9][.][0-9]{3}$");
       var seasonid = document.getElementById("seasonnum").value;
       var res;
       var formStatus = '';
