@@ -15,6 +15,8 @@ use App\Points;
 use App\Series;
 use App\Season;
 use App\Discord;
+use App\Circuit;
+use App\Constructor;
 
 class ResultsController extends Controller
 {
@@ -232,5 +234,21 @@ class ResultsController extends Controller
                 ->with('nextRace', $sr[1])
                 ->with('results', $results)
                 ->with('count', $count);
+    }
+
+    public function uploadResults()
+    {
+        $season = Season::where('status', '>', 0)->get();
+        $points = Points::all();
+        $tracks = Circuit::select('id', 'name')->get();
+        $constructor = Constructor::select('id', 'name')->get();
+        $driver = Driver::select('id', 'name')->get();
+
+        return view('standings.upload')
+               ->with('season', $season)
+               ->with('points', $points)
+               ->with('tracks', $tracks)
+               ->with('constructor', $constructor)
+               ->with('driver', $driver);
     }
 }
