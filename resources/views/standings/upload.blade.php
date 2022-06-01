@@ -309,36 +309,26 @@
                                                 input: json.track.points,
                                                 stored: points,
                                                 message: 'Points ID ' + json.track.points + ' not present in DB'
-                                                },
-                                            {
-                                                input: json.results,
-                                                stored: driver,
-                                                message: 'Driver ID not present in DB for position '
-                                            },
-                                            {
-                                                input: json.results,
-                                                stored: constructor,
-                                                message: 'Constructor ID not present in DB for position '
-                                            }
+                                                }
                                         ];
                         
-                        for(let i = 0; i < checkFields.length - 2; i++) {
+                        for(let i = 0; i < checkFields.length; i++) {
                             if(checkFields[i].stored.find(item => {return item.id == checkFields[i].input}) == undefined) {
                                 console.log(checkFields[i].message);
                             }
                         }
                         
                         for(let i = 0; i < Object.keys(json.results).length; i++) {
-                            if(checkFields[3].stored.find(item => {return item.id == checkFields[3].input[i].driver_id}) == undefined) {
-                                let positionId = checkFields[3].input[i].position;
-                                let messagePrint = checkFields[3].message;
-                                console.log(messagePrint + positionId);
+                            if(driver.find(item => {return item.id == json.results[i].driver_id}) == undefined) {
+                                let positionId = json.results[i].position;
+                                let driverId = json.results[i].driver_id;
+                                console.log('Driver ID ' + driverId + ' not present in DB for position ' + positionId);
                             }
 
-                            if(checkFields[4].stored.find(item => {return item.id == checkFields[4].input[i].constructor_id}) == undefined) {
-                                let positionId = checkFields[4].input[i].position;
-                                let messagePrint = checkFields[4].message;
-                                console.log(messagePrint + positionId);
+                            if(constructor.find(item => {return item.id == json.results[i].constructor_id}) == undefined) {
+                                let positionId = json.results[i].position;
+                                let contructorId = json.results[i].contructor_id;
+                                console.log('Contructor ID ' + contructorId + ' not present in DB for position ' + positionId);
                             }
                         }
                     }
@@ -348,28 +338,16 @@
                         let timeCheckRace = new RegExp(timeExpRace);
                         let timeExpFl = "^(([0-9]|[12][0-9]|3[01])\:)?[0-5][0-9][.][0-9]{3}$";
                         let timeCheckFl = new RegExp(timeExpFl);
-                        let timeCheckFields = [
-                                                {
-                                                    input: json.results,
-                                                    message: 'Fastest lap format wrong for position '
-                                                },
-                                                {
-                                                    input: json.results,
-                                                    message: 'Race time format wrong for position '
-                                                }
-                                            ];
 
                         for(let i = 0; i < Object.keys(json.results).length; i++) {
-                            if(!(timeCheckFl.test(timeCheckFields[0].input[i].fastestlaptime))) {
-                                let positionId = timeCheckFields[0].input[i].position;
-                                let messagePrint = timeCheckFields[0].message;
-                                console.log(messagePrint + positionId);
+                            if(!(timeCheckFl.test(json.results[i].fastestlaptime))) {
+                                let positionId = json.results[i].position;
+                                console.log('Fastest lap format wrong for position ' + positionId);
                             }
                             
-                            if(!(timeCheckRace.test(timeCheckFields[1].input[i].time))) {
-                                let positionId = timeCheckFields[1].input[i].position;
-                                let messagePrint = timeCheckFields[1].message;
-                                console.log(messagePrint + positionId);
+                            if(!(timeCheckRace.test(json.results[i].time))) {
+                                let positionId = json.results[i].position;
+                                console.log('Race time format wrong for position ' + positionId);
                             }
                         }
                     }
