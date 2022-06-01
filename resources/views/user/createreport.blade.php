@@ -10,22 +10,21 @@ input[type="checkbox"]+label span {
 
 input[type="radio"]:checked+label,
 input[type="checkbox"]:checked+label {
-    color: #38a169;
+    color: rgb(147 51 234);
 }
 
 input[type="radio"]+label span:hover,
-input[type="radio"]+label:hover span,
-    {
+input[type="radio"]+label:hover span {
     transform: scale(1.2);
 }
 
 input[type="radio"]:checked+label span {
-    background-color: #38a169;
+    background-color: rgb(147 51 234);
     box-shadow: 0px 0px 0px 2px white inset;
 }
 
 input[type="checkbox"]:checked+label span {
-    background-color: rgb(22 163 74);
+    background-color: rgb(147 51 234);
 }
 
 input[type="checkbox"]:checked+label span::before {
@@ -34,6 +33,17 @@ input[type="checkbox"]:checked+label span::before {
     content: '✔';
     font-weight: 200;
     color: white;
+}
+
+select {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#photo_upload_label:hover svg,
+#photo_upload_label:hover p {
+    color: rgb(147 51 234);
 }
 
 /* ============================== Driver Select Dropdown ==================================*/
@@ -65,7 +75,7 @@ input[type="checkbox"]:checked+label span::before {
     transform: scale(1, 1);
 }
 
-.dropdown-disabled{
+.dropdown-disabled {
     pointer-events: none;
     opacity: 0.5;
 }
@@ -75,21 +85,34 @@ input[type="checkbox"]:checked+label span::before {
         margin-top: 125px;
     }
 }
+
+@media screen and (max-width: 450px) {
+    .mobile-text-xxs {
+        font-size: 0.5rem;
+    }
+}
 </style>
 
+<!-- <div class="container mx-auto lg:w-3/4">
+    <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
+        <i class="far fa-check-circle mr-2"></i>Report Submitted Successfully
+    </div>
+</div> -->
 <div class="container w-screen">
     <!-- Report Title -->
-    <div class="font-semibold text-left shadow-lg bg-green-200 rounded-md md:w-2/3 px-6 py-4 mx-auto">
-        <div class="text-3xl text-green-800">Create Report<br></div>
-        <p class="text-green-600"><i class="fa fa-exclamation-circle" aria-hidden="true"></i><strong>
+    <div class="font-semibold text-left shadow-lg bg-purple-200 rounded-md lg:w-3/4 px-6 py-4 mx-auto">
+        <div class="text-xl lg:text-3xl text-purple-800">Create Report<br></div>
+        <p class="text-sm lg:text-base text-purple-600"><i class="fa fa-exclamation-circle"
+                aria-hidden="true"></i><strong>
                 Disclaimer</strong>: Stewards can take <strong>action</strong> against parties involved,
             <strong>including</strong> the reporting driver.
         </p>
     </div>
 
     <!-- Report Form -->
-    <div class="mx-auto my-4 py-4 px-20 shadow-lg rounded-lg md:w-2/3">
-        <form action="{{route('report.submit')}}" method="POST" class="my-4" onsubmit="return validateReport()">
+    <div class="mx-auto my-4 py-4 px-8 lg:px-20 shadow-lg rounded-lg lg:w-3/4">
+        <form action="{{route('report.submit')}}" method="POST" class="my-4" onsubmit="return validateReport()"
+            enctype="multipart/form-data">
             @csrf
             <!-- Form Elements -->
             <div class='grid row-gap-2 md:row-gap-8 md:grid-cols-2'>
@@ -103,7 +126,7 @@ input[type="checkbox"]:checked+label span::before {
                         </svg>
                     </div>
                     <select
-                        class="appearance-none bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:bg-white focus:border-green-600"
+                        class="appearance-none bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:bg-white focus:border-purple-600"
                         id="race" name="race">
                         @for ($i =0 ; $i <count($data) ; $i++) <option value="{{$data[$i]['id']}}">
                             {{$data[$i]['circuit']['name'] ." - ".$data[$i]['season']['name']}} </option>
@@ -115,7 +138,8 @@ input[type="checkbox"]:checked+label span::before {
                 <label class="text-gray-700 text-base font-bold">Reporting Against?</label>
                 <div class="mb-6 md:mb-0">
                     <div class="inline-flex items-center mr-4">
-                        <input id="radio_driver" name="reporting_against" type="radio" class="hidden" value="DRIVER" checked />
+                        <input id="radio_driver" name="reporting_against" type="radio" class="hidden" value="DRIVER"
+                            checked />
                         <label id="label_driver" for="radio_driver" class="flex items-center cursor-pointer">
                             <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
                             Driver</label>
@@ -135,7 +159,7 @@ input[type="checkbox"]:checked+label span::before {
                         </label>
                         <div class="w-96 dropdown-form">
                             <label
-                                class="dropdown-label overflow-auto bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:outline-none focus:bg-white focus:border-green-600">
+                                class="dropdown-label overflow-auto bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600">
                                 No Drivers Selected
                             </label>
                             <div
@@ -149,7 +173,7 @@ input[type="checkbox"]:checked+label span::before {
                             <div class="spacing w-full"></div>
                             <div class="block w-auto text-red-600 text-sm italic" id="errorDriver"></div>
                             <!-- Driver Dropdown List -->
-                            <div class="dropdown-list border rounded hover:bg-white hover:border-green-600 w-full">
+                            <div class="dropdown-list border rounded hover:bg-white hover:border-purple-600 w-full">
                             </div>
                         </div>
                     </div>
@@ -164,8 +188,16 @@ input[type="checkbox"]:checked+label span::before {
                             <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
                             Quali</label>
                     </div>
+                    <div class="inline-flex items-center mr-6">
+                        <input id="radio_formation" name="incident_occurred" type="radio" class="hidden"
+                            value="FORMATION" />
+                        <label id="label_formation" for="radio_formation" class="flex items-center cursor-pointer">
+                            <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
+                            Formation</label>
+                    </div>
                     <div class="inline-flex items-center mr-4">
-                        <input id="radio_race" name="incident_occurred" type="radio" class="hidden" value="RACE" checked />
+                        <input id="radio_race" name="incident_occurred" type="radio" class="hidden" value="RACE"
+                            checked />
                         <label id="label_race" for="radio_race" class="flex items-center cursor-pointer">
                             <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
                             Race</label>
@@ -178,7 +210,7 @@ input[type="checkbox"]:checked+label span::before {
                         <label class="text-gray-700 text-base font-bold">Lap Number</label>
                         <div>
                             <input id="lap" name="lap" type="number"
-                                class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:outline-none focus:bg-white focus:border-green-600"
+                                class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600"
                                 placeholder="Lap Number" min=-1>
                             <div class="block w-auto text-red-600 text-sm italic" id="errorLap"></div>
                         </div>
@@ -189,27 +221,47 @@ input[type="checkbox"]:checked+label span::before {
                 <label class="text-gray-700 text-base font-bold">Elaborate the Issue</label>
                 <div class="mb-6 md:mb-0">
                     <textarea id="explanation" name="explanation"
-                        class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:outline-none focus:bg-white focus:border-green-600"
-                        rows="3" name="explained"></textarea>
+                        class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600"
+                        rows="3" maxlength="140"></textarea>
+                    <div class="mobile-text-xxs text-xs font-semibold text-gray-600">
+                        Limit 140 characters
+                    </div>
                     <div class="block w-auto text-red-600 text-sm italic" id="errorExplanation"></div>
                 </div>
 
-                <!-- ======= Video Proof ======= -->
-                <label class="text-gray-700 text-base font-bold">Video Proof</label>
-                <div>
+                <!-- ======= Proof ======= -->
+                <label class="text-gray-700 text-base font-bold">Evidence</label>
+                <div class="relative" id="proof_container">
+                    <!-- Links -->
                     <input type="text" id="proof" name="proof"
-                        class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-green-600 hover:bg-green-100 focus:outline-none focus:bg-white focus:border-green-600"
-                        placeholder="Youtube link">
-                    <div class="text-xs font-semibold text-gray-600">
+                        class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600">
+                    <div class="mobile-text-xxs text-xs font-semibold text-gray-600">
                         For multiple videos seperate it by comma
                     </div>
+
+                    <!-- Photos  -->
+                    <div class="my-4 py-6 px-8 shadow-lg bg-gray-100 rounded-lg w-full">
+                        <input type="file" id="photo_upload" name="photo_upload" onchange="javascript:uploadFiles()"
+                            hidden multiple>
+                        <label id="photo_upload_label" for="photo_upload"
+                            class="flex flex-col justify-center relative text-xs font-semibold text-gray-600 w-full h-32 border-2 rounded border-dashed border-gray-500 bg-gray-200 hover:border-purple-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="block my-4 mx-auto h-8 w-8 opacity-50"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                            <p class="mx-auto">Upload Photos</p>
+                        </label>
+                        <div id="uploaded_files" class="text-xs font-semibold text-gray-600"></div>
+                    </div>
+
                     <div class="block w-auto text-red-600 text-sm italic" id="errorProof"></div>
                 </div>
             </div>
             <!-- Form Submit -->
             <div class="flex w-full mt-10 content-center items-center justify-center">
                 <button
-                    class="bg-green-500 hover:bg-green-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    class="bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit" id="submitid">
                     Submit
                 </button>
@@ -244,6 +296,7 @@ var explanationError = $("#errorExplanation");
 var proof = $("#proof");
 var proofError = $("#errorProof");
 
+
 $(document).ready(function() {
 
     resetForm();
@@ -270,13 +323,23 @@ $(document).ready(function() {
 
     $("#label_quali").click(() => {
         $("#radio_race").prop("checked", false);
+        $("#radio_formation").prop("checked", false);
         $("#lap_num_container").hide('400', () => {
             lap_number.val(-1);
         });
     })
 
+    $("#label_formation").click(() => {
+        $("#radio_race").prop("checked", false);
+        $("#radio_quali").prop("checked", false);
+        $("#lap_num_container").hide('400', () => {
+            lap_number.val(0);
+        });
+    })
+
     $("#label_race").click(() => {
         $("#radio_quali").prop("checked", false);
+        $("#radio_formation").prop("checked", false);
         lap_number.val('');
         $("#lap_num_container").show('400');
     })
@@ -304,14 +367,14 @@ $(document).ready(function() {
                         var name = response[i].name;
 
                         var driverDropdownEntry =
-                            "<div class='py-1 hover:bg-green-200'><input id='checkbox-" + id +
+                            "<div class='py-1 hover:bg-purple-200'><input id='checkbox-" + id +
                             "'class='hidden' type='checkbox' name='drivers[]' value='" + id +
                             "'/>" +
                             "<label class='block ml-3' for='checkbox-" + id + "'>" +
-                            "<span class='relative w-4 h-4 inline-block mr-2 border border-green-600' style='top: 1.5px;'></span>" +
+                            "<span class='relative w-4 h-4 inline-block mr-2 border border-purple-600' style='top: 1.5px;'></span>" +
                             name + "</label></div>";
 
-                            driverDropdownList.append(driverDropdownEntry);
+                        driverDropdownList.append(driverDropdownEntry);
                     }
                     driverSelectCheckboxes = driverDropdownList.find('[type="checkbox"]');
                     driverSelectCheckboxes.on('click', (e) => {
@@ -389,6 +452,37 @@ $(document).ready(function() {
         driverNames = [];
     }
 });
+
+// -------------------------- File Upload --------------------------------//
+function uploadFiles() {
+    var uploadedFilesContainer = $("#uploaded_files");
+    var files = $("#photo_upload").prop("files");
+
+    for (var i = 0; i < files.length; i++) {
+
+        var fileEntry = `<div id="file_container"
+                            class="flex justify-start bg-gray-200 shadow-lg border border-gray-500 rounded my-2 py-2 px-3 w-full h-16">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="text-purple-500 my-auto h-8 w-8"
+                                viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div class="relative ml-4 my-auto flex w-full h-full">
+                                <span class="w-2/3 my-auto">${files[i].name}</span>
+                                <div id="delete_file${i + 1}" class="w-1/3 flex justify-end">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="my-auto h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>`
+        uploadedFilesContainer.append(fileEntry);
+        $("#delete_file" + (i + 1)).on("click", (e) => {
+            $(e.target).parents("#file_container").remove();
+        });
+    }
+}
 
 //------------------------------ Validate ------------------------------------//
 function validateReport() {
