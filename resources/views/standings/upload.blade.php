@@ -180,7 +180,7 @@
 
                     if(checkJsonKeys(json)) {   
                         checkExistence(json, season, tracks, points, driver, constructor);
-                        isValidTimeFormat(json);            
+                        isValidTimeFormat(json);     
                         //Printing values of track key of json in table
                         // var trackSeason = document.getElementById('trackBodySeason');
                         // var trackRound = document.getElementById('trackBodyRound');
@@ -243,10 +243,15 @@
                             var trackContent = tableToJSON(document.getElementById('jsonTableTrack'));
                             var resultsContent = tableToJSON(document.getElementById('jsonTableResults'));
                             var newJson = {
-                                track: trackContent[0],
-                                results: resultsContent
+                                            track: trackContent[0],
+                                            results: resultsContent
+                                        };
+                            
+                            if(isValidTimeFormat(newJson)) {
+                                postJson(JSON.stringify(newJson));
+                            } else {
+                                console.log("Cannot post JSON due to errors in time format")
                             }
-                            postJson(JSON.stringify(newJson));
                         });
                     }
 
@@ -334,22 +339,26 @@
                     }
 
                     function isValidTimeFormat(json) {
-                        let timeExpRace = "^((([0-9]|[1-9][0-9]|[1-9][0-9][0-9])\:)?[0-5][0-9][.][0-9]{3}$)|[DNF]|[DSQ]";
+                        let timeExpRace = "^\\+?(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
                         let timeCheckRace = new RegExp(timeExpRace);
-                        let timeExpFl = "^(([0-9]|[12][0-9]|3[01])\:)?[0-5][0-9][.][0-9]{3}$";
+                        let timeExpFl = "^(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^\\-$";
                         let timeCheckFl = new RegExp(timeExpFl);
+                        let status = 1;
 
                         for(let i = 0; i < Object.keys(json.results).length; i++) {
                             if(!(timeCheckFl.test(json.results[i].fastestlaptime))) {
                                 let positionId = json.results[i].position;
                                 console.log('Fastest lap format wrong for position ' + positionId);
+                                status = 0;
                             }
                             
                             if(!(timeCheckRace.test(json.results[i].time))) {
                                 let positionId = json.results[i].position;
                                 console.log('Race time format wrong for position ' + positionId);
+                                status = 0;
                             }
                         }
+                        return status;
                     }
                 });
             }
