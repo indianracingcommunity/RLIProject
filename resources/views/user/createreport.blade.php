@@ -35,14 +35,19 @@ input[type="checkbox"]:checked+label span::before {
     color: white;
 }
 
-select {
+.ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#photo_upload_label:hover svg,
-#photo_upload_label:hover p {
+#evidence_primary_container:hover svg,
+#evidence_primary_container:hover p {
+    color: rgb(147 51 234);
+}
+
+.delete_container:hover svg,
+.delete_container:hover svg {
     color: rgb(147 51 234);
 }
 
@@ -80,24 +85,20 @@ select {
     opacity: 0.5;
 }
 
-@media screen and (min-width: 1920px) {
-    .container {
-        margin-top: 125px;
-    }
-}
-
 @media screen and (max-width: 450px) {
     .mobile-text-xxs {
-        font-size: 0.5rem;
+        font-size: 0.6rem;
     }
 }
 </style>
 
-<!-- <div class="container mx-auto lg:w-3/4">
-    <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
-        <i class="far fa-check-circle mr-2"></i>Report Submitted Successfully
+@if (session()->has('report_success'))
+<div class="container mx-auto lg:w-3/4">
+    <div class="rounded text-green-600 p-4 mb-3 border-2 bg-green-200 shadow-lg font-semibold my-4">
+        <i class="far fa-check-circle mr-2"></i>{{session()->get('report_success')}}
     </div>
-</div> -->
+</div>
+@endif
 <div class="container w-screen">
     <!-- Report Title -->
     <div class="font-semibold text-left shadow-lg bg-purple-200 rounded-md lg:w-3/4 px-6 py-4 mx-auto">
@@ -111,7 +112,7 @@ select {
 
     <!-- Report Form -->
     <div class="mx-auto my-4 py-4 px-8 lg:px-20 shadow-lg rounded-lg lg:w-3/4">
-        <form action="{{route('report.submit')}}" method="POST" class="my-4" onsubmit="return validateReport()"
+        <form action="{{route('report.submit')}}" method="POST" class="my-4" onsubmit="return submitForm()"
             enctype="multipart/form-data">
             @csrf
             <!-- Form Elements -->
@@ -126,7 +127,7 @@ select {
                         </svg>
                     </div>
                     <select
-                        class="appearance-none bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:bg-white focus:border-purple-600"
+                        class="ellipsis appearance-none bg-gray-200 shadow-lg border border-gray-500 cursor-pointer rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:bg-white focus:border-purple-600"
                         id="race" name="race">
                         @for ($i =0 ; $i <count($data) ; $i++) <option value="{{$data[$i]['id']}}">
                             {{$data[$i]['circuit']['name'] ." - ".$data[$i]['season']['name']}} </option>
@@ -171,7 +172,8 @@ select {
                                 </svg>
                             </div>
                             <div class="spacing w-full"></div>
-                            <div class="block w-auto text-red-600 text-sm italic" id="errorDriver"></div>
+                            <div class="block w-auto text-red-600 text-sm italic pointer-events-none" id="errorDriver">
+                            </div>
                             <!-- Driver Dropdown List -->
                             <div class="dropdown-list border rounded hover:bg-white hover:border-purple-600 w-full">
                             </div>
@@ -212,7 +214,8 @@ select {
                             <input id="lap" name="lap" type="number"
                                 class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600"
                                 placeholder="Lap Number" min=-1>
-                            <div class="block w-auto text-red-600 text-sm italic" id="errorLap"></div>
+                            <div class="block w-auto text-red-600 text-sm italic pointer-events-none" id="errorLap">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,39 +229,69 @@ select {
                     <div class="mobile-text-xxs text-xs font-semibold text-gray-600">
                         Limit 140 characters
                     </div>
-                    <div class="block w-auto text-red-600 text-sm italic" id="errorExplanation"></div>
+                    <div class="block w-auto text-red-600 text-sm italic pointer-events-none" id="errorExplanation">
+                    </div>
                 </div>
 
-                <!-- ======= Proof ======= -->
-                <label class="text-gray-700 text-base font-bold">Evidence</label>
-                <div class="relative" id="proof_container">
-                    <!-- Links -->
-                    <input type="text" id="proof" name="proof"
-                        class="bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-full hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600">
-                    <div class="mobile-text-xxs text-xs font-semibold text-gray-600">
-                        For multiple videos seperate it by comma
-                    </div>
+                <!-- ======= Evidence ======= -->
+                <div class="md:col-span-2">
+                    <div class="shadow-inner rounded bg-gray-100 px-4 py-4 border hover:border-purple-600">
+                        <label class="text-gray-700 text-base font-bold">Evidence</label>
 
-                    <!-- Photos  -->
-                    <div class="my-4 py-6 px-8 shadow-lg bg-gray-100 rounded-lg w-full">
-                        <input type="file" id="photo_upload" name="photo_upload" onchange="javascript:uploadFiles()"
-                            hidden multiple>
-                        <label id="photo_upload_label" for="photo_upload"
-                            class="flex flex-col justify-center relative text-xs font-semibold text-gray-600 w-full h-32 border-2 rounded border-dashed border-gray-500 bg-gray-200 hover:border-purple-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="block my-4 mx-auto h-8 w-8 opacity-50"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                            <p class="mx-auto">Upload Photos</p>
-                        </label>
-                        <div id="uploaded_files" class="text-xs font-semibold text-gray-600"></div>
-                    </div>
+                        <div class="relative grid md:grid-cols-2 md:gap-4">
+                            <!-- Links -->
+                            <div class="my-2">
+                                <div class="py-6 px-8 shadow-lg bg-white rounded-lg w-full">
+                                    <div onclick="addLink()" id="evidence_primary_container"
+                                        class="flex flex-col justify-center relative text-xs font-semibold text-gray-600 w-full h-32 border-2 rounded border-dashed border-gray-500 bg-gray-200 hover:border-purple-600 hover:bg-purple-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="block my-4 mx-auto h-8 w-8 opacity-50" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                        <p class="mx-auto">Add Video Link</p>
+                                    </div>
+                                    <div id="links_container" class="text-xs font-semibold text-gray-600"></div>
+                                </div>
+                                <div class="block w-auto text-red-600 text-sm italic pointer-events-none"
+                                    id="errorLink"></div>
+                            </div>
+                            <input type="text" id="links_merged" name="links_merged" hidden>
 
-                    <div class="block w-auto text-red-600 text-sm italic" id="errorProof"></div>
+                            <!-- Images  -->
+                            <div class="my-2 relative">
+                                <div class="flex justify-start text-gray-600 font-semibold pointer-events-none md:absolute md:w-full"
+                                    style="top: -20px;">
+                                    <p class="ml-2" style="font-size: 0.6rem;">Size / Image : 2 MB</p>
+                                    <p class="ml-auto mr-2" style="font-size: 0.6rem;">Max Limit : 8 MB</p>
+                                </div>
+                                <div class="py-6 px-8 shadow-lg bg-white rounded-lg w-full">
+                                    <input type="file" id="images_input" name="images[]" accept=".png, .jpg, .jpeg"
+                                        onchange="addImages()" hidden multiple>
+                                    <label for="images_input" id="evidence_primary_container"
+                                        class="flex flex-col justify-center relative text-xs font-semibold text-gray-600 w-full h-32 border-2 rounded border-dashed border-gray-500 bg-gray-200 hover:border-purple-600 hover:bg-purple-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="block my-4 mx-auto h-8 w-8 opacity-50" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        </svg>
+                                        <p class="mx-auto">Add Images</p>
+                                    </label>
+                                    <div id="images_container" class="text-xs font-semibold text-gray-600"></div>
+                                </div>
+                                <div class="block w-auto text-red-600 text-sm italic pointer-events-none"
+                                    id="errorImage"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 block w-auto text-red-600 text-sm italic pointer-events-none"
+                        id="errorEvidence"></div>
                 </div>
             </div>
-            <!-- Form Submit -->
+
+            <!-- =========== Form Submit =========== -->
             <div class="flex w-full mt-10 content-center items-center justify-center">
                 <button
                     class="bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-lg py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -285,6 +318,7 @@ var driverSelectCheckboxes = null;
 var driverSelectError = $("#errorDriver");
 
 var incidentOccuredQuali = $('#radio_quali');
+var incidentOccuredFormation = $("#radio_formation");
 var incidentOccuredRace = $('#radio_race');
 
 var lap_number = $("#lap");
@@ -293,13 +327,15 @@ var lapNumberError = $("#errorLap");
 var explanation = $("#explanation");
 var explanationError = $("#errorExplanation");
 
-var proof = $("#proof");
-var proofError = $("#errorProof");
+var imagesInput = $("#images_input");
 
+var linkError = $("#errorLink");
+var imageError = $("#errorImage");
+var evidenceError = $("#errorEvidence");
 
 $(document).ready(function() {
 
-    resetForm();
+    resetFormData();
     updateDriverDropdownList(selectedRace.val());
 
     //Race changed
@@ -311,12 +347,12 @@ $(document).ready(function() {
     //------------------- Custom behaviour Radio Input Groups ----------------------//
     $("#label_driver").click(() => {
         $("#radio_game").prop("checked", false);
-        $("#driver_select_container").show('400');
+        $("#driver_select_container").slideDown('fast');
     })
 
     $("#label_game").click(() => {
         $("#radio_driver").prop("checked", false);
-        $("#driver_select_container").hide('400', () => {
+        $("#driver_select_container").slideUp('fast', () => {
             resetDriverSelectDropdown();
         });
     })
@@ -324,7 +360,7 @@ $(document).ready(function() {
     $("#label_quali").click(() => {
         $("#radio_race").prop("checked", false);
         $("#radio_formation").prop("checked", false);
-        $("#lap_num_container").hide('400', () => {
+        $("#lap_num_container").slideUp('fast', () => {
             lap_number.val(-1);
         });
     })
@@ -332,7 +368,7 @@ $(document).ready(function() {
     $("#label_formation").click(() => {
         $("#radio_race").prop("checked", false);
         $("#radio_quali").prop("checked", false);
-        $("#lap_num_container").hide('400', () => {
+        $("#lap_num_container").slideUp('fast', () => {
             lap_number.val(0);
         });
     })
@@ -341,7 +377,7 @@ $(document).ready(function() {
         $("#radio_quali").prop("checked", false);
         $("#radio_formation").prop("checked", false);
         lap_number.val('');
-        $("#lap_num_container").show('400');
+        $("#lap_num_container").slideDown('fast');
     })
 
     //-------------------- Driver Select Drop Down ------------------------------//
@@ -366,13 +402,13 @@ $(document).ready(function() {
                         var id = response[i].id;
                         var name = response[i].name;
 
-                        var driverDropdownEntry =
-                            "<div class='py-1 hover:bg-purple-200'><input id='checkbox-" + id +
-                            "'class='hidden' type='checkbox' name='drivers[]' value='" + id +
-                            "'/>" +
-                            "<label class='block ml-3' for='checkbox-" + id + "'>" +
-                            "<span class='relative w-4 h-4 inline-block mr-2 border border-purple-600' style='top: 1.5px;'></span>" +
-                            name + "</label></div>";
+                        var driverDropdownEntry = `<div class='py-1 hover:bg-purple-200'>
+                                                        <input id="checkbox-${id}" type="checkbox" name="drivers[]" value="${id}" hidden/>
+                                                        <label class="block ml-3" for="checkbox-${id}">
+                                                            <span class="relative w-4 h-4 inline-block mr-2 border border-purple-600" style="top: 1.5px;"></span>
+                                                            ${name}
+                                                        </label>
+                                                    </div>`;
 
                         driverDropdownList.append(driverDropdownEntry);
                     }
@@ -427,20 +463,21 @@ $(document).ready(function() {
     }
 
     // -------------------------- Reset --------------------------------------//
-    function resetForm() {
+    function resetFormData() {
         selectedRace.prop('selectedIndex', 0);
 
         reportingAgainstDriver.prop('checked', true);
         reportingAgainstGame.prop('checked', false);
 
-        resetDriverSelectDropdown();
-
         incidentOccuredQuali.prop('checked', false);
+        incidentOccuredFormation.prop('checked', false);
         incidentOccuredRace.prop('checked', true);
 
         lap_number.val('');
         explanation.val('');
-        proof.val('');
+
+        var dt = new DataTransfer();
+        imagesInput.prop('files', dt.files);
     }
 
     function resetDriverSelectDropdown() {
@@ -453,45 +490,153 @@ $(document).ready(function() {
     }
 });
 
-// -------------------------- File Upload --------------------------------//
-function uploadFiles() {
-    var uploadedFilesContainer = $("#uploaded_files");
-    var files = $("#photo_upload").prop("files");
+// -------------------------- Evidence --------------------------------//
 
-    for (var i = 0; i < files.length; i++) {
+//Link
+function addLink() {
+    var linksContainer = $("#links_container");
 
-        var fileEntry = `<div id="file_container"
-                            class="flex justify-start bg-gray-200 shadow-lg border border-gray-500 rounded my-2 py-2 px-3 w-full h-16">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="text-purple-500 my-auto h-8 w-8"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <div class="relative ml-4 my-auto flex w-full h-full">
-                                <span class="w-2/3 my-auto">${files[i].name}</span>
-                                <div id="delete_file${i + 1}" class="w-1/3 flex justify-end">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="my-auto h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>`
-        uploadedFilesContainer.append(fileEntry);
-        $("#delete_file" + (i + 1)).on("click", (e) => {
-            $(e.target).parents("#file_container").remove();
-        });
-    }
+    var link = `<div id="evidence_secondary_container"
+                    class="flex justify-start my-2 w-full">
+                    <input type="url" 
+                            class="relative bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-10/12 md:w-11/12 h-10 hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600">
+                    <div class="delete_container w-2/12 md:w-1/12 flex justify-center md:justify-end" onclick="deleteLink(event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="my-auto h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </div>
+                </div>`
+
+    linksContainer.append(link);
 }
 
-//------------------------------ Validate ------------------------------------//
+function deleteLink(e) {
+    $(e.currentTarget).parents("#evidence_secondary_container").remove();
+}
+
+//Images
+var imagesArray = []
+
+function addImages() {
+    var imagesContainer = $("#images_container");
+    var images = imagesInput.prop("files"); //New files
+    imagesArray = [...imagesArray]; //Get existing files 
+
+    var imageName;
+    var imageType;
+    var imageSize;
+
+    for (var i = 0; i < images.length; i++) {
+
+        //Ignore image if it has already been added
+        if (imagesArray.some((element) => {
+                return element.name === images[i].name;
+            })) {
+            continue;
+        }
+
+        imagesArray.push(images[i]);
+        imageName = images[i].name.slice(0, images[i].name.lastIndexOf('.'));
+        imageType = images[i].name.slice(images[i].name.lastIndexOf('.'));
+        imageSize = `${(images[i].size / (1024 * 1024)).toFixed(1)} MB`;
+
+        // var imageEntry = `<div id="evidence_secondary_container" class="flex justify-start my-2 w-full">
+
+        //                     <div class="relative flex justify-start pointer-events-none bg-gray-200 shadow-lg border border-gray-500 rounded py-1 px-3 w-10/12 md:w-11/12">                    
+        //                         <svg xmlns="http://www.w3.org/2000/svg" class="text-purple-500 my-auto h-8 w-8"
+        //                             viewBox="0 0 20 20" fill="currentColor">
+        //                             <path fill-rule="evenodd"
+        //                                 d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+        //                                 clip-rule="evenodd" />
+        //                         </svg>
+        //                         <p class="ellipsis ml-4 my-auto w-24 md:w-8/12">${imageName}</p>
+        //                         <div class="flex justify-end w-4/12">
+        //                             <p class="my-auto">${imageType}</p>
+        //                         </div>
+        //                     </div>
+
+        //                     <div id="${images[i].name}" class="delete_container w-2/12 md:w-1/12 flex justify-center md:justify-end" onclick="deleteImage(event)">
+        //                         <svg xmlns="http://www.w3.org/2000/svg" class="my-auto h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        //                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        //                         </svg>
+        //                     </div>
+
+        //                 </div>`
+
+        var imageEntry = `<div id="evidence_secondary_container" class="flex justify-start my-2 w-full">
+
+                            <div class="relative flex justify-start pointer-events-none bg-gray-200 shadow-lg border border-gray-500 rounded py-1 px-3 w-10/12 h-10 md:w-11/12">                    
+                                <p class="my-auto w-12" style="font-size: 0.6rem;">${imageSize}</p>
+                                <p class="ellipsis ml-1 md:ml-2 my-auto w-24 md:w-8/12">${imageName}</p>
+                                <div class="flex justify-end w-2/12">
+                                    <p class="my-auto" style="font-size: 0.6rem;">${imageType}</p>
+                                </div>
+                            </div>
+
+                            <div id="${images[i].name}" class="delete_container w-2/12 md:w-1/12 flex justify-center md:justify-end" onclick="deleteImage(event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="my-auto h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </div>
+                            
+                        </div>`
+        imagesContainer.append(imageEntry);
+    }
+    updateImagesInput();
+}
+
+//Update files property of input[type="file"] after new files are added or existing ones are removed
+function updateImagesInput() {
+    var dt = new DataTransfer();
+    for (const image of imagesArray) {
+        dt.items.add(image);
+    }
+    imagesInput.prop('files', dt.files);
+}
+
+function deleteImage(e) {
+    imagesArray.splice(imagesArray.findIndex((image) => {
+        return image.name === e.currentTarget.id;
+    }), 1);
+
+    updateImagesInput();
+    $(e.currentTarget).parents("#evidence_secondary_container").remove();
+}
+
+//------------------------------ Submit Form ------------------------------------//
+function submitForm() {
+    if (validateReport()) {
+
+        var links = $("input[type='url']");
+        console.log(links.length);
+        //Combine links
+        if (links.length > 0) {
+            var links_merged = '';
+            links.each((i, link) => {
+                if (i !== 0) {
+                    links_merged += '\\n';
+                }
+                links_merged += link.value;
+            });
+            $("#links_merged").val(links_merged);
+        } else {
+            $("#links_merged").remove();
+        }
+        return true;
+    }
+
+    return false;
+}
+
 function validateReport() {
 
     var sendForm = true;
     driverSelectError.hide();
     lapNumberError.hide();
     explanationError.hide();
-    proofError.hide();
+    linkError.hide();
+    imageError.hide();
+    evidenceError.hide();
 
     //Condition 1: Reporting against driver but no driver selected
     if (reportingAgainstDriver.prop("checked") && $('input[type="checkbox"]:checked').length === 0) {
@@ -515,30 +660,52 @@ function validateReport() {
         sendForm = false;
     }
 
-    //Condition 4: Invalid or No URL provided
-    if (!validateYouTubeUrl()) {
-        proofError.show();
-        proofError.html("Please enter a valid link!");
+    //Condition 4: No Evidence provided
+    var links = $('input[type="url"]');
+    var images = imagesInput.prop('files');
+    if (links.length === 0 && images.length === 0) {
+        evidenceError.show();
+        evidenceError.html("No Evidence provided. Please include either links or images or both!");
+        sendForm = false;
+    }
+
+    //Condition 5: Empty links
+    links.each((i, link) => {
+        if (link.value === '') {
+            linkError.show();
+            linkError.html("Links cannot be empty!");
+            sendForm = false;
+        }
+    });
+
+    //Condition 6: Total images size > 8MB
+    var totalSize = 0;
+    for (var i = 0; i < images.length; i++) {
+
+        //Condition 7: File Type 
+        if (images[i].type != 'image/png' && images[i].type != 'image/jpg' && images[i].type != 'image/jpeg') {
+            imageError.show();
+            imageError.html("Some files are not of image type. Please make sure files are of type jpg/png/jpeg!");
+            sendForm = false;
+            break;
+        }
+        //Condition 8: Image size > 2MB
+        if (images[i].size > 2097152) {
+            imageError.show();
+            imageError.html("Image size cannot exceed 2MB!");
+            sendForm = false;
+            break;
+        }
+        totalSize += images[i].size;
+
+    }
+    if (totalSize > 8388608) {
+        imageError.show();
+        imageError.html("Max upload limit cannot exceed 8MB!");
         sendForm = false;
     }
 
     return sendForm;
-}
-
-function validateYouTubeUrl() {
-    var url = $('#proof').val();
-    if (url != undefined || url != '') {
-        var regExp =
-            /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/gm;
-        var match = url.match(regExp);
-        if (match) {
-            return true;
-        }
-    } else {
-        return false;
-    }
-
-    return false;
 }
 </script>
 @endsection
