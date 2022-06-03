@@ -593,21 +593,21 @@
         // opens popup entry field as per button press
         function openPopupFields(i, accountDetails) {
             $(accountDetails[i].classId).click(function(event){
-                $('#errorPopup').hide('500');
+                $('#errorPopup').slideUp('500');
                 if(popupIndex == i + 1){
                     $(accountDetails[i].entryPopup).removeClass('isOpen');
-                    $(accountDetails[i].entryPopup).hide('500');
+                    $(accountDetails[i].entryPopup).slideUp('500');
                     $('#marginDiv').addClass('hidden');
                     popupIndex = 0;
                 } else {
                     if(popupIndex){
                         $(accountDetails[popupIndex - 1].entryPopup).removeClass('isOpen');
-                        $(accountDetails[popupIndex - 1].entryPopup).hide('500');
+                        $(accountDetails[popupIndex - 1].entryPopup).slideUp('500');
                         $('#marginDiv').addClass('hidden');
                     }
                     if(accountDetails[i].entryPopup != null) {
                         $(accountDetails[i].entryPopup).addClass('isOpen');
-                        $(accountDetails[i].entryPopup).show('500');
+                        $(accountDetails[i].entryPopup).slideDown('500');
                         $('#marginDiv').removeClass('hidden');
                     }
                     popupIndex = i + 1;
@@ -618,10 +618,10 @@
         // submits details entered in the popup
         function popupSubmit(i, accountDetails) {
             $(accountDetails[i].submitBtn).click(function(event) {
-                $('#errorPopup').hide('500');
+                $('#errorPopup').slideUp('500');
                 if($(accountDetails[i].popupInp).val() == ''){
                     $('#marginDiv').addClass('hidden');
-                    $("#errorPopup").show('slow/400/fast', function() {});
+                    $("#errorPopup").slideDown('500', function() {});
                 } else {
                     $('#marginDiv').removeClass('hidden');
                     $('#submitProfileForm').submit();
