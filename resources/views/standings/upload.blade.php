@@ -1,87 +1,6 @@
 @extends('layouts.app')
 @section('content')
 
-<!-- <form class="hidden bg-white w-full shadow-lg rounded-md px-5" method="POST" action="/testform" enctype="multipart/form-data">
-    <div class="flex-row pb-5">
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Tier</label>
-            <div class="inline-block relative">
-                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                    @foreach ($season as $value)
-                    <option value="{{$value->id}}">{{$value->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Round Number</label>
-            <input maxlength="4" type="number" placeholder="Round number" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Circuit</label>
-            <div class="inline-block relative">
-                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                    @foreach ($tracks as $value)
-                    <option value="{{$value->id}}">{{$value->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Points Scheme</label>
-            <input maxlength="3" type="number" placeholder="9 for season 8" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-    </div>
-
-    <div class="flex-row pb-5">
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Driver</label>
-            <div class="inline-block relative">
-                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                    @foreach ($driver as $value)
-                    <option value="{{$value->id}}">{{$value->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Constructor</label>
-            <div class="inline-block relative">
-                <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                    @foreach ($constructor as $value)
-                    <option value="{{$value->id}}">{{$value->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Grid</label>
-            <input maxlength="3" type="number" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter Laps completed</label>
-            <input maxlength="3" type="number" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter fastest lap</label>
-            <input maxlength="40" type="text" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter race time/interval</label>
-            <input maxlength="40" type="text" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-        <div>
-            <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Enter status</label>
-            <input maxlength="3" type="number" placeholder="" class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-        </div>
-    </div>
-    
-    <div class="flex gap-5 justify-center items-center">
-        <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-purple-600 rounded text-white font-semibold hover:bg-white hover:text-purple-600 shadow-xl" style="display: block;">Add Driver</button>
-        <button type="button" class="text-sm flex items-center justify-center content-center w-1/4 mt-3 bg-purple-600 rounded text-white font-semibold hover:bg-white hover:text-purple-600 shadow-xl" style="display: block;">Verify</button>
-    </div>
-</form> -->
-
 <div id="missingTrackAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 py-2 px-4 mb-4 rounded" role="alert">
     <p><strong>'Track'</strong> key missing in the uploaded result JSON.</p>
 </div>
@@ -90,27 +9,27 @@
     <p><strong>'Results'</strong> key missing in the uploaded result JSON.</p>
 </div>
 
+<select class="bg-gray-200 w-48 p-1 mb-10 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+    @foreach ($tracks as $value)
+    <option value="{{$value->id}}">{{$value->name}}</option>
+    @endforeach
+</select>
+
 <div class="mb-10">
     <input type="file" id="fileInput">
 </div>
 
-<div class="bg-gray-200 w-1/2 shadow-lg rounded mb-10">
+<div class="bg-gray-200 w-7/12 shadow-lg rounded mb-10">
     <table id="jsonTableTrack" class="w-full table-auto">
         <thead id="trackHeaderFields" class="hidden text-center bg-purple-500 text-white">
             <tr>
-            <th class="border rounded px-4 py-2">season_id</th>
-            <th class="border rounded px-4 py-2">round</th>
-            <th class="border rounded px-4 py-2">circuit_id</th>
-            <th class="border rounded px-4 py-2">points</th>
+            <th class="border rounded px-4 py-2">Tier</th>
+            <th class="border rounded px-4 py-2">Round Number</th>
+            <th class="border rounded px-4 py-2">Circuit</th>
+            <th class="border rounded px-4 py-2">Points Scheme</th>
             </tr>
         </thead>
         <tbody class="bg-white" id="trackTableBody">
-            <!-- <tr class="text-center">
-                <td class="border rounded p-1" contenteditable="true" id="trackBodySeason"></td>
-                <td class="border rounded p-1" contenteditable="true" id="trackBodyRound"></td>
-                <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit"></td>
-                <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints"></td>
-            </tr> -->
         </tbody>
     </table>
 </div>
@@ -119,28 +38,18 @@
     <table id="jsonTableResults" class="w-full table-auto">
         <thead id="resultsHeaderFields" class="hidden text-center bg-purple-500 text-white">
             <tr>
-            <th class="border rounded px-4 py-2">position</th>
-            <th class="border rounded px-4 py-2">driver</th>
-            <th class="hidden border rounded px-4 py-2">driver_id</th>
-            <th class="border rounded px-4 py-2">constructor_id</th>
-            <th class="border rounded px-4 py-2">grid</th>
-            <th class="border rounded px-4 py-2">stops</th>
-            <th class="border rounded px-4 py-2">fastestlaptime</th>
-            <th class="border rounded px-4 py-2">time</th>
-            <th class="border rounded px-4 py-2">status</th>
+            <th class="border rounded px-4 py-2">Position</th>
+            <th class="border rounded px-4 py-2">Driver</th>
+            <th class="hidden border rounded px-4 py-2">Driver ID</th>
+            <th class="border rounded px-4 py-2">Constructor</th>
+            <th class="border rounded px-4 py-2">Starting Grid</th>
+            <th class="border rounded px-4 py-2">Laps Completed</th>
+            <th class="border rounded px-4 py-2">Fastest Lap</th>
+            <th class="border rounded px-4 py-2">Race Time</th>
+            <th class="border rounded px-4 py-2">Status</th>
             </tr>
         </thead>
         <tbody class="bg-white" id="resultsTableBody">
-            <!-- <tr id="resultsRow">
-                <td class="border rounded" id="resultsBodyPosition"></td>
-                <td class="border rounded" id="resultsBodyDriver"></td>
-                <td class="border rounded" id="resultsBodyConstructor"></td>
-                <td class="border rounded" id="resultsBodyGrid"></td>
-                <td class="border rounded" id="resultsBodyStops"></td>
-                <td class="border rounded" id="resultsBodyFastestLap"></td>
-                <td class="border rounded" id="resultsBodyTime"></td>
-                <td class="border rounded" id="resultsBodyStatus"></td>
-            </tr> -->
         </tbody>
     </table>
 </div>
@@ -155,7 +64,6 @@
 </div>
 
 
-
 <script>
     $(document).ready(function() {
         var season = <?php echo json_encode($season); ?>;
@@ -163,6 +71,24 @@
         var tracks = <?php echo json_encode($tracks); ?>;
         var constructor = <?php echo json_encode($constructor); ?>;
         var driver = <?php echo json_encode($driver); ?>;
+        var status = [
+                        {
+                            id: 0,
+                            value: 'Finished'
+                        },
+                        {
+                            id: 1,
+                            value: 'Fastest Lap'
+                        },
+                        {
+                            id: -2,
+                            value: 'DNF'
+                        },
+                        {
+                            id: -3,
+                            value: 'DSQ'
+                        }
+                    ];
         // console.log(points);
         //JS to upload JSON, slot values into table
         var upload = document.getElementById('fileInput');
@@ -176,67 +102,146 @@
                 reader.addEventListener('load', function() {
                     //Parse the JSON into an object
                     var json = JSON.parse(reader.result);
-                    // console.log(json);
+                    // console.log(json.track.points);
 
                     if(checkJsonKeys(json)) {   
                         checkExistence(json, season, tracks, points, driver, constructor);
                         isValidTimeFormat(json);     
-                        //Printing values of track key of json in table
-                        // var trackSeason = document.getElementById('trackBodySeason');
-                        // var trackRound = document.getElementById('trackBodyRound');
-                        // var trackCircuit = document.getElementById('trackBodyCircuit');
-                        // var trackPoints = document.getElementById('trackBodyPoints');
                         
-                        // trackSeason.innerHTML = json.track.season_id;
-                        // trackRound.innerHTML = json.track.round;
-                        // trackCircuit.innerHTML = json.track.circuit_id;
-                        // trackPoints.innerHTML = json.track.points;
+                        //Printing values of track key of json in table
                         $('#trackHeaderFields').toggleClass('hidden');
+                        // var rowTrack = `<tr class="text-center">
+                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodySeason">${json.track.season_id}</td>
+                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodyRound">${json.track.round}</td>
+                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit">${json.track.circuit_id}</td>
+                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints">${json.track.points}</td>
+                        //                 </tr>`;
+                        // $('#trackTableBody').append(rowTrack);
+
                         var rowTrack = `<tr class="text-center">
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodySeason">${json.track.season_id}</td>
+                                            <td class="border rounded p-1" contenteditable="true" id="trackBodySeason">
+                                                <select id="seasonSelect" class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                </select>
+                                            </td>
                                             <td class="border rounded p-1" contenteditable="true" id="trackBodyRound">${json.track.round}</td>
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit">${json.track.circuit_id}</td>
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints">${json.track.points}</td>
+                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit">
+                                                <select id="tracksSelect" class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                </select>
+                                            </td>
+                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints">
+                                                <select id="pointsSelect" class="bg-gray-200 w-24 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                </select>
+                                            </td>
                                         </tr>`;
                         $('#trackTableBody').append(rowTrack);
 
-                        //Printing values of results key of json in table
-                        // var resultsPosition = document.getElementById('resultsBodyPosition');
-                        // var resultsDriver = document.getElementById('resultsBodyDriver');
-                        // var resultsConstructor = document.getElementById('resultsBodyConstructor');
-                        // var resultsGrid = document.getElementById('resultsBodyGrid');
-                        // var resultsStops = document.getElementById('resultsBodyStops');
-                        // var resultsFastestLap = document.getElementById('resultsBodyFastestLap');
-                        // var resultsTime = document.getElementById('resultsBodyTime');
-                        // var resultsStatus = document.getElementById('resultsBodyStatus');
-                        // var resultsRow = document.getElementById('resultsRow');
+                        let seasonSelected, tracksSelected, pointsSelected;
 
-                        // for (let i = 0; i < Object.keys(json.results).length; i++){
-                        //     resultsPosition.innerHTML = json.results[i].position;
-                        //     resultsDriver.innerHTML = json.results[i].driver;
-                        //     resultsConstructor.innerHTML = json.results[i].constructor_id;
-                        //     resultsGrid.innerHTML = json.results[i].grid;
-                        //     resultsStops.innerHTML = json.results[i].stops;
-                        //     resultsFastestLap.innerHTML = json.results[i].fastestlaptime;
-                        //     resultsTime.innerHTML = json.results[i].time;
-                        //     resultsStatus.innerHTML = json.results[i].status;
-                        // }
+                        for(let i = 0; i < season.length; i++) {
+                            if (season[i].id != json.track.season_id) {
+                                seasonSelected += "<option value='"+season[i].id+"'>"+season[i].name+"</option>";
+                            } else {
+                                season[i].id = json.results.season_id;
+                                seasonSelected += "<option selected value='"+season[i].id+"'>"+season[i].name+"</option>";
+                            }
+                            document.getElementById(`seasonSelect`).innerHTML = seasonSelected;
+                        }
+                        
+                        for(let i = 0; i < tracks.length; i++) {
+                            if (tracks[i].id != json.track.circuit_id) {
+                                tracksSelected += "<option value='"+tracks[i].id+"'>"+tracks[i].name+"</option>";
+                            } else {
+                                tracks[i].id = json.results.circuit_id;
+                                tracksSelected += "<option selected value='"+tracks[i].id+"'>"+tracks[i].name+"</option>";
+                            }
+                            document.getElementById(`tracksSelect`).innerHTML = tracksSelected;
+                        }
+
+                        for(let i = 0; i < points.length; i++) {
+                            if (points[i].id != json.track.points) {
+                                pointsSelected += "<option value='"+points[i].id+"'>"+points[i].id+"</option>";
+                            } else {
+                                points[i].id = json.track.points;
+                                pointsSelected += "<option selected value='"+points[i].id+"'>"+points[i].id+"</option>";
+                            }
+                            document.getElementById(`pointsSelect`).innerHTML = pointsSelected;
+                        }
+
+
+                        //Printing values of results key of json in table
                         $('#resultsHeaderFields').toggleClass('hidden');
+                        // for (let i = 0; i < Object.keys(json.results).length; i++){
+                        //     var rowResult = `<tr class="text-center">
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].driver}</td>
+                        //                         <td class="hidden border rounded p-2" contenteditable="true">${json.results[i].driver_id}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].constructor_id}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].grid}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].fastestlaptime}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].time}</td>
+                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].status}</td>
+                        //                     </tr>`;
+                        //     $('#resultsTableBody').append(rowResult);
+                        // }
+
                         for (let i = 0; i < Object.keys(json.results).length; i++){
                             var rowResult = `<tr class="text-center">
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].driver}</td>
+                                                <td class="border rounded py-2 px-1" contenteditable="true">
+                                                    <select id='driverSelect${i}' class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+                                                    </select>
+                                                </td>
                                                 <td class="hidden border rounded p-2" contenteditable="true">${json.results[i].driver_id}</td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].constructor_id}</td>
+                                                <td class="border rounded py-2 px-1" contenteditable="true">
+                                                    <select id='constructorSelect${i}' class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                    </select>
+                                                </td>
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].grid}</td>
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].fastestlaptime}</td>
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].time}</td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].status}</td>
+                                                <td class="border rounded py-2 px-1" contenteditable="true">
+                                                    <select id='statusSelect${i}' class="bg-gray-200 w-36 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                    </select>
+                                                </td>
                                             </tr>`;
                             $('#resultsTableBody').append(rowResult);
+                            
+                            let driverSelected, constructorSelected, statusSelected;
+
+                            for(let j = 0; j < driver.length; j++) {
+                                if (driver[j].id != json.results[i].driver_id) {
+                                    driverSelected += "<option value='"+driver[j].id+"'>"+driver[j].name+"</option>";
+                                } else {
+                                    driver[j].id = json.results[i].driver_id;
+                                    driverSelected += "<option selected value='"+driver[j].id+"'>"+driver[j].name+"</option>";
+                                }
+                                document.getElementById(`driverSelect${i}`).innerHTML = driverSelected;
+                            }
+
+                            for(let j = 0; j < constructor.length; j++) {
+                                if (constructor[j].id != json.results[i].constructor_id) {
+                                    constructorSelected += "<option value='"+constructor[j].id+"'>"+constructor[j].name+"</option>";
+                                } else {
+                                    constructor[j].id = json.results[i].constructor_id;
+                                    constructorSelected += "<option selected value='"+constructor[j].id+"'>"+constructor[j].name+"</option>";
+                                }
+                                document.getElementById(`constructorSelect${i}`).innerHTML = constructorSelected;
+                            }
+
+                            for(let j = 0; j < status.length; j++) {
+                                if (status[j].id != json.results[i].status) {
+                                    statusSelected += "<option value='"+status[j].id+"'>"+status[j].value+"</option>";
+                                } else {
+                                    status[j].id = json.results[i].status;
+                                    statusSelected += "<option selected value='"+status[j].id+"'>"+status[j].value+"</option>";
+                                }
+                                document.getElementById(`statusSelect${i}`).innerHTML = statusSelected;
+                            }
                         }
 
+                        
                         $('#submit').toggleClass('hidden');
                         
                         $('#submit').click(function(event) {
@@ -246,6 +251,7 @@
                                             track: trackContent[0],
                                             results: resultsContent
                                         };
+                            console.log(newJson)
                             
                             if(isValidTimeFormat(newJson)) {
                                 postJson(JSON.stringify(newJson));
@@ -254,12 +260,72 @@
                             }
                         });
                     }
-
+                    
                     function tableToJSON(table) {
                         var data = [];
                         var headers = [];
                         for(var i = 0; i < table.rows[0].cells.length; i++) {
-                            headers[i] = table.rows[0].cells[i].innerHTML;
+                            let jsonKeyHeaders = [
+                                                    {
+                                                        tableHeader: 'Tier',
+                                                        jsonHeader: 'season_id'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Round Number',
+                                                        jsonHeader: 'round'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Circuit',
+                                                        jsonHeader: 'circuit_id'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Points Scheme',
+                                                        jsonHeader: 'points'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Position',
+                                                        jsonHeader: 'position'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Driver',
+                                                        jsonHeader: 'driver'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Driver ID',
+                                                        jsonHeader: 'driver_id'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Constructor',
+                                                        jsonHeader: 'constructor_id'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Starting Grid',
+                                                        jsonHeader: 'grid'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Laps Completed',
+                                                        jsonHeader: 'stops'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Fastest Lap',
+                                                        jsonHeader: 'fastestlaptime'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Race Time',
+                                                        jsonHeader: 'time'
+                                                    },
+                                                    {
+                                                        tableHeader: 'Status',   
+                                                        jsonHeader: 'status'
+                                                    },
+                                                ];
+                            for(let j = 0; j < jsonKeyHeaders.length; j++) {
+                                let temp = table.rows[0].cells[i].innerHTML;
+                                if(temp == jsonKeyHeaders[j].tableHeader) {
+                                    tableHeader = jsonKeyHeaders[j].jsonHeader;
+                                    headers[i] = tableHeader;
+                                }
+                            }
                         }
                         for(var i = 1; i < table.rows.length; i++) {
                             var tableRow = table.rows[i];
