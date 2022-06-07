@@ -119,16 +119,16 @@
                         // $('#trackTableBody').append(rowTrack);
 
                         var rowTrack = `<tr class="text-center">
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodySeason">
+                                            <td class="border rounded p-1" contenteditable="false" id="trackBodySeason">
                                                 <select id="seasonSelect" class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                 </select>
                                             </td>
                                             <td class="border rounded p-1" contenteditable="true" id="trackBodyRound">${json.track.round}</td>
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit">
+                                            <td class="border rounded p-1" contenteditable="false" id="trackBodyCircuit">
                                                 <select id="tracksSelect" class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                 </select>
                                             </td>
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints">
+                                            <td class="border rounded p-1" contenteditable="false" id="trackBodyPoints">
                                                 <select id="pointsSelect" class="bg-gray-200 w-24 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                 </select>
                                             </td>
@@ -188,12 +188,12 @@
                         for (let i = 0; i < Object.keys(json.results).length; i++){
                             var rowResult = `<tr class="text-center">
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
-                                                <td class="border rounded py-2 px-1" contenteditable="true">
+                                                <td class="border rounded py-2 px-1" contenteditable="false">
                                                     <select id='driverSelect${i}' class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
                                                     </select>
                                                 </td>
                                                 <td class="hidden border rounded p-2" contenteditable="true">${json.results[i].driver_id}</td>
-                                                <td class="border rounded py-2 px-1" contenteditable="true">
+                                                <td class="border rounded py-2 px-1" contenteditable="false">
                                                     <select id='constructorSelect${i}' class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                     </select>
                                                 </td>
@@ -201,7 +201,7 @@
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].fastestlaptime}</td>
                                                 <td class="border rounded p-2" contenteditable="true">${json.results[i].time}</td>
-                                                <td class="border rounded py-2 px-1" contenteditable="true">
+                                                <td class="border rounded py-2 px-1" contenteditable="false">
                                                     <select id='statusSelect${i}' class="bg-gray-200 w-36 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                     </select>
                                                 </td>
@@ -316,8 +316,9 @@
                                                 {
                                                     tableHeader: 'Status',   
                                                     jsonHeader: 'status'
-                                                },
+                                                }
                                             ];
+                        let statusMap = [0, 1, -2, -3];
 
                         for(let i = 0; i < table.rows[0].cells.length; i++) {
                             for(let j = 0; j < jsonKeyHeaders.length; j++) {
@@ -338,14 +339,20 @@
                                     treeTraversal = tableRow.cells[j].children[0].options;
                                     if(headers[j] == 'driver'){
                                         rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                                    } else if(headers[j] == 'status') {
+                                        tempRow = treeTraversal.selectedIndex;
+                                        rowContent = statusMap[tempRow];
                                     } else {
                                         rowContent = treeTraversal.selectedIndex + 1;
                                     }
+                                } else if (headers[j] == 'driver_id') {
+                                    leftCellTraversal = tableRow.cells[1].children[0].options;
+                                    rowContent = leftCellTraversal.selectedIndex + 1;
                                 } else {
                                     rowContent = tableRow.cells[j].innerHTML;
                                 }
-                                // console.log(rowContent)
                                 status = Number(rowContent);
+                                // console.log(rowContent)
                                 rowData[headers[j]] = (isNaN(status)) ? rowContent : status;
                             }
                             data.push(rowData);
