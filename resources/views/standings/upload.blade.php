@@ -245,9 +245,9 @@
                         $('#submit').toggleClass('hidden');
                         
                         $('#submit').click(function(event) {
-                            var trackContent = tableToJSON(document.getElementById('jsonTableTrack'));
-                            var resultsContent = tableToJSON(document.getElementById('jsonTableResults'));
-                            var newJson = {
+                            let trackContent = tableToJSON(document.getElementById('jsonTableTrack'));
+                            let resultsContent = tableToJSON(document.getElementById('jsonTableResults'));
+                            let newJson = {
                                             track: trackContent[0],
                                             results: resultsContent
                                         };
@@ -262,63 +262,64 @@
                     }
                     
                     function tableToJSON(table) {
-                        var data = [];
-                        var headers = [];
-                        for(var i = 0; i < table.rows[0].cells.length; i++) {
-                            let jsonKeyHeaders = [
-                                                    {
-                                                        tableHeader: 'Tier',
-                                                        jsonHeader: 'season_id'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Round Number',
-                                                        jsonHeader: 'round'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Circuit',
-                                                        jsonHeader: 'circuit_id'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Points Scheme',
-                                                        jsonHeader: 'points'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Position',
-                                                        jsonHeader: 'position'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Driver',
-                                                        jsonHeader: 'driver'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Driver ID',
-                                                        jsonHeader: 'driver_id'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Constructor',
-                                                        jsonHeader: 'constructor_id'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Starting Grid',
-                                                        jsonHeader: 'grid'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Laps Completed',
-                                                        jsonHeader: 'stops'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Fastest Lap',
-                                                        jsonHeader: 'fastestlaptime'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Race Time',
-                                                        jsonHeader: 'time'
-                                                    },
-                                                    {
-                                                        tableHeader: 'Status',   
-                                                        jsonHeader: 'status'
-                                                    },
-                                                ];
+                        let data = [];
+                        let headers = [];
+                        let jsonKeyHeaders = [
+                                                {
+                                                    tableHeader: 'Tier',
+                                                    jsonHeader: 'season_id'
+                                                },
+                                                {
+                                                    tableHeader: 'Round Number',
+                                                    jsonHeader: 'round'
+                                                },
+                                                {
+                                                    tableHeader: 'Circuit',
+                                                    jsonHeader: 'circuit_id'
+                                                },
+                                                {
+                                                    tableHeader: 'Points Scheme',
+                                                    jsonHeader: 'points'
+                                                },
+                                                {
+                                                    tableHeader: 'Position',
+                                                    jsonHeader: 'position'
+                                                },
+                                                {
+                                                    tableHeader: 'Driver',
+                                                    jsonHeader: 'driver'
+                                                },
+                                                {
+                                                    tableHeader: 'Driver ID',
+                                                    jsonHeader: 'driver_id'
+                                                },
+                                                {
+                                                    tableHeader: 'Constructor',
+                                                    jsonHeader: 'constructor_id'
+                                                },
+                                                {
+                                                    tableHeader: 'Starting Grid',
+                                                    jsonHeader: 'grid'
+                                                },
+                                                {
+                                                    tableHeader: 'Laps Completed',
+                                                    jsonHeader: 'stops'
+                                                },
+                                                {
+                                                    tableHeader: 'Fastest Lap',
+                                                    jsonHeader: 'fastestlaptime'
+                                                },
+                                                {
+                                                    tableHeader: 'Race Time',
+                                                    jsonHeader: 'time'
+                                                },
+                                                {
+                                                    tableHeader: 'Status',   
+                                                    jsonHeader: 'status'
+                                                },
+                                            ];
+
+                        for(let i = 0; i < table.rows[0].cells.length; i++) {
                             for(let j = 0; j < jsonKeyHeaders.length; j++) {
                                 let temp = table.rows[0].cells[i].innerHTML;
                                 if(temp == jsonKeyHeaders[j].tableHeader) {
@@ -327,12 +328,25 @@
                                 }
                             }
                         }
-                        for(var i = 1; i < table.rows.length; i++) {
-                            var tableRow = table.rows[i];
-                            var rowData = {};
-                            for(var j = 0; j < tableRow.cells.length; j++) {
-                                var status = Number(tableRow.cells[j].innerHTML);
-                                rowData[headers[j]] = (isNaN(status)) ? (tableRow.cells[j].textContent) : status;
+
+                        for(let i = 1; i < table.rows.length; i++) {
+                            let tableRow = table.rows[i];
+                            let rowData = {};
+                            let rowContent, treeTraversal, status;
+                            for(let j = 0; j < tableRow.cells.length; j++) {
+                                if(tableRow.cells[j].children.length != 0) {
+                                    treeTraversal = tableRow.cells[j].children[0].options;
+                                    if(headers[j] == 'driver'){
+                                        rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                                    } else {
+                                        rowContent = treeTraversal.selectedIndex + 1;
+                                    }
+                                } else {
+                                    rowContent = tableRow.cells[j].innerHTML;
+                                }
+                                // console.log(rowContent)
+                                status = Number(rowContent);
+                                rowData[headers[j]] = (isNaN(status)) ? rowContent : status;
                             }
                             data.push(rowData);
                         }
