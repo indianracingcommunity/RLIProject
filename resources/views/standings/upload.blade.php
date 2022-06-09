@@ -110,13 +110,6 @@
                         
                         //Printing values of track key of json in table
                         $('#trackHeaderFields').toggleClass('hidden');
-                        // var rowTrack = `<tr class="text-center">
-                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodySeason">${json.track.season_id}</td>
-                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodyRound">${json.track.round}</td>
-                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodyCircuit">${json.track.circuit_id}</td>
-                        //                     <td class="border rounded p-1" contenteditable="true" id="trackBodyPoints">${json.track.points}</td>
-                        //                 </tr>`;
-                        // $('#trackTableBody').append(rowTrack);
 
                         var rowTrack = `<tr class="text-center">
                                             <td class="border rounded p-1" contenteditable="false" id="trackBodySeason">
@@ -135,55 +128,13 @@
                                         </tr>`;
                         $('#trackTableBody').append(rowTrack);
 
-                        let seasonSelected, tracksSelected, pointsSelected;
-
-                        for(let i = 0; i < season.length; i++) {
-                            if (season[i].id != json.track.season_id) {
-                                seasonSelected += "<option value='"+season[i].id+"'>"+season[i].name+"</option>";
-                            } else {
-                                season[i].id = json.results.season_id;
-                                seasonSelected += "<option selected value='"+season[i].id+"'>"+season[i].name+"</option>";
-                            }
-                            document.getElementById(`seasonSelect`).innerHTML = seasonSelected;
-                        }
-                        
-                        for(let i = 0; i < tracks.length; i++) {
-                            if (tracks[i].id != json.track.circuit_id) {
-                                tracksSelected += "<option value='"+tracks[i].id+"'>"+tracks[i].name+"</option>";
-                            } else {
-                                tracks[i].id = json.results.circuit_id;
-                                tracksSelected += "<option selected value='"+tracks[i].id+"'>"+tracks[i].name+"</option>";
-                            }
-                            document.getElementById(`tracksSelect`).innerHTML = tracksSelected;
-                        }
-
-                        for(let i = 0; i < points.length; i++) {
-                            if (points[i].id != json.track.points) {
-                                pointsSelected += "<option value='"+points[i].id+"'>"+points[i].id+"</option>";
-                            } else {
-                                points[i].id = json.track.points;
-                                pointsSelected += "<option selected value='"+points[i].id+"'>"+points[i].id+"</option>";
-                            }
-                            document.getElementById(`pointsSelect`).innerHTML = pointsSelected;
-                        }
-
+                        let seasonCol = document.getElementById(`seasonSelect`);
+                        let circuitCol = document.getElementById(`tracksSelect`);
+                        let pointsCol = document.getElementById(`pointsSelect`);
+                        populateTrackDropdowns(season, tracks, points, json, seasonCol, circuitCol, pointsCol);
 
                         //Printing values of results key of json in table
                         $('#resultsHeaderFields').toggleClass('hidden');
-                        // for (let i = 0; i < Object.keys(json.results).length; i++){
-                        //     var rowResult = `<tr class="text-center">
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].driver}</td>
-                        //                         <td class="hidden border rounded p-2" contenteditable="true">${json.results[i].driver_id}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].constructor_id}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].grid}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].fastestlaptime}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].time}</td>
-                        //                         <td class="border rounded p-2" contenteditable="true">${json.results[i].status}</td>
-                        //                     </tr>`;
-                        //     $('#resultsTableBody').append(rowResult);
-                        // }
 
                         for (let i = 0; i < Object.keys(json.results).length; i++){
                             var rowResult = `<tr class="text-center">
@@ -208,37 +159,10 @@
                                             </tr>`;
                             $('#resultsTableBody').append(rowResult);
                             
-                            let driverSelected, constructorSelected, statusSelected;
-
-                            for(let j = 0; j < driver.length; j++) {
-                                if (driver[j].id != json.results[i].driver_id) {
-                                    driverSelected += "<option value='"+driver[j].id+"'>"+driver[j].name+"</option>";
-                                } else {
-                                    driver[j].id = json.results[i].driver_id;
-                                    driverSelected += "<option selected value='"+driver[j].id+"'>"+driver[j].name+"</option>";
-                                }
-                                document.getElementById(`driverSelect${i}`).innerHTML = driverSelected;
-                            }
-
-                            for(let j = 0; j < constructor.length; j++) {
-                                if (constructor[j].id != json.results[i].constructor_id) {
-                                    constructorSelected += "<option value='"+constructor[j].id+"'>"+constructor[j].name+"</option>";
-                                } else {
-                                    constructor[j].id = json.results[i].constructor_id;
-                                    constructorSelected += "<option selected value='"+constructor[j].id+"'>"+constructor[j].name+"</option>";
-                                }
-                                document.getElementById(`constructorSelect${i}`).innerHTML = constructorSelected;
-                            }
-
-                            for(let j = 0; j < status.length; j++) {
-                                if (status[j].id != json.results[i].status) {
-                                    statusSelected += "<option value='"+status[j].id+"'>"+status[j].value+"</option>";
-                                } else {
-                                    status[j].id = json.results[i].status;
-                                    statusSelected += "<option selected value='"+status[j].id+"'>"+status[j].value+"</option>";
-                                }
-                                document.getElementById(`statusSelect${i}`).innerHTML = statusSelected;
-                            }
+                            let driverCol = document.getElementById(`driverSelect${i}`);
+                            let constructorCol = document.getElementById(`constructorSelect${i}`);
+                            let statusCol = document.getElementById(`statusSelect${i}`);
+                            populateResultsDropdowns(driver, constructor, status, json, driverCol, constructorCol, statusCol, i);
                         }
 
                         
@@ -446,6 +370,80 @@
                             }
                         }
                         return status;
+                    }
+
+                    function populateTrackDropdowns(season, tracks, points, json, seasonCol, circuitCol, pointsCol) {
+                        let dataMapping = [
+                                            {
+                                                data: season,
+                                                upload: json.track.season_id,
+                                                colId: seasonCol
+                                            },
+                                            {
+                                                data: tracks,
+                                                upload: json.track.circuit_id,
+                                                colId: circuitCol
+                                            },
+                                            {
+                                                data: points,
+                                                upload: json.track.points,
+                                                colId: pointsCol
+                                            }
+                                        ];  
+
+                        for(let i = 0; i < dataMapping.length; i++) {
+                            let selection, dispValue;
+                            for(let j = 0; j < dataMapping[i].data.length; j++) {
+                                dispValue = dataMapping[i].data[j].name;
+                                if(dataMapping[i].data == points) {
+                                    dispValue = dataMapping[i].data[j].id;
+                                }
+                                if(dataMapping[i].data[j].id != dataMapping[i].upload) {
+                                    selection += "<option value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
+                                } else {
+                                    dataMapping[i].data[j].id = dataMapping[i].upload;
+                                    selection += "<option selected value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
+                                }
+                                dataMapping[i].colId.innerHTML = selection;
+                            }
+                        }
+                    }
+
+                    function populateResultsDropdowns(driver, constructor, status, json, driverCol, constructorCol, statusCol, i) {
+                        let dataMapping = [
+                                            {
+                                                data: driver,
+                                                upload: json.results[i].driver_id,
+                                                colId: driverCol
+                                            },
+                                            {
+                                                data: constructor,
+                                                upload: json.results[i].constructor_id,
+                                                colId: constructorCol
+                                            },
+                                            {
+                                                data: status,
+                                                upload: json.results[i].status,
+                                                colId: statusCol
+                                            }
+                                        ];
+                            
+                        for(let x = 0; x < dataMapping.length; x++) {
+                            let selection, dispValue;
+                            for(let j = 0; j < dataMapping[x].data.length; j++) {
+                                dispValue = dataMapping[x].data[j].name;
+                                if(dataMapping[x].data == status) {
+                                    dispValue = dataMapping[x].data[j].value;
+                                }
+                                if(dataMapping[x].data[j].id != dataMapping[x].upload) {
+                                    selection += "<option value='"+dataMapping[x].data[j].id+"'>"+dispValue+"</option>";
+                                } else {
+                                    dataMapping[x].data[j].id = dataMapping[x].upload;
+                                    selection += "<option selected value='"+dataMapping[x].data[j].id+"'>"+dispValue+"</option>";
+                                }
+                                dataMapping[x].colId.innerHTML = selection;
+                            }
+                        }
                     }
                 });
             }
