@@ -23,10 +23,10 @@
     <table id="jsonTableTrack" class="w-full table-auto">
         <thead id="trackHeaderFields" class="hidden text-center bg-purple-500 text-white">
             <tr>
-            <th class="border rounded px-4 py-2">Tier</th>
-            <th class="border rounded px-4 py-2">Round Number</th>
-            <th class="border rounded px-4 py-2">Circuit</th>
-            <th class="border rounded px-4 py-2">Points Scheme</th>
+                <th class="border rounded px-4 py-2">Tier</th>
+                <th class="border rounded px-4 py-2">Round Number</th>
+                <th class="border rounded px-4 py-2">Circuit</th>
+                <th class="border rounded px-4 py-2">Points Scheme</th>
             </tr>
         </thead>
         <tbody class="bg-white" id="trackTableBody">
@@ -38,15 +38,15 @@
     <table id="jsonTableResults" class="w-full table-auto">
         <thead id="resultsHeaderFields" class="hidden text-center bg-purple-500 text-white">
             <tr>
-            <th class="border rounded px-4 py-2">Position</th>
-            <th class="border rounded px-4 py-2">Driver</th>
-            <th class="hidden border rounded px-4 py-2">Driver ID</th>
-            <th class="border rounded px-4 py-2">Constructor</th>
-            <th class="border rounded px-4 py-2">Starting Grid</th>
-            <th class="border rounded px-4 py-2">Laps Completed</th>
-            <th class="border rounded px-4 py-2">Fastest Lap</th>
-            <th class="border rounded px-4 py-2">Race Time</th>
-            <th class="border rounded px-4 py-2">Status</th>
+                <th class="border rounded px-4 py-2">Position</th>
+                <th class="border rounded px-4 py-2">Driver</th>
+                <th class="hidden border rounded px-4 py-2">Driver ID</th>
+                <th class="border rounded px-4 py-2">Constructor</th>
+                <th class="border rounded px-4 py-2">Starting Grid</th>
+                <th class="border rounded px-4 py-2">Laps Completed</th>
+                <th class="border rounded px-4 py-2">Fastest Lap</th>
+                <th class="border rounded px-4 py-2">Race Time</th>
+                <th class="border rounded px-4 py-2">Status</th>
             </tr>
         </thead>
         <tbody class="bg-white" id="resultsTableBody">
@@ -57,6 +57,28 @@
 <div class="flex justify-center items-center my-3">
     <button id="submit" class="hidden bg-purple-500 hover:bg-purple-700 text-white font-semibold py-2 px-4 border border-purple-700 rounded">Submit</button>
 </div>
+
+<div class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen max-h-screen" id="pointsOverlay">
+    <div class="bg-gray-200 rounded-lg w-3/4 max-h-screen py-2 px-3 shadow-xl overflow-scroll">
+        <div class="flex justify-between items-center border-b border-gray-400">
+            <h4 class="p-2 text-lg md:text-xl font-bold">Points scheme details</h4>
+            <svg id="cross" class=" w-6 h-7 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </div>
+        <div>
+            <p class="text-center text-red-600 text-md md:text-lg font-bold pt-3 pb-1">Choose the required points scheme</p>
+        </div>
+        <div class="justify-center px-4 py-2 w-full">
+            <table id="pointsTable" class="table-auto">
+                <thead id="pointsTableHeaders" class="text-center bg-purple-500 text-white">
+                </thead>
+                <tbody class="bg-white" id="pointsTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    
+
 
 <div>
     <button id="test" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 border border-red-700 rounded">Cancel</button>
@@ -89,7 +111,7 @@
                             value: 'DSQ'
                         }
                     ];
-        // console.log(points);
+        console.log(points);
         //JS to upload JSON, slot values into table
         var upload = document.getElementById('fileInput');
         upload.addEventListener('change', function() {
@@ -122,8 +144,7 @@
                                                 </select>
                                             </td>
                                             <td class="border rounded p-1" contenteditable="false" id="trackBodyPoints">
-                                                <select id="pointsSelect" class="bg-gray-200 w-24 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                                                </select>
+                                                <button id="pointsBtn" type="button" class="px-5 bg-gray-300 border border-gray-500 rounded">${json.track.points}</button>
                                             </td>
                                         </tr>`;
                         $('#trackTableBody').append(rowTrack);
@@ -165,6 +186,52 @@
                             populateResultsDropdowns(driver, constructor, status, json, driverCol, constructorCol, statusCol, i);
                         }
 
+                        let defaultSelect;
+                        $('#pointsBtn').click(function(event) {
+                            $('#pointsOverlay').removeClass('hidden');
+                            $('#pointsOverlay').addClass('flex');
+
+                            defaultSelect = '#select' + json.track.points;
+                            $(defaultSelect).attr('checked', 'checked');
+                        });
+
+                        let headerFill = "";
+                        for(let i = 0; i < points.length; i++) {
+                            headerFill += "<th class='border rounded font-bold px-4 py-2'> <input type='checkbox' class='transform scale-125 cursor-pointer' id='select"+ (i+1) +"'><p>" + points[i].id + "</p></th>";
+                        }
+                        var pointsHeader = `<tr>
+                                                <th class='border rounded font-bold px-4 py-2'>Pos</th>
+                                                ${headerFill}
+                                            </tr>`;
+                        $('#pointsTableHeaders').append(pointsHeader);
+
+                        for(let i = 0; i < Object.keys(points[0]).length - 3; i++) {
+                            let columnFill = "";
+                            for(let j = 0; j < points.length; j++) {
+                                columnFill += "<td class='border text-center rounded py-1 px-3' contenteditable='false'>" + points[j]['P' + (i+1)] + "</td>";
+                            }
+                            var pointsRow = `<tr>
+                                                <td class='border text-center font-semibold rounded p-1' contenteditable='false'>P${i+1}</td>
+                                                ${columnFill}
+                                            </tr>`;
+                            $('#pointsTableBody').append(pointsRow);
+                        }
+
+                        let pointsSelectId;
+                        for(let i = 0; i < points.length; i++) {
+                            pointsSelectId = '#select' + (i+1);
+                            $(pointsSelectId).click(function(event) {
+                                $('input:checkbox').not(this).prop('checked', false);
+                                $('#pointsBtn').html(i+1);
+                                $('#pointsOverlay').removeClass('flex');
+                                $('#pointsOverlay').addClass('hidden');
+                            });
+                        }
+                        
+                        $('#cross').click(function(event) {
+                            $('#pointsOverlay').removeClass('flex');
+                            $('#pointsOverlay').addClass('hidden');
+                        });
                         
                         $('#submit').toggleClass('hidden');
                         
@@ -266,6 +333,8 @@
                                     } else if(headers[j] == 'status') {
                                         tempRow = treeTraversal.selectedIndex;
                                         rowContent = statusMap[tempRow];
+                                    } else if(headers[j] == 'points') {
+                                        rowContent = tableRow.cells[j].children[0].innerHTML;
                                     } else {
                                         rowContent = treeTraversal.selectedIndex + 1;
                                     }
@@ -276,9 +345,9 @@
                                     rowContent = tableRow.cells[j].innerHTML;
                                 }
                                 status = Number(rowContent);
-                                // console.log(rowContent)
                                 rowData[headers[j]] = (isNaN(status)) ? rowContent : status;
                             }
+                            // console.log(table.rows[1].cells[3].children)
                             data.push(rowData);
                         }
                         return data;
@@ -383,11 +452,6 @@
                                                 data: tracks,
                                                 upload: json.track.circuit_id,
                                                 colId: circuitCol
-                                            },
-                                            {
-                                                data: points,
-                                                upload: json.track.points,
-                                                colId: pointsCol
                                             }
                                         ];  
 
@@ -395,9 +459,6 @@
                             let selection, dispValue;
                             for(let j = 0; j < dataMapping[i].data.length; j++) {
                                 dispValue = dataMapping[i].data[j].name;
-                                if(dataMapping[i].data == points) {
-                                    dispValue = dataMapping[i].data[j].id;
-                                }
                                 if(dataMapping[i].data[j].id != dataMapping[i].upload) {
                                     selection += "<option value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
                                 } else {
