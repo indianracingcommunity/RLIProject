@@ -83,6 +83,7 @@
 <div>
     <button id="test" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 border border-red-700 rounded">Cancel</button>
     <button id="test2" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Save</button>
+    <input type="text" id="test3" value="Hey"></input>
 </div>
 
 
@@ -111,7 +112,12 @@
                             value: 'DSQ'
                         }
                     ];
-        console.log(points);
+
+        $('#test3').change(function(event) {
+            if($('#test3').val() == "Subham")
+                console.log(1)
+        });
+        // console.log(points);
         //JS to upload JSON, slot values into table
         var upload = document.getElementById('fileInput');
         upload.addEventListener('change', function() {
@@ -126,24 +132,23 @@
                     var json = JSON.parse(reader.result);
                     // console.log(json.track.points);
 
-                    if(checkJsonKeys(json)) {   
-                        checkExistence(json, season, tracks, points, driver, constructor);
-                        isValidTimeFormat(json);     
-                        
+                    if(checkJsonKeys(json)) {        
                         //Printing values of track key of json in table
                         $('#trackHeaderFields').toggleClass('hidden');
 
                         var rowTrack = `<tr class="text-center">
-                                            <td class="border rounded p-1" contenteditable="false" id="trackBodySeason">
+                                            <td class="border rounded py-2 px-1" id="trackBodySeason">
                                                 <select id="seasonSelect" class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                                                </select>
+                                                </select>   
                                             </td>
-                                            <td class="border rounded p-1" contenteditable="true" id="trackBodyRound">${json.track.round}</td>
-                                            <td class="border rounded p-1" contenteditable="false" id="trackBodyCircuit">
+                                            <td class="border rounded p-2" id="trackBodyRound">
+                                                <input class="w-12 text-center" type="text" id="inputRound" value="${json.track.round}"\>
+                                            </td>
+                                            <td class="border rounded py-2 px-1" id="trackBodyCircuit">
                                                 <select id="tracksSelect" class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                 </select>
                                             </td>
-                                            <td class="border rounded p-1" contenteditable="false" id="trackBodyPoints">
+                                            <td class="border rounded py-2 px-1" id="trackBodyPoints">
                                                 <button id="pointsBtn" type="button" class="px-5 bg-gray-300 border border-gray-500 rounded">${json.track.points}</button>
                                             </td>
                                         </tr>`;
@@ -157,23 +162,35 @@
                         //Printing values of results key of json in table
                         $('#resultsHeaderFields').toggleClass('hidden');
 
-                        for (let i = 0; i < Object.keys(json.results).length; i++){
+                        for(let i = 0; i < Object.keys(json.results).length; i++) {
                             var rowResult = `<tr class="text-center">
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].position}</td>
-                                                <td class="border rounded py-2 px-1" contenteditable="false">
+                                                <td class="border rounded p-2" id="resultsBodyPos${i}">
+                                                    <input class="w-12 text-center" type="text" id="inputPos${i}" value="${json.results[i].position}"\>
+                                                </td>
+                                                <td class="border rounded py-2 px-1" id="resultsBodyDriver${i}">
                                                     <select id='driverSelect${i}' class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
                                                     </select>
                                                 </td>
-                                                <td class="hidden border rounded p-2" contenteditable="true">${json.results[i].driver_id}</td>
-                                                <td class="border rounded py-2 px-1" contenteditable="false">
+                                                <td class="hidden border rounded p-2">
+                                                    <input class="w-12 text-center" type="text" id="inputDriver${i}" value="${json.results[i].driver_id}"\>
+                                                </td>
+                                                <td class="border rounded py-2 px-1" id="resultsBodyConstructor${i}">
                                                     <select id='constructorSelect${i}' class="bg-gray-200 w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                     </select>
                                                 </td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].grid}</td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].stops}</td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].fastestlaptime}</td>
-                                                <td class="border rounded p-2" contenteditable="true">${json.results[i].time}</td>
-                                                <td class="border rounded py-2 px-1" contenteditable="false">
+                                                <td class="border rounded p-2" id="resultsBodyGrid${i}">
+                                                    <input class="w-12 text-center" type="text" id="inputGrid${i}" value="${json.results[i].grid}"\>
+                                                </td>
+                                                <td class="border rounded p-2" id="resultsBodyStops${i}">
+                                                    <input class="w-12 text-center" type="text" id="inputStops${i}" value="${json.results[i].stops}"\>
+                                                </td>
+                                                <td class="border rounded p-2" id="resultsBodyFl${i}">
+                                                    <input class="w-24 text-center" type="text" id="inputFl${i}" value="${json.results[i].fastestlaptime}"\>
+                                                </td>
+                                                <td class="border rounded p-2" id="resultsBodyTime${i}">
+                                                    <input class="w-24 text-center" type="text" id="inputTime${i}" value="${json.results[i].time}"\>
+                                                </td>
+                                                <td class="border rounded py-2 px-1" id="resultsBodyStatus${i}">
                                                     <select id='statusSelect${i}' class="bg-gray-200 w-36 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
                                                     </select>
                                                 </td>
@@ -185,49 +202,109 @@
                             let statusCol = document.getElementById(`statusSelect${i}`);
                             populateResultsDropdowns(driver, constructor, status, json, driverCol, constructorCol, statusCol, i);
                         }
-
+                        
                         let defaultSelect;
                         $('#pointsBtn').click(function(event) {
                             $('#pointsOverlay').removeClass('hidden');
                             $('#pointsOverlay').addClass('flex');
-
+                            
                             defaultSelect = '#select' + json.track.points;
                             $(defaultSelect).attr('checked', 'checked');
                         });
-
+                        
                         let headerFill = "";
                         for(let i = 0; i < points.length; i++) {
                             headerFill += "<th class='border rounded font-bold px-4 py-2'> <input type='checkbox' class='transform scale-125 cursor-pointer' id='select"+ (i+1) +"'><p>" + points[i].id + "</p></th>";
                         }
                         var pointsHeader = `<tr>
-                                                <th class='border rounded font-bold px-4 py-2'>Pos</th>
+                        <th class='border rounded font-bold px-4 py-2'>Pos</th>
                                                 ${headerFill}
                                             </tr>`;
                         $('#pointsTableHeaders').append(pointsHeader);
-
+                        
                         for(let i = 0; i < Object.keys(points[0]).length - 3; i++) {
                             let columnFill = "";
                             for(let j = 0; j < points.length; j++) {
                                 columnFill += "<td class='border text-center rounded py-1 px-3' contenteditable='false'>" + points[j]['P' + (i+1)] + "</td>";
                             }
                             var pointsRow = `<tr>
-                                                <td class='border text-center font-semibold rounded p-1' contenteditable='false'>P${i+1}</td>
-                                                ${columnFill}
-                                            </tr>`;
+                            <td class='border text-center font-semibold rounded p-1' contenteditable='false'>P${i+1}</td>
+                            ${columnFill}
+                            </tr>`;
                             $('#pointsTableBody').append(pointsRow);
                         }
-
+                        
                         let pointsSelectId;
                         for(let i = 0; i < points.length; i++) {
                             pointsSelectId = '#select' + (i+1);
                             $(pointsSelectId).click(function(event) {
                                 $('input:checkbox').not(this).prop('checked', false);
                                 $('#pointsBtn').html(i+1);
+                                $('#trackBodyPoints').removeClass('bg-red-600');
                                 $('#pointsOverlay').removeClass('flex');
                                 $('#pointsOverlay').addClass('hidden');
                             });
                         }
                         
+                        dataChecks(json, season, tracks, points, driver, constructor, status);
+                        isValidTimeFormat(json);
+                            
+                        clearWarnings(json);
+
+                        for(let i = 0; i < Object.keys(json.results).length; i++) {
+                            let flCell = '#inputFl' + i;
+                            let timeCell = '#inputTime' + i;
+                            let flValue, timeValue;
+                            
+                            $(flCell).change(function(event) {
+                                flValue = $(flCell).val();
+                                flFormatCheck(flValue, json, i);
+                            });
+                            
+                            $(timeCell).change(function(event) {
+                                timeValue = $(timeCell).val();
+                                raceTimeFormatCheck(timeValue, json, i);
+                            });
+                        }
+
+                        $('#inputRound').change(function(event) {
+                            let roundCell = $('#inputRound').val();
+                            if(isNaN(roundCell)) {
+                                console.log('Round Number field is not a number');
+                                $('#trackBodyRound').addClass('bg-red-600');
+                                $('#inputRound').addClass('bg-red-600');
+                                $('#inputRound').addClass('font-bold');
+                                $('#inputRound').addClass('text-white');
+                            } else {
+                                $('#trackBodyRound').removeClass('bg-red-600');
+                                $('#inputRound').removeClass('bg-red-600');
+                                $('#inputRound').removeClass('font-bold');
+                                $('#inputRound').removeClass('text-white');
+                            }
+                        });
+
+                        for(let i = 0; i < Object.keys(json.results).length; i++) {
+                            let posCell = '#inputPos' + i;
+                            let gridCell = '#inputGrid' + i;
+                            let stopsCell = '#inputStops' + i;
+                            let posValue, gridValue, stopsValue;
+
+                            $(posCell).change(function(event) {
+                                posValue = $(posCell).val();
+                                isPosNumber(posValue, json, i);
+                            });
+
+                            $(gridCell).change(function(event) {
+                                gridValue = $(gridCell).val();
+                                isGridNumber(gridValue, json, i);
+                            });
+
+                            $(stopsCell).change(function(event) {
+                                stopsValue = $(stopsCell).val();
+                                isStopsNumber(stopsValue, json, i);
+                            });
+                        }
+
                         $('#cross').click(function(event) {
                             $('#pointsOverlay').removeClass('flex');
                             $('#pointsOverlay').addClass('hidden');
@@ -239,8 +316,8 @@
                             let trackContent = tableToJSON(document.getElementById('jsonTableTrack'));
                             let resultsContent = tableToJSON(document.getElementById('jsonTableResults'));
                             let newJson = {
-                                            track: trackContent[0],
-                                            results: resultsContent
+                                track: trackContent[0],
+                                results: resultsContent
                                         };
                             console.log(newJson)
                             
@@ -250,521 +327,507 @@
                                 console.log("Cannot post JSON due to errors in time format")
                             }
                         });
-                    }
-                    
-                    function tableToJSON(table) {
-                        let data = [];
-                        let headers = [];
-                        let jsonKeyHeaders = [
-                                                {
-                                                    tableHeader: 'Tier',
-                                                    jsonHeader: 'season_id'
-                                                },
-                                                {
-                                                    tableHeader: 'Round Number',
-                                                    jsonHeader: 'round'
-                                                },
-                                                {
-                                                    tableHeader: 'Circuit',
-                                                    jsonHeader: 'circuit_id'
-                                                },
-                                                {
-                                                    tableHeader: 'Points Scheme',
-                                                    jsonHeader: 'points'
-                                                },
-                                                {
-                                                    tableHeader: 'Position',
-                                                    jsonHeader: 'position'
-                                                },
-                                                {
-                                                    tableHeader: 'Driver',
-                                                    jsonHeader: 'driver'
-                                                },
-                                                {
-                                                    tableHeader: 'Driver ID',
-                                                    jsonHeader: 'driver_id'
-                                                },
-                                                {
-                                                    tableHeader: 'Constructor',
-                                                    jsonHeader: 'constructor_id'
-                                                },
-                                                {
-                                                    tableHeader: 'Starting Grid',
-                                                    jsonHeader: 'grid'
-                                                },
-                                                {
-                                                    tableHeader: 'Laps Completed',
-                                                    jsonHeader: 'stops'
-                                                },
-                                                {
-                                                    tableHeader: 'Fastest Lap',
-                                                    jsonHeader: 'fastestlaptime'
-                                                },
-                                                {
-                                                    tableHeader: 'Race Time',
-                                                    jsonHeader: 'time'
-                                                },
-                                                {
-                                                    tableHeader: 'Status',   
-                                                    jsonHeader: 'status'
-                                                }
-                                            ];
-                        let statusMap = [0, 1, -2, -3];
-
-                        for(let i = 0; i < table.rows[0].cells.length; i++) {
-                            for(let j = 0; j < jsonKeyHeaders.length; j++) {
-                                let temp = table.rows[0].cells[i].innerHTML;
-                                if(temp == jsonKeyHeaders[j].tableHeader) {
-                                    tableHeader = jsonKeyHeaders[j].jsonHeader;
-                                    headers[i] = tableHeader;
-                                }
-                            }
-                        }
-
-                        for(let i = 1; i < table.rows.length; i++) {
-                            let tableRow = table.rows[i];
-                            let rowData = {};
-                            let rowContent, treeTraversal, status;
-                            for(let j = 0; j < tableRow.cells.length; j++) {
-                                if(tableRow.cells[j].children.length != 0) {
-                                    treeTraversal = tableRow.cells[j].children[0].options;
-                                    if(headers[j] == 'driver'){
-                                        rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
-                                    } else if(headers[j] == 'status') {
-                                        tempRow = treeTraversal.selectedIndex;
-                                        rowContent = statusMap[tempRow];
-                                    } else if(headers[j] == 'points') {
-                                        rowContent = tableRow.cells[j].children[0].innerHTML;
-                                    } else {
-                                        rowContent = treeTraversal.selectedIndex + 1;
-                                    }
-                                } else if (headers[j] == 'driver_id') {
-                                    leftCellTraversal = tableRow.cells[1].children[0].options;
-                                    rowContent = leftCellTraversal.selectedIndex + 1;
-                                } else {
-                                    rowContent = tableRow.cells[j].innerHTML;
-                                }
-                                status = Number(rowContent);
-                                rowData[headers[j]] = (isNaN(status)) ? rowContent : status;
-                            }
-                            // console.log(table.rows[1].cells[3].children)
-                            data.push(rowData);
-                        }
-                        return data;
-                    }
-                
-                    function postJson(json) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/results/race",
-                            data: json,
-                            contentType: "application/json",
-                            success: function (result) {
-                                console.log(result);
-                            },
-                            error: function (result, status) {
-                                console.log(result);
-                            }
-                        });
-                    }
-
-                    function checkJsonKeys(json) {
-                        if(json.hasOwnProperty('track') && json.hasOwnProperty('results')) {
-                            return 1;
-                        } else if(json.hasOwnProperty('track') == false) {
-                            $('#missingTrackAlert').show(500);
-                        } else {
-                            $('#missingResultsAlert').show(500);
-                        }
-                    }
-
-                    function checkExistence(json, season, tracks, points, driver, constructor) {
-                        let checkFields = [
-                                            {
-                                                input: json.track.season_id,
-                                                stored: season,
-                                                message: 'Season  ID ' + json.track.season_id + ' not present in DB'
-                                            },
-                                            {
-                                                input: json.track.circuit_id,
-                                                stored: tracks,
-                                                message: 'Circuit ID ' + json.track.circuit_id + ' not present in DB'
-                                            },
-                                            {
-                                                input: json.track.points,
-                                                stored: points,
-                                                message: 'Points ID ' + json.track.points + ' not present in DB'
-                                                }
-                                        ];
-                        
-                        for(let i = 0; i < checkFields.length; i++) {
-                            if(checkFields[i].stored.find(item => {return item.id == checkFields[i].input}) == undefined) {
-                                console.log(checkFields[i].message);
-                            }
-                        }
-                        
-                        for(let i = 0; i < Object.keys(json.results).length; i++) {
-                            if(driver.find(item => {return item.id == json.results[i].driver_id}) == undefined) {
-                                let positionId = json.results[i].position;
-                                let driverId = json.results[i].driver_id;
-                                console.log('Driver ID ' + driverId + ' not present in DB for position ' + positionId);
-                            }
-
-                            if(constructor.find(item => {return item.id == json.results[i].constructor_id}) == undefined) {
-                                let positionId = json.results[i].position;
-                                let contructorId = json.results[i].contructor_id;
-                                console.log('Contructor ID ' + contructorId + ' not present in DB for position ' + positionId);
-                            }
-                        }
-                    }
-
-                    function isValidTimeFormat(json) {
-                        let timeExpRace = "^\\+?(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
-                        let timeCheckRace = new RegExp(timeExpRace);
-                        let timeExpFl = "^(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^\\-$";
-                        let timeCheckFl = new RegExp(timeExpFl);
-                        let status = 1;
-
-                        for(let i = 0; i < Object.keys(json.results).length; i++) {
-                            if(!(timeCheckFl.test(json.results[i].fastestlaptime))) {
-                                let positionId = json.results[i].position;
-                                console.log('Fastest lap format wrong for position ' + positionId);
-                                status = 0;
-                            }
-                            
-                            if(!(timeCheckRace.test(json.results[i].time))) {
-                                let positionId = json.results[i].position;
-                                console.log('Race time format wrong for position ' + positionId);
-                                status = 0;
-                            }
-                        }
-                        return status;
-                    }
-
-                    function populateTrackDropdowns(season, tracks, points, json, seasonCol, circuitCol, pointsCol) {
-                        let dataMapping = [
-                                            {
-                                                data: season,
-                                                upload: json.track.season_id,
-                                                colId: seasonCol
-                                            },
-                                            {
-                                                data: tracks,
-                                                upload: json.track.circuit_id,
-                                                colId: circuitCol
-                                            }
-                                        ];  
-
-                        for(let i = 0; i < dataMapping.length; i++) {
-                            let selection, dispValue;
-                            for(let j = 0; j < dataMapping[i].data.length; j++) {
-                                dispValue = dataMapping[i].data[j].name;
-                                if(dataMapping[i].data[j].id != dataMapping[i].upload) {
-                                    selection += "<option value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
-                                } else {
-                                    dataMapping[i].data[j].id = dataMapping[i].upload;
-                                    selection += "<option selected value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
-                                }
-                                dataMapping[i].colId.innerHTML = selection;
-                            }
-                        }
-                    }
-
-                    function populateResultsDropdowns(driver, constructor, status, json, driverCol, constructorCol, statusCol, i) {
-                        let dataMapping = [
-                                            {
-                                                data: driver,
-                                                upload: json.results[i].driver_id,
-                                                colId: driverCol
-                                            },
-                                            {
-                                                data: constructor,
-                                                upload: json.results[i].constructor_id,
-                                                colId: constructorCol
-                                            },
-                                            {
-                                                data: status,
-                                                upload: json.results[i].status,
-                                                colId: statusCol
-                                            }
-                                        ];
-                            
-                        for(let x = 0; x < dataMapping.length; x++) {
-                            let selection, dispValue;
-                            for(let j = 0; j < dataMapping[x].data.length; j++) {
-                                dispValue = dataMapping[x].data[j].name;
-                                if(dataMapping[x].data == status) {
-                                    dispValue = dataMapping[x].data[j].value;
-                                }
-                                if(dataMapping[x].data[j].id != dataMapping[x].upload) {
-                                    selection += "<option value='"+dataMapping[x].data[j].id+"'>"+dispValue+"</option>";
-                                } else {
-                                    dataMapping[x].data[j].id = dataMapping[x].upload;
-                                    selection += "<option selected value='"+dataMapping[x].data[j].id+"'>"+dispValue+"</option>";
-                                }
-                                dataMapping[x].colId.innerHTML = selection;
-                            }
-                        }
-                    }
+                    }      
                 });
             }
         });
     });
+
+    function tableToJSON(table) {
+        let data = [];
+        let headers = [];
+        let jsonKeyHeaders = [
+                                {
+                                    tableHeader: 'Tier',
+                                    jsonHeader: 'season_id'
+                                },
+                                {
+                                    tableHeader: 'Round Number',
+                                    jsonHeader: 'round'
+                                },
+                                {
+                                    tableHeader: 'Circuit',
+                                    jsonHeader: 'circuit_id'
+                                },
+                                {
+                                    tableHeader: 'Points Scheme',
+                                    jsonHeader: 'points'
+                                },
+                                {
+                                    tableHeader: 'Position',
+                                    jsonHeader: 'position'
+                                },
+                                {
+                                    tableHeader: 'Driver',
+                                    jsonHeader: 'driver'
+                                },
+                                {
+                                    tableHeader: 'Driver ID',
+                                    jsonHeader: 'driver_id'
+                                },
+                                {
+                                    tableHeader: 'Constructor',
+                                    jsonHeader: 'constructor_id'
+                                },
+                                {
+                                    tableHeader: 'Starting Grid',
+                                    jsonHeader: 'grid'
+                                },
+                                {
+                                    tableHeader: 'Laps Completed',
+                                    jsonHeader: 'stops'
+                                },
+                                {
+                                    tableHeader: 'Fastest Lap',
+                                    jsonHeader: 'fastestlaptime'
+                                },
+                                {
+                                    tableHeader: 'Race Time',
+                                    jsonHeader: 'time'
+                                },
+                                {
+                                    tableHeader: 'Status',   
+                                    jsonHeader: 'status'
+                                }
+                            ];
+        let statusMap = [0, 1, -2, -3];
+
+        for(let i = 0; i < table.rows[0].cells.length; i++) {
+            for(let j = 0; j < jsonKeyHeaders.length; j++) {
+                let temp = table.rows[0].cells[i].innerHTML;
+                if(temp == jsonKeyHeaders[j].tableHeader) {
+                    tableHeader = jsonKeyHeaders[j].jsonHeader;
+                    headers[i] = tableHeader;
+                }
+            }
+        }
+
+        for(let i = 1; i < table.rows.length; i++) {
+            let tableRow = table.rows[i];
+            let rowData = {};
+            let rowContent, treeTraversal, status;
+            for(let j = 0; j < tableRow.cells.length; j++) {
+                if(tableRow.cells[j].children.length != 0) {
+                    treeTraversal = tableRow.cells[j].children[0].options;
+                    if(headers[j] == 'driver'){
+                        rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                    } else if(headers[j] == 'status') {
+                        tempRow = treeTraversal.selectedIndex - 1;
+                        rowContent = statusMap[tempRow];
+                    } else if(headers[j] == 'points') {
+                        rowContent = tableRow.cells[j].children[0].innerHTML;
+                    } else if(headers[j] == 'driver_id') {
+                        leftCellTraversal = tableRow.cells[1].children[0].options;
+                        rowContent = leftCellTraversal.selectedIndex;
+                    } else {
+                        rowContent = tableRow.cells[j].children[0].value;
+                    }
+                } else {
+                    rowContent = tableRow.cells[j].innerHTML;
+                }
+                status = Number(rowContent);
+                rowData[headers[j]] = (isNaN(status)) ? rowContent : status;
+            }
+            data.push(rowData);
+        }
+        // console.log(table.rows[1].cells[2].children.length)
+        return data;
+    }
+
+    function postJson(json) {
+        $.ajax({
+            type: "POST",
+            url: "/results/race",
+            data: json,
+            contentType: "application/json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (result, status) {
+                console.log(result);
+            }
+        });
+    }
+
+    function checkJsonKeys(json) {
+        if(json.hasOwnProperty('track') && json.hasOwnProperty('results')) {
+            return 1;
+        } else if(json.hasOwnProperty('track') == false) {
+            $('#missingTrackAlert').show(500);
+        } else {
+            $('#missingResultsAlert').show(500);
+        }
+    }
+
+    function dataChecks(json, season, tracks, points, driver, constructor, status) {
+        let checkFields = [
+                            {
+                                input: json.track.season_id,
+                                stored: season,
+                                message: 'Season ID ' + json.track.season_id + ' not present in DB',
+                                cell: '#trackBodySeason'
+                            },
+                            {
+                                input: json.track.circuit_id,
+                                stored: tracks,
+                                message: 'Circuit ID ' + json.track.circuit_id + ' not present in DB',
+                                cell: '#trackBodyCircuit'
+                            },
+                            {
+                                input: json.track.points,
+                                stored: points,
+                                message: 'Points ID ' + json.track.points + ' not present in DB',
+                                cell: '#trackBodyPoints'
+                            },
+                            
+                        ];
+        
+        for(let i = 0; i < checkFields.length; i++) {
+            if(checkFields[i].stored.find(item => {return item.id == checkFields[i].input}) == undefined) {
+                console.log(checkFields[i].message);
+                $(checkFields[i].cell).addClass('bg-red-600');
+                if(i == 2)
+                    $('#pointsBtn').html('0');
+            }
+        }
+
+        let value = json.track.round;
+        if(isNaN(value)) {
+            console.log('Round Number field is not a number');
+            $('#trackBodyRound').addClass('bg-red-600');
+            $('#inputRound').addClass('bg-red-600');
+            $('#inputRound').addClass('font-bold');
+            $('#inputRound').addClass('text-white');
+        } else {
+            $('#trackBodyRound').removeClass('bg-red-600');
+            $('#inputRound').removeClass('bg-red-600');
+            $('#inputRound').removeClass('font-bold');
+            $('#inputRound').removeClass('text-white');
+        }
+        
+        for(let i = 0; i < Object.keys(json.results).length; i++) {
+            let tableCell;
+            let posValue, gridValue, stopsValue;
+            let posInputCell, posTableCell, gridInputCell, gridTableCell, stopsInputCell, stopsTableCell;
+            
+            if(driver.find(item => {return item.id == json.results[i].driver_id}) == undefined) {
+                let positionId = json.results[i].position;
+                let driverId = json.results[i].driver_id;
+                console.log('Driver ID ' + driverId + ' not present in DB for position ' + positionId);
+                tableCell = '#resultsBodyDriver' + i;
+                $(tableCell).addClass('bg-red-600');
+            }
+
+            if(constructor.find(item => {return item.id == json.results[i].constructor_id}) == undefined) {
+                let positionId = json.results[i].position;
+                let constructorId = json.results[i].constructor_id;
+                console.log('Contructor ID ' + constructorId + ' not present in DB for position ' + positionId);
+                tableCell = '#resultsBodyConstructor' + i;
+                $(tableCell).addClass('bg-red-600');
+            }
+
+            if(status.find(item => {return item.id == json.results[i].status}) == undefined) {
+                let positionId = json.results[i].position;
+                let statusId = json.results[i].status;
+                console.log('Contructor ID ' + statusId + ' not present in DB for position ' + positionId);
+                tableCell = '#resultsBodyStatus' + i;
+                $(tableCell).addClass('bg-red-600');
+            }
+
+            posValue = json.results[i].position;
+            if(isNaN(posValue)) {
+                posTableCell = '#resultsBodyPos' + i;
+                posInputCell = '#inputPos' + i;
+                console.log('Position field is not a number for position ' + (i+1));
+                $(posTableCell).addClass('bg-red-600');
+                $(posInputCell).addClass('bg-red-600');
+                $(posInputCell).addClass('font-bold');
+                $(posInputCell).addClass('text-white');
+            } else {
+                $(posTableCell).removeClass('bg-red-600');
+                $(posInputCell).removeClass('bg-red-600');
+                $(posInputCell).removeClass('font-bold');
+                $(posInputCell).removeClass('text-white');
+            }
+
+            gridValue = json.results[i].grid;
+            if(isNaN(gridValue)) {
+                let positionId = json.results[i].position;
+                gridTableCell = '#resultsBodyGrid' + i;
+                gridInputCell = '#inputGrid' + i;
+                console.log('Starting Grid field is not a number for position ' + positionId);
+                $(gridTableCell).addClass('bg-red-600');
+                $(gridInputCell).addClass('bg-red-600');
+                $(gridInputCell).addClass('font-bold');
+                $(gridInputCell).addClass('text-white');
+            } else {
+                $(gridTableCell).removeClass('bg-red-600');
+                $(gridInputCell).removeClass('bg-red-600');
+                $(gridInputCell).removeClass('font-bold');
+                $(gridInputCell).removeClass('text-white');
+            }
+
+            stopsValue = json.results[i].stops;
+            if(isNaN(stopsValue)) {
+                let positionId = json.results[i].position;
+                stopsTableCell = '#resultsBodyStops' + i;
+                stopsInputCell = '#inputStops' + i;
+                console.log('Laps Completed field is not a number for position ' + positionId);
+                $(stopsTableCell).addClass('bg-red-600');
+                $(stopsInputCell).addClass('bg-red-600');
+                $(stopsInputCell).addClass('font-bold');
+                $(stopsInputCell).addClass('text-white');
+            } else {
+                $(stopsTableCell).removeClass('bg-red-600');
+                $(stopsInputCell).removeClass('bg-red-600');
+                $(stopsInputCell).removeClass('font-bold');
+                $(stopsInputCell).removeClass('text-white');
+            }
+        }
+    }
+
+    function isValidTimeFormat(json) {
+        let timeExpRace = "^\\+?(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
+        let timeCheckRace = new RegExp(timeExpRace);
+        let timeExpFl = "^(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^\\-$";
+        let timeCheckFl = new RegExp(timeExpFl);
+        let postStatus = 1;
+
+        for(let i = 0; i < Object.keys(json.results).length; i++) {
+            let tableCell, inputCell;
+            if(!(timeCheckFl.test(json.results[i].fastestlaptime))) {
+                let positionId = json.results[i].position;
+                console.log('Fastest lap format wrong for position ' + positionId);
+                tableCell = '#resultsBodyFl' + i;
+                inputCell = '#inputFl' + i;
+                $(tableCell).addClass('bg-red-600');
+                $(inputCell).addClass('bg-red-600');
+                $(inputCell).addClass('font-bold');
+                $(inputCell).addClass('text-white');
+                postStatus = 0;
+            } 
+            
+            if(!(timeCheckRace.test(json.results[i].time))) {
+                let positionId = json.results[i].position;
+                console.log('Race time format wrong for position ' + positionId);
+                tableCell = '#resultsBodyTime' + i;
+                inputCell = '#inputTime' + i;
+                $(tableCell).addClass('bg-red-600');
+                $(inputCell).addClass('bg-red-600');
+                $(inputCell).addClass('font-bold');
+                $(inputCell).addClass('text-white');
+                postStatus = 0;
+            }
+        }
+        return postStatus;
+    }
+
+    function populateTrackDropdowns(season, tracks, points, json, seasonCol, circuitCol, pointsCol) {
+        let dataMapping = [
+                            {
+                                data: season,
+                                upload: json.track.season_id,
+                                colId: seasonCol
+                            },
+                            {
+                                data: tracks,
+                                upload: json.track.circuit_id,
+                                colId: circuitCol
+                            }
+                        ];  
+
+        for(let i = 0; i < dataMapping.length; i++) {
+            let selection = "<option hidden selected value> -- Missing ID -- </option>"; 
+            let dispValue;
+            for(let j = 0; j < dataMapping[i].data.length; j++) {
+                dispValue = dataMapping[i].data[j].name;
+                if(dataMapping[i].data[j].id != dataMapping[i].upload) {
+                    selection += "<option value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
+                } else {
+                    dataMapping[i].data[j].id = dataMapping[i].upload;
+                    selection += "<option selected value='"+dataMapping[i].data[j].id+"'>"+dispValue+"</option>";
+                }
+                dataMapping[i].colId.innerHTML = selection;
+            }
+        }
+    }
+
+    function populateResultsDropdowns(driver, constructor, status, json, driverCol, constructorCol, statusCol, i) {
+        let dataMapping = [
+                            {
+                                data: driver,
+                                upload: json.results[i].driver_id,
+                                colId: driverCol
+                            },
+                            {
+                                data: constructor,
+                                upload: json.results[i].constructor_id,
+                                colId: constructorCol
+                            },
+                            {
+                                data: status,
+                                upload: json.results[i].status,
+                                colId: statusCol
+                            }
+                        ];
+            
+        for(let x = 0; x < dataMapping.length; x++) {
+            let selection = "<option hidden style='color: #ff0000' selected value> -- Missing ID -- </option>"; 
+            let dispValue;
+            for(let j = 0; j < dataMapping[x].data.length; j++) {
+                dispValue = dataMapping[x].data[j].name;
+                if(dataMapping[x].data == status) {
+                    dispValue = dataMapping[x].data[j].value;
+                }
+                if(dataMapping[x].data[j].id != dataMapping[x].upload) {
+                    selection += "<option value='"+dataMapping[x].data[j].id+"'>"+dispValue+"</option>";
+                } else {
+                    dataMapping[x].data[j].id = dataMapping[x].upload;
+                    selection += "<option selected value='"+dataMapping[x].data[j].id+"'>"+dispValue+"</option>";
+                }
+                dataMapping[x].colId.innerHTML = selection;
+            }
+        }
+    }
+
+    function clearWarnings(json) {
+        let dataMapping = [
+                            {
+                                innerObj: '#seasonSelect',
+                                outerDiv: '#trackBodySeason'
+                            },
+                            {
+                                innerObj: '#tracksSelect',
+                                outerDiv: '#trackBodyCircuit'
+                            },
+                        ];
+        
+        for(let i = 0; i < dataMapping.length; i++) {
+            $(dataMapping[i].innerObj).change(function(event) {
+                $(dataMapping[i].outerDiv).removeClass('bg-red-600');
+            });
+        }
+
+        for(let i = 0; i < Object.keys(json.results).length; i++) {
+            let selectDriver = '#driverSelect' + i;
+            let driverDiv = '#resultsBodyDriver' + i;
+            let selectConstructor = '#constructorSelect' + i;
+            let constructorDiv = '#resultsBodyConstructor' + i;
+            let selectStatus = '#statusSelect' + i;
+            let statusDiv = '#resultsBodyStatus' + i;
+            
+            $(selectDriver).change(function(event) {
+                $(driverDiv).removeClass('bg-red-600');
+            });
+            
+            $(selectConstructor).change(function(event) {
+                $(constructorDiv).removeClass('bg-red-600');
+            });
+            
+            $(selectStatus).change(function(event) {
+                $(statusDiv).removeClass('bg-red-600');
+            });
+        }
+    }
+
+    function flFormatCheck(value, json, i) {
+        let timeExpFl = "^(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^\\-$";
+        let timeCheckFl = new RegExp(timeExpFl);
+        let tableCell, inputCell;
+        tableCell = '#resultsBodyFl' + i;
+        inputCell = '#inputFl' + i;
+        
+        if(!(timeCheckFl.test(value))) {
+            let positionId = json.results[i].position;
+            console.log('Fastest lap format wrong for position ' + positionId);
+            $(tableCell).addClass('bg-red-600');
+            $(inputCell).addClass('bg-red-600');
+            $(inputCell).addClass('font-bold');
+            $(inputCell).addClass('text-white');
+        } else {
+            $(tableCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('font-bold');
+            $(inputCell).removeClass('text-white');
+        }
+    }
+
+    function raceTimeFormatCheck(value, json, i) {
+        let timeExpRace = "^\\+?(\\d+\\:)?[0-5]?\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
+        let timeCheckRace = new RegExp(timeExpRace);
+        let tableCell, inputCell;
+        tableCell = '#resultsBodyTime' + i;
+        inputCell = '#inputTime' + i;
+        
+        if(!(timeCheckRace.test(value))) {
+            let positionId = json.results[i].position;
+            console.log('Race time format wrong for position ' + positionId);
+            $(tableCell).addClass('bg-red-600');
+            $(inputCell).addClass('bg-red-600');
+            $(inputCell).addClass('font-bold');
+            $(inputCell).addClass('text-white');
+        } else {
+            $(tableCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('font-bold');
+            $(inputCell).removeClass('text-white');
+        }
+    }
+
+    function isPosNumber(value, json, i) {
+        let tableCell, inputCell;
+        tableCell = '#resultsBodyPos' + i;
+        inputCell = '#inputPos' + i;
+        if(isNaN(value)) {
+            console.log('Position field is not a number for position ' + (i+1));
+            $(tableCell).addClass('bg-red-600');
+            $(inputCell).addClass('bg-red-600');
+            $(inputCell).addClass('font-bold');
+            $(inputCell).addClass('text-white');
+        } else {
+            $(tableCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('font-bold');
+            $(inputCell).removeClass('text-white');
+        }
+    }
+
+    function isGridNumber(value, json, i) {
+        let tableCell, inputCell;
+        tableCell = '#resultsBodyGrid' + i;
+        inputCell = '#inputGrid' + i;
+        if(isNaN(value)) {
+            let positionId = json.results[i].position;
+            console.log('Starting Grid field is not a number for position ' + positionId);
+            $(tableCell).addClass('bg-red-600');
+            $(inputCell).addClass('bg-red-600');
+            $(inputCell).addClass('font-bold');
+            $(inputCell).addClass('text-white');
+        } else {
+            $(tableCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('font-bold');
+            $(inputCell).removeClass('text-white');
+        }
+    }
+
+    function isStopsNumber(value, json, i) {
+        let tableCell, inputCell;
+        tableCell = '#resultsBodyStops' + i;
+        inputCell = '#inputStops' + i;
+        if(isNaN(value)) {
+            let positionId = json.results[i].position;
+            console.log('Laps Completed field is not a number for position ' + positionId);
+            $(tableCell).addClass('bg-red-600');
+            $(inputCell).addClass('bg-red-600');
+            $(inputCell).addClass('font-bold');
+            $(inputCell).addClass('text-white');
+        } else {
+            $(tableCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('bg-red-600');
+            $(inputCell).removeClass('font-bold');
+            $(inputCell).removeClass('text-white');
+        }
+    }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- {{-- <div class="w-full" id="info" style="display: none;">{{$data}}</div> --}}
-
-<form class="bg-white w-full shadow-lg rounded px-8 pt-6 pb-8 mb-4" method="POST" action="/testform" enctype="multipart/form-data">
-    <label class="block text-gray-700 text-2xl font-bold mb-2">Standings verification</label>
-    <div class="flex w-full">
-        <div class="inline-block w-3/4 h-auto mt-5">
-            <img src="/storage/try.jpg"></img>
-        </div>
-        <div class="inline-block w-1/4 h-auto mt-5 ml-10" id="page1">
-            <label class="block text-gray-700 text-xl font-bold mb-2">Race details</label>
-            <div class="block w-full">
-                <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Select Track</label>
-                <div class="inline-block relative">
-                    <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="circuit_id" id="circuitid">                       
-                        @foreach ($tracks as $value)
-                        <option value="{{$value->id}}">{{$value->name}}</option>
-                        @endforeach
-                    </select>
-                    <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="block w-full mt-10">
-                <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5">Championship/Tier</label>
-                <div class="inline-block relative">  
-                    <select class="inline-block appearance-none w-56 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 ml-3 pl-2 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="season_id" id="seasonid">
-                        @foreach ($season as $value)
-                            @foreach ($value->constructors as $constructor)
-                            <option value="{{$value->id}}">{{$constructor['name']}}</option>
-                            @endforeach 
-                        @endforeach 
-                    </select>
-                    <div class="inline-block pointer-events-none absolute inset-y-0 right-0 pr-2 flex items-center text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w-full mt-16">
-                <label class="inline-block text-gray-700 text-base font-bold">
-                Round number
-                </label>
-                <div class="inline-block pl-3">
-                    <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-20 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" type="number" name="round" id="roundid">
-                </div>
-            </div>
-
-            <div class="flex w-full mt-10 content-center items-center justify-center">
-                
-                <button class="bg-purple-500 hover:bg-purple-600 text-white text-lg font-bold shadow-lg py-2 pl-4 rounded focus:outline-none focus:shadow-outline" type="button" onclick="racenextFunction()">
-                Next
-                <svg class="inline-block w-4 h-4 mr-2 fill-current mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>
-                </button>
-                
-            </div>
-        </div>
-
-        <div class="inline-block w-1/4 h-auto mt-5 ml-10" id="page2" style="display: none;">
-            <div class="block w-full h-8 text-gray-700 text-xl font-bold mb-2">Driver details</div>
-            <div class="block w-auto">
-                <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-5 pl-6 ml-2">Position</label>
-                <div class="inline-block relative">
-                    <select class="inline-block appearance-none w-27 bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 pl-2 pr-6 ml-3 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="position" id="positionid">                       
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-
-                    </select>
-                    <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="block w-auto">
-                <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-10 ml-1">Constructor</label>
-                <div class="inline-block relative">
-                    <select class="inline-block appearance-none  bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 ml-3 pl-2 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="constructor_id" id="constructorid">
-                        @foreach ($season as $value)
-                        <option value="{{$value->id}}">{{$value->name}}</option>
-                        @endforeach 
-                    </select>
-                    <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="block w-auto">
-                <label class="inline-block text-gray-700 text-base font-bold mb-2 mt-10">Driver Name</label>
-                <div class="inline-block relative">
-                    <select class="inline-block appearance-none  bg-gray-200 shadow-lg text-basic border border-gray-500 py-2 ml-3 pl-2 rounded leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500" name="driver_id" id="drivernameid">
-                        @foreach ($driver as $value)
-                        <option value="{{$value->id}}">{{$value->name}}</option>
-                        @endforeach 
-                    </select>
-                    <div class="inline-block pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w-auto mt-10">
-                <label class="inline-block text-gray-700 text-base font-bold">
-                Fastest Time
-                </label>
-                <div class="inline-block pl-3">
-                    <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" type="text" name="fastestlaptime" id="fastesttimeid">
-                </div>
-            </div>
-
-            <div class="w-auto mt-10">
-                <label class="inline-block text-gray-700 text-base font-bold ml-12 pl-3">
-                Grid
-                </label>
-                <div class="inline-block pl-3">
-                    <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-20 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" type="number" name="grid_id" id="gridid">
-                </div>
-            </div>
-
-            <div class="w-auto mt-10 ml-12 pl-3">
-                <label class="inline-block text-gray-700 text-base font-bold">
-                Stop
-                </label>
-                <div class="inline-block pl-3">
-                    <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-20 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" type="number" name="stops" id="stopsid">
-                </div>
-            </div>
-
-            <div class="w-auto mt-10 ml-4">
-                <label class="inline-block text-gray-700 text-base font-bold">
-                Race Time
-                </label>
-                <div class="inline-block pl-3">
-                    <input class="bg-gray-200 appearance-none border shadow-lg border-gray-500 rounded w-32 py-2 px-3 text-gray-700 text-basic leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" type="text" name="time" id="timeid">
-                </div>
-            </div>
-            
-            <div class="flex w-auto mt-10 content-center items-center justify-center">
-                <button class="bg-purple-500 hover:bg-purple-600 text-white text-lg font-bold shadow-lg py-2 w-32 rounded focus:outline-none focus:shadow-outline" type="button" onclick="driverpreviousFunction()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 rotate-90 fill-current mb-1" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
-                    Previous
-                </button>
-
-                <button class="bg-purple-500 hover:bg-purple-600 text-white text-lg font-bold shadow-lg py-2 pl-4 mx-5 w-32 rounded focus:outline-none focus:shadow-outline" type="button" onclick="drivernextFunction()">
-                    Next
-                    <svg class="inline-block w-4 h-4 mr-2 rotate-90 fill-current mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>
-                </button>
-
-                
-                
-            </div>
-            
-        </div>
-    </div>
-
-</form>
-    
-
-
-<script>
-    updatelist1 = function(){
-      document.getElementById("filenamet1").innerHTML = document.getElementById("imgt1").files[0].name;
-    }
-    function racenextFunction() {
-        document.getElementById("page1").style.display = "none";
-        document.getElementById("page2").style.display = "block";
-        jsondata.track.circuit_id = parseInt(document.getElementById("circuitid").value);
-        jsondata.track.round = parseInt(document.getElementById("roundid").value);
-        jsondata.track.season_id = parseInt(document.getElementById("seasonid").value);
-        
-        index = index + 1;
-        console.log(index);
-    }
-
-    function drivernextFunction(){
-        index = index + 1;
-        document.getElementById("positionid").value = jsondata.results[index].position;
-        document.getElementById("constructorid").value = jsondata.results[index].constructor_id;
-        document.getElementById("drivernameid").value = jsondata.results[index].driver_id;
-        document.getElementById("fastesttimeid").value = jsondata.results[index].fastestlaptime;
-        document.getElementById("gridid").value = jsondata.results[index].grid;
-        document.getElementById("stopsid").value = jsondata.results[index].stops;
-        document.getElementById("timeid").value = jsondata.results[index].time;
-        
-    }
-
-    function driverpreviousFunction(){
-        
-        if (index == 0 || index == -1){
-            document.getElementById("page1").style.display = "block";
-            document.getElementById("page2").style.display = "none";
-        }
-        else{
-            index = index - 1;
-            document.getElementById("positionid").value = jsondata.results[index].position;
-            document.getElementById("constructorid").value = jsondata.results[index].constructor_id;
-            document.getElementById("drivernameid").value = jsondata.results[index].driver_id;
-            document.getElementById("fastesttimeid").value = jsondata.results[index].fastestlaptime;
-            document.getElementById("gridid").value = jsondata.results[index].grid;
-            document.getElementById("stopsid").value = jsondata.results[index].stops;
-            document.getElementById("timeid").value = jsondata.results[index].time;
-        }
-    }
-    var jsondata = JSON.parse(document.getElementById("info").innerHTML);
-    var index =  -1;
-    
-    document.getElementById("circuitid").value = jsondata.track.circuit_id; 
-    document.getElementById("positionid").value = jsondata.results[0].position;
-    document.getElementById("constructorid").value = jsondata.results[0].constructor_id;
-    document.getElementById("drivernameid").value = jsondata.results[0].driver_id;
-    document.getElementById("fastesttimeid").value = jsondata.results[0].fastestlaptime;
-    document.getElementById("gridid").value = jsondata.results[0].grid;
-    document.getElementById("stopsid").value = jsondata.results[0].stops;
-    document.getElementById("timeid").value = jsondata.results[0].time;
-    console.log(jsondata);
-
-</script> -->
-
 @endsection
