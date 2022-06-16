@@ -9,6 +9,20 @@
     <p><strong>'Results'</strong> key missing in the uploaded JSON</p>
 </div>
 
+<div class="flex justify-center items-center mt-2">
+    <div id="successPost" class="hidden flex items-center justify-center gap-2 w-full text-center text-lg bg-green-100 border-l-4 border-r-4 border-green-500 text-green-700 p-2 mb-2 rounded" role="alert">
+        <i class="text-green-700 text-sm fa fa-check-circle" aria-hidden="true"></i></i>    
+        <p>Results uploaded <strong>SUCCESSFULLY</strong></p>
+    </div>
+</div>
+
+<div class="flex justify-center items-center mt-2">
+    <div id="failedPost" class="hidden flex items-center justify-center gap-2 w-full text-center text-lg bg-red-100 border-l-4 border-r-4 border-red-500 text-red-700 p-2 mb-2 rounded" role="alert">
+        <i class="text-red-700 fa fa-times" aria-hidden="true"></i>
+        <p id="failText"></p>
+    </div>
+</div>
+
 <!-- <select class="bg-gray-200 w-48 p-1 mb-10 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
     @foreach ($tracks as $value)
     <option value="{{$value->id}}">{{$value->name}}</option>
@@ -21,19 +35,19 @@
 
 <div class="w-7/12 rounded mb-10">
     <div id="errorSeasonAlert" class="hidden w-1/2 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-        <p><strong>Season</strong> [field is missing]</p>
+        <p><strong>SEASON</strong> [field is missing]</p>
     </div>
 
     <div id="errorRoundAlert" class="hidden w-1/2 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-        <p><strong>Round Number</strong> [field must be a positive integer]</p>
+        <p><strong>ROUND NUMBER</strong> [field must be a positive integer]</p>
     </div>
 
     <div id="errorCircuitAlert" class="hidden w-1/2 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-        <p><strong>Circuit</strong> [field is missing]</p>
+        <p><strong>CIRCUIT</strong> [field is missing]</p>
     </div>
 
     <div id="errorPointsAlert" class="hidden w-1/2 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-        <p><strong>Points Scheme</strong> [field is missing]</p>
+        <p><strong>POINTS SCHEME</strong> [invalid field]</p>
     </div>
 
     <table id="jsonTableTrack" class="w-full shadow-lg table-auto mt-2">
@@ -78,7 +92,7 @@
 
 <div class="flex justify-center items-center mt-2">
     <div id="errorSubmitAlert" class="hidden w-auto bg-red-100 border-l-4 border-r-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-            <p>Please clear the<strong> errors </strong> befpre clicking on 'Submit'</p>
+            <p>Please clear all the<strong> ERRORS </strong> before submitting</p>
     </div>
 </div>
 
@@ -102,14 +116,14 @@
     </div>
 </div>
 
-<div>
+<!-- <div>
     <button id="test" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 border border-red-700 rounded">
         <i class="fa fa-undo" aria-hidden="true"></i>
     </button>
     <button id="test2" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
         <i class="fa fa-undo" aria-hidden="true"></i>
     </button>
-</div>
+</div> -->
 
 
 <script>
@@ -262,35 +276,35 @@
                             $('#resultsTableBody').append(rowResult);
 
                             var resultsAlertsCreation = `<div id="errorPosAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Position</strong> [field must be a positive integer]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> POSITION</strong> [field must be a positive integer]</p>
                                                         </div>
 
                                                         <div id="errorDriverAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Driver</strong> [field is missing]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> DRIVER</strong> [field is missing]</p>
                                                         </div>
 
                                                         <div id="errorConstructorAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Constructor</strong> [field is missing]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> CONSTRUCTOR</strong> [field is missing]</p>
                                                         </div>
 
                                                         <div id="errorGridAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Starting Grid</strong> [field must be a positive integer]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> STARTING GRID</strong> [field must be a positive integer]</p>
                                                         </div>
 
                                                         <div id="errorStopsAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Laps Completed</strong> [field must be a non-negative integer]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> LAPS COMPLETED</strong> [field must be a non-negative integer]</p>
                                                         </div>
 
                                                         <div id="errorFlAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Fastest Lap</strong> [field must be in the following format: <strong>'1:06.006'</strong>]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> FASTEST LAP</strong> [field must be in the following format: <strong>'1:06.006'</strong>]</p>
                                                         </div>
 
                                                         <div id="errorTimeAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Race Time</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>
                                                         </div>
 
                                                         <div id="errorStatusAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
-                                                            <p>Row<strong> ${i+1}</strong> -<strong> Status</strong> [invalid field]</p>
+                                                            <p>Row<strong> ${i+1}</strong> -<strong> STATUS</strong> [invalid field]</p>
                                                         </div>`;
                             $('#resultsAlerts').append(resultsAlertsCreation);
                             
@@ -333,8 +347,8 @@
                             $(`#select${i+1}`).click(function(event) {
                                 $('input:checkbox').not(this).prop('checked', false);
                                 $('#pointsBtn').html(i+1);
-                                $('#errorPointsAlert').slideUp(500);
                                 $('#trackBodyPoints').removeClass('bg-red-600');
+                                $('#errorPointsAlert').slideUp(500);
                                 $('#pointsOverlay').removeClass('flex');
                                 $('#pointsOverlay').addClass('hidden');
                             });
@@ -345,11 +359,18 @@
                         
                         undoFields(json);
                         $('#undoPoints').click(function(event) {
-                            $('#pointsBtn').html(json.track.points);
-                            $('input:checkbox').not(this).prop('checked', false);
+                            if(points.find(item => {return item.id == json.track.points}) == undefined) {
+                                $('#pointsBtn').html('0');
+                                $('input:checkbox').not(this).prop('checked', false);
+                                $('#trackBodyPoints').addClass('bg-red-600');
+                                $('#errorPointsAlert').slideDown(500);
+                            } else {
+                                $('#pointsBtn').html(json.track.points);
+                                $('input:checkbox').not(this).prop('checked', false);
+                            }
                         });
                         
-                        clearWarnings(json);
+                        clearWarnings(json, season, tracks, driver, constructor, status);
 
                         for(let i = 0; i < Object.keys(json.results).length; i++) {
                             let flValue, timeValue;
@@ -452,7 +473,6 @@
                             
                             $('#errorSubmitAlert').slideUp(500);
                             if(isValidTimeFormat(newJson) && (postStatusTrack == 1) && (postStatusResults == 1)) {
-                                $('#submit').addClass('animate-spin');
                                 $('#errorSubmitAlert').slideUp(500);
                                 postJson(JSON.stringify(newJson));
                             } else {
@@ -574,9 +594,17 @@
             contentType: "application/json",
             success: function (result) {
                 console.log(result);
+                $('#submit').toggleClass('hidden');
+                $('#jsonTableResults').addClass('hidden');
+                $('#jsonTableTrack').addClass('hidden');
+                $('#fileInput').addClass('hidden');
+                $('#successPost').toggleClass('hidden');
             },
             error: function (result, status) {
                 console.log(result);
+                $('#failText').html("Something went wrong");
+                // $('#failText').html(result.responseJson.message);
+                $('#failedPost').toggleClass('hidden');
             }
         });
     }
@@ -596,21 +624,18 @@
                             {
                                 input: json.track.season_id,
                                 stored: season,
-                                message: 'Season ID ' + json.track.season_id + ' not present in DB',
                                 cell: '#trackBodySeason',
                                 alert: '#errorSeasonAlert'
                             },
                             {
                                 input: json.track.circuit_id,
                                 stored: tracks,
-                                message: 'Circuit ID ' + json.track.circuit_id + ' not present in DB',
                                 cell: '#trackBodyCircuit',
                                 alert: '#errorCircuitAlert'
                             },
                             {
                                 input: json.track.points,
                                 stored: points,
-                                message: 'Points ID ' + json.track.points + ' not present in DB',
                                 cell: '#trackBodyPoints',
                                 alert: '#errorPointsAlert'
                             },
@@ -808,42 +833,79 @@
         }
     }
 
-    function clearWarnings(json) {
-        let dataMapping = [
-                            {
-                                innerObj: '#seasonSelect',
-                                outerDiv: '#trackBodySeason',
-                                alert: '#errorSeasonAlert'
-                            },
-                            {
-                                innerObj: '#tracksSelect',
-                                outerDiv: '#trackBodyCircuit',
-                                alert: '#errorCircuitAlert'
-                            },
-                        ];
+    function clearWarnings(json, season, tracks, driver, constructor, status) {
+        let dataMappingTrack = [
+                                    {
+                                        input: json.track.season_id,
+                                        stored: season,
+                                        innerObj: '#seasonSelect',
+                                        outerDiv: '#trackBodySeason',
+                                        alert: '#errorSeasonAlert'
+                                    },
+                                    {
+                                        input: json.track.circuit_id,
+                                        stored: tracks,
+                                        innerObj: '#tracksSelect',
+                                        outerDiv: '#trackBodyCircuit',
+                                        alert: '#errorCircuitAlert'
+                                    },
+                                ];
         
-        for(let i = 0; i < dataMapping.length; i++) {
-            $(dataMapping[i].innerObj).change(function(event) {
-                $(dataMapping[i].outerDiv).removeClass('bg-red-600');
-                $(dataMapping[i].alert).slideUp(500);
+        for(let i = 0; i < dataMappingTrack.length; i++) {
+            $(dataMappingTrack[i].innerObj).change(function(event) {
+                let indexVal = $(dataMappingTrack[i].innerObj).val();
+                if(dataMappingTrack[i].stored.find(item => {return item.id == dataMappingTrack[i].input}) == undefined) {
+                    if(indexVal == null) {
+                        $(dataMappingTrack[i].outerDiv).addClass('bg-red-600');
+                        $(dataMappingTrack[i].alert).slideDown(500);
+                    } else {
+                        $(dataMappingTrack[i].outerDiv).removeClass('bg-red-600');
+                        $(dataMappingTrack[i].alert).slideUp(500);
+                    } 
+                }
             });
         }
 
         for(let i = 0; i < Object.keys(json.results).length; i++) {
-            $(`#driverSelect${i}`).change(function(event) {
-                $(`#resultsBodyDriver${i}`).removeClass('bg-red-600');
-                $(`#errorDriverAlert${i}`).slideUp(500);
-            });
+            let dataMappingResults = [
+                                        {
+                                            input: json.results[i].driver_id,
+                                            stored: driver,
+                                            innerObj: `#driverSelect${i}`,
+                                            outerDiv: `#resultsBodyDriver${i}`,
+                                            alert: `#errorDriverAlert${i}`
+                                        },
+                                        {
+                                            input: json.results[i].constructor_id,
+                                            stored: constructor,
+                                            innerObj: `#constructorSelect${i}`,
+                                            outerDiv: `#resultsBodyConstructor${i}`,
+                                            alert: `#errorConstructorAlert${i}`
+                                        },
+                                        {
+                                            input: json.results[i].status,
+                                            stored: status,
+                                            innerObj: `#statusSelect${i}`,
+                                            outerDiv: `#resultsBodyStatus${i}`,
+                                            alert: `#errorStatusAlert${i}`
+                                        },
+                                    ];
+                                    
+            for(let j = 0; j < dataMappingResults.length; j++) {
+                $(dataMappingResults[j].innerObj).change(function(event) {
+                    let indexVal = $(dataMappingResults[j].innerObj).val();
+                    if(dataMappingResults[j].stored.find(item => {return item.id == dataMappingResults[j].input}) == undefined) {
+                        if(indexVal == null) {
+                            $(dataMappingResults[j].outerDiv).addClass('bg-red-600');
+                            $(dataMappingResults[j].alert).slideDown(500);
+                        } else {
+                            $(dataMappingResults[j].outerDiv).removeClass('bg-red-600');
+                            $(dataMappingResults[j].alert).slideUp(500);
+                        } 
+                    }
+                });
+            }
             
-            $(`#constructorSelect${i}`).change(function(event) {
-                $(`#resultsBodyConstructor${i}`).removeClass('bg-red-600');
-                $(`#errorConstructorAlert${i}`).slideUp(500);
-            });
-            
-            $(`#statusSelect${i}`).change(function(event) {
-                $(`#resultsBodyStatus${i}`).removeClass('bg-red-600');
-                $(`#errorStatusAlert${i}`).slideUp(500);
-            });
         }
     }
 
