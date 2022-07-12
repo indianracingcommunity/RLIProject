@@ -97,7 +97,7 @@
 </div>
 
 <div class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen max-h-screen" id="pointsOverlay">
-    <div class="bg-gray-200 rounded-lg w-3/4 max-h-screen py-2 px-3 shadow-xl overflow-scroll">
+    <div class="my-6 bg-gray-200 rounded-lg w-3/4 max-h-screen py-2 px-3 shadow-xl">
         <div class="flex justify-between items-center border-b border-gray-400">
             <h4 class="p-2 text-lg md:text-xl font-bold">Points scheme details</h4>
             <svg id="cross" class=" w-6 h-7 cursor-pointer hover:bg-gray-400 rounded-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="close-modal"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -105,7 +105,7 @@
         <div>
             <p class="text-center text-red-600 text-md md:text-lg font-bold pt-3 pb-1">Choose the required points scheme</p>
         </div>
-        <div class="justify-center px-4 py-2 w-full">
+        <div class="justify-center px-4 py-2 w-full h-screen overflow-scroll" style="max-height: 80vh">
             <table id="pointsTable" class="table-auto">
                 <thead id="pointsTableHeaders" class="text-center bg-purple-500 text-white">
                 </thead>
@@ -180,30 +180,38 @@
 
                         var rowTrack = `<tr class="text-center">
                                             <td class="border rounded py-2 px-1" id="trackBodySeason">
-                                                <select id="seasonSelect" class="bg-gray-200 w-48 p-1 font-semibold leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                                                </select>
-                                                <button id="undoSeason" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                    <i class="fa fa-undo" aria-hidden="true"></i>
-                                                </button>
+                                                <div class="flex px-2 justify-between gap-2">
+                                                    <select id="seasonSelect" class="bg-gray-200 p-1 font-semibold leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                    </select>
+                                                    <button id="undoSeason" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                        <i class="fa fa-undo" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                             <td class="border rounded p-2" id="trackBodyRound">
-                                                <input class="pl-3 w-16 text-center font-semibold" type="number" id="inputRound" min="1" value="${json.track.round}"\>
-                                                <button id="undoRound" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                    <i class="fa fa-undo" aria-hidden="true"></i>
-                                                </button>
+                                                <div class="flex px-2 justify-between gap-1">
+                                                    <input class="pl-6 w-16 text-center font-semibold" type="number" id="inputRound" min="1" value="${json.track.round}"\>
+                                                    <button id="undoRound" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                        <i class="fa fa-undo" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                             <td class="border rounded py-2 px-1" id="trackBodyCircuit">
-                                                <select id="tracksSelect" class="bg-gray-200 w-48 p-1 font-semibold leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                                                </select>
-                                                <button id="undoCircuit" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                    <i class="fa fa-undo" aria-hidden="true"></i>
-                                                </button>
+                                                <div class="flex px-2 justify-between gap-2">
+                                                    <select id="tracksSelect" class="bg-gray-200 w-48 p-1 font-semibold leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                    </select>
+                                                    <button id="undoCircuit" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                        <i class="fa fa-undo" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                             <td class="border rounded py-2 px-1" id="trackBodyPoints">
-                                                <button id="pointsBtn" type="button" class="px-5 font-semibold bg-gray-300 border border-gray-500 rounded">${json.track.points}</button>
-                                                <button id="undoPoints" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                    <i class="fa fa-undo" aria-hidden="true"></i>
-                                                </button>
+                                                <div class="flex px-2 justify-between gap-2">
+                                                    <button id="pointsBtn" type="button" class="px-5 font-semibold bg-gray-300 border border-gray-500 rounded">${json.track.points}</button>
+                                                    <button id="undoPoints" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                        <i class="fa fa-undo" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>`;
                         $('#trackTableBody').append(rowTrack);
@@ -219,58 +227,74 @@
                         for(let i = 0; i < Object.keys(json.results).length; i++) {
                             var rowResult = `<tr class="text-center">
                                                 <td class="border rounded p-2" id="resultsBodyPos${i}">
-                                                    <input class="pl-3 w-16 text-center font-semibold" type="number" id="inputPos${i}" min="1" value="${json.results[i].position}"\>
-                                                    <button id="undoPos${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-1">
+                                                        <input class="pl-6 w-16 text-center font-semibold" type="number" id="inputPos${i}" min="1" value="${json.results[i].position}"\>
+                                                        <button id="undoPos${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="border rounded py-2 px-1" id="resultsBodyDriver${i}">
-                                                    <select id='driverSelect${i}' class="bg-gray-200 font-semibold w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
-                                                    </select>
-                                                    <button id="undoDriver${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-2">
+                                                        <select id='driverSelect${i}' class="bg-gray-200 font-semibold w-32 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">
+                                                        </select>
+                                                        <button id="undoDriver${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="hidden border rounded p-2">
                                                     <input class="w-12 text-center font-semibold" type="text" id="inputDriver${i}" value="${json.results[i].driver_id}"\>
                                                 </td>
                                                 <td class="border rounded py-2 px-1" id="resultsBodyConstructor${i}">
-                                                    <select id='constructorSelect${i}' class="bg-gray-200 font-semibold w-48 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                                                    </select>
-                                                    <button id="undoConstructor${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-2">
+                                                        <select id='constructorSelect${i}' class="bg-gray-200 font-semibold w-32 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                        </select>
+                                                        <button id="undoConstructor${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="border rounded p-2" id="resultsBodyGrid${i}">
-                                                    <input class="pl-3 w-16 text-center font-semibold" type="number" id="inputGrid${i}" min="1" value="${json.results[i].grid}"\>
-                                                    <button id="undoGrid${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-1">
+                                                        <input class="pl-3 w-16 text-center font-semibold" type="number" id="inputGrid${i}" min="1" value="${json.results[i].grid}"\>
+                                                        <button id="undoGrid${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="border rounded p-2" id="resultsBodyStops${i}">
-                                                    <input class="pl-3 w-16 text-center font-semibold" type="number" id="inputStops${i}" min="0" value="${json.results[i].stops}"\>
-                                                    <button id="undoStops${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-1">
+                                                        <input class="pl-3 w-16 text-center font-semibold" type="number" id="inputStops${i}" min="0" value="${json.results[i].stops}"\>
+                                                        <button id="undoStops${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="border rounded p-2" id="resultsBodyFl${i}">
-                                                    <input class="w-24 text-center font-semibold" type="text" id="inputFl${i}" value="${json.results[i].fastestlaptime}"\>
-                                                    <button id="undoFl${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-2">
+                                                        <input class="w-24 text-center font-semibold" type="text" id="inputFl${i}" value="${json.results[i].fastestlaptime}"\>
+                                                        <button id="undoFl${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="border rounded p-2" id="resultsBodyTime${i}">
-                                                    <input class="w-24 text-center font-semibold" type="text" id="inputTime${i}" value="${json.results[i].time}"\>
-                                                    <button id="undoTime${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-2">
+                                                        <input class="w-24 text-center font-semibold" type="text" id="inputTime${i}" value="${json.results[i].time}"\>
+                                                        <button id="undoTime${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td class="border rounded py-2 px-1" id="resultsBodyStatus${i}">
-                                                    <select id='statusSelect${i}' class="bg-gray-200 font-semibold w-36 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
-                                                    </select>
-                                                    <button id="undoStatus${i}" class="bg-white absolute text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-                                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                                    </button>
+                                                    <div class="flex px-2 justify-between gap-2">
+                                                        <select id='statusSelect${i}' class="bg-gray-200 font-semibold w-24 p-1 leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500">                       
+                                                        </select>
+                                                        <button id="undoStatus${i}" class="bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>`;
                             $('#resultsTableBody').append(rowResult);
@@ -448,7 +472,7 @@
                                 track: trackContent[0],
                                 results: resultsContent
                                         };
-                            console.log(newJson)
+                            // console.log(newJson)
 
                             let trackOuterDivs = ['#trackBodySeason', '#trackBodyRound', '#trackBodyCircuit', '#trackBodyPoints'];
                             let postStatusTrack = 1;
@@ -559,21 +583,21 @@
             let rowData = {};
             let rowContent, treeTraversal, status;
             for(let j = 0; j < tableRow.cells.length; j++) {
-                if(tableRow.cells[j].children.length != 0) {
-                    treeTraversal = tableRow.cells[j].children[0].options;
+                if(tableRow.cells[j].children[0].children.length != 0) {
+                    treeTraversal = tableRow.cells[j].children[0].children[0].options;
                     if(headers[j] == 'driver'){
                         rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
                     } else if(headers[j] == 'status') {
                         tempRow = treeTraversal.selectedIndex - 1;
                         rowContent = statusMap[tempRow];
                     } else if(headers[j] == 'points') {
-                        rowContent = tableRow.cells[j].children[0].innerHTML;
-                    } else if(headers[j] == 'driver_id') {
-                        leftCellTraversal = tableRow.cells[1].children[0].options;
-                        rowContent = leftCellTraversal.selectedIndex;
+                        rowContent = tableRow.cells[j].children[0].children[0].innerHTML;
                     } else {
-                        rowContent = tableRow.cells[j].children[0].value;
+                        rowContent = tableRow.cells[j].children[0].children[0].value;
                     }
+                } else if(headers[j] == 'driver_id') {
+                    leftCellTraversal = tableRow.cells[1].children[0].children[0].options;
+                    rowContent = leftCellTraversal.selectedIndex;
                 } else {
                     rowContent = tableRow.cells[j].innerHTML;
                 }
@@ -582,7 +606,6 @@
             }
             data.push(rowData);
         }
-        // console.log(table.rows[1].cells[2].children.length)
         return data;
     }
 
@@ -593,7 +616,7 @@
             data: json,
             contentType: "application/json",
             success: function (result) {
-                console.log(result);
+                // console.log(result);
                 $('#submit').toggleClass('hidden');
                 $('#jsonTableResults').addClass('hidden');
                 $('#jsonTableTrack').addClass('hidden');
