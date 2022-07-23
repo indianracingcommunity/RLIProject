@@ -257,7 +257,6 @@ input[type="checkbox"]:checked+label span::before {
                                 <div class="block w-auto text-red-600 text-sm italic pointer-events-none"
                                     id="errorLink"></div>
                             </div>
-                            <input type="text" id="links_merged" name="links_merged" hidden>
 
                             <!-- Images  -->
                             <div class="my-2 relative">
@@ -498,7 +497,7 @@ function addLink() {
 
     var link = `<div id="evidence_secondary_container"
                     class="flex justify-start my-2 w-full">
-                    <input type="url" 
+                    <input type="url" name="video_links[]"
                             class="relative bg-gray-200 shadow-lg border border-gray-500 rounded py-2 px-3 w-10/12 md:w-11/12 h-10 hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-600">
                     <div class="delete_container w-2/12 md:w-1/12 flex justify-center md:justify-end" onclick="deleteLink(event)">
                         <svg xmlns="http://www.w3.org/2000/svg" class="my-auto h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -606,22 +605,6 @@ function deleteImage(e) {
 //------------------------------ Submit Form ------------------------------------//
 function submitForm() {
     if (validateReport()) {
-
-        var links = $("input[type='url']");
-        console.log(links.length);
-        //Combine links
-        if (links.length > 0) {
-            var links_merged = '';
-            links.each((i, link) => {
-                if (i !== 0) {
-                    links_merged += '\\n';
-                }
-                links_merged += link.value;
-            });
-            $("#links_merged").val(links_merged);
-        } else {
-            $("#links_merged").remove();
-        }
         return true;
     }
 
