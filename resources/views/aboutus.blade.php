@@ -9,11 +9,11 @@
 			</div>
 		</div>
 		<div class="flex">
-			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-700"><span class="text-green-600 ml-2 mr-2">●</span><strong>IRC eSports</strong> is a wholly owned subsidiary of IRC currently hosted on our Discord server. IRC eSports division holds league races on the Latest Official F1 Game on PC (currently, F1 2020) and on Assetto Corsa Competizione which is open for all players regardless to signup and participate in.
+			<div class="font-semibold bg-gray-100 rounded-md p-2 my-1 text-gray-700"><span class="text-green-600 ml-2 mr-2">●</span><strong>IRC eSports</strong> is a wholly owned subsidiary of IRC currently hosted on our Discord server. IRC eSports division holds league races on the Latest Official F1 Game on PC (currently, F1 2022) and on Assetto Corsa Competizione which is open for all players regardless to signup and participate in.
 			</div>
 		</div>
 		<div class="flex">
-			<div class="font-semibold bg-orange-100 rounded-md p-2 my-1 text-gray-700"><span class="text-green-600 ml-2 mr-2">●</span>Major Racing games featured across the community include the Official F1, Assetto Corsa, Assetto Corsa Competizione etc, as well as other non-racing games, each having a space to interact on our Discord server. We have a dedicated space for members on PS4 and XBOX console platforms to interact with each other and host online races.
+			<div class="font-semibold bg-orange-100 rounded-md p-2 my-1 text-gray-700"><span class="text-green-600 ml-2 mr-2">●</span>Major Racing games featured across the community include the Official F1 Game(s), Assetto Corsa, Assetto Corsa Competizione etc, as well as other non-racing games, each having a space to interact on our Discord server. We have a dedicated space for members on PS4 and XBOX console platforms to interact with each other and host online races, although since the introduction of crossplay in the official F1 Game, our F1 league has a mix of PC and Console players.
 			</div>
 		</div>
 
