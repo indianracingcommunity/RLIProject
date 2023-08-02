@@ -11,4 +11,9 @@ RUN docker-php-ext-install shmop sockets sysvmsg sysvsem sysvshm zip
 ARG PROJECT_DIR
 WORKDIR $PROJECT_DIR
 
+RUN sed -i "s/user = www-data/user = root/g" /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i "s/group = www-data/group = root/g" /usr/local/etc/php-fpm.d/www.conf
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
