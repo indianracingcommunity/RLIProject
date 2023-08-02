@@ -74,12 +74,13 @@ services:
       - irc-network
 
   irc-admin:
-    image: phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
+    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
     container_name: irc-admin
     restart: always
     environment:
       PMA_HOST: irc-db
       PMA_PORT: ${DB_PORT}
+      PMA_USER_CONFIG_BASE64: ${PMA_USER_CONFIG}
       PMA_USER: ${PMA_USERNAME}
       PMA_PASSWORD: ${PMA_PASSWORD}
     networks:

@@ -1,4 +1,4 @@
-mysql -uroot -proot <<EOF
+mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" <<EOF
 CREATE DATABASE $DB_TEST_DATABASE;
 
 CREATE USER $DB_USERNAME@'172.%' IDENTIFIED BY '$DB_PASSWORD';

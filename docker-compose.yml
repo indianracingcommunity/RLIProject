@@ -80,8 +80,7 @@ services:
     environment:
       PMA_HOST: irc-db
       PMA_PORT: ${DB_PORT}
-      PMA_USER: ${PMA_USERNAME}
-      PMA_PASSWORD: ${PMA_PASSWORD}
+      PMA_USER_CONFIG_BASE64: ${PMA_USER_CONFIG}
     networks:
       - irc-network
     volumes:
