@@ -251,4 +251,17 @@ class ResultsController extends Controller
                ->with('constructor', $constructor)
                ->with('driver', $driver);
     }
+
+    public function fetchResultsByRaceId($race)
+    {
+        $track = Race::findOrFail($race);
+        $results = Result::where('race_id', $race)
+                         ->orderBy('position', 'asc')
+                         ->get()->toArray();
+
+        return response()->json([
+            "track" => $track,
+            "results" => $results
+        ]);
+    }
 }
