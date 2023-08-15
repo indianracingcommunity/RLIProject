@@ -31,5 +31,6 @@ jobs:
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
             cd ~/RLIProject;
+            echo $BRANCH_NAME;
             APP_ENV=$(awk '/APP_ENV=/' .env | awk '{split($0,a,"="); print a[2]}');
             ./build/$APP_ENV/deploy.sh $BRANCH_NAME;
