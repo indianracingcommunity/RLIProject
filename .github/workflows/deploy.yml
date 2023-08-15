@@ -26,7 +26,7 @@ jobs:
       - name: Deploy code via SSH
         uses: appleboy/ssh-action@v1.0.0
         env:
-          BRANCH_NAME: $BRANCH_NAME
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USERNAME }}
