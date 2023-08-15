@@ -1,28 +1,54 @@
 #!/bin/sh
 
 set -e
+
+REMOTE_BRANCH="$(git branch --show-current)"
+
+# Check if branch argument is missing
+if [ -z "$1" ]; then
+    echo "Branch of repository not supplied as argument"
+    exit 2
+fi
+
+# Check if branch argument is the same as the branch present in remote env.
+if [ "$1" != "$REMOTE_BRANCH" ]; then
+    echo "Remote branch not matching the branch being pushed"
+    exit 22
+fi
+
 echo "Deploying application ..."
 
 # Enter maintenance mode
-(php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.') || true
+(docker compose exec irc-app php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.') || true
 
     # Update codebase
-    git fetch origin master
-    git pull origin master
+    git fetch origin "$1"
+    git pull origin "$1"
 
     # Install dependencies based on lock file
-    composer install --no-interaction --prefer-dist --optimize-autoloader
+    docker compose exec irc-app composer install --no-interaction --prefer-dist --optimize-autoloader
 
     # Migrate database
-    php artisan migrate
+    docker compose exec irc-app php artisan migrate
 
     # Clear cache
-    php artisan optimize
+    docker compose exec irc-app php artisan optimize
 
-    # Reload PHP to update opcache
-    echo "" | sudo -S service php7.4-fpm reload
+    # Reload PHP
+    docker restart irc-app
+
+# Waiting for service to run
+sleep 3
+
+# If service is not running, notify admins
+if [ "$( docker container inspect -f '{{.State.Running}}' irc-app )" = "false" ]; then
+    echo "Service is down!"
+    # TODO: Notify admins
+
+    exit 112
+fi
 
 # Exit maintenance mode
-php artisan up
+docker compose exec irc-app php artisan up
 
 echo "Application deployed!"
