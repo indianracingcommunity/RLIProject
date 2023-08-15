@@ -3,6 +3,8 @@
 set -e
 
 REMOTE_BRANCH="$(git branch --show-current)"
+echo "Remote Branch = $REMOTE_BRANCH"
+echo "Argument = $1"
 
 # Check if branch argument is missing
 if [ -z "$1" ]; then
