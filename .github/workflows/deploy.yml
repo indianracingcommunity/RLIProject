@@ -3,7 +3,7 @@ name: CD - Deploy to Prod
 on:
   # Triggers the workflow on push events for the mentioned branch
   push:
-    branches: [cd-test-1]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
