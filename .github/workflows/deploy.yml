@@ -1,9 +1,12 @@
-name: CD Deploy Test
+name: CD - Deploy to Prod
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
+  # Triggers the workflow to run for this branch on completion of CI Run Tests workflow
+  workflow_run:
+    workflows: ["CI - Run Tests"]
     branches: [ cd-test-1 ]
+    types:
+      - completed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -13,6 +16,7 @@ jobs:
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

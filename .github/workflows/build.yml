@@ -1,4 +1,4 @@
-name: CI
+name: CI - Run Tests
 
 on: [push, pull_request]
 
