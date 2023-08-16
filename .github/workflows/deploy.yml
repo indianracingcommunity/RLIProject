@@ -1,26 +1,25 @@
 name: CD - Deploy to Prod
 
 on:
-  # Triggers the workflow to run for this branch on completion of CI Run Tests workflow
-  workflow_run:
-    workflows: ["CI - Run Tests"]
-    branches: [ cd-test-1 ]
-    types:
-      - completed
+  # Triggers the workflow on push events for the mentioned branch
+  push:
+    branches: [cd-test-1]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    needs: build
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # extract branch name
       - name: Extract branch name
         if: github.event_name != 'pull_request'
         shell: bash
@@ -38,6 +37,5 @@ jobs:
           envs: BRANCH_NAME
           script: |
             cd ~/RLIProject;
-            echo $BRANCH_NAME;
             APP_ENV=$(awk '/APP_ENV=/' .env | awk '{split($0,a,"="); print a[2]}');
             ./build/$APP_ENV/deploy.sh $BRANCH_NAME;
