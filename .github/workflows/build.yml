@@ -4,6 +4,9 @@ on:
   pull_request:
 
   workflow_call:
+    secrets:
+      STAGING_ENV:
+        required: true
 
   workflow_dispatch:
 

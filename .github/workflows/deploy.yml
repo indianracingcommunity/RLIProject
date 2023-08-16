@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
+    secrets: inherit
 
   deploy:
     # The type of runner that the job will run on
