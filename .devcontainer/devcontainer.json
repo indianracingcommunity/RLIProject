@@ -28,7 +28,8 @@
 		"wongjn.php-sniffer",
 		"cssho.vscode-svgviewer",
 		"pomdtr.excalidraw-editor",
-		"vivaxy.vscode-conventional-commits"
+		"vivaxy.vscode-conventional-commits",
+		"GitHub.vscode-github-actions"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

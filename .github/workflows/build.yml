@@ -3,6 +3,10 @@ name: CI - Run Tests
 on:
   pull_request:
 
+  push:
+    branches-ignore:
+      - master
+
   workflow_call:
     secrets:
       STAGING_ENV:
