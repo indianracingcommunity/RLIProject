@@ -1,6 +1,14 @@
-name: CI
+name: CI - Run Tests
 
-on: [push, pull_request]
+on:
+  pull_request:
+
+  workflow_call:
+    secrets:
+      STAGING_ENV:
+        required: true
+
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -10,14 +18,14 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Copy .env
         run: 'echo "$STAGING_ENV" > .env'
         shell: bash
         env:
           STAGING_ENV: ${{secrets.STAGING_ENV}}
 
-      - name: Docker Compose Build
+      - name: Docker compose build
         run: docker compose -f docker-compose.test.yml up --build -d
 
       - name: Install dependencies

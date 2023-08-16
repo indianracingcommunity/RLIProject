@@ -74,7 +74,7 @@ services:
       - irc-network
 
   irc-admin:
-    image: phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
+    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
     container_name: irc-admin
     restart: always
     environment:
