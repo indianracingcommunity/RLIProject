@@ -91,25 +91,32 @@ class ResultsController extends Controller
             // Need to seaerch from Driver List instead.
             if ($results[$i]['driver_id'] == '-1') {
                 return response()->json([
-                    "mesage" => "Please check Driver ID's",
+                    "mesage" => "Error found in Driver ID",
                     "error" => $results[$i],
-                ]);
+                ], 400);
+            }
+
+            if ($results[$i]['constructor_id'] == '-1') {
+                return response()->json([
+                    "mesage" => "Error found in Constructor ID",
+                    "error" => $results[$i],
+                ], 400);
             }
 
             $check = preg_match($regex_time, $results[$i]['time']);
             if ($check == '0') {
                 return response()->json([
-                    "message" => "Error Found in Time Format",
+                    "message" => "Error found in Time format",
                     "error" => $results[$i],
-                ]);
+                ], 400);
             }
 
             $check = preg_match($regex_fltime, $results[$i]['fastestlaptime']);
             if ($check == '0') {
                 return response()->json([
-                    "message" => "Error Found in Fastest Lap Time Format",
+                    "message" => "Error found in Fastest Lap Time format",
                     "error" => $results[$i],
-                ]);
+                ], 400);
             }
         }
 
@@ -118,8 +125,8 @@ class ResultsController extends Controller
 
             $res['race_id'] = $race['id'];
             $result = new Result($res);
-            $result->storeResult();
-            $results[$k] = $result;
+            $returned_result = $result->storeResult();
+            $results[$k] = $returned_result;
         }
 
         // Update Season Report Window & Reportable
