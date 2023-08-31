@@ -12,6 +12,9 @@ on:
       STAGING_ENV:
         required: true
 
+      GOOGLE_SERVICE_ACCOUNT_CREDENTIALS:
+        required: true
+
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -28,6 +31,12 @@ jobs:
         shell: bash
         env:
           STAGING_ENV: ${{secrets.STAGING_ENV}}
+
+      - name: Copy google service account credentials
+        run: 'echo "$GOOGLE_SERVICE_ACCOUNT_CREDENTIALS" > service-account-credentials.json'
+        shell: bash
+        env:
+          GOOGLE_SERVICE_ACCOUNT_CREDENTIALS: ${{secrets.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS}}
 
       - name: Docker compose build
         run: docker compose -f docker-compose.test.yml up --build -d

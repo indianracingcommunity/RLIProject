@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\FilesystemHelpers as FH;
+
 return [
 
     /*
@@ -64,6 +66,13 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'google' => [
+            'driver' => 'google',
+            'clientSecret' => env("GOOGLE_CLIENT_SECRET"),
+            'rootFolder' => FH::noTrailSlash(env("GOOGLE_DRIVE_ROOT_FOLDER")),
+            'dbBackupsFolder' => FH::noTrailSlash(env("GOOGLE_DRIVE_DB_BACKUPS_FOLDER")),
+            'signupsFolder' => FH::noTrailSlash(env("GOOGLE_DRIVE_SIGNUPS_FOLDER"))
+        ],
     ],
 
 ];

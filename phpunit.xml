@@ -10,6 +10,7 @@
   processIsolation="false"
   cacheResult="false"
   stopOnFailure="false"
+  testdox="true"
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage processUncoveredFiles="true">
     <include>
@@ -17,11 +18,8 @@
     </include>
   </coverage>
   <testsuites>
-    <testsuite name="Unit">
-      <directory suffix="Test.php">./tests/Unit</directory>
-    </testsuite>
-    <testsuite name="Feature">
-      <directory suffix="Test.php">./tests/Feature</directory>
+    <testsuite name="Tests">
+      <directory suffix="Test.php">./tests/*</directory>
     </testsuite>
   </testsuites>
   <php>

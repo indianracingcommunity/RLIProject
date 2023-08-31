@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 FROM php:$PHP_VERSION-fpm
-RUN apt-get update -y && apt-get install -y git curl libxslt-dev \
+RUN apt-get update -y && apt-get install -y git curl unzip libxslt-dev \
         libzip-dev libpng-dev libgmp-dev zlib1g-dev libffi-dev
 
 RUN docker-php-ext-install pdo_mysql bcmath xsl

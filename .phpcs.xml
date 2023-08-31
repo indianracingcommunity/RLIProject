@@ -3,7 +3,9 @@
     <description>Coding standard used in the IRC Website</description>
     <config name="ignore_errors_on_exit" value="0"/>
 
-    <rule ref="PSR12" />
+    <rule ref="PSR12">
+        <exclude name="Generic.ControlStructures.InlineControlStructure.NotAllowed" />
+    </rule>
     <rule ref="Internal.NoCodeFound">
         <severity>0</severity>
     </rule>

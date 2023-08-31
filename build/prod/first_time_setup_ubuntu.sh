@@ -28,11 +28,16 @@ sudo usermod -aG docker $USER || true
 
 # Check if .env & database have been added
 DB_DATABASE=$(awk '/DB_DATABASE=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
-if [ -z "$DB_DATABASE" ] || [ ! -d "../../setup/prod/db/$DB_DATABASE" ]
+APP_ENV=$(awk '/APP_ENV=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
+if [ -z "$DB_DATABASE" ] || [ ! -d "../../setup/$APP_ENV/db/$DB_DATABASE" ]
 then
   echo 'Environment Variable and/or Database not setup'
   exit 1
 fi
+
+# Create DB Backup folder
+mkdir -p ../../storage/backups
+mkdir -p ../../storage/signups
 
 # Start the server
 docker compose -f ../../docker-compose.yml up --build -d
@@ -40,3 +45,7 @@ docker compose -f ../../docker-compose.yml up --build -d
 # Deploy latest changes
 REMOTE_BRANCH="$(git branch --show-current)"
 ./deploy.sh $REMOTE_BRANCH
+
+# Setup scheduler cron
+PRORJECT_DIR=$(awk '/PRORJECT_DIR=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
+crontab -l | { cat; echo "0 * * * * cd $PROJECT_DIR && php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
