@@ -57,13 +57,13 @@
         display: block;
     }
 
-    #jsonTextArea:focus {
+    #reviewJSONTextArea:focus {
         outline: none !important;
         border: none !important;
     }
 </style>
 
-<!-- Screen 1 to show selection of JSON for upload -->
+<!-- Screen to show various JSON selection methods for upload -->
 <div id="homeScreen">
     <div id="missingTrackAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 py-2 px-4 my-4 rounded" role="alert">
         <p><strong>Track Key</strong> [track] is missing in the uploaded JSON</p>
@@ -137,7 +137,7 @@
 
 </div>
 
-<!-- Screen 2 to show JSON editor -->
+<!-- Screen to edit details in the uploaded JSON with validation checks -->
 <div id="editScreen">
     <div class="flex flex-row justify-between items-center">
         <p class="mt-5 text-4xl font-bold">Review all fields</p>
@@ -159,13 +159,14 @@
     <div id="showAdditionsInfoDiv" class="flex flex-row gap-3 mt-2">
         <p class="text-sm text-yellow-600 font-bold">Selected options:</p>
         <p id="showNoFlPointsInfo" class="text-sm text-gray-600 font-bold">No points for fastest lap</p>
-        <p id="showPopulateAllConstInfo" class="text-sm text-gray-600 font-bold">Populate all constructors in dropdowns</p>
+        <p id="showPopulateAllConstructorsInfo" class="text-sm text-gray-600 font-bold">Populate all constructors in dropdowns</p>
     </div>
     
     <div class="w-7/12 rounded mb-10 my-2">
         <p class="mt-5 text-xl text-gray-600 font-bold">Track and season</p>
 
-        <div id="warningSeasonRoundSameAsInitial" class="hidden w-1/2 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
+        <!-- Shows a warning when round no. and season id combination is already present in DB -->
+        <div id="warningSeasonRoundSameAsInitialAlert" class="hidden w-1/2 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
             <p><strong>SEASON</strong> and <strong>ROUND NUMBER</strong> should not be same as that of an exising race result</p>
         </div>
 
@@ -185,8 +186,8 @@
             <p><strong>POINTS SCHEME</strong> [invalid field]</p>
         </div>
 
-        <table id="jsonTableTrack" class="w-full shadow-lg table-auto mt-1">
-            <thead id="trackHeaderFields" class="hidden text-center bg-purple-500 text-white">
+        <table id="trackDetailsTable" class="w-full shadow-lg table-auto mt-1">
+            <thead id="trackTableHeaders" class="hidden text-center bg-purple-500 text-white">
                 <tr>
                     <th class="border w-32 font-bold rounded px-4 py-2">Season</th>
                     <th class="border w-32 font-bold rounded px-4 py-2 w-">Round Number</th>
@@ -205,46 +206,42 @@
             <p class="mt-1 text-xl text-gray-600 font-bold">Finishing order</p>
 
             <div class="flex flex-row items-center justify-center gap-3">
-                <div id="rowReorderToggleWrapper" class="cursor-pointer">
-                    <button id="toggleRowReorder" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-1 px-2 border border-orange-500 hover:border-transparent rounded">
+                <div id="rowReorderBtnWrapper" class="cursor-pointer">
+                    <button id="rowReorderToggleBtn" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-1 px-2 border border-orange-500 hover:border-transparent rounded">
                         Show Row Reorder
                     </button>
                 </div>
             
-                <button id="toggleUndo" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                <button id="undoToggleBtn" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
                     Show Reset
                 </button>
 
-                <div id="raceTimeFormatToggleWrapper" class="cursor-pointer">
-                    <button id="toggleRaceTimeFormat" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">
+                <div id="raceTimeFormatBtnWrapper" class="cursor-pointer">
+                    <button id="raceTimeFormatToggleBtn" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">
                         Show Intervals
                     </button>
                 </div>
-
-                <!-- <button id="toggleAddMore" class="flex flex-row items-center justify-center gap-2 bg-white text-sm hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-2 border border-green-500 hover:border-transparent rounded">
-                    Show Add Details
-                </button> -->
             </div>
         </div>
 
         <div class="mt-2">
-            <div id="noPosWithStatus1Warning" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
+            <div id="warningNoPosWithStatus1Alert" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
                 <p>No row has 'Fastest Lap' <strong>STATUS</strong></p>
             </div>
 
-            <div id="flStatusNoMatchWarning" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
+            <div id="warningFlStatusNotMatchingAlert" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
 
-            <div id="flBelowP10Warning" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
+            <div id="warningFlBelowP10Alert" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
 
-            <div id="raceTimePos1NotAbsolute" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
+            <div id="warningRaceTimeFirstPosNotAbsoluteAlert" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
                 <p><strong>RACE TIME</strong> of Row <strong>1</strong> is not an absolute time in format: <strong>'1:06.006'</strong></p>
             </div>
 
-            <div id="resultsAlerts"></div>
+            <div id="errorResultsAlerts"></div>
         </div>
 
-        <table id="jsonTableResults" class="w-full table-auto shadow-lg mt-1">
-            <thead id="resultsHeaderFields" class="hidden text-center bg-purple-500 text-white">
+        <table id="resultsDetailsTable" class="w-full table-auto shadow-lg mt-1">
+            <thead id="resultsTableHeaders" class="hidden text-center bg-purple-500 text-white">
                 <tr>
                     <th class="border w-32 font-bold rounded px-4 py-2">Position</th>
                     <th class="border w-32 font-bold rounded px-4 py-2">Driver</th>
@@ -268,7 +265,7 @@
             </tbody>
         </table>
 
-        <div id="rowControls" class="hidden pt-3 justify-center items-center gap-5">
+        <div id="addRemoveRowControls" class="hidden pt-3 justify-center items-center gap-5">
             <button id="addRow" class="bg-green-500 hover:bg-green-700 text-white font-semibold px-3 py-1 border border-green-700 rounded mr-2">+</button>
             
             <button id="removeRow" class="bg-red-500 hover:bg-red-700 text-white font-semibold px-3 py-1 border border-red-700 rounded">-</button>
@@ -276,18 +273,18 @@
     </div>
 
     <div class="flex justify-center items-center gap-3">
-        <button id="submit" class="hidden bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded">Submit</button>
+        <button id="submitJSON" class="hidden bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded">Submit</button>
 
         <a id="reviewJSON" class="hidden bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-700 rounded cursor-pointer">Review JSON</a>
     </div>
 
     <div class="flex justify-center items-center mt-2">
-        <div id="errorSubmitAlert" class="hidden w-auto bg-red-100 border-l-4 border-r-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
+        <div id="errorSubmitJSONAlert" class="hidden w-auto bg-red-100 border-l-4 border-r-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
             <p>Please clear all the<strong> ERRORS </strong> before submitting</p>
         </div>
     </div>
 
-    <div id="pointsOverlay" class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen max-h-screen">
+    <div id="pointsSelectionOverlay" class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen max-h-screen">
         <div class="my-6 bg-gray-200 rounded-lg w-3/4 max-h-screen py-2 px-3 shadow-xl">
             <div class="flex justify-between items-center border-b border-gray-400">
                 <h4 class="p-2 text-lg md:text-xl font-bold">Points scheme details</h4>
@@ -309,7 +306,7 @@
         </div>
     </div>
 
-    <div id="addDetailsOverlay" class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen max-h-screen">
+    <div id="additionalDetailsInputOverlay" class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-start w-screen max-h-screen">
         <div class="my-6 bg-gray-200 rounded-lg w-2/5 max-h-screen py-2 px-3 shadow-xl">
             <div class="flex justify-between items-center border-b border-gray-400">
                 <h4 class="p-2 text-lg md:text-xl font-bold">Add more details</h4>
@@ -318,19 +315,19 @@
 
             <div class="flex flex-row items-center justify-evenly my-3">
                 <div class="flex flex-col items-center justify-center">
-                    <p id="header1" class="text-gray-600 text-md md:text-lg font-semibold mb-2"></p>
+                    <p id="infoTitle" class="text-gray-600 text-md md:text-lg font-semibold mb-2"></p>
 
                     <table class="table-auto">
                         <thead class="text-center bg-gray-500 text-white">
-                            <th id="info1Header" class="border rounded font-bold px-4 py-2"></th>
-                            <th id="info2Header" class="border rounded font-bold px-4 py-2"></th>
-                            <th id="info3Header" class="border rounded font-bold px-4 py-2"></th>
+                            <th id="infoHeader1" class="border rounded font-bold px-4 py-2"></th>
+                            <th id="infoHeader2" class="border rounded font-bold px-4 py-2"></th>
+                            <th id="infoHeader3" class="border rounded font-bold px-4 py-2"></th>
                         </thead>
                         
                         <tbody class="text-center bg-white">
-                            <td id="info1" class="border rounded disable px-4 py-2"></td>
-                            <td id="info2" class="border rounded disable px-4 py-2"></td>
-                            <td id="info3" class="border rounded disable px-4 py-2"></td>
+                            <td id="infoValue1" class="border rounded disable px-4 py-2"></td>
+                            <td id="infoValue2" class="border rounded disable px-4 py-2"></td>
+                            <td id="infoValue3" class="border rounded disable px-4 py-2"></td>
                         </tbody>
                     </table>
                 </div>
@@ -340,17 +337,17 @@
                 <div class="flex flex-col items-center justify-center">
                     <p class="text-gray-600 text-md md:text-lg font-semibold mb-2">Additional attributes</p>
 
-                    <table id="addDetailsTable" class="table-auto">
-                        <thead id="addDetailsTableHeaders" class="text-center bg-purple-500 text-white">
+                    <table id="additionalDetailsTable" class="table-auto">
+                        <thead id="additionalDetailsTableHeaders" class="text-center bg-purple-500 text-white">
                             <th class="border rounded font-bold px-4 py-2">Attribute</th>
                             <th class="border rounded font-bold px-4 py-2">Value</th>
                         </thead>
                         
-                        <tbody class="text-center bg-white" id="addDetailsTableBody">
-                            <tr id="attrRow" class="text-center">
-                                <td id="attrName" class="border rounded px-4 py-2 font-bold"></td>
+                        <tbody class="text-center bg-white" id="additionalDetailsTableBody">
+                            <tr id="attributeRow" class="text-center">
+                                <td id="attributeName" class="border rounded px-4 py-2 font-bold"></td>
                                 <td class="flex justify-center items-center border rounded px-4 py-2">
-                                    <input class="text-center font-bold" type="number" id="attrValue" />
+                                    <input id="attributeValue" class="text-center font-bold" type="number" />
                                 </td>
                             </tr>
                         </tbody>
@@ -368,16 +365,16 @@
             </div>
 
             <div class="justify-center mt-2 px-4 py-2 w-full h-screen" style="max-height: 80vh">
-                <textarea name="" id="jsonTextArea" class="w-full h-full px-3 py-2 rounded-md"></textarea>
+                <textarea name="" id="reviewJSONTextArea" class="w-full h-full px-3 py-2 rounded-md"></textarea>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Screen 3 to show server response and post result upload scenario -->
-<div id="postSubmitScreen">
+<div id="serverResponseScreen">
     <div class="flex justify-center items-center my-10">
-        <div id="successPost" class="flex flex-col items-center justify-center gap-3 w-full text-center text-lg bg-green-100 border-l-4 border-r-4 border-green-500 text-green-700 px-2 py-24 rounded" role="alert">
+        <div id="onSuccess" class="flex flex-col items-center justify-center gap-3 w-full text-center text-lg bg-green-100 border-l-4 border-r-4 border-green-500 text-green-700 px-2 py-24 rounded" role="alert">
             <i class="text-6xl mb-2 fa fa-check-circle" aria-hidden="true"></i> 
 
             <p class="text-5xl font-bold mb-2">Success!</p>
@@ -393,15 +390,15 @@
     </div>
 
     <div class="flex justify-center items-center my-10">
-        <div id="failedPost" class="flex flex-col items-center justify-center gap-3 w-full text-center text-lg bg-red-100 border-l-4 border-r-4 border-red-500 text-red-700 px-2 py-24 rounded" role="alert">
+        <div id="onFailure" class="flex flex-col items-center justify-center gap-3 w-full text-center text-lg bg-red-100 border-l-4 border-r-4 border-red-500 text-red-700 px-2 py-24 rounded" role="alert">
             <i class="text-6xl mb-2 fa fa-times" aria-hidden="true"></i>
             
             <p class="text-5xl font-bold mb-2">Failed!</p>
 
-            <p id="failText" class="text-3xl mb-2"></p>
+            <p id="failureText" class="text-3xl mb-2"></p>
 
             <div class="flex flex-row justify-center items-center gap-5 mt-5">
-                <button id="returnToEditScreen" class="flex items-center justify-center gap-3 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 border border-blue-700 rounded">
+                <button id="backToEditScreen" class="flex items-center justify-center gap-3 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 border border-blue-700 rounded">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     Back
                 </button>
@@ -412,7 +409,7 @@
     </div>
 </div>
 
-<!-- Script to make the page functional -->
+
 <script>
     $(document).ready(function() {
         var season = <?php echo json_encode($season); ?>;
@@ -449,7 +446,7 @@
         
         // $('#homeScreen').toggleClass('hidden');
         $('#editScreen').toggleClass('hidden');
-        $('#postSubmitScreen').toggleClass('hidden');
+        $('#serverResponseScreen').toggleClass('hidden');
 
         $('#moreOptionsContent').toggleClass('hidden');
         $('#moreOptionsBtn').click(function(event) {
@@ -480,19 +477,19 @@
             $('.homeBtn').html('<i class="fas fa-sync fa-spin"></i>');
         });
 
-        $('#returnToEditScreen').click(function(event) {
-            $('#postSubmitScreen').toggleClass('hidden');
-            $('#submit').html('Submit');
+        $('#backToEditScreen').click(function(event) {
+            $('#serverResponseScreen').toggleClass('hidden');
+            $('#submitJSON').html('Submit');
             $('#editScreen').toggleClass('hidden');
         });
 
-        $('#toggleUndo').addClass('hidden');
-        $('#toggleRowReorder').addClass('hidden');
+        $('#undoToggleBtn').addClass('hidden');
+        $('#rowReorderToggleBtn').addClass('hidden');
         // $('#toggleAddMore').addClass('hidden');
 
         $('#showAdditionsInfoDiv').addClass('hidden');
         $('#showNoFlPointsInfo').addClass('hidden');
-        $('#showPopulateAllConstInfo').addClass('hidden');
+        $('#showPopulateAllConstructorsInfo').addClass('hidden');
 
         let importBtn = document.getElementById('importRace');
         importBtn.addEventListener('click', function(event) {
@@ -552,10 +549,10 @@
             $('#addMoreTrack').removeClass('disable');
             $('#addMoreTrack').removeClass('cursor-not-allowed');
 
-            $('#toggleUndo').toggleClass('hidden');
-            $('#toggleRowReorder').toggleClass('hidden');
+            $('#undoToggleBtn').toggleClass('hidden');
+            $('#rowReorderToggleBtn').toggleClass('hidden');
 
-            $('#rowControls').toggleClass('hidden');
+            $('#addRemoveRowControls').toggleClass('hidden');
             $('#removeRow').removeClass('hover:bg-red-700');
             $('#removeRow').addClass('opacity-50 cursor-not-allowed');
         })
@@ -676,7 +673,7 @@
         let regexTimeIsNotNumber = "^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
 
         let isTimePos1Absolute = new RegExp(regexTimePos1Absolute);
-        if(!isTimePos1Absolute.test(json.results[0].time)) $('#raceTimePos1NotAbsolute').slideDown(500);
+        if(!isTimePos1Absolute.test(json.results[0].time)) $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
 
         let availableDrivers = driver.filter(ele => !driverIDStore.includes(ele.id));
         let availableConstructors;
@@ -700,16 +697,16 @@
         }
         else {
             $('#showAdditionsInfoDiv').removeClass('hidden');
-            $('#showPopulateAllConstInfo').toggleClass('hidden');
+            $('#showPopulateAllConstructorsInfo').toggleClass('hidden');
         }
 
         currentPointsSchemeSelected = json.track.points;
         //Printing values of track key of json in table
-        $('#trackHeaderFields').toggleClass('hidden');
+        $('#trackTableHeaders').toggleClass('hidden');
         updateTrackTable(season, tracks, points, json);
         
         //Printing values of results key of json in table
-        $('#resultsHeaderFields').toggleClass('hidden');
+        $('#resultsTableHeaders').toggleClass('hidden');
         updateResultsTable(driver, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, availableDrivers, additionalResultsPoints, availableConstructors, status, json);
 
         if(isResultImported.currentVal === 1) isResultImported.currentVal = 0;
@@ -724,7 +721,7 @@
             }
 
             $('.raceTimeCol').removeClass('absoluteTime');
-            $('#toggleRaceTimeFormat').html('Show Absolute Times');
+            $('#raceTimeFormatToggleBtn').html('Show Absolute Times');
         }
         
         checkAndMonitorTrackData(json, isResultImported, trackDetailsStore, isPointsUndefined, noPointsForFL, season, tracks, points, constructor, raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, indexPosMap, additionalResultsPoints);
@@ -733,7 +730,7 @@
         
         openTrackMoreDetails(additionalRaceDistance);
         openResultsMoreDetails(json, additionalResultsPoints, indexPosMap);
-        $('#attrValue').change(function(event) {
+        $('#attributeValue').change(function(event) {
             editMoreDetails(additionalRaceDistance, additionalResultsPoints, indexPosMap);
         });
         
@@ -753,15 +750,15 @@
         // convertAbsoluteTimeToInterval();
 
         $('.cross').click(function(event) {
-            $('#pointsOverlay').removeClass('flex');
-            $('#addDetailsOverlay').removeClass('flex');
+            $('#pointsSelectionOverlay').removeClass('flex');
+            $('#additionalDetailsInputOverlay').removeClass('flex');
             $('#reviewJSONOverlay').removeClass('flex');
-            $('#pointsOverlay').addClass('hidden');
-            $('#addDetailsOverlay').addClass('hidden');
+            $('#pointsSelectionOverlay').addClass('hidden');
+            $('#additionalDetailsInputOverlay').addClass('hidden');
             $('#reviewJSONOverlay').addClass('hidden');
         });
 
-        $('#toggleRaceTimeFormat').click(function(event) {
+        $('#raceTimeFormatToggleBtn').click(function(event) {
             let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
             toggleTimeFormat(updatedJSONFromTable, raceTimeInIntervals, raceTimeInAbsolutes, indexPosMap);
         });
@@ -778,24 +775,24 @@
                 $('#toggleControls').addClass('editing');
             }
 
-            $('#toggleUndo').toggleClass('hidden');
-            $('#toggleRowReorder').toggleClass('hidden');
+            $('#undoToggleBtn').toggleClass('hidden');
+            $('#rowReorderToggleBtn').toggleClass('hidden');
             // $('#toggleAddMore').toggleClass('hidden');
 
             $('.undo').addClass('hidden');
-            if($('#toggleUndo').hasClass('editing')) {
-                $('#toggleUndo').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#toggleUndo').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#toggleUndo').html('Show Reset');
-                $('#toggleUndo').toggleClass('editing');
+            if($('#undoToggleBtn').hasClass('editing')) {
+                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').html('Show Reset');
+                $('#undoToggleBtn').toggleClass('editing');
             }
 
             $('.rowReorderBtn').addClass('hidden');
-            if($('#toggleRowReorder').hasClass('editing')) {
-                $('#toggleRowReorder').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#toggleRowReorder').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                $('#toggleRowReorder').html('Show Row Reorder');
-                $('#toggleRowReorder').toggleClass('editing');
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                $('#rowReorderToggleBtn').html('Show Row Reorder');
+                $('#rowReorderToggleBtn').toggleClass('editing');
             }
 
             // $('.addMoreBtn').addClass('hidden');
@@ -806,7 +803,7 @@
             //     $('#toggleAddMore').toggleClass('editing');
             // }
             
-            $('#rowControls').toggleClass('hidden');
+            $('#addRemoveRowControls').toggleClass('hidden');
             if($('.selectInp').hasClass('open')) {
                 $('.selectInp').attr('disabled', true);
                 $('.selectInp').removeClass('open');
@@ -826,45 +823,45 @@
             $('#addMoreTrack').toggleClass('cursor-not-allowed');
         });
 
-        $('#toggleUndo').click(function(event) {
-            if($('#toggleUndo').hasClass('editing')) {
-                $('#toggleUndo').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#toggleUndo').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#toggleUndo').html('Show Reset');
-                $('#toggleUndo').toggleClass('editing');
+        $('#undoToggleBtn').click(function(event) {
+            if($('#undoToggleBtn').hasClass('editing')) {
+                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').html('Show Reset');
+                $('#undoToggleBtn').toggleClass('editing');
 
-                // $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-                // $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+                // $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                // $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             }
             else {
-                $('#toggleUndo').removeClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#toggleUndo').addClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#toggleUndo').html('Hide Reset');
-                $('#toggleUndo').toggleClass('editing');
+                $('#undoToggleBtn').removeClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').addClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').html('Hide Reset');
+                $('#undoToggleBtn').toggleClass('editing');
 
                 // if(!$('.raceTimeCol').hasClass('absoluteTime')) {
                 //     const e = new Event("click");
-                //     const element = document.querySelector("#toggleRaceTimeFormat");
+                //     const element = document.querySelector("#raceTimeFormatToggleBtn");
                 //     element.dispatchEvent(e);
                 // }
-                // $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-                // $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+                // $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+                // $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             }
 
             $('.undo').toggleClass('hidden');
             $('.addMoreBtn').toggleClass('hidden');
 
-            if($('#toggleRowReorder').hasClass('editing')) {
-                if(!$('#toggleRowReorder').hasClass('disableActionBtns')) {
-                    $('#toggleRowReorder').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                    $('#toggleRowReorder').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
+                    $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                    $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
                 }
-                $('#toggleRowReorder').html('Show Row Reorder');
-                $('#toggleRowReorder').toggleClass('editing');
+                $('#rowReorderToggleBtn').html('Show Row Reorder');
+                $('#rowReorderToggleBtn').toggleClass('editing');
 
-                // $("#toggleRaceTimeFormat").removeClass('disableActionBtns text-white');
-                // $("#raceTimeFormatToggleWrapper").removeClass('tooltip');
-                // $("#toggleRaceTimeFormat").addClass('text-red-700');
+                // $("#raceTimeFormatToggleBtn").removeClass('disableActionBtns text-white');
+                // $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                // $("#raceTimeFormatToggleBtn").addClass('text-red-700');
                 
                 $('.rowReorderBtn').toggleClass('hidden');
                 $('.addMoreBtn').toggleClass('hidden');
@@ -872,15 +869,15 @@
 
             // if(!$('.raceTimeCol').hasClass('absoluteTime')) {
             //     const e = new Event("click");
-            //     const element = document.querySelector("#toggleRaceTimeFormat");
+            //     const element = document.querySelector("#raceTimeFormatToggleBtn");
             //     element.dispatchEvent(e);
 
-            //     $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-            //     $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+            //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+            //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             // }
             // else {
-            //     $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-            //     $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+            //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+            //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             // }
 
             // if($('#toggleAddMore').hasClass('editing')) {
@@ -893,12 +890,12 @@
             // }
         })
 
-        $('#toggleRowReorder').click(function(event) {
-            if($('#toggleRowReorder').hasClass('editing')) {
-                $('#toggleRowReorder').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#toggleRowReorder').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                $('#toggleRowReorder').html('Show Row Reorder');
-                $('#toggleRowReorder').toggleClass('editing');
+        $('#rowReorderToggleBtn').click(function(event) {
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                $('#rowReorderToggleBtn').html('Show Row Reorder');
+                $('#rowReorderToggleBtn').toggleClass('editing');
 
                 let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
                 let noTimeErrors = 1;
@@ -908,54 +905,54 @@
                 for(let i = 0; i < updatedJSONFromTable.results.length; i++) noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
                 
                 if(noTimeErrors === 1 && isTimePos1Absolute.test(raceTimePos1)) {
-                    $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-                    $("#raceTimeFormatToggleWrapper").removeClass('tooltip');
-                    $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+                    $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                    $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                    $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
                 }
             }
             else {
-                $('#toggleRowReorder').removeClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                $('#toggleRowReorder').addClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#toggleRowReorder').html('Hide Row Reorder');
-                $('#toggleRowReorder').toggleClass('editing');
+                $('#rowReorderToggleBtn').removeClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                $('#rowReorderToggleBtn').addClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').html('Hide Row Reorder');
+                $('#rowReorderToggleBtn').toggleClass('editing');
                 
                 if(!$('.raceTimeCol').hasClass('absoluteTime')) {
                     const e = new Event("click");
-                    const element = document.querySelector("#toggleRaceTimeFormat");
+                    const element = document.querySelector("#raceTimeFormatToggleBtn");
                     element.dispatchEvent(e);
                 }
-                // $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-                // $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+                // $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+                // $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             }
             
             $('.rowReorderBtn').toggleClass('hidden');
             $('.addMoreBtn').toggleClass('hidden');
 
-            if($('#toggleUndo').hasClass('editing')) {
-                $('#toggleUndo').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#toggleUndo').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#toggleUndo').html('Show Reset');
-                $('#toggleUndo').toggleClass('editing');
+            if($('#undoToggleBtn').hasClass('editing')) {
+                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').html('Show Reset');
+                $('#undoToggleBtn').toggleClass('editing');
 
                 $('.undo').toggleClass('hidden');
                 $('.addMoreBtn').toggleClass('hidden');
 
-                // $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-                // $("#raceTimeFormatToggleWrapper").addClass('tooltip');
-                // $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+                // $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+                // $("#raceTimeFormatBtnWrapper").addClass('tooltip');
+                // $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             }
 
             // if(!$('.raceTimeCol').hasClass('absoluteTime')) {
             //     const e = new Event("click");
-            //     const element = document.querySelector("#toggleRaceTimeFormat");
+            //     const element = document.querySelector("#raceTimeFormatToggleBtn");
             //     element.dispatchEvent(e);
 
-            //     $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-            //     $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+            //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+            //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             // }
             // else {
-            //     $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-            //     $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+            //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+            //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             // }
 
             // if($('#toggleAddMore').hasClass('editing')) {
@@ -984,20 +981,20 @@
             
         //     $('.addMoreBtn').toggleClass('hidden');
 
-        //     if($('#toggleUndo').hasClass('editing')) {
-        //         $('#toggleUndo').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-        //         $('#toggleUndo').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-        //         $('#toggleUndo').html('Show Reset');
-        //         $('#toggleUndo').toggleClass('editing');
+        //     if($('#undoToggleBtn').hasClass('editing')) {
+        //         $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+        //         $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+        //         $('#undoToggleBtn').html('Show Reset');
+        //         $('#undoToggleBtn').toggleClass('editing');
 
         //         $('.undo').toggleClass('hidden');
         //     }
 
-        //     if($('#toggleRowReorder').hasClass('editing')) {
-        //         $('#toggleRowReorder').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-        //         $('#toggleRowReorder').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-        //         $('#toggleRowReorder').html('Show Row Reorder');
-        //         $('#toggleRowReorder').toggleClass('editing');
+        //     if($('#rowReorderToggleBtn').hasClass('editing')) {
+        //         $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+        //         $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+        //         $('#rowReorderToggleBtn').html('Show Row Reorder');
+        //         $('#rowReorderToggleBtn').toggleClass('editing');
 
         //         $('.rowReorderBtn').toggleClass('hidden');
         //     }
@@ -1005,10 +1002,10 @@
 
         $('.undo').click(function(event) {
             $('.undo').toggleClass('hidden');
-            $('#toggleUndo').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-            $('#toggleUndo').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-            $('#toggleUndo').html('Show Reset');
-            $('#toggleUndo').toggleClass('editing');
+            $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+            $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+            $('#undoToggleBtn').html('Show Reset');
+            $('#undoToggleBtn').toggleClass('editing');
 
             $('.addMoreBtn').toggleClass('hidden');
 
@@ -1020,14 +1017,14 @@
             for(let i = 0; i < updatedJSONFromTable.results.length; i++) noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
             
             if(noTimeErrors === 1 && isTimePos1Absolute.test(raceTimePos1)) {
-                $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-                $("#raceTimeFormatToggleWrapper").removeClass('tooltip');
-                $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             }
 
-            if(!$('#toggleRowReorder').hasClass('disableActionBtns')) {
-                $('#toggleRowReorder').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#toggleRowReorder').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+            if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
+                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
             }
         })
         
@@ -1081,12 +1078,12 @@
                 $('.selectInp').removeClass('cursor-not-allowed');
             }
             
-            if($('#toggleRowReorder').hasClass('editing')) {
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
                 $(`#moveRowUp${i}`).toggleClass('hidden');
                 $(`#moveRowDown${i}`).toggleClass('hidden');
             }
             
-            if($('#toggleRowReorder').hasClass('editing') || $('#toggleRowUndo').hasClass('editing')) $(`#addMore${i}`).toggleClass('hidden');
+            if($('#rowReorderToggleBtn').hasClass('editing') || $('#toggleRowUndo').hasClass('editing')) $(`#addMore${i}`).toggleClass('hidden');
             
             checkRaceTimeMatchesWithStatus(updatedJSONFromTable, indexPosMap, statusStore, stopsStore, i);
             checkAndMonitorResultsData(json, driver, fastestLapIndexStore, timeIsNotNumberCheck, isResultImported, isPointsUndefined, noPointsForFL, availableConstructors, status, points, regexFl, regexTimeAbsolute, regexTimeInterval, regexTimePos1Absolute, driverIDStore, raceTimeInIntervals, raceTimeInAbsolutes, gridStore, stopsStore, additionalResultsPoints, statusStore, indexPosMap, i);
@@ -1154,7 +1151,7 @@
         });
 
         $('#reviewJSON').toggleClass('hidden');
-        $('#submit').toggleClass('hidden');
+        $('#submitJSON').toggleClass('hidden');
         
         // checkAllTableFields(regexFl, regexTime, json);
         // checkAllTrackFields();
@@ -1164,7 +1161,7 @@
             let newJson = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, 1);
             // console.log(newJson.results)
 
-            $('#jsonTextArea').text(JSON.stringify(newJson, null, "\t"));
+            $('#reviewJSONTextArea').text(JSON.stringify(newJson, null, "\t"));
 
             $('#reviewJSONOverlay').removeClass('hidden');
             $('#reviewJSONOverlay').addClass('flex');
@@ -1172,23 +1169,23 @@
             // let btnName = 'reviewJSON'
             // downloadJSON(newJson, btnName, season, newJson.track.season_id, newJson.track.round);
 
-            // $('#errorSubmitAlert').slideUp(500);
+            // $('#errorSubmitJSONAlert').slideUp(500);
             // if(checkAllTableFields(regexFl, regexTime, newJson)) {
-            //     $('#errorSubmitAlert').slideUp(500);
+            //     $('#errorSubmitJSONAlert').slideUp(500);
                 
             // } else {
-            //     $('#errorSubmitAlert').html('<p>Please clear all the<strong> ERRORS </strong> before downloading JSON</p>');
-            //     $('#errorSubmitAlert').slideDown(500);
+            //     $('#errorSubmitJSONAlert').html('<p>Please clear all the<strong> ERRORS </strong> before downloading JSON</p>');
+            //     $('#errorSubmitJSONAlert').slideDown(500);
             // }
         });
 
-        $('#submit').click(function(event) {
+        $('#submitJSON').click(function(event) {
             let newJson = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, 1);
             // console.log(newJson.results)
 
             postJson(JSON.stringify(newJson), season);
 
-            $('#submit').html('<i class="fas fa-spinner fa-spin"></i>');
+            $('#submitJSON').html('<i class="fas fa-spinner fa-spin"></i>');
 
         });
     }
@@ -1209,11 +1206,11 @@
                 // element.dispatchEvent(e);
             }
             $('.raceTimeCol').removeClass('absoluteTime');
-            $('#toggleRaceTimeFormat').html('Show Absolute Times');
+            $('#raceTimeFormatToggleBtn').html('Show Absolute Times');
 
-            if($('#toggleRowReorder').hasClass('editing')) {
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
                 const e = new Event("click");
-                const element = document.querySelector("#toggleRowReorder");
+                const element = document.querySelector("#rowReorderToggleBtn");
                 element.dispatchEvent(e);
             }
         }
@@ -1230,7 +1227,7 @@
                 // element.dispatchEvent(e);
             }
             $('.raceTimeCol').addClass('absoluteTime');
-            $('#toggleRaceTimeFormat').html('Show Intervals');
+            $('#raceTimeFormatToggleBtn').html('Show Intervals');
         }
     }
 
@@ -1244,22 +1241,22 @@
             let selectedCircuit = $('#tracksSelect')[0][circuitIndex].innerText;
             let selectedPoints = $('#pointsBtn').html();
 
-            $('#header1').html('Race details');
+            $('#infoTitle').html('Race details');
 
-            $('#info1Header').html('Season');
-            $('#info2Header').html('Track');
-            $('#info3Header').html('Points');
+            $('#infoHeader1').html('Season');
+            $('#infoHeader2').html('Track');
+            $('#infoHeader3').html('Points');
 
-            $('#attrName').html('Distance');
+            $('#attributeName').html('Distance');
 
-            $('#info1').html(selectedSeason);
-            $('#info2').html(selectedCircuit);
-            $('#info3').html(selectedPoints);
+            $('#infoValue1').html(selectedSeason);
+            $('#infoValue2').html(selectedCircuit);
+            $('#infoValue3').html(selectedPoints);
 
-            $('#attrValue').val(additionalRaceDistance.distance);
+            $('#attributeValue').val(additionalRaceDistance.distance);
 
-            $('#addDetailsOverlay').removeClass('hidden');
-            $('#addDetailsOverlay').addClass('flex');
+            $('#additionalDetailsInputOverlay').removeClass('hidden');
+            $('#additionalDetailsInputOverlay').addClass('flex');
         });
 
         if(additionalRaceDistance.distance != '') {
@@ -1280,22 +1277,22 @@
                 let currentDriver = $(this).closest('tr')[0].querySelector('.selectDriver')[index].innerText;
                 let currentStatus = $(this).closest('tr')[0].querySelector('.selectStatus')[statusIndex].innerText;
 
-                $('#header1').html('Current Driver');
+                $('#infoTitle').html('Current Driver');
 
-                $('#info1Header').html('Position');
-                $('#info2Header').html('Driver');
-                $('#info3Header').html('Status');
+                $('#infoHeader1').html('Position');
+                $('#infoHeader2').html('Driver');
+                $('#infoHeader3').html('Status');
 
-                $('#attrName').html('Points');
+                $('#attributeName').html('Points');
     
-                $('#info1').html(currentPos);
-                $('#info2').html(currentDriver);
-                $('#info3').html(currentStatus);
+                $('#infoValue1').html(currentPos);
+                $('#infoValue2').html(currentDriver);
+                $('#infoValue3').html(currentStatus);
     
-                $('#attrValue').val(additionalResultsPoints[indexPosMap[x] - 1]);
+                $('#attributeValue').val(additionalResultsPoints[indexPosMap[x] - 1]);
                 
-                $('#addDetailsOverlay').removeClass('hidden');
-                $('#addDetailsOverlay').addClass('flex');
+                $('#additionalDetailsInputOverlay').removeClass('hidden');
+                $('#additionalDetailsInputOverlay').addClass('flex');
                 currentAddRowSelected = x;
                 // console.log(indexPosMap[x] - 1)
             });
@@ -1310,8 +1307,8 @@
     function editMoreDetails(additionalRaceDistance, additionalResultsPoints, indexPosMap) {
         // console.log(indexPosMap[currentAddRowSelected])
 
-        let selectedVal = $('#attrValue').val();
-        let attr = $('#attrName').html();
+        let selectedVal = $('#attributeValue').val();
+        let attr = $('#attributeName').html();
         
         if(selectedVal !== '') {
             if(attr === 'Points') {
@@ -1378,17 +1375,17 @@
 
     //     for(let i = 0; i < trackOuterDivs.length; i++) postStatusTrack -= checkForError(trackOuterDivs[i]);
 
-    //     // $('#errorSubmitAlert').slideUp(500);
+    //     // $('#errorSubmitJSONAlert').slideUp(500);
     //     if(postStatusTrack === 1) {
-    //         $('#errorSubmitAlert').slideUp(500);
-    //         $('#submit').removeClass('disableActionBtns');
+    //         $('#errorSubmitJSONAlert').slideUp(500);
+    //         $('#submitJSON').removeClass('disableActionBtns');
     //         $('#reviewJSON').removeClass('disableActionBtns');
     //     }
     //     else {
-    //         $('#submit').addClass('disableActionBtns');
+    //         $('#submitJSON').addClass('disableActionBtns');
     //         $('#reviewJSON').addClass('disableActionBtns');
-    //         $('#errorSubmitAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
-    //         $('#errorSubmitAlert').slideDown(500);
+    //         $('#errorSubmitJSONAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
+    //         $('#errorSubmitJSONAlert').slideDown(500);
     //     }
     // }
 
@@ -1416,15 +1413,15 @@
         // console.log(isValidTimeFormat(raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, json), (postStatusTrack === 1), (postStatusResults === 1))
 
         if(isValidTimeFormat(raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, json) && (postStatusTrack === 1) && (postStatusResults === 1)) {
-            $('#errorSubmitAlert').slideUp(500);
-            $('#submit').removeClass('disableActionBtns');
+            $('#errorSubmitJSONAlert').slideUp(500);
+            $('#submitJSON').removeClass('disableActionBtns');
             $('#reviewJSON').removeClass('disableActionBtns');
         }
         else {
-            $('#submit').addClass('disableActionBtns');
+            $('#submitJSON').addClass('disableActionBtns');
             $('#reviewJSON').addClass('disableActionBtns');
-            $('#errorSubmitAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
-            $('#errorSubmitAlert').slideDown(500);
+            $('#errorSubmitJSONAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
+            $('#errorSubmitJSONAlert').slideDown(500);
         }
     }
 
@@ -1465,10 +1462,10 @@
             $('#addMoreTrack').removeClass('disable');
             $('#addMoreTrack').removeClass('cursor-not-allowed');
 
-            $('#toggleUndo').toggleClass('hidden');
-            $('#toggleRowReorder').toggleClass('hidden');
+            $('#undoToggleBtn').toggleClass('hidden');
+            $('#rowReorderToggleBtn').toggleClass('hidden');
 
-            $('#rowControls').toggleClass('hidden');
+            $('#addRemoveRowControls').toggleClass('hidden');
         }
     }
 
@@ -1754,7 +1751,7 @@
                                         <div id="errorStatusAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
                                             <p>Row<strong> ${i+1}</strong> -<strong> STATUS</strong> [invalid field]</p>
                                         </div>`;
-            $('#resultsAlerts').append(resultsAlertsCreation);
+            $('#errorResultsAlerts').append(resultsAlertsCreation);
             
             let driverCol = document.getElementById(`driverSelect${i}`);
             let constructorCol = document.getElementById(`constructorSelect${i}`);
@@ -1788,18 +1785,18 @@
         }
         else if(!isPointsUndefined) {
             if(selectedValue === 1 && indexPosMap[i] > 10) {
-                $('#flBelowP10Warning').html(`<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${indexPosMap[i]}</strong> [ensure -1 is added to additional attribute - <strong>POINTS</strong>]</p>`);
+                $('#warningFlBelowP10Alert').html(`<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${indexPosMap[i]}</strong> [ensure -1 is added to additional attribute - <strong>POINTS</strong>]</p>`);
                 
                 if(points[currentPointsSchemeSelected - 1]['P' + indexPosMap[i]] != 0) {
                     $(`#resultsBodyStatus${indexPosMap[i] - 1}`).addClass('bg-yellow-600');
-                    $('#flBelowP10Warning').slideDown(500);
+                    $('#warningFlBelowP10Alert').slideDown(500);
                 }
                 else {
                     $(`#resultsBodyStatus${indexPosMap[i] - 1}`).removeClass('bg-yellow-600');
-                    $('#flBelowP10Warning').slideUp(500);
+                    $('#warningFlBelowP10Alert').slideUp(500);
                 }
             }
-            else $('#flBelowP10Warning').slideUp(500);
+            else $('#warningFlBelowP10Alert').slideUp(500);
         }
         
         if(selectedValue === 1) $(`#resultsRow${i}`).addClass('text-purple-600');
@@ -1946,8 +1943,8 @@
     }
 
     function updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, submitFlag = 0) {
-        let trackContent = tableToJSON(document.getElementById('jsonTableTrack'));
-        let resultsContent = tableToJSON(document.getElementById('jsonTableResults'));
+        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'));
+        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'));
 
         delete trackContent[0].undefined;
 
@@ -2116,7 +2113,7 @@
                 parentNode: '#trackBodyPoints',
                 alertNode: '#errorPointsAlert',
                 undoBtn: '#undoPoints',
-                overlayNode: '#pointsOverlay'
+                overlayNode: '#pointsSelectionOverlay'
             }
         }
 
@@ -2200,8 +2197,8 @@
             let currentSeasonCheck = trackDetailsStore.season === jsonSeasonValue;
             let currentRoundCheck = trackDetailsStore.round === jsonRoundValue;
 
-            if(currentSeasonCheck && currentRoundCheck) $('#warningSeasonRoundSameAsInitial').slideDown(500);
-            else $('#warningSeasonRoundSameAsInitial').slideUp(500);
+            if(currentSeasonCheck && currentRoundCheck) $('#warningSeasonRoundSameAsInitialAlert').slideDown(500);
+            else $('#warningSeasonRoundSameAsInitialAlert').slideUp(500);
         }
     }
 
@@ -2424,14 +2421,14 @@
                         $(`#inputTime${i}`).removeClass('bg-yellow-600');
                         $(`#inputTime${i}`).removeClass('font-bold');
                         $(`#inputTime${i}`).removeClass('text-white');
-                        $('#raceTimePos1NotAbsolute').slideUp(500);
+                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideUp(500);
                     }
                     else {
                         $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
                         $(`#inputTime${i}`).addClass('bg-yellow-600');
                         $(`#inputTime${i}`).addClass('font-bold');
                         $(`#inputTime${i}`).addClass('text-white');
-                        $('#raceTimePos1NotAbsolute').slideDown(500);
+                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
                     }
                     
                     if(timeCheckPos1Absolute.test(selectedTimeVal)) {
@@ -2467,14 +2464,14 @@
                         $(`#inputTime${i}`).removeClass('bg-yellow-600');
                         $(`#inputTime${i}`).removeClass('font-bold');
                         $(`#inputTime${i}`).removeClass('text-white');
-                        $('#raceTimePos1NotAbsolute').slideUp(500);
+                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideUp(500);
                     }
                     else {
                         $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
                         $(`#inputTime${i}`).addClass('bg-yellow-600');
                         $(`#inputTime${i}`).addClass('font-bold');
                         $(`#inputTime${i}`).addClass('text-white');
-                        $('#raceTimePos1NotAbsolute').slideDown(500);
+                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
                     }
 
                     if(timeCheckPos1Absolute.test(selectedTimeVal)) {
@@ -2956,7 +2953,7 @@
     }
 
     function disableFirstAndLastReorderBtns() {
-        let resultsTable = document.getElementById('jsonTableResults');
+        let resultsTable = document.getElementById('resultsDetailsTable');
         let noOfRows = resultsTable.children[1].children.length;
 
         let firstUpBtn = resultsTable.children[1].children[0].children[0].children[0].children[0];
@@ -3057,12 +3054,12 @@
         }
 
         // if($(parentNode).hasClass('bg-red-600')) {
-        //     $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-        //     $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+        //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+        //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
         // }
         // else {
-        //     $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-        //     $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+        //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+        //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
         // }
     }
 
@@ -3076,61 +3073,61 @@
         }
 
         // if(!isTimePos1Absolute.test(raceTimePos1)) {
-        //     $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-        //     $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+        //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+        //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
 
         //     if(!$('.raceTimeCol').hasClass('absoluteTime')) {
         //         const e = new Event("click");
-        //         const element = document.querySelector("#toggleRaceTimeFormat");
+        //         const element = document.querySelector("#raceTimeFormatToggleBtn");
         //         element.dispatchEvent(e);
         //     }
         // }
         // else {
-        //     $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-        //     $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+        //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+        //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
         // }
         
 
         if(noTimeErrors === 1) {
-            if(isTimePos1Absolute.test(raceTimePos1) && (!$('#toggleRowReorder').hasClass('editing'))) {
-                $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-                $("#raceTimeFormatToggleWrapper").removeClass('tooltip');
-                $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+            if(isTimePos1Absolute.test(raceTimePos1) && (!$('#rowReorderToggleBtn').hasClass('editing'))) {
+                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             }
             
-            if(!$('#toggleRowReorder').hasClass('editing')) {
-                $(("#toggleRowReorder")).removeClass('disableActionBtns text-white');
-                $("#rowReorderToggleWrapper").removeClass('tooltip');
-                $(("#toggleRowReorder")).addClass('text-orange-700');
+            if(!$('#rowReorderToggleBtn').hasClass('editing')) {
+                $(("#rowReorderToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#rowReorderBtnWrapper").removeClass('tooltip');
+                $(("#rowReorderToggleBtn")).addClass('text-orange-700');
             }
         }
         else {
-            $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-            $("#raceTimeFormatToggleWrapper").addClass('tooltip');
-            $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+            $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+            $("#raceTimeFormatBtnWrapper").addClass('tooltip');
+            $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
 
-            $(("#toggleRowReorder")).addClass('disableActionBtns text-white');
-            $("#rowReorderToggleWrapper").addClass('tooltip');
-            $(("#toggleRowReorder")).removeClass('text-orange-700');
+            $(("#rowReorderToggleBtn")).addClass('disableActionBtns text-white');
+            $("#rowReorderBtnWrapper").addClass('tooltip');
+            $(("#rowReorderToggleBtn")).removeClass('text-orange-700');
         }
 
 
         if(!isTimePos1Absolute.test(raceTimePos1)) {
-            $(("#toggleRaceTimeFormat")).addClass('disableActionBtns text-white');
-            $("#raceTimeFormatToggleWrapper").addClass('tooltip');
-            $(("#toggleRaceTimeFormat")).removeClass('text-red-700');
+            $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+            $("#raceTimeFormatBtnWrapper").addClass('tooltip');
+            $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
 
             if(!$('.raceTimeCol').hasClass('absoluteTime')) {
                 const e = new Event("click");
-                const element = document.querySelector("#toggleRaceTimeFormat");
+                const element = document.querySelector("#raceTimeFormatToggleBtn");
                 element.dispatchEvent(e);
             }
         }
         else {
-            if(noTimeErrors === 1 && (!$('#toggleRowReorder').hasClass('editing'))) {
-                $(("#toggleRaceTimeFormat")).removeClass('disableActionBtns text-white');
-                $("#raceTimeFormatToggleWrapper").removeClass('tooltip');
-                $(("#toggleRaceTimeFormat")).addClass('text-red-700');
+            if(noTimeErrors === 1 && (!$('#rowReorderToggleBtn').hasClass('editing'))) {
+                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             }
         }
     }
@@ -3221,7 +3218,7 @@
             }
 
             // if(selectedValue === 1 && indexPosMap[i] > 10) {
-            //     $('#flBelowP10Warning').html(`<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${indexPosMap[i]}</strong> [ensure -1 is added to additional attribute - <strong>POINTS</strong>]</p>`);
+            //     $('#warningFlBelowP10Alert').html(`<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${indexPosMap[i]}</strong> [ensure -1 is added to additional attribute - <strong>POINTS</strong>]</p>`);
                 
             //     if(points[currentPointsSchemeSelected - 1]['P' + indexPosMap[i]] != 0) {
 
@@ -3231,19 +3228,19 @@
         }
 
         if(statusStore[fastestLapIndexStore.current] === 0) {
-            $('#flStatusNoMatchWarning').html(`Row <strong>${fastestLapRowPosition}</strong> with fastest lap time does not have 'Fastest Lap' <strong>STATUS</strong>`);
+            $('#warningFlStatusNotMatchingAlert').html(`Row <strong>${fastestLapRowPosition}</strong> with fastest lap time does not have 'Fastest Lap' <strong>STATUS</strong>`);
             $(`#resultsBodyStatus${fastestLapIndexStore.previous}`).removeClass('bg-yellow-600');
             $(`#resultsBodyStatus${fastestLapIndexStore.current}`).addClass('bg-yellow-600');
-            $('#flStatusNoMatchWarning').slideDown(500);
+            $('#warningFlStatusNotMatchingAlert').slideDown(500);
         }
         else {
             $(`#resultsBodyStatus${fastestLapIndexStore.previous}`).removeClass('bg-yellow-600');
             $(`#resultsBodyStatus${fastestLapIndexStore.current}`).removeClass('bg-yellow-600');
-            $('#flStatusNoMatchWarning').slideUp(500);
+            $('#warningFlStatusNotMatchingAlert').slideUp(500);
         }
 
-        if(!isFastestLapPresent) $('#noPosWithStatus1Warning').slideDown(500);
-        else $('#noPosWithStatus1Warning').slideUp(500);
+        if(!isFastestLapPresent) $('#warningNoPosWithStatus1Alert').slideDown(500);
+        else $('#warningNoPosWithStatus1Alert').slideUp(500);
 
         fastestLapIndexStore.previous = fastestLapIndexStore.current;
     }
@@ -3337,10 +3334,10 @@
             contentType: "application/json",
             success: function (result) {
                 // console.log(result);
-                $('#failedPost').addClass('hidden');
-                $('#successPost').removeClass('hidden');
+                $('#onFailure').addClass('hidden');
+                $('#onSuccess').removeClass('hidden');
                 $('#editScreen').toggleClass('hidden');
-                $('#postSubmitScreen').toggleClass('hidden');
+                $('#serverResponseScreen').toggleClass('hidden');
 
                 $('#raceID').html(`Race result uploaded with ID <strong>${result.race.id}</strong>`);
                 
@@ -3378,12 +3375,12 @@
             },
             error: function (result, status) {
                 // console.log(result);
-                // $('#failText').html("Something went wrong");
-                $('#failText').html(`${result.responseJSON.message} of Position <strong>${result.responseJSON.error.position}</strong>`);
-                $('#successPost').addClass('hidden');
-                $('#failedPost').removeClass('hidden');
+                // $('#failureText').html("Something went wrong");
+                $('#failureText').html(`${result.responseJSON.message} of Position <strong>${result.responseJSON.error.position}</strong>`);
+                $('#onSuccess').addClass('hidden');
+                $('#onFailure').removeClass('hidden');
                 $('#editScreen').toggleClass('hidden');
-                $('#postSubmitScreen').toggleClass('hidden');
+                $('#serverResponseScreen').toggleClass('hidden');
             }
         });
     }
