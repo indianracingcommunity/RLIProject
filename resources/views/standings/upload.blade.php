@@ -84,7 +84,7 @@
     <div id="positionKeyErrorAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 py-2 px-4 my-4 rounded" role="alert">
     </div>
 
-    <div id="incorrectRaceNumber" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 py-2 px-4 my-4 rounded" role="alert">
+    <div id="errorIncorrectRaceIDAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 py-2 px-4 my-4 rounded" role="alert">
         <p><strong>Race ID</strong> is not valid</p>
     </div>
 
@@ -417,6 +417,8 @@
         var tracks = <?php echo json_encode($tracks); ?>;
         var constructor = <?php echo json_encode($constructor); ?>;
         var driver = <?php echo json_encode($driver); ?>;
+        
+        // convert status array into an object
         var status = [
                         {
                             id: 0,
@@ -442,13 +444,11 @@
         //     1: 'Fastest Lap',
         //     -2: 
         // }
-        // console.log(points);
         
-        // $('#homeScreen').toggleClass('hidden');
-        $('#editScreen').toggleClass('hidden');
-        $('#serverResponseScreen').toggleClass('hidden');
+        $('#editScreen').addClass('hidden');
+        $('#serverResponseScreen').addClass('hidden');
 
-        $('#moreOptionsContent').toggleClass('hidden');
+        $('#moreOptionsContent').addClass('hidden');
         $('#moreOptionsBtn').click(function(event) {
             $('#moreOptionsContent').toggleClass('hidden');
 
@@ -464,52 +464,50 @@
             }
         })
 
-        $('#startOver').click(function(event) {
-            let choice = window.confirm('Are you sure you want to start over?')
-            if(choice) {
-                $('#startOver').html('<i class="fas fa-sync fa-spin"></i> Start Over');
-                location.reload(true);
-            }     
-        });
-        
-        $('.homeBtn').click(function(event) {
-            location.reload(true);
-            $('.homeBtn').html('<i class="fas fa-sync fa-spin"></i>');
-        });
-
-        $('#backToEditScreen').click(function(event) {
-            $('#serverResponseScreen').toggleClass('hidden');
-            $('#submitJSON').html('Submit');
-            $('#editScreen').toggleClass('hidden');
-        });
-
         $('#undoToggleBtn').addClass('hidden');
         $('#rowReorderToggleBtn').addClass('hidden');
-        // $('#toggleAddMore').addClass('hidden');
 
         $('#showAdditionsInfoDiv').addClass('hidden');
         $('#showNoFlPointsInfo').addClass('hidden');
         $('#showPopulateAllConstructorsInfo').addClass('hidden');
 
-        let importBtn = document.getElementById('importRace');
-        importBtn.addEventListener('click', function(event) {
+        // let importBtn = document.getElementById('importRace');
+        // importBtn.addEventListener('click', function(event) {
+        //     // check if race id is a number and greater than 0
+        //     let raceNumber = $('#raceNumber').val();
+            
+        //     // add a case for when entered number is greater than the last uploaded id
+        //     if(raceNumber === '' || raceNumber === '0') {
+        //         $('#errorIncorrectRaceIDAlert').slideDown(500);
+        //     }
+        //     else {
+        //         $('#errorIncorrectRaceIDAlert').slideUp(500);
+        //         $('#importRace').html('<i class="fas fa-spinner fa-spin"></i>');
+        //         // fetch the race track details and finishing order based on the selected race id
+        //         fetchResultByIDAndPassForEdit(raceNumber, season, points, tracks, constructor, driver, status);
+        //     }
+        // });
+
+        
+
+        
+        $('#importRace').click(function(event) {
             // check if race id is a number and greater than 0
             let raceNumber = $('#raceNumber').val();
             
             // add a case for when entered number is greater than the last uploaded id
             if(raceNumber === '' || raceNumber === '0') {
-                $('#incorrectRaceNumber').slideDown(500);
+                $('#errorIncorrectRaceIDAlert').slideDown(500);
             }
             else {
-                $('#incorrectRaceNumber').slideUp(500);
+                $('#errorIncorrectRaceIDAlert').slideUp(500);
                 $('#importRace').html('<i class="fas fa-spinner fa-spin"></i>');
                 // fetch the race track details and finishing order based on the selected race id
                 fetchResultByIDAndPassForEdit(raceNumber, season, points, tracks, constructor, driver, status);
             }
         });
 
-        let scratchBtn = document.getElementById('scratch');
-        scratchBtn.addEventListener('click', function(event) {
+        $('#scratch').click(function(event) {
             let json = {
                         track: {
                             circuit_id: 0,
@@ -555,7 +553,56 @@
             $('#addRemoveRowControls').toggleClass('hidden');
             $('#removeRow').removeClass('hover:bg-red-700');
             $('#removeRow').addClass('opacity-50 cursor-not-allowed');
-        })
+        });
+
+        // let scratchBtn = document.getElementById('scratch');
+        // scratchBtn.addEventListener('click', function(event) {
+        //     let json = {
+        //                 track: {
+        //                     circuit_id: 0,
+        //                     season_id: 0,
+        //                     round: 0,
+        //                     points: 0
+        //                 },
+        //                 results: [
+        //                     {
+        //                         position: 1,
+        //                         constructor_id: 0,
+        //                         grid: 0,
+        //                         stops: -1,
+        //                         time: "",
+        //                         fastestlaptime: "",
+        //                         status: -2,
+        //                         driver_id: 0,
+        //                         driver: ""
+        //                     }
+        //                 ]
+        //     }
+        //     let isResultImportedOrFromScratch = -1;
+
+        //     viewJSONData(json, season, points, tracks, constructor, driver, status, isResultImportedOrFromScratch);
+
+        //     $('#toggleControls').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
+        //     $('#toggleControls').addClass('bg-green-500 hover:bg-green-700 border-green-700');
+        //     $('#toggleControls').toggleClass('editing');
+
+        //     $('.selectInp').attr('disabled', false);
+        //     $('.selectInp').addClass('open');
+        //     $('.selectInp').removeClass('cursor-not-allowed');
+        //     $('.numInp').removeClass('disable');
+        //     $('.numInp').removeClass('cursor-not-allowed');
+        //     $('.addMoreBtn').removeClass('disable');
+        //     $('.addMoreBtn').removeClass('cursor-not-allowed');
+        //     $('#addMoreTrack').removeClass('disable');
+        //     $('#addMoreTrack').removeClass('cursor-not-allowed');
+
+        //     $('#undoToggleBtn').toggleClass('hidden');
+        //     $('#rowReorderToggleBtn').toggleClass('hidden');
+
+        //     $('#addRemoveRowControls').toggleClass('hidden');
+        //     $('#removeRow').removeClass('hover:bg-red-700');
+        //     $('#removeRow').addClass('opacity-50 cursor-not-allowed');
+        // })
 
         //JS to upload JSON, slot values into table
         let uploadBtn = document.getElementById('fileInput');
@@ -599,6 +646,17 @@
                 });
                 uploadBtn.value = '';
             }
+        });
+
+        $('.homeBtn').click(function(event) {
+            location.reload(true);
+            $('.homeBtn').html('<i class="fas fa-sync fa-spin"></i>');
+        });
+
+        $('#backToEditScreen').click(function(event) {
+            $('#serverResponseScreen').toggleClass('hidden');
+            $('#submitJSON').html('Submit');
+            $('#editScreen').toggleClass('hidden');
         });
     });
 
@@ -701,11 +759,11 @@
         }
 
         currentPointsSchemeSelected = json.track.points;
-        //Printing values of track key of json in table
+        // Printing values of track key of json in table
         $('#trackTableHeaders').toggleClass('hidden');
         updateTrackTable(season, tracks, points, json);
         
-        //Printing values of results key of json in table
+        // Printing values of results key of json in table
         $('#resultsTableHeaders').toggleClass('hidden');
         updateResultsTable(driver, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, availableDrivers, additionalResultsPoints, availableConstructors, status, json);
 
@@ -748,6 +806,14 @@
         isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
         // console.log(indexPosMap)
         // convertAbsoluteTimeToInterval();
+
+        $('#startOver').click(function(event) {
+            let choice = window.confirm('Are you sure you want to start over?')
+            if(choice) {
+                $('#startOver').html('<i class="fas fa-sync fa-spin"></i> Start Over');
+                location.reload(true);
+            }     
+        });
 
         $('.cross').click(function(event) {
             $('#pointsSelectionOverlay').removeClass('flex');
@@ -794,14 +860,6 @@
                 $('#rowReorderToggleBtn').html('Show Row Reorder');
                 $('#rowReorderToggleBtn').toggleClass('editing');
             }
-
-            // $('.addMoreBtn').addClass('hidden');
-            // if($('#toggleAddMore').hasClass('editing')) {
-            //     $('#toggleAddMore').removeClass('bg-green-500 text-white hover:bg-green-700');
-            //     $('#toggleAddMore').addClass('bg-white text-green-700 hover:text-white hover:bg-green-500');
-            //     $('#toggleAddMore').html('Show Add Details');
-            //     $('#toggleAddMore').toggleClass('editing');
-            // }
             
             $('#addRemoveRowControls').toggleClass('hidden');
             if($('.selectInp').hasClass('open')) {
@@ -829,23 +887,12 @@
                 $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
                 $('#undoToggleBtn').html('Show Reset');
                 $('#undoToggleBtn').toggleClass('editing');
-
-                // $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-                // $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
             }
             else {
                 $('#undoToggleBtn').removeClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
                 $('#undoToggleBtn').addClass('bg-blue-500 text-white hover:bg-blue-700');
                 $('#undoToggleBtn').html('Hide Reset');
                 $('#undoToggleBtn').toggleClass('editing');
-
-                // if(!$('.raceTimeCol').hasClass('absoluteTime')) {
-                //     const e = new Event("click");
-                //     const element = document.querySelector("#raceTimeFormatToggleBtn");
-                //     element.dispatchEvent(e);
-                // }
-                // $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-                // $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             }
 
             $('.undo').toggleClass('hidden');
@@ -858,36 +905,10 @@
                 }
                 $('#rowReorderToggleBtn').html('Show Row Reorder');
                 $('#rowReorderToggleBtn').toggleClass('editing');
-
-                // $("#raceTimeFormatToggleBtn").removeClass('disableActionBtns text-white');
-                // $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
-                // $("#raceTimeFormatToggleBtn").addClass('text-red-700');
                 
                 $('.rowReorderBtn').toggleClass('hidden');
                 $('.addMoreBtn').toggleClass('hidden');
             }
-
-            // if(!$('.raceTimeCol').hasClass('absoluteTime')) {
-            //     const e = new Event("click");
-            //     const element = document.querySelector("#raceTimeFormatToggleBtn");
-            //     element.dispatchEvent(e);
-
-            //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-            //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
-            // }
-            // else {
-            //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-            //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-            // }
-
-            // if($('#toggleAddMore').hasClass('editing')) {
-            //     $('#toggleAddMore').removeClass('bg-green-500 text-white hover:bg-green-700');
-            //     $('#toggleAddMore').addClass('bg-white text-green-700 hover:text-white hover:bg-green-500');
-            //     $('#toggleAddMore').html('Show Add Details');
-            //     $('#toggleAddMore').toggleClass('editing');
-
-            //     $('.addMoreBtn').toggleClass('hidden');
-            // }
         })
 
         $('#rowReorderToggleBtn').click(function(event) {
@@ -921,8 +942,6 @@
                     const element = document.querySelector("#raceTimeFormatToggleBtn");
                     element.dispatchEvent(e);
                 }
-                // $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-                // $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
             }
             
             $('.rowReorderBtn').toggleClass('hidden');
@@ -936,97 +955,13 @@
 
                 $('.undo').toggleClass('hidden');
                 $('.addMoreBtn').toggleClass('hidden');
-
-                // $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-                // $("#raceTimeFormatBtnWrapper").addClass('tooltip');
-                // $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
-            }
-
-            // if(!$('.raceTimeCol').hasClass('absoluteTime')) {
-            //     const e = new Event("click");
-            //     const element = document.querySelector("#raceTimeFormatToggleBtn");
-            //     element.dispatchEvent(e);
-
-            //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-            //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
-            // }
-            // else {
-            //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-            //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-            // }
-
-            // if($('#toggleAddMore').hasClass('editing')) {
-            //     $('#toggleAddMore').removeClass('bg-green-500 text-white hover:bg-green-700');
-            //     $('#toggleAddMore').addClass('bg-white text-green-700 hover:text-white hover:bg-green-500');
-            //     $('#toggleAddMore').html('Show Add Details');
-            //     $('#toggleAddMore').toggleClass('editing');
-
-            //     $('.addMoreBtn').toggleClass('hidden');
-            // }
-        })
-
-        // $('#toggleAddMore').click(function(event) {
-        //     if($('#toggleAddMore').hasClass('editing')) {
-        //         $('#toggleAddMore').removeClass('bg-green-500 text-white hover:bg-green-700');
-        //         $('#toggleAddMore').addClass('bg-white text-green-700 hover:text-white hover:bg-green-500');
-        //         $('#toggleAddMore').html('Show Add Details');
-        //         $('#toggleAddMore').toggleClass('editing');
-        //     }
-        //     else {
-        //         $('#toggleAddMore').removeClass('bg-white text-green-700 hover:text-white hover:bg-green-500');
-        //         $('#toggleAddMore').addClass('bg-green-500 text-white hover:bg-green-700');
-        //         $('#toggleAddMore').html('Hide Add Details');
-        //         $('#toggleAddMore').toggleClass('editing');
-        //     }
-            
-        //     $('.addMoreBtn').toggleClass('hidden');
-
-        //     if($('#undoToggleBtn').hasClass('editing')) {
-        //         $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-        //         $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-        //         $('#undoToggleBtn').html('Show Reset');
-        //         $('#undoToggleBtn').toggleClass('editing');
-
-        //         $('.undo').toggleClass('hidden');
-        //     }
-
-        //     if($('#rowReorderToggleBtn').hasClass('editing')) {
-        //         $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-        //         $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-        //         $('#rowReorderToggleBtn').html('Show Row Reorder');
-        //         $('#rowReorderToggleBtn').toggleClass('editing');
-
-        //         $('.rowReorderBtn').toggleClass('hidden');
-        //     }
-        // })
-
-        $('.undo').click(function(event) {
-            $('.undo').toggleClass('hidden');
-            $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-            $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-            $('#undoToggleBtn').html('Show Reset');
-            $('#undoToggleBtn').toggleClass('editing');
-
-            $('.addMoreBtn').toggleClass('hidden');
-
-            let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
-            let noTimeErrors = 1;
-            
-            let raceTimePos1 = $(`#inputTime${indexPosMap[0] - 1}`).val();
-
-            for(let i = 0; i < updatedJSONFromTable.results.length; i++) noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
-            
-            if(noTimeErrors === 1 && isTimePos1Absolute.test(raceTimePos1)) {
-                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
-                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-            }
-
-            if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
-                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
             }
         })
+
+        addEventListenerToTrackUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute);
+        for(let i = 0; i < json.results.length; i++) {
+            addEventListenerToResultsUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute, i);
+        }
         
         $('#addRow').click(function(event) {
             let addRowTemplate = {
@@ -1062,6 +997,8 @@
             updateResultsTable(driver, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, availableDrivers, additionalResultsPoints, availableConstructors, status, json, i);            
             availableDrivers = driver.filter(ele => !driverIDStore.includes(ele.id));
             repopulateDriverResultsDropdowns(driver, availableDrivers, json);
+
+            addEventListenerToResultsUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute, i);
             
             let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
             if($('#bypassConstructorsCheck').is(':not(:checked)')) {
@@ -1089,6 +1026,10 @@
             checkAndMonitorResultsData(json, driver, fastestLapIndexStore, timeIsNotNumberCheck, isResultImported, isPointsUndefined, noPointsForFL, availableConstructors, status, points, regexFl, regexTimeAbsolute, regexTimeInterval, regexTimePos1Absolute, driverIDStore, raceTimeInIntervals, raceTimeInAbsolutes, gridStore, stopsStore, additionalResultsPoints, statusStore, indexPosMap, i);
             serialiseRowReorderControls(json, originalStatusMinusUnitsPlace, raceTimeInAbsolutes, stopsStore, additionalResultsPoints, indexPosMap, i);
             openResultsMoreDetails(json, additionalResultsPoints, indexPosMap, i);
+            
+            checkGridValueGreaterThanArraySize(gridStore, indexPosMap);
+            checkGridValuesStartWith1(gridStore, indexPosMap);
+            isAllGridValues0(gridStore, indexPosMap);
         });
 
         // let lastPopedRow = [];
@@ -1134,6 +1075,13 @@
                 }
                 
                 disableFirstAndLastReorderBtns();
+
+                checkDuplicateGrid(gridStore, indexPosMap);
+                checkGridValueGreaterThanArraySize(gridStore, indexPosMap);
+                checkGridValuesStartWith1(gridStore, indexPosMap);
+                checkGridValuesForBreakInSequence(gridStore, indexPosMap);
+                isAllGridValues0(gridStore, indexPosMap);
+
                 isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
                 disableToggleBtnsOnTimeError(json, regexTimePos1Absolute, indexPosMap);
                 checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
@@ -1188,6 +1136,54 @@
             $('#submitJSON').html('<i class="fas fa-spinner fa-spin"></i>');
 
         });
+    }
+
+    function addEventListenerToTrackUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute) {
+        let allTrackUndoBtns = ['#undoSeason', '#undoRound', '#undoCircuit', '#undoPoints'];
+
+        for(let i = 0; i < allTrackUndoBtns.length; i++) {
+            $(allTrackUndoBtns[i]).click(function(event) {
+                actionOnUndoBtnClick(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute);
+            });
+        }
+    }
+
+    function addEventListenerToResultsUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute, i) {
+        let allResultsUndoBtn = [`#undoDriver${i}`, `#undoConstructor${i}`, `#undoGrid${i}`, `#undoStops${i}`, `#undoFl${i}`, `#undoTime${i}`, `#undoStatus${i}`];
+
+        for(let j = 0; j < allResultsUndoBtn.length; j++) {
+            $(allResultsUndoBtn[j]).click(function(event) {
+                actionOnUndoBtnClick(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute);
+            });
+        }
+    }
+
+    function actionOnUndoBtnClick(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute) {
+        $('.undo').toggleClass('hidden');
+        $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+        $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+        $('#undoToggleBtn').html('Show Reset');
+        $('#undoToggleBtn').toggleClass('editing');
+
+        $('.addMoreBtn').toggleClass('hidden');
+
+        let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
+        let noTimeErrors = 1;
+        
+        let raceTimePos1 = $(`#inputTime${indexPosMap[0] - 1}`).val();
+
+        for(let x = 0; x < updatedJSONFromTable.results.length; x++) noTimeErrors -= checkForError(`#resultsBodyTime${x}`);
+        
+        if(noTimeErrors === 1 && isTimePos1Absolute.test(raceTimePos1)) {
+            $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+            $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+            $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
+        }
+
+        if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
+            $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+            $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+        }
     }
     
     function toggleTimeFormat(json, raceTimeInIntervals, raceTimeInAbsolutes, indexPosMap) {
@@ -2565,10 +2561,6 @@
     }
 
     function checkIfCurrentTimeLessThanPosAbove(json, timeIsNotNumberCheck, stopsStore, raceTimeInAbsolutes, indexPosMap, i) {
-         
-        // console.log('r', raceTimeInAbsolutes)
-        // console.log('in', indexPosMap)
-        // console.log('i', i)
         if(indexPosMap[i] === 1)
             return;
 
@@ -2592,8 +2584,8 @@
             $(`#inputStops${i}`).addClass('bg-yellow-600');
             $(`#inputTime${i}`).removeClass('bg-yellow-600');
             $(`#inputStops${i}`).addClass('font-bold');
-            $(`#inputTime${i}`).removeClass('font-bold');
             $(`#inputStops${i}`).addClass('text-white');
+            $(`#inputTime${i}`).removeClass('font-bold');
             $(`#inputTime${i}`).removeClass('text-white');
 
             $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> LAPS COMPLETED</strong> is more than the that of row above</p>`)
@@ -2621,8 +2613,11 @@
                 $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
                 $(`#inputTime${i}`).removeClass('bg-yellow-600');
                 $(`#inputStops${i}`).removeClass('bg-yellow-600');
-                $(`#inputTime${i}`).removeClass('font-bold');
-                $(`#inputTime${i}`).removeClass('text-white');
+                
+                if(!$(`#inputTime${i}`).hasClass('bg-red-600')) {
+                    $(`#inputTime${i}`).removeClass('font-bold');
+                    $(`#inputTime${i}`).removeClass('text-white');
+                }
 
                 if(!$(`#inputStops${i}`).hasClass('bg-red-600')) {
                     $(`#inputStops${i}`).removeClass('font-bold');
@@ -2764,15 +2759,26 @@
     }
 
     function checkGridValueGreaterThanArraySize(gridStore, indexPosMap) {
-        for(let i = 0; i < gridStore.length; i++) {
-            if(gridStore[i] > gridStore.length && !$(`#resultsBodyGrid${i}`).hasClass('bg-red-600')) {
-                $(`#resultsBodyGrid${i}`).addClass('bg-red-600');
-                $(`#inputGrid${i}`).addClass('bg-red-600');
-                $(`#inputGrid${i}`).addClass('font-bold');
-                $(`#inputGrid${i}`).addClass('text-white');
-                $(`#errorGridAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field value is greater than the number of position entries]</p>`);
-                $(`#errorGridAlert${indexPosMap[i] - 1}`).slideDown(500);
-            }
+        let maxGrid = gridStore[0];
+        let maxGridIdx;
+
+        for(let i = 0; i < gridStore.length; i++) if(gridStore[i] > maxGrid) maxGrid = gridStore[i];
+
+        maxGridIdx = gridStore.indexOf(maxGrid);
+        if(gridStore[maxGridIdx] > gridStore.length) {
+            $(`#resultsBodyGrid${maxGridIdx}`).addClass('bg-red-600');
+            $(`#inputGrid${maxGridIdx}`).addClass('bg-red-600');
+            $(`#inputGrid${maxGridIdx}`).addClass('font-bold');
+            $(`#inputGrid${maxGridIdx}`).addClass('text-white');
+            $(`#errorGridAlert${indexPosMap[maxGridIdx] - 1}`).html(`<p>Row<strong> ${indexPosMap[maxGridIdx]}</strong> -<strong> STARTING GRID</strong> [field value is greater than the number of position entries]</p>`);
+            $(`#errorGridAlert${indexPosMap[maxGridIdx] - 1}`).slideDown(500);
+        }
+        else if(gridStore.length > 1 && gridStore[maxGridIdx] <= gridStore.length && $(`#resultsBodyGrid${maxGridIdx}`).hasClass('bg-red-600')) {
+            $(`#resultsBodyGrid${maxGridIdx}`).removeClass('bg-red-600');
+            $(`#inputGrid${maxGridIdx}`).removeClass('bg-red-600');
+            $(`#inputGrid${maxGridIdx}`).removeClass('font-bold');
+            $(`#inputGrid${maxGridIdx}`).removeClass('text-white');
+            $(`#errorGridAlert${indexPosMap[maxGridIdx] - 1}`).slideUp(500);
         }
     }
 
@@ -2789,7 +2795,7 @@
             $(`#inputGrid${minGridIdx}`).addClass('bg-red-600');
             $(`#inputGrid${minGridIdx}`).addClass('font-bold');
             $(`#inputGrid${minGridIdx}`).addClass('text-white');
-            $(`#errorGridAlert${indexPosMap[minGridIdx] - 1}`).html(`<p>Row<strong> ${indexPosMap[minGridIdx]}</strong> -<strong> STARTING GRID</strong> [grid sequence should start with 1]</p>`);
+            $(`#errorGridAlert${indexPosMap[minGridIdx] - 1}`).html(`<p>Row<strong> ${indexPosMap[minGridIdx]}</strong> -<strong> STARTING GRID</strong> [grid sequence should start with <strong>1</strong>]</p>`);
             $(`#errorGridAlert${indexPosMap[minGridIdx] - 1}`).slideDown(500);
         }
     }
@@ -2839,6 +2845,16 @@
                 $(`#inputGrid${i}`).removeClass('font-bold');
                 $(`#inputGrid${i}`).removeClass('text-white');
                 $(`#errorGridAlert${indexPosMap[i] - 1}`).slideUp(500);
+            }
+        } else {
+            for(let i = 0; i < gridStore.length; i++) {
+                if(gridStore[i] === 0) {
+                    $(`#resultsBodyGrid${i}`).addClass('bg-red-600');
+                    $(`#inputGrid${i}`).addClass('bg-red-600');
+                    $(`#inputGrid${i}`).addClass('font-bold');
+                    $(`#inputGrid${i}`).addClass('text-white');
+                    $(`#errorGridAlert${indexPosMap[i] - 1}`).slideDown(500);
+                }
             }
         }
     }
@@ -3202,7 +3218,7 @@
         let flFormatCheck = new RegExp(regex);
         let shortestTime = Number.MAX_VALUE;
         let isFastestLapPresent = statusStore.includes(1);
-        let fastestLapRowPosition;
+        let fastestLapRowPosition, isAtleastOneFlTImeValid = 0;
         
         for(let i = 0; i < json.results.length; i++) {
             let currentFl = json.results[i].fastestlaptime;
@@ -3214,6 +3230,8 @@
                     fastestLapRowPosition = indexPosMap[i];
                     fastestLapIndexStore.current = i;
                 }
+
+                isAtleastOneFlTImeValid = 1;
                 // if(currentFastestLapInSeconds === shortestTime) fastestLapRowPosition = i;
             }
 
@@ -3227,7 +3245,7 @@
             // }
         }
 
-        if(statusStore[fastestLapIndexStore.current] === 0) {
+        if(isAtleastOneFlTImeValid && statusStore[fastestLapIndexStore.current] === 0) {
             $('#warningFlStatusNotMatchingAlert').html(`Row <strong>${fastestLapRowPosition}</strong> with fastest lap time does not have 'Fastest Lap' <strong>STATUS</strong>`);
             $(`#resultsBodyStatus${fastestLapIndexStore.previous}`).removeClass('bg-yellow-600');
             $(`#resultsBodyStatus${fastestLapIndexStore.current}`).addClass('bg-yellow-600');
@@ -3480,9 +3498,9 @@
                 enableEditOnErrorAfterLoading(result);
             },
             error: function (result, status) {
-                $('#incorrectRaceNumber').html(`<p><strong>Race ID ${raceNumber}</strong> is not present in database</p>`);
+                $('#errorIncorrectRaceIDAlert').html(`<p><strong>Race ID ${raceNumber}</strong> is not present in database</p>`);
                 $('#importRace').html('Import uploaded race result');
-                $('#incorrectRaceNumber').slideDown(500);
+                $('#errorIncorrectRaceIDAlert').slideDown(500);
             }
         });
     }
