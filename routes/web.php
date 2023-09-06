@@ -94,11 +94,11 @@ Route::group(['middleware' => 'can:admin|coordinator'], function () {
      Route::get('/home/admin/user/{user}', 'DriverController@viewdetails')->name('coordinator.driverview');
      Route::get('/home/admin/user/edit/{user}', 'DriverController@viewedit')->name('coordinator.driveredit');
      Route::post('/home/admin/user/edit/save/{user}', 'DriverController@saveedit')->name('coordinator.driversave');
-
+     
+     Route::get('/result/upload', 'ResultsController@uploadResults')->name('race.upload');
+     Route::get('/result/{race}', 'ResultsController@fetchResultsByRaceId')->name('raceresults.id');
+     Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.upload');
 });
-Route::get('/result/upload', 'ResultsController@uploadResults')->name('race.upload');
-Route::get('/result/{race}', 'ResultsController@fetchResultsByRaceId')->name('raceresults.id');
-Route::post('/results/race', 'ResultsController@saveRaceResults')->name('result.upload');
 
 // League Sign Up
 Route::group(['middleware' => 'can:admin|signup'], function () {

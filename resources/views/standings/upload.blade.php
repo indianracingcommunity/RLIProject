@@ -148,7 +148,7 @@
                 Start Over
             </button>
 
-            <button id="toggleControls" class="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 border border-blue-700 rounded">
+            <button id="toggleControlsBtn" class="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 border border-blue-700 rounded">
                 <i class="fas fa-edit" aria-hidden="true"></i>
                 Edit
             </button>
@@ -158,8 +158,8 @@
     
     <div id="showAdditionsInfoDiv" class="flex flex-row gap-3 mt-2">
         <p class="text-sm text-yellow-600 font-bold">Selected options:</p>
-        <p id="showNoFlPointsInfo" class="text-sm text-gray-600 font-bold">No points for fastest lap</p>
-        <p id="showPopulateAllConstructorsInfo" class="text-sm text-gray-600 font-bold">Populate all constructors in dropdowns</p>
+        <p id="showNoFlPointsInfo" class="text-sm text-gray-600 font-bold">• No points for fastest lap</p>
+        <p id="showPopulateAllConstructorsInfo" class="text-sm text-gray-600 font-bold">• Populate all constructors in dropdowns</p>
     </div>
     
     <div class="w-7/12 rounded mb-10 my-2">
@@ -417,38 +417,30 @@
         var tracks = <?php echo json_encode($tracks); ?>;
         var constructor = <?php echo json_encode($constructor); ?>;
         var driver = <?php echo json_encode($driver); ?>;
-        
-        // convert status array into an object
         var status = [
-                        {
-                            id: 0,
-                            value: 'Finished'
-                        },
-                        {
-                            id: 1,
-                            value: 'Fastest Lap'
-                        },
-                        {
-                            id: -2,
-                            value: 'DNF'
-                        },
-                        {
-                            id: -3,
-                            value: 'DSQ'
-                        }
+            {
+                id: 0,
+                value: 'Finished'
+            },
+            {
+                id: 1,
+                value: 'Fastest Lap'
+            },
+            {
+                id: -2,
+                value: 'DNF'
+            },
+            {
+                id: -3,
+                value: 'DSQ'
+            }
         ];
-        var currentAddRowSelected = 0;
-        var currentPointsSchemeSelected = 1;
-        // {
-        //     0: 'Finished',
-        //     1: 'Fastest Lap',
-        //     -2: 
-        // }
         
         $('#editScreen').addClass('hidden');
         $('#serverResponseScreen').addClass('hidden');
 
         $('#moreOptionsContent').addClass('hidden');
+
         $('#moreOptionsBtn').click(function(event) {
             $('#moreOptionsContent').toggleClass('hidden');
 
@@ -470,1000 +462,89 @@
         $('#showAdditionsInfoDiv').addClass('hidden');
         $('#showNoFlPointsInfo').addClass('hidden');
         $('#showPopulateAllConstructorsInfo').addClass('hidden');
-
-        // let importBtn = document.getElementById('importRace');
-        // importBtn.addEventListener('click', function(event) {
-        //     // check if race id is a number and greater than 0
-        //     let raceNumber = $('#raceNumber').val();
-            
-        //     // add a case for when entered number is greater than the last uploaded id
-        //     if(raceNumber === '' || raceNumber === '0') {
-        //         $('#errorIncorrectRaceIDAlert').slideDown(500);
-        //     }
-        //     else {
-        //         $('#errorIncorrectRaceIDAlert').slideUp(500);
-        //         $('#importRace').html('<i class="fas fa-spinner fa-spin"></i>');
-        //         // fetch the race track details and finishing order based on the selected race id
-        //         fetchResultByIDAndPassForEdit(raceNumber, season, points, tracks, constructor, driver, status);
-        //     }
-        // });
-
         
+        $('#fileInput').change(function(event) {
+            // Continue operation only when a file is uploaded
+            if($('#fileInput')[0].files.length > 0) {
+                let reader = new FileReader();
+                
+                reader.readAsText($('#fileInput')[0].files[0]);
 
+                reader.addEventListener('load', function() {
+                    let json = parseJSONWithErrorHandling(reader.result);
+
+                    if(checkJsonKeys(json) && isAllPositionKeysPresentAndValidWithoutDuplicates(json.results)) {
+                        json.results.sort((a,b) => a.position - b.position);
+
+                        viewJSONData(json, season, points, tracks, constructor, driver, status);
+                        
+                        disableNumberInputsAndAddMoreBtns();
+                        enableEditOnErrorAfterLoading(json);
+                    }
+                });
+                // Resetting the value to read the same file again
+                $('#fileInput')[0].value = '';
+            }
+        });
         
         $('#importRace').click(function(event) {
-            // check if race id is a number and greater than 0
             let raceNumber = $('#raceNumber').val();
             
-            // add a case for when entered number is greater than the last uploaded id
             if(raceNumber === '' || raceNumber === '0') {
                 $('#errorIncorrectRaceIDAlert').slideDown(500);
             }
             else {
                 $('#errorIncorrectRaceIDAlert').slideUp(500);
                 $('#importRace').html('<i class="fas fa-spinner fa-spin"></i>');
-                // fetch the race track details and finishing order based on the selected race id
+
                 fetchResultByIDAndPassForEdit(raceNumber, season, points, tracks, constructor, driver, status);
             }
         });
 
         $('#scratch').click(function(event) {
             let json = {
-                        track: {
-                            circuit_id: 0,
-                            season_id: 0,
-                            round: 0,
-                            points: 0
-                        },
-                        results: [
-                            {
-                                position: 1,
-                                constructor_id: 0,
-                                grid: 0,
-                                stops: -1,
-                                time: "",
-                                fastestlaptime: "",
-                                status: -2,
-                                driver_id: 0,
-                                driver: ""
-                            }
-                        ]
-            }
+                track: {
+                    circuit_id: 0,
+                    season_id: 0,
+                    round: 0,
+                    points: 0
+                },
+                results: [
+                    {
+                        position: 1,
+                        constructor_id: 0,
+                        grid: 0,
+                        stops: -1,
+                        time: "",
+                        fastestlaptime: "",
+                        status: -2,
+                        driver_id: 0,
+                        driver: ""
+                    }
+                ]
+            };
+            
             let isResultImportedOrFromScratch = -1;
 
             viewJSONData(json, season, points, tracks, constructor, driver, status, isResultImportedOrFromScratch);
 
-            $('#toggleControls').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
-            $('#toggleControls').addClass('bg-green-500 hover:bg-green-700 border-green-700');
-            $('#toggleControls').toggleClass('editing');
-
-            $('.selectInp').attr('disabled', false);
-            $('.selectInp').addClass('open');
-            $('.selectInp').removeClass('cursor-not-allowed');
-            $('.numInp').removeClass('disable');
-            $('.numInp').removeClass('cursor-not-allowed');
-            $('.addMoreBtn').removeClass('disable');
-            $('.addMoreBtn').removeClass('cursor-not-allowed');
-            $('#addMoreTrack').removeClass('disable');
-            $('#addMoreTrack').removeClass('cursor-not-allowed');
-
-            $('#undoToggleBtn').toggleClass('hidden');
-            $('#rowReorderToggleBtn').toggleClass('hidden');
-
-            $('#addRemoveRowControls').toggleClass('hidden');
-            $('#removeRow').removeClass('hover:bg-red-700');
-            $('#removeRow').addClass('opacity-50 cursor-not-allowed');
-        });
-
-        // let scratchBtn = document.getElementById('scratch');
-        // scratchBtn.addEventListener('click', function(event) {
-        //     let json = {
-        //                 track: {
-        //                     circuit_id: 0,
-        //                     season_id: 0,
-        //                     round: 0,
-        //                     points: 0
-        //                 },
-        //                 results: [
-        //                     {
-        //                         position: 1,
-        //                         constructor_id: 0,
-        //                         grid: 0,
-        //                         stops: -1,
-        //                         time: "",
-        //                         fastestlaptime: "",
-        //                         status: -2,
-        //                         driver_id: 0,
-        //                         driver: ""
-        //                     }
-        //                 ]
-        //     }
-        //     let isResultImportedOrFromScratch = -1;
-
-        //     viewJSONData(json, season, points, tracks, constructor, driver, status, isResultImportedOrFromScratch);
-
-        //     $('#toggleControls').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
-        //     $('#toggleControls').addClass('bg-green-500 hover:bg-green-700 border-green-700');
-        //     $('#toggleControls').toggleClass('editing');
-
-        //     $('.selectInp').attr('disabled', false);
-        //     $('.selectInp').addClass('open');
-        //     $('.selectInp').removeClass('cursor-not-allowed');
-        //     $('.numInp').removeClass('disable');
-        //     $('.numInp').removeClass('cursor-not-allowed');
-        //     $('.addMoreBtn').removeClass('disable');
-        //     $('.addMoreBtn').removeClass('cursor-not-allowed');
-        //     $('#addMoreTrack').removeClass('disable');
-        //     $('#addMoreTrack').removeClass('cursor-not-allowed');
-
-        //     $('#undoToggleBtn').toggleClass('hidden');
-        //     $('#rowReorderToggleBtn').toggleClass('hidden');
-
-        //     $('#addRemoveRowControls').toggleClass('hidden');
-        //     $('#removeRow').removeClass('hover:bg-red-700');
-        //     $('#removeRow').addClass('opacity-50 cursor-not-allowed');
-        // })
-
-        //JS to upload JSON, slot values into table
-        let uploadBtn = document.getElementById('fileInput');
-        uploadBtn.addEventListener('change', function() {
-            //Execute only when a file is selected/uploaded
-            if(uploadBtn.files.length > 0) {
-                let reader = new FileReader();
-                //Reading the uploaded JSON
-                reader.readAsText(uploadBtn.files[0]);
-                //Execute when reader has read the file
-                reader.addEventListener('load', function() {
-                    //Parse the JSON into an object
-                    let json = parseJSONWithErrorHandling(reader.result);
-                    // console.log(json.track.points);
-
-                    if(checkJsonKeys(json) && isAllPositionKeysPresentAndValidWithoutDuplicates(json.results)) {
-                        // for(let i = 0; i < json.results.length; i++) {
-                        //     let pos = json.results[i].position;
-                        //     let isFraction = pos % 1;
-                            
-                        //     if((pos < 1) || (pos > json.results.length) || (pos == '') || (pos == '.') || (isFraction != 0)) {
-                        //         pos = NaN;
-                        //     }
-    
-                        //     json.results[i].position = pos; 
-                        // }
-                        
-                        // json.results.sort((a,b) => a.position - b.position || isNaN(a.position) - isNaN(b.position));
-                        json.results.sort((a,b) => a.position - b.position);
-                        viewJSONData(json, season, points, tracks, constructor, driver, status);
-                        
-                        $('.numInp').addClass('disable');
-                        $('.numInp').addClass('cursor-not-allowed');
-                        $('.addMoreBtn').addClass('disable');
-                        $('.addMoreBtn').addClass('cursor-not-allowed');
-                        $('#addMoreTrack').addClass('disable');
-                        $('#addMoreTrack').addClass('cursor-not-allowed');
-
-                        enableEditOnErrorAfterLoading(json);
-                    }
-                });
-                uploadBtn.value = '';
-            }
+            disableNumberInputsAndAddMoreBtns();
+            enableEditOnErrorAfterLoading(json);
         });
 
         $('.homeBtn').click(function(event) {
             location.reload(true);
+
             $('.homeBtn').html('<i class="fas fa-sync fa-spin"></i>');
         });
 
         $('#backToEditScreen').click(function(event) {
-            $('#serverResponseScreen').toggleClass('hidden');
+            $('#serverResponseScreen').addClass('hidden');
+            $('#editScreen').removeClass('hidden');
+
             $('#submitJSON').html('Submit');
-            $('#editScreen').toggleClass('hidden');
         });
     });
-
-    function viewJSONData(json, season, points, tracks, constructor, driver, status, isResultImportedOrFromScratch = 0) {
-        $('#homeScreen').toggleClass('hidden');
-        $('#editScreen').toggleClass('hidden');
-        
-        let originalStatusMinusUnitsPlace = [], indexPosMap = [], additionalResultsPoints = [];
-        let raceTimeInIntervals = [], raceTimeInAbsolutes = [];
-        let driverIDStore = [], gridStore = [], stopsStore = [], statusStore = [];
-        let trackDetailsStore = {season: json.track.season_id, round: json.track.round};
-        // let resultsExtraDetailsStore = {maxLapsCompleted: json.results[0].stops};
-        let isPointsUndefined = points.find(item => {return item.id === json.track.points}) === undefined ? true : false;
-        let isResultImported = {currentVal: isResultImportedOrFromScratch, originalVal: isResultImportedOrFromScratch};
-        
-        let noPointsForFL = $('#noPointsForFlCheck').is(':checked');
-
-        if(!json.track.hasOwnProperty('round')) json.track.round = '';
-        
-        let unitsPlace;
-        for(let i = 0; i < json.results.length; i++) {
-            // originalStatusMinusUnitsPlace[i] = json.results[i].status;
-            unitsPlace = parseInt(json.results[i].status % 10);
-            originalStatusMinusUnitsPlace[i] = Math.abs(json.results[i].status - unitsPlace);
-            json.results[i].status = unitsPlace;
-            statusStore.push(json.results[i].status);
-
-            let driverID = json.results[i].driver_id;
-            if(isNaN(driverID) || driverID > driver.length || driverID === '') driverID = null;    
-            driverIDStore.push(driverID);
-
-            indexPosMap.push(i + 1);
-
-            let pointsToAdd = json.results[i].hasOwnProperty('points') ? json.results[i].points : 0;
-            additionalResultsPoints.push(pointsToAdd);
-            // if(noPointsForFL && !isPointsUndefined) {
-            //     if(json.results[i].status === 1 && points[json.track.points - 1]['P' + (i + 1)] > 0) {
-            //         if(!isResultImportedOrFromScratch) pointsToAdd -= 1;
-            //         additionalResultsPoints.push(pointsToAdd);
-            //     }
-            //     else additionalResultsPoints.push(pointsToAdd);
-            // }
-            // else additionalResultsPoints.push(pointsToAdd);
-
-            raceTimeInAbsolutes.push(json.results[i].time);
-
-            gridStore.push(json.results[i].grid);
-
-            stopsStore.push(json.results[i].stops);
-
-            if(!json.results[i].hasOwnProperty('grid') || json.results[i].grid === null) json.results[i].grid = '';
-            if(!json.results[i].hasOwnProperty('stops') || json.results[i].stops === null) json.results[i].stops = '';
-            if(!json.results[i].hasOwnProperty('fastestlaptime')) json.results[i].fastestlaptime = '';
-            if(!json.results[i].hasOwnProperty('time')) json.results[i].time = '';
-        }
-        // console.log(additionalResultsPoints)
-
-        if(noPointsForFL && isPointsUndefined) alert("Warning: 'Points scheme' is not present in database. Begin editing by changing it to an appropirate value");
-        
-        if(noPointsForFL) {
-            $('#showAdditionsInfoDiv').removeClass('hidden');
-            $('#showNoFlPointsInfo').toggleClass('hidden');
-        }
-
-        let additionalRaceDistance = json.track.hasOwnProperty('distance') ? {distance: json.track.distance} : {distance: ''};
-        let fastestLapIndexStore = {current: 0, previous: 0};
-        
-        let regexFl = "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^\\-$";
-        let regexTimeAbsolute = "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
-        let regexTimeInterval = "^(\\+|\\-)((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
-        let regexTimePos1Absolute = "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$";
-        let regexTimeIsNotNumber = "^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
-
-        let isTimePos1Absolute = new RegExp(regexTimePos1Absolute);
-        if(!isTimePos1Absolute.test(json.results[0].time)) $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
-
-        let availableDrivers = driver.filter(ele => !driverIDStore.includes(ele.id));
-        let availableConstructors;
-
-        let timeIsNotNumberCheck = new RegExp(regexTimeIsNotNumber);
-        for(let i = 0; i < json.results.length; i++) {
-            let intervalValue = convertAbsoluteTimeToInterval(json.results[i].time, json.results[0].time);
-            if(i === 0 || timeIsNotNumberCheck.test(json.results[i].time)) intervalValue = json.results[i].time;
-            if(json.results[0].time === '-' && !timeIsNotNumberCheck.test(json.results[i].time)) intervalValue = json.results[i].time;
-
-            raceTimeInIntervals.push(intervalValue);
-        }
-        // console.log(raceTimeInIntervals)
-        // console.log(raceTimeInAbsolutes)
-
-        availableConstructors = constructor;
-        if($('#bypassConstructorsCheck').is(':not(:checked)')) {
-            for(let i = 0; i < season.length; i++) {
-                if(season[i].id === json.track.season_id) availableConstructors = season[i].constructors;
-            }
-        }
-        else {
-            $('#showAdditionsInfoDiv').removeClass('hidden');
-            $('#showPopulateAllConstructorsInfo').toggleClass('hidden');
-        }
-
-        currentPointsSchemeSelected = json.track.points;
-        // Printing values of track key of json in table
-        $('#trackTableHeaders').toggleClass('hidden');
-        updateTrackTable(season, tracks, points, json);
-        
-        // Printing values of results key of json in table
-        $('#resultsTableHeaders').toggleClass('hidden');
-        updateResultsTable(driver, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, availableDrivers, additionalResultsPoints, availableConstructors, status, json);
-
-        if(isResultImported.currentVal === 1) isResultImported.currentVal = 0;
-
-        if(isResultImported.originalVal === -1) {
-            $('#raceTimeFormatText').html('[Interval]');
-            
-            for(let i = 0; i < json.results.length; i++) {
-                if((indexPosMap[i] - 1) > 0) {
-                    $(`#errorTimeAlert${i}`).html(`<p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>'±10.324'</strong>, <strong>'±1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`);
-                }
-            }
-
-            $('.raceTimeCol').removeClass('absoluteTime');
-            $('#raceTimeFormatToggleBtn').html('Show Absolute Times');
-        }
-        
-        checkAndMonitorTrackData(json, isResultImported, trackDetailsStore, isPointsUndefined, noPointsForFL, season, tracks, points, constructor, raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, indexPosMap, additionalResultsPoints);
-        checkDuplicateDiD(driverIDStore, indexPosMap);
-        checkDuplicateStatus(statusStore, indexPosMap);
-        
-        openTrackMoreDetails(additionalRaceDistance);
-        openResultsMoreDetails(json, additionalResultsPoints, indexPosMap);
-        $('#attributeValue').change(function(event) {
-            editMoreDetails(additionalRaceDistance, additionalResultsPoints, indexPosMap);
-        });
-        
-        for(let k = 0; k < json.results.length; ++k) {
-            checkRaceTimeMatchesWithStatus(json, indexPosMap, statusStore, stopsStore, k);
-            checkAndMonitorResultsData(json, driver, fastestLapIndexStore, timeIsNotNumberCheck, isResultImported, isPointsUndefined, noPointsForFL, availableConstructors, status, points, regexFl, regexTimeAbsolute, regexTimeInterval, regexTimePos1Absolute, driverIDStore, raceTimeInIntervals, raceTimeInAbsolutes, gridStore, stopsStore, additionalResultsPoints, statusStore, indexPosMap, k);
-            serialiseRowReorderControls(json, originalStatusMinusUnitsPlace, raceTimeInAbsolutes, stopsStore, additionalResultsPoints, indexPosMap, k);
-        }
-        
-        checkDuplicateGrid(gridStore, indexPosMap);
-        checkGridValueGreaterThanArraySize(gridStore, indexPosMap);
-        checkGridValuesStartWith1(gridStore, indexPosMap);
-        checkGridValuesForBreakInSequence(gridStore, indexPosMap);
-        isAllGridValues0(gridStore, indexPosMap);
-        isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
-        // console.log(indexPosMap)
-        // convertAbsoluteTimeToInterval();
-
-        $('#startOver').click(function(event) {
-            let choice = window.confirm('Are you sure you want to start over?')
-            if(choice) {
-                $('#startOver').html('<i class="fas fa-sync fa-spin"></i> Start Over');
-                location.reload(true);
-            }     
-        });
-
-        $('.cross').click(function(event) {
-            $('#pointsSelectionOverlay').removeClass('flex');
-            $('#additionalDetailsInputOverlay').removeClass('flex');
-            $('#reviewJSONOverlay').removeClass('flex');
-            $('#pointsSelectionOverlay').addClass('hidden');
-            $('#additionalDetailsInputOverlay').addClass('hidden');
-            $('#reviewJSONOverlay').addClass('hidden');
-        });
-
-        $('#raceTimeFormatToggleBtn').click(function(event) {
-            let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
-            toggleTimeFormat(updatedJSONFromTable, raceTimeInIntervals, raceTimeInAbsolutes, indexPosMap);
-        });
-
-        $('#toggleControls').click(function(event) {
-            if($('#toggleControls').hasClass('editing')) {
-                $('#toggleControls').removeClass('bg-green-500 hover:bg-green-700 border-green-700');
-                $('#toggleControls').addClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
-                $('#toggleControls').toggleClass('editing');
-            }
-            else {
-                $('#toggleControls').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
-                $('#toggleControls').addClass('bg-green-500 hover:bg-green-700 border-green-700');
-                $('#toggleControls').addClass('editing');
-            }
-
-            $('#undoToggleBtn').toggleClass('hidden');
-            $('#rowReorderToggleBtn').toggleClass('hidden');
-            // $('#toggleAddMore').toggleClass('hidden');
-
-            $('.undo').addClass('hidden');
-            if($('#undoToggleBtn').hasClass('editing')) {
-                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#undoToggleBtn').html('Show Reset');
-                $('#undoToggleBtn').toggleClass('editing');
-            }
-
-            $('.rowReorderBtn').addClass('hidden');
-            if($('#rowReorderToggleBtn').hasClass('editing')) {
-                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                $('#rowReorderToggleBtn').html('Show Row Reorder');
-                $('#rowReorderToggleBtn').toggleClass('editing');
-            }
-            
-            $('#addRemoveRowControls').toggleClass('hidden');
-            if($('.selectInp').hasClass('open')) {
-                $('.selectInp').attr('disabled', true);
-                $('.selectInp').removeClass('open');
-                $('.selectInp').addClass('cursor-not-allowed');
-            }
-            else {
-                $('.selectInp').attr('disabled', false);
-                $('.selectInp').addClass('open');
-                $('.selectInp').removeClass('cursor-not-allowed');
-            }
-            
-            $('.numInp').toggleClass('disable');
-            $('.numInp').toggleClass('cursor-not-allowed');
-            $('.addMoreBtn').toggleClass('disable');
-            $('.addMoreBtn').toggleClass('cursor-not-allowed');
-            $('#addMoreTrack').toggleClass('disable');
-            $('#addMoreTrack').toggleClass('cursor-not-allowed');
-        });
-
-        $('#undoToggleBtn').click(function(event) {
-            if($('#undoToggleBtn').hasClass('editing')) {
-                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#undoToggleBtn').html('Show Reset');
-                $('#undoToggleBtn').toggleClass('editing');
-            }
-            else {
-                $('#undoToggleBtn').removeClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#undoToggleBtn').addClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#undoToggleBtn').html('Hide Reset');
-                $('#undoToggleBtn').toggleClass('editing');
-            }
-
-            $('.undo').toggleClass('hidden');
-            $('.addMoreBtn').toggleClass('hidden');
-
-            if($('#rowReorderToggleBtn').hasClass('editing')) {
-                if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
-                    $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                    $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                }
-                $('#rowReorderToggleBtn').html('Show Row Reorder');
-                $('#rowReorderToggleBtn').toggleClass('editing');
-                
-                $('.rowReorderBtn').toggleClass('hidden');
-                $('.addMoreBtn').toggleClass('hidden');
-            }
-        })
-
-        $('#rowReorderToggleBtn').click(function(event) {
-            if($('#rowReorderToggleBtn').hasClass('editing')) {
-                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                $('#rowReorderToggleBtn').html('Show Row Reorder');
-                $('#rowReorderToggleBtn').toggleClass('editing');
-
-                let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
-                let noTimeErrors = 1;
-                
-                let raceTimePos1 = $(`#inputTime${indexPosMap[0] - 1}`).val();
-
-                for(let i = 0; i < updatedJSONFromTable.results.length; i++) noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
-                
-                if(noTimeErrors === 1 && isTimePos1Absolute.test(raceTimePos1)) {
-                    $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-                    $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
-                    $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-                }
-            }
-            else {
-                $('#rowReorderToggleBtn').removeClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-                $('#rowReorderToggleBtn').addClass('bg-orange-500 text-white hover:bg-orange-700');
-                $('#rowReorderToggleBtn').html('Hide Row Reorder');
-                $('#rowReorderToggleBtn').toggleClass('editing');
-                
-                if(!$('.raceTimeCol').hasClass('absoluteTime')) {
-                    const e = new Event("click");
-                    const element = document.querySelector("#raceTimeFormatToggleBtn");
-                    element.dispatchEvent(e);
-                }
-            }
-            
-            $('.rowReorderBtn').toggleClass('hidden');
-            $('.addMoreBtn').toggleClass('hidden');
-
-            if($('#undoToggleBtn').hasClass('editing')) {
-                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-                $('#undoToggleBtn').html('Show Reset');
-                $('#undoToggleBtn').toggleClass('editing');
-
-                $('.undo').toggleClass('hidden');
-                $('.addMoreBtn').toggleClass('hidden');
-            }
-        })
-
-        addEventListenerToTrackUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute);
-        for(let i = 0; i < json.results.length; i++) {
-            addEventListenerToResultsUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute, i);
-        }
-        
-        $('#addRow').click(function(event) {
-            let addRowTemplate = {
-                position: json.results.length + 1,
-                constructor_id: 0,
-                grid: 0,
-                stops: -1,
-                time: "",
-                fastestlaptime: "",
-                status: -2,
-                driver_id: 0,
-                driver: ""
-            };
-            
-            json.results.push(addRowTemplate);
-            originalStatusMinusUnitsPlace.push(0);
-            driverIDStore.push(addRowTemplate.driver_id);
-            gridStore.push(addRowTemplate.grid);
-            stopsStore.push(addRowTemplate.stops);
-            statusStore.push(addRowTemplate.status);
-            indexPosMap.push(addRowTemplate.position);
-            additionalResultsPoints.push(0);
-            raceTimeInIntervals.push(addRowTemplate.time);
-            raceTimeInAbsolutes.push(addRowTemplate.time);
-            
-            if((json.results.length) >= 1) {
-                $('#removeRow').removeClass('opacity-50 cursor-not-allowed');
-                $('#removeRow').addClass('hover:bg-red-700');                 
-            }
-            
-            let i = json.results.length - 1;
-
-            updateResultsTable(driver, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, availableDrivers, additionalResultsPoints, availableConstructors, status, json, i);            
-            availableDrivers = driver.filter(ele => !driverIDStore.includes(ele.id));
-            repopulateDriverResultsDropdowns(driver, availableDrivers, json);
-
-            addEventListenerToResultsUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute, i);
-            
-            let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
-            if($('#bypassConstructorsCheck').is(':not(:checked)')) {
-                availableConstructors = constructor;
-                for(let i = 0; i < season.length; i++) {
-                    if(season[i].id === updatedJSONFromTable.track.season_id) availableConstructors = season[i].constructors;
-                }
-                repopulateConstructorResultsDropdowns(availableConstructors, updatedJSONFromTable);
-            }
-            
-            if((updatedJSONFromTable.results.length) >= 2 && $('#toggleControls').hasClass('editing')) {
-                $('.selectInp').attr('disabled', false);
-                $('.selectInp').addClass('open');
-                $('.selectInp').removeClass('cursor-not-allowed');
-            }
-            
-            if($('#rowReorderToggleBtn').hasClass('editing')) {
-                $(`#moveRowUp${i}`).toggleClass('hidden');
-                $(`#moveRowDown${i}`).toggleClass('hidden');
-            }
-            
-            if($('#rowReorderToggleBtn').hasClass('editing') || $('#toggleRowUndo').hasClass('editing')) $(`#addMore${i}`).toggleClass('hidden');
-            
-            checkRaceTimeMatchesWithStatus(updatedJSONFromTable, indexPosMap, statusStore, stopsStore, i);
-            checkAndMonitorResultsData(json, driver, fastestLapIndexStore, timeIsNotNumberCheck, isResultImported, isPointsUndefined, noPointsForFL, availableConstructors, status, points, regexFl, regexTimeAbsolute, regexTimeInterval, regexTimePos1Absolute, driverIDStore, raceTimeInIntervals, raceTimeInAbsolutes, gridStore, stopsStore, additionalResultsPoints, statusStore, indexPosMap, i);
-            serialiseRowReorderControls(json, originalStatusMinusUnitsPlace, raceTimeInAbsolutes, stopsStore, additionalResultsPoints, indexPosMap, i);
-            openResultsMoreDetails(json, additionalResultsPoints, indexPosMap, i);
-            
-            checkGridValueGreaterThanArraySize(gridStore, indexPosMap);
-            checkGridValuesStartWith1(gridStore, indexPosMap);
-            isAllGridValues0(gridStore, indexPosMap);
-        });
-
-        // let lastPopedRow = [];
-        $('#removeRow').click(function(event) {
-            let errorIndex = json.results.length;
-            
-            if(errorIndex == 1) return alert('Cannot remove row! Finishing order should have atleast one entry.');
-
-            let choice = window.confirm('Are you sure you want to delete the last row?')
-            if(choice) {
-                let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, 0);
-                
-                if(errorIndex > 1) {
-                    json.results.pop();
-                    originalStatusMinusUnitsPlace.pop();
-                    driverIDStore.pop();
-                    gridStore.pop();
-                    stopsStore.pop();
-                    statusStore.pop();
-                    indexPosMap.pop();
-                    additionalResultsPoints.pop();
-                    raceTimeInIntervals.pop();
-                    raceTimeInAbsolutes.pop();
-
-                    $('.resultRow').last().remove();
-                }
-
-                availableDrivers = driver.filter(ele => !driverIDStore.includes(ele.id));
-                repopulateDriverResultsDropdowns(driver, availableDrivers, json);
-
-                $(`#errorPosAlert${json.results.length}`).slideUp(500);
-                $(`#errorDriverAlert${json.results.length}`).slideUp(500);
-                $(`#errorConstructorAlert${json.results.length}`).slideUp(500);
-                $(`#errorStatusAlert${json.results.length}`).slideUp(500);
-                $(`#errorGridAlert${json.results.length}`).slideUp(500);
-                $(`#errorStopsAlert${json.results.length}`).slideUp(500);
-                $(`#errorFlAlert${json.results.length}`).slideUp(500);
-                $(`#errorTimeAlert${json.results.length}`).slideUp(500);
-
-                if(errorIndex <= 2) {
-                    $('#removeRow').removeClass('hover:bg-red-700');
-                    $('#removeRow').addClass('opacity-50 cursor-not-allowed');
-                }
-                
-                disableFirstAndLastReorderBtns();
-
-                checkDuplicateGrid(gridStore, indexPosMap);
-                checkGridValueGreaterThanArraySize(gridStore, indexPosMap);
-                checkGridValuesStartWith1(gridStore, indexPosMap);
-                checkGridValuesForBreakInSequence(gridStore, indexPosMap);
-                isAllGridValues0(gridStore, indexPosMap);
-
-                isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
-                disableToggleBtnsOnTimeError(json, regexTimePos1Absolute, indexPosMap);
-                checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-
-                for(let i = 0; i < updatedJSONFromTable.results.length; i++) {
-                    reflectFastestLap(points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, additionalResultsPoints, updatedJSONFromTable.results[i].status, i);
-                }
-
-                // console.log(driverIDStore)
-
-                // let temp = updatedJSONFromTable.results.pop();
-                // lastPopedRow.push(temp);
-                // console.log(lastPopedRow);
-            }
-        });
-
-        $('#reviewJSON').toggleClass('hidden');
-        $('#submitJSON').toggleClass('hidden');
-        
-        // checkAllTableFields(regexFl, regexTime, json);
-        // checkAllTrackFields();
-        checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        
-        $('#reviewJSON').click(function(event) {
-            let newJson = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, 1);
-            // console.log(newJson.results)
-
-            $('#reviewJSONTextArea').text(JSON.stringify(newJson, null, "\t"));
-
-            $('#reviewJSONOverlay').removeClass('hidden');
-            $('#reviewJSONOverlay').addClass('flex');
-            
-            // let btnName = 'reviewJSON'
-            // downloadJSON(newJson, btnName, season, newJson.track.season_id, newJson.track.round);
-
-            // $('#errorSubmitJSONAlert').slideUp(500);
-            // if(checkAllTableFields(regexFl, regexTime, newJson)) {
-            //     $('#errorSubmitJSONAlert').slideUp(500);
-                
-            // } else {
-            //     $('#errorSubmitJSONAlert').html('<p>Please clear all the<strong> ERRORS </strong> before downloading JSON</p>');
-            //     $('#errorSubmitJSONAlert').slideDown(500);
-            // }
-        });
-
-        $('#submitJSON').click(function(event) {
-            let newJson = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, 1);
-            // console.log(newJson.results)
-
-            postJson(JSON.stringify(newJson), season);
-
-            $('#submitJSON').html('<i class="fas fa-spinner fa-spin"></i>');
-
-        });
-    }
-
-    function addEventListenerToTrackUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute) {
-        let allTrackUndoBtns = ['#undoSeason', '#undoRound', '#undoCircuit', '#undoPoints'];
-
-        for(let i = 0; i < allTrackUndoBtns.length; i++) {
-            $(allTrackUndoBtns[i]).click(function(event) {
-                actionOnUndoBtnClick(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute);
-            });
-        }
-    }
-
-    function addEventListenerToResultsUndoBtns(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute, i) {
-        let allResultsUndoBtn = [`#undoDriver${i}`, `#undoConstructor${i}`, `#undoGrid${i}`, `#undoStops${i}`, `#undoFl${i}`, `#undoTime${i}`, `#undoStatus${i}`];
-
-        for(let j = 0; j < allResultsUndoBtn.length; j++) {
-            $(allResultsUndoBtn[j]).click(function(event) {
-                actionOnUndoBtnClick(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute);
-            });
-        }
-    }
-
-    function actionOnUndoBtnClick(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, indexPosMap, isTimePos1Absolute) {
-        $('.undo').toggleClass('hidden');
-        $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
-        $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
-        $('#undoToggleBtn').html('Show Reset');
-        $('#undoToggleBtn').toggleClass('editing');
-
-        $('.addMoreBtn').toggleClass('hidden');
-
-        let updatedJSONFromTable = updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints);
-        let noTimeErrors = 1;
-        
-        let raceTimePos1 = $(`#inputTime${indexPosMap[0] - 1}`).val();
-
-        for(let x = 0; x < updatedJSONFromTable.results.length; x++) noTimeErrors -= checkForError(`#resultsBodyTime${x}`);
-        
-        if(noTimeErrors === 1 && isTimePos1Absolute.test(raceTimePos1)) {
-            $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-            $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
-            $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-        }
-
-        if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
-            $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
-            $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
-        }
-    }
-    
-    function toggleTimeFormat(json, raceTimeInIntervals, raceTimeInAbsolutes, indexPosMap) {
-        const e = new Event('change');
-        
-        if($('.raceTimeCol').hasClass('absoluteTime')) {
-            $('#raceTimeFormatText').html('[Interval]');
-            
-            for(let i = 0; i < json.results.length; i++) {
-                $(`#inputTime${i}`).val(raceTimeInIntervals[indexPosMap[i] - 1]);
-                if((indexPosMap[i] - 1) > 0) {
-                    $(`#errorTimeAlert${i}`).html(`<p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>'±10.324'</strong>, <strong>'±1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`);
-                }
-
-                // const element = document.querySelector(`#inputTime${i}`);
-                // element.dispatchEvent(e);
-            }
-            $('.raceTimeCol').removeClass('absoluteTime');
-            $('#raceTimeFormatToggleBtn').html('Show Absolute Times');
-
-            if($('#rowReorderToggleBtn').hasClass('editing')) {
-                const e = new Event("click");
-                const element = document.querySelector("#rowReorderToggleBtn");
-                element.dispatchEvent(e);
-            }
-        }
-        else {
-            $('#raceTimeFormatText').html('[Absolute]');
-
-            for(let i = 0; i < json.results.length; i++) {
-                $(`#inputTime${i}`).val(raceTimeInAbsolutes[indexPosMap[i] - 1]);
-                if((indexPosMap[i] - 1) > 0) {
-                    $(`#errorTimeAlert${i}`).html(`<p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`);
-                }
-
-                // const element = document.querySelector(`#inputTime${i}`);
-                // element.dispatchEvent(e);
-            }
-            $('.raceTimeCol').addClass('absoluteTime');
-            $('#raceTimeFormatToggleBtn').html('Show Intervals');
-        }
-    }
-
-    function openTrackMoreDetails(additionalRaceDistance) {
-        $('#addMoreTrack').click(function(event) {
-            // console.log(additionalRaceDistance);
-            let seasonIndex = $('#seasonSelect')[0].selectedIndex;
-            let circuitIndex = $('#tracksSelect')[0].selectedIndex;
-            
-            let selectedSeason = $('#seasonSelect')[0][seasonIndex].innerText;
-            let selectedCircuit = $('#tracksSelect')[0][circuitIndex].innerText;
-            let selectedPoints = $('#pointsBtn').html();
-
-            $('#infoTitle').html('Race details');
-
-            $('#infoHeader1').html('Season');
-            $('#infoHeader2').html('Track');
-            $('#infoHeader3').html('Points');
-
-            $('#attributeName').html('Distance');
-
-            $('#infoValue1').html(selectedSeason);
-            $('#infoValue2').html(selectedCircuit);
-            $('#infoValue3').html(selectedPoints);
-
-            $('#attributeValue').val(additionalRaceDistance.distance);
-
-            $('#additionalDetailsInputOverlay').removeClass('hidden');
-            $('#additionalDetailsInputOverlay').addClass('flex');
-        });
-
-        if(additionalRaceDistance.distance != '') {
-            $('#addMoreTrack').removeClass('bg-white text-green-500');
-            $('#addMoreTrack').addClass('bg-green-500 text-white');
-        }
-    }
-
-    function openResultsMoreDetails(json, additionalResultsPoints, indexPosMap, i = 0) {
-        let upperLimit = i === 0 ? json.results.length - 1 : i;
-
-        for(let x = i; x <= upperLimit; x++) {
-            $(`#addMore${x}`).click(function(event) {
-                let index = parseInt($(this).closest('tr')[0].querySelector('.selectDriver').selectedIndex);
-                let statusIndex = parseInt($(this).closest('tr')[0].querySelector('.selectStatus').selectedIndex);
-                
-                let currentPos = parseInt($(this).closest('tr')[0].querySelector('.inputPos').value);
-                let currentDriver = $(this).closest('tr')[0].querySelector('.selectDriver')[index].innerText;
-                let currentStatus = $(this).closest('tr')[0].querySelector('.selectStatus')[statusIndex].innerText;
-
-                $('#infoTitle').html('Current Driver');
-
-                $('#infoHeader1').html('Position');
-                $('#infoHeader2').html('Driver');
-                $('#infoHeader3').html('Status');
-
-                $('#attributeName').html('Points');
-    
-                $('#infoValue1').html(currentPos);
-                $('#infoValue2').html(currentDriver);
-                $('#infoValue3').html(currentStatus);
-    
-                $('#attributeValue').val(additionalResultsPoints[indexPosMap[x] - 1]);
-                
-                $('#additionalDetailsInputOverlay').removeClass('hidden');
-                $('#additionalDetailsInputOverlay').addClass('flex');
-                currentAddRowSelected = x;
-                // console.log(indexPosMap[x] - 1)
-            });
-
-            if(additionalResultsPoints[x] != 0) {
-                $(`#addMore${x}`).removeClass('bg-white text-green-500');
-                $(`#addMore${x}`).addClass('bg-green-500 text-white');
-            }
-        }
-    }
-
-    function editMoreDetails(additionalRaceDistance, additionalResultsPoints, indexPosMap) {
-        // console.log(indexPosMap[currentAddRowSelected])
-
-        let selectedVal = $('#attributeValue').val();
-        let attr = $('#attributeName').html();
-        
-        if(selectedVal !== '') {
-            if(attr === 'Points') {
-                additionalResultsPoints[indexPosMap[currentAddRowSelected] - 1] = parseInt(selectedVal);
-                
-                if(selectedVal != 0) {
-                    $(`#addMore${currentAddRowSelected}`).removeClass('bg-white text-green-500');
-                    $(`#addMore${currentAddRowSelected}`).addClass('bg-green-500 text-white');
-                }
-                else {
-                    $(`#addMore${currentAddRowSelected}`).addClass('bg-white text-green-500');
-                    $(`#addMore${currentAddRowSelected}`).removeClass('bg-green-500 text-white');
-                }
-            }
-
-            if(attr === 'Distance') {
-                additionalRaceDistance.distance = +selectedVal;
-
-                if(selectedVal != '') {
-                    $('#addMoreTrack').removeClass('bg-white text-green-500');
-                    $('#addMoreTrack').addClass('bg-green-500 text-white');
-                }
-                else {
-                    $('#addMoreTrack').addClass('bg-white text-green-500');
-                    $('#addMoreTrack').removeClass('bg-green-500 text-white');
-                }
-            }
-        }
-        // console.log(additionalResultsPoints);
-    }
-
-    // function checkAllTableFields(regexFl, regexTime, json) {
-    //     let pass = 0;
-
-    //     let trackOuterDivs = ['#trackBodySeason', '#trackBodyRound', '#trackBodyCircuit', '#trackBodyPoints'];
-    //     let postStatusTrack = 1;
-    //     for(let i = 0; i < trackOuterDivs.length; i++) {
-    //         postStatusTrack -= checkForError(trackOuterDivs[i]);
-    //     }
-
-    //     let postStatusResults = 1;
-    //     for(let i = 0; i < json.results.length; i++) {
-    //         let resultsOuterDivs = [`#resultsBodyPos${i}`, 
-    //                                 `#resultsBodyDriver${i}`, 
-    //                                 `#resultsBodyConstructor${i}`, 
-    //                                 `#resultsBodyGrid${i}`, 
-    //                                 `#resultsBodyStops${i}`, 
-    //                                 `#resultsBodyFl${i}`, 
-    //                                 `#resultsBodyTime${i}`, 
-    //                                 `#resultsBodyStatus${i}`];
-    //         for(let j = 0; j < resultsOuterDivs.length; j++) {
-    //             postStatusResults -= checkForError(resultsOuterDivs[j]);
-    //         }
-    //     }
-
-    //     if(isValidTimeFormat(raceTimeInIntervals, regexFl, regexTime, json) && (postStatusTrack == 1) && (postStatusResults == 1)) pass = 1;
-
-    //     return pass;
-    // }
-
-    // function checkAllTrackFields() {
-    //     let trackOuterDivs = ['#trackBodySeason', '#trackBodyRound', '#trackBodyCircuit', '#trackBodyPoints'];
-    //     let postStatusTrack = 1;
-
-    //     for(let i = 0; i < trackOuterDivs.length; i++) postStatusTrack -= checkForError(trackOuterDivs[i]);
-
-    //     // $('#errorSubmitJSONAlert').slideUp(500);
-    //     if(postStatusTrack === 1) {
-    //         $('#errorSubmitJSONAlert').slideUp(500);
-    //         $('#submitJSON').removeClass('disableActionBtns');
-    //         $('#reviewJSON').removeClass('disableActionBtns');
-    //     }
-    //     else {
-    //         $('#submitJSON').addClass('disableActionBtns');
-    //         $('#reviewJSON').addClass('disableActionBtns');
-    //         $('#errorSubmitJSONAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
-    //         $('#errorSubmitJSONAlert').slideDown(500);
-    //     }
-    // }
-
-    function checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json) {
-        let trackOuterDivs = ['#trackBodySeason', '#trackBodyRound', '#trackBodyCircuit', '#trackBodyPoints'];
-        
-        let postStatusTrack = 1;
-        for(let i = 0; i < trackOuterDivs.length; i++) postStatusTrack -= checkForError(trackOuterDivs[i]);
-        
-        let postStatusResults = 1;
-        for(let i = 0; i < json.results.length; i++){
-            let resultsOuterDivs = [`#resultsBodyPos${i}`, 
-                                    `#resultsBodyDriver${i}`, 
-                                    `#resultsBodyConstructor${i}`, 
-                                    `#resultsBodyGrid${i}`, 
-                                    `#resultsBodyStops${i}`, 
-                                    `#resultsBodyFl${i}`, 
-                                    `#resultsBodyTime${i}`, 
-                                    `#resultsBodyStatus${i}`];
-            for(let j = 0; j < resultsOuterDivs.length; j++) {
-                postStatusResults -= checkForError(resultsOuterDivs[j]);
-            }
-        }
-
-        // console.log(isValidTimeFormat(raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, json), (postStatusTrack === 1), (postStatusResults === 1))
-
-        if(isValidTimeFormat(raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, json) && (postStatusTrack === 1) && (postStatusResults === 1)) {
-            $('#errorSubmitJSONAlert').slideUp(500);
-            $('#submitJSON').removeClass('disableActionBtns');
-            $('#reviewJSON').removeClass('disableActionBtns');
-        }
-        else {
-            $('#submitJSON').addClass('disableActionBtns');
-            $('#reviewJSON').addClass('disableActionBtns');
-            $('#errorSubmitJSONAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
-            $('#errorSubmitJSONAlert').slideDown(500);
-        }
-    }
-
-    function enableEditOnErrorAfterLoading(json) {
-        
-        let trackOuterDivs = ['#trackBodySeason', '#trackBodyRound', '#trackBodyCircuit', '#trackBodyPoints'];
-        
-        let postStatusTrack = 1;
-        for(let i = 0; i < trackOuterDivs.length; i++) postStatusTrack -= checkForError(trackOuterDivs[i]);
-        
-        let postStatusResults = 1;
-        for(let i = 0; i < json.results.length; i++){
-            let resultsOuterDivs = [`#resultsBodyPos${i}`, 
-                                    `#resultsBodyDriver${i}`, 
-                                    `#resultsBodyConstructor${i}`, 
-                                    `#resultsBodyGrid${i}`, 
-                                    `#resultsBodyStops${i}`, 
-                                    `#resultsBodyFl${i}`, 
-                                    `#resultsBodyTime${i}`, 
-                                    `#resultsBodyStatus${i}`];
-            for(let j = 0; j < resultsOuterDivs.length; j++) {
-                postStatusResults -= checkForError(resultsOuterDivs[j]);
-            }
-        }
-
-        if((postStatusTrack !== 1) || (postStatusResults !== 1)) {
-            $('#toggleControls').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
-            $('#toggleControls').addClass('bg-green-500 hover:bg-green-700 border-green-700');
-            $('#toggleControls').toggleClass('editing');
-
-            $('.selectInp').attr('disabled', false);
-            $('.selectInp').addClass('open');
-            $('.selectInp').removeClass('cursor-not-allowed');
-            $('.numInp').removeClass('disable');
-            $('.numInp').removeClass('cursor-not-allowed');
-            $('.addMoreBtn').removeClass('disable');
-            $('.addMoreBtn').removeClass('cursor-not-allowed');
-            $('#addMoreTrack').removeClass('disable');
-            $('#addMoreTrack').removeClass('cursor-not-allowed');
-
-            $('#undoToggleBtn').toggleClass('hidden');
-            $('#rowReorderToggleBtn').toggleClass('hidden');
-
-            $('#addRemoveRowControls').toggleClass('hidden');
-        }
-    }
 
     function parseJSONWithErrorHandling(readerResult) {
         $('#JSONFormatErrorsAlert').slideUp(500);
@@ -1505,17 +586,23 @@
             let isFraction = pos % 1;
 
             if(!resultsArray[i].hasOwnProperty('position')) {
-                $('#positionKeyErrorAlert').html(`<p><strong>Position Key</strong> [position] is missing at index <strong>${i}</strong> of the 'results' array</p>`);
+                $('#positionKeyErrorAlert').html(
+                    `<p><strong>Position Key</strong> [position] is missing at index <strong>${i}</strong> of the 'results' array</p>`
+                );
                 $('#positionKeyErrorAlert').slideDown(500);
 
                 return allKeysPresentAndValidWithoutDuplicate = 0;
             } else if((isNaN(pos)) || (pos < 1) || (pos > resultsArray.length) || (isFraction != 0)) {
-                $('#positionKeyErrorAlert').html(`<p><strong>Position Key</strong> [position] value at index <strong>${i}</strong> should be a positive integer less than the length of the 'results' array</p>`);
+                $('#positionKeyErrorAlert').html(
+                    `<p><strong>Position Key</strong> [position] value at index <strong>${i}</strong> should be a positive integer less than the length of the 'results' array</p>`
+                );
                 $('#positionKeyErrorAlert').slideDown(500);
 
                 return allKeysPresentAndValidWithoutDuplicate = 0;
             } else if(positionStore.includes(pos)) {
-                $('#positionKeyErrorAlert').html(`<p><strong>Position Key</strong> [position] value at index <strong>${i}</strong> is a duplicate value</p>`);
+                $('#positionKeyErrorAlert').html(
+                    `<p><strong>Position Key</strong> [position] value at index <strong>${i}</strong> is a duplicate value</p>`
+                );
                 $('#positionKeyErrorAlert').slideDown(500);
 
                 return allKeysPresentAndValidWithoutDuplicate = 0;
@@ -1527,7 +614,307 @@
         return allKeysPresentAndValidWithoutDuplicate = 1;
     }
 
-    function updateTrackTable(season, tracks, points, json) {
+    function viewJSONData(json, season, points, tracks, constructor, driver, status, isResultImportedOrFromScratch = 0) {
+        $('#homeScreen').addClass('hidden');
+        $('#editScreen').removeClass('hidden');
+
+        let regexValidationStrings = {
+            regexFastestLap: "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^\\-$",
+            regexTimeIsAbsolute: "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$",
+            regexTimeIsInterval: "^(\\+|\\-)((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$",
+            regexTimePosition1IsAbsolute: "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$",
+            regexTimeIsNotNumber: "^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$"
+        };
+
+        let jsonTrackDetailsStore = {
+            season: json.track.season_id,
+            round: json.track.round
+        };
+
+        let jsonResultsDetailsStore = {
+            driverID: [],
+            grid: [],
+            stops: [],
+            raceTimeInAbsolutes: [],
+            raceTimeInIntervals: [],
+            originalStatusMinusUnitsPlace: [],
+            status: []
+        };
+
+        let additionalDetailsStore = {
+            raceDistance: json.track.hasOwnProperty('distance') ? json.track.distance : '',
+            resultsPoints: []
+        };
+
+        let supportingVariables = {
+            indexPosMap: [],
+            usedStatusNumbers: [0, 1, -2, -3],
+            currentPointsSchemeSelected: json.track.points,
+            currentAddRowSelected: 0,
+            fastestLapIndex: {
+                current: 0, 
+                previous: 0
+            },
+            availableDrivers: [],
+            availableConstructors: constructor,
+            additionalResultsPointsToAdd: [],
+            isNoPointsForFastestLap: $('#noPointsForFlCheck').is(':checked'),
+            isShowAllConstructorsChecked: $('#bypassConstructorsCheck').is(':checked'),
+            isPointsUndefined: points.find(item => {return item.id === json.track.points}) === undefined ? true : false,
+            isResultImported: {
+                currentVal: isResultImportedOrFromScratch, 
+                originalVal: isResultImportedOrFromScratch
+            },
+            isTimeInPosition1Absolute: new RegExp(regexValidationStrings.regexTimePosition1IsAbsolute),
+            isTimeNotNumber: new RegExp(regexValidationStrings.regexTimeIsNotNumber)
+        };
+
+        // Checking presence of 'round' key
+        if(!json.track.hasOwnProperty('round')) {
+            json.track.round = '';
+        }
+
+        for(let i = 0; i < json.results.length; i++) {
+            supportingVariables.indexPosMap.push(i + 1);
+            
+            checkPresenceOfResultsKeys(json, supportingVariables, i);
+            pushValuesIntoStores(json, driver, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+        }
+        
+        if(supportingVariables.isNoPointsForFastestLap) {
+            $('#showAdditionsInfoDiv').removeClass('hidden');
+            $('#showNoFlPointsInfo').removeClass('hidden');
+        }
+
+        if(supportingVariables.isNoPointsForFastestLap && supportingVariables.isPointsUndefined) {
+            alert("Warning: 'Points scheme' is not present in database. Begin editing by changing it to an appropirate value");
+        }
+
+        if(!supportingVariables.isTimeInPosition1Absolute.test(json.results[0].time)) {
+            $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
+        }
+
+        supportingVariables.availableDrivers = driver.filter(ele => !jsonResultsDetailsStore.driverID.includes(ele.id));
+
+        if(!supportingVariables.isShowAllConstructorsChecked) {
+            for(let i = 0; i < season.length; i++) {
+                if(season[i].id === json.track.season_id) supportingVariables.availableConstructors = season[i].constructors;
+            }
+        }
+        else {
+            $('#showAdditionsInfoDiv').removeClass('hidden');
+            $('#showPopulateAllConstructorsInfo').removeClass('hidden');
+        }
+
+        // Printing values of track key of json in table
+        $('#trackTableHeaders').removeClass('hidden');
+        updateTrackTable(json, season, tracks, points);
+        
+        // Printing values of results key of json in table
+        $('#resultsTableHeaders').removeClass('hidden');
+        updateResultsTable(json, points, driver, status, additionalDetailsStore, supportingVariables);
+
+        // To enable normal function of 'edit' btn after import
+        if(supportingVariables.isResultImported.currentVal === 1) {
+            supportingVariables.isResultImported.currentVal = 0;
+        }
+
+        // Switch race time format to 'interval' on load when starting from scratch
+        if(supportingVariables.isResultImported.originalVal === -1) {
+            $('#raceTimeFormatText').html('[Interval]');
+            
+            for(let i = 0; i < json.results.length; i++) {
+                if((supportingVariables.indexPosMap[i] - 1) > 0) {
+                    $(`#errorTimeAlert${i}`).html(
+                        `<p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>'±10.324'</strong>, <strong>'±1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`
+                    );
+                }
+            }
+
+            $('.raceTimeCol').removeClass('absoluteTime');
+            $('#raceTimeFormatToggleBtn').html('Show Absolute Times');
+        }
+
+        openTrackMoreDetailsOverlay(additionalDetailsStore);
+        openResultsMoreDetailsOverlay(json, additionalDetailsStore, supportingVariables);
+        
+        $('#attributeValue').change(function(event) {
+            editMoreDetails(additionalDetailsStore, supportingVariables);
+        });
+        
+        // Validate values in all 'track' table cells based on set rules
+        checkAndMonitorTrackData(json, season, tracks, points, constructor, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+        
+        checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables);
+        checkDuplicateStatus(jsonResultsDetailsStore, supportingVariables);
+        
+        for(let i = 0; i < json.results.length; i++) {            
+            // Validate values in all 'results' table cells based on set rules
+            checkAndMonitorResultsData(json, points, driver, supportingVariables.availableConstructors, status, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+            
+            serialiseRowReorderControls(jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+        }
+        
+        checkDuplicateGrid(jsonResultsDetailsStore, supportingVariables);
+        checkGridValueGreaterThanArraySize(jsonResultsDetailsStore, supportingVariables);
+        checkGridValuesStartWith1(jsonResultsDetailsStore, supportingVariables);
+        checkGridValuesForBreakInSequence(jsonResultsDetailsStore, supportingVariables);
+        isAllGridValues0(jsonResultsDetailsStore, supportingVariables);
+        isFastestLapPresentAndMatchingWithStatus(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+
+        $('#startOver').click(function(event) {
+            let choice = window.confirm('Are you sure you want to start over?')
+            if(choice) {
+                $('#startOver').html('<i class="fas fa-sync fa-spin"></i> Start Over');
+                location.reload(true);
+            }     
+        });
+
+        $('.cross').click(function(event) {
+            $('#pointsSelectionOverlay').removeClass('flex');
+            $('#additionalDetailsInputOverlay').removeClass('flex');
+            $('#reviewJSONOverlay').removeClass('flex');
+            
+            $('#pointsSelectionOverlay').addClass('hidden');
+            $('#additionalDetailsInputOverlay').addClass('hidden');
+            $('#reviewJSONOverlay').addClass('hidden');
+        });
+
+        addEventListenerToAllToggleBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+
+        addEventListenerToTrackUndoBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+        
+        for(let i = 0; i < json.results.length; i++) {
+            addEventListenerToResultsUndoBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+        }
+
+        addEventListenerOnAddNewRowBtn(json, season, points, driver, status, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+        
+        addEventListenerOnRemoveLastRowBtn(json, points, driver, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+
+        $('#reviewJSON').toggleClass('hidden');
+        $('#submitJSON').toggleClass('hidden');
+        
+        checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        
+        $('#reviewJSON').click(function(event) {
+            let newJson = updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, 1);
+
+            $('#reviewJSONTextArea').text(JSON.stringify(newJson, null, "\t"));
+
+            $('#reviewJSONOverlay').removeClass('hidden');
+            $('#reviewJSONOverlay').addClass('flex');
+        });
+
+        $('#submitJSON').click(function(event) {
+            let newJson = updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, 1);
+
+            postJson(JSON.stringify(newJson), season);
+
+            $('#submitJSON').html('<i class="fas fa-spinner fa-spin"></i>');
+        });
+    }
+
+    function checkPresenceOfResultsKeys(json, supportingVariables, i) {
+        if(!json.results[i].hasOwnProperty('grid') || json.results[i].grid === null) {
+            json.results[i].grid = '';
+        }
+
+        if(!json.results[i].hasOwnProperty('stops') || json.results[i].stops === null) {
+            json.results[i].stops = '';
+        }
+
+        if(!json.results[i].hasOwnProperty('fastestlaptime')) {
+            json.results[i].fastestlaptime = '';
+        }
+
+        if(!json.results[i].hasOwnProperty('time')) {
+            json.results[i].time = '';
+        }
+
+        supportingVariables.additionalResultsPointsToAdd[i] = json.results[i].hasOwnProperty('points') ? json.results[i].points : 0;
+    }
+
+    function pushValuesIntoStores(json, driver, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
+        let driverID = json.results[i].driver_id;
+        let unitsPlace = parseInt(json.results[i].status % 10);
+        let intervalValue = convertAbsoluteTimeToInterval(json.results[i].time, json.results[0].time);
+
+        if(isNaN(driverID) || driverID > driver.length || driverID === '') {
+            driverID = null;    
+        }
+
+        if(i === 0 || supportingVariables.isTimeNotNumber.test(json.results[i].time)) {
+            intervalValue = json.results[i].time;
+        }
+
+        if(json.results[0].time === '-' && !supportingVariables.isTimeNotNumber.test(json.results[i].time)) {
+            intervalValue = json.results[i].time;
+        }
+        
+        // Pushing input values to respective stores
+        jsonResultsDetailsStore.driverID.push(driverID);
+        jsonResultsDetailsStore.grid.push(json.results[i].grid);
+        jsonResultsDetailsStore.stops.push(json.results[i].stops);
+        jsonResultsDetailsStore.raceTimeInAbsolutes.push(json.results[i].time);
+        jsonResultsDetailsStore.raceTimeInIntervals.push(intervalValue);
+        jsonResultsDetailsStore.originalStatusMinusUnitsPlace.push(Math.abs(json.results[i].status - unitsPlace));
+        
+        json.results[i].status = unitsPlace;
+        jsonResultsDetailsStore.status.push(json.results[i].status);
+        
+        additionalDetailsStore.resultsPoints.push(supportingVariables.additionalResultsPointsToAdd[i]);
+    }
+
+    function convertAbsoluteTimeToInterval(time, firstPosTime) {
+        let firstPosTimeInSeconds = convertTimeFormatToSeconds(firstPosTime);
+        let timeInSeconds = convertTimeFormatToSeconds(time);
+
+        let interval = (timeInSeconds - firstPosTimeInSeconds).toFixed(3);
+
+        if(Math.abs(+interval) > 60) {
+            let minutes = Math.floor(interval / 60);
+            let seconds = (interval % 60).toFixed(3);
+
+            if(+interval < 0) {
+                seconds = (Math.abs(+interval) % 60).toFixed(3);
+            }
+            
+            if(parseFloat(+seconds) < 10){
+                seconds = '0' + seconds;
+            }
+    
+            interval = [minutes, seconds].join(':');
+        }
+
+        if(firstPosTimeInSeconds > timeInSeconds) {
+            return `${interval}`;
+        }
+        else {
+            return `+${interval}`;
+        }
+    }
+
+    function convertTimeFormatToSeconds(fastestLapInMinutes) {
+        let fastestLapSplit, minutes, seconds, fastestLapInSeconds;
+
+        if(fastestLapInMinutes != null) {
+            if(fastestLapInMinutes.includes(":")) {
+                fastestLapSplit = fastestLapInMinutes.split(':');
+                minutes = fastestLapSplit[0] * 60;
+                seconds = +fastestLapSplit[1];
+            }
+            else {
+                minutes = 0;
+                seconds = +fastestLapInMinutes;
+            }
+        }
+        fastestLapInSeconds = minutes + seconds;
+
+        return fastestLapInSeconds;
+    }
+
+    function updateTrackTable(json, season, tracks, points) {
         var rowTrack = `<tr class="text-center">
                             <td class="border rounded py-2 px-1" id="trackBodySeason">
                                 <div class="flex px-2 justify-center gap-2">
@@ -1574,11 +961,12 @@
         let seasonCol = document.getElementById(`seasonSelect`);
         let circuitCol = document.getElementById(`tracksSelect`);
         let pointsCol = document.getElementById(`pointsSelect`);
-        populateTrackDropdowns(season, tracks, points, json, seasonCol, circuitCol, pointsCol);
+
+        populateTrackDropdowns(json, season, tracks, points, seasonCol, circuitCol, pointsCol);
         populatePointsOverlay(points);
     }
 
-    function populateTrackDropdowns(season, tracks, points, json, seasonCol, circuitCol, pointsCol) {
+    function populateTrackDropdowns(json, season, tracks, points, seasonCol, circuitCol, pointsCol) {
         let selectInpFields = {
             season: {
                 data: season,
@@ -1590,40 +978,52 @@
                 upload: json.track.circuit_id,
                 colId: circuitCol
             }
+        };
+
+        Object.keys(selectInpFields).forEach((key) => {
+            let select = "<option hidden selected value> -- Missing ID -- </option>";
+            let dispValue;
+            
+            for(let i = 0; i < selectInpFields[key].data.length; i++) {
+                dispValue = selectInpFields[key].data[i].name;
+                
+                if(selectInpFields[key].data[i].id !== selectInpFields[key].upload) {
+                    select += `<option value=${selectInpFields[key].data[i].id}>${dispValue}</option>`;
+                }
+                else {
+                    select += `<option selected value=${selectInpFields[key].upload}>${dispValue}</option>`;
+                }
+                
+                selectInpFields[key].colId.innerHTML = select;
+            }
+        });
+    }
+
+    function populatePointsOverlay(points) {
+        let headerFill = "";
+
+        for(let i = 0; i < points.length; i++) {
+            headerFill += "<th class='border rounded font-bold px-4 py-2'> <input type='checkbox' class='transform scale-125 cursor-pointer' id='select"+ (i+1) +"'><p>" + points[i].id + "</p></th>";
         }
 
-        let seasonSelect = "<option hidden selected value> -- Missing ID -- </option>";
-        let seasonDispValue;
+        let pointsHeader = `<tr><th class='border rounded font-bold px-4 py-2'>Pos</th>${headerFill}</tr>`;
 
-        for(let i = 0; i < selectInpFields.season.data.length; i++) {
-            seasonDispValue = selectInpFields.season.data[i].name;
-            
-            if(selectInpFields.season.data[i].id !== selectInpFields.season.upload) {
-                seasonSelect += `<option value=${selectInpFields.season.data[i].id}>${seasonDispValue}</option>`;
-            }
-            else {
-                seasonSelect += `<option selected value=${selectInpFields.season.upload}>${seasonDispValue}</option>`;
-            }
-            selectInpFields.season.colId.innerHTML = seasonSelect;
-        }
+        $('#pointsTableHeaders').append(pointsHeader);
+        
+        for(let i = 0; i < Object.keys(points[0]).length - 3; i++) {
+            let columnFill = "";
 
-        let trackSelect = "<option hidden selected value> -- Missing ID -- </option>";
-        let trackDispValue;
+            for(let j = 0; j < points.length; j++) {
+                columnFill += "<td class='border text-center rounded py-1 px-3' contenteditable='false'>" + points[j]['P' + (i+1)] + "</td>";
+            }
 
-        for(let i = 0; i < selectInpFields.track.data.length; i++) {
-            trackDispValue = `${selectInpFields.track.data[i].id} - ${selectInpFields.track.data[i].name}`;
-            
-            if(selectInpFields.track.data[i].id !== selectInpFields.track.upload) {
-                trackSelect += `<option value=${selectInpFields.track.data[i].id}>${trackDispValue}</option>`;
-            }
-            else {
-                trackSelect += `<option selected value=${selectInpFields.track.upload}>${trackDispValue}</option>`;
-            }
-            selectInpFields.track.colId.innerHTML = trackSelect;
+            let pointsRow = `<tr><td class='border text-center font-semibold rounded p-1' contenteditable='false'>P${i+1}</td>${columnFill}</tr>`;
+
+            $('#pointsTableBody').append(pointsRow);
         }
     }
 
-    function updateResultsTable(driver, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, availableDrivers, additionalResultsPoints, constructor, status, json, i = 0) {
+    function updateResultsTable(json, points, driver, status, additionalDetailsStore, supportingVariables, i = 0) {
         let upperLimit = i == 0 ? json.results.length - 1 : i;
 
         for(i; i <= upperLimit; i++) {
@@ -1752,63 +1152,22 @@
             let driverCol = document.getElementById(`driverSelect${i}`);
             let constructorCol = document.getElementById(`constructorSelect${i}`);
             let statusCol = document.getElementById(`statusSelect${i}`);
-            populateResultsDropdowns(driver, availableDrivers, constructor, status, json, driverCol, constructorCol, statusCol, i);
-            reflectFastestLap(points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, additionalResultsPoints, json.results[i].status, i);
+
+            populateResultsDropdowns(json, driver, status, driverCol, constructorCol, statusCol, supportingVariables, i);
+            reflectFastestLap(json.results[i].status, points, additionalDetailsStore, supportingVariables, i);
         }
     }
 
-    function reflectFastestLap(points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, additionalResultsPoints, selectedValue, i) {
-        if(points[currentPointsSchemeSelected - 1] !== undefined) isPointsUndefined = false;
-
-        if(noPointsForFL && !isPointsUndefined && isResultImported.currentVal !== 1) {
-            if(selectedValue === 1 && points[currentPointsSchemeSelected - 1]['P' + indexPosMap[i]] > 0) {
-                if(additionalResultsPoints[i] == 0) {
-                    alert(`'Row ${indexPosMap[i]}' - Additional 'points' reset to -1 as it is a scoring position`);
-                    additionalResultsPoints[indexPosMap[i] - 1] = -1;
-                    $(`#addMore${i}`).removeClass('bg-white text-green-500');
-                    $(`#addMore${i}`).addClass('bg-green-500 text-white');
-                }
-            }
-
-            if(selectedValue === 1 && points[currentPointsSchemeSelected - 1]['P' + indexPosMap[i]] == 0) {
-                if(additionalResultsPoints[i] == 0) {
-                    alert(`'Row ${indexPosMap[i]}' - Additional 'points' reset to 0 as its a non scoring position`);
-                    additionalResultsPoints[indexPosMap[i] - 1] = 0;
-                    $(`#addMore${i}`).removeClass('bg-green-500 text-white');
-                    $(`#addMore${i}`).addClass('bg-white text-green-500');
-                }
-            }
-        }
-        else if(!isPointsUndefined) {
-            if(selectedValue === 1 && indexPosMap[i] > 10) {
-                $('#warningFlBelowP10Alert').html(`<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${indexPosMap[i]}</strong> [ensure -1 is added to additional attribute - <strong>POINTS</strong>]</p>`);
-                
-                if(points[currentPointsSchemeSelected - 1]['P' + indexPosMap[i]] != 0) {
-                    $(`#resultsBodyStatus${indexPosMap[i] - 1}`).addClass('bg-yellow-600');
-                    $('#warningFlBelowP10Alert').slideDown(500);
-                }
-                else {
-                    $(`#resultsBodyStatus${indexPosMap[i] - 1}`).removeClass('bg-yellow-600');
-                    $('#warningFlBelowP10Alert').slideUp(500);
-                }
-            }
-            else $('#warningFlBelowP10Alert').slideUp(500);
-        }
-        
-        if(selectedValue === 1) $(`#resultsRow${i}`).addClass('text-purple-600');
-        else $(`#resultsRow${i}`).removeClass('text-purple-600');
-    }
-
-    function populateResultsDropdowns(driver, availableDrivers, constructor, status, json, driverCol, constructorCol, statusCol, i) {
+    function populateResultsDropdowns(json, driver, status, driverCol, constructorCol, statusCol, supportingVariables, i) {
         let selectInpFields = {
             driverID: {
-                data: availableDrivers,
+                data: supportingVariables.availableDrivers,
                 originalData: driver,
                 upload: json.results[i].driver_id,
                 colId: driverCol
             },
             constructorID: {
-                data: constructor,
+                data: supportingVariables.availableConstructors,
                 upload: json.results[i].constructor_id,
                 colId: constructorCol
             },
@@ -1819,6 +1178,12 @@
             }
         }
 
+        populateDriverDropdown(selectInpFields);
+        populateConstructorDropdown(selectInpFields);
+        populateStatusDropdown(selectInpFields);
+    }
+
+    function populateDriverDropdown(selectInpFields) {
         let driverSelect = "<option hidden selected value> -- Missing ID -- </option>";
         let driverDispVal;
 
@@ -1829,15 +1194,18 @@
             }
         }
 
+        // Populate driver dropdown without the selected driver from the available drivers
         for(let x = 0; x < selectInpFields.driverID.data.length; x++) {
             driverDispVal = selectInpFields.driverID.data[x].name;         
             driverSelect += `<option value=${selectInpFields.driverID.data[x].id}>${driverDispVal}</option>`;
             selectInpFields.driverID.colId.innerHTML = driverSelect;
         }
-        // console.log(driverCol)
+    }
 
+    function populateConstructorDropdown(selectInpFields) {
         let constructorSelect = "<option hidden selected value> -- Missing ID -- </option>";
         let constructorDispVal;
+        
         for(let x = 0; x < selectInpFields.constructorID.data.length; x++) {
             constructorDispVal = `${selectInpFields.constructorID.data[x].id} - ${selectInpFields.constructorID.data[x].name}`;
 
@@ -1849,9 +1217,12 @@
             }
             selectInpFields.constructorID.colId.innerHTML = constructorSelect;
         }
+    }
 
+    function populateStatusDropdown(selectInpFields) {
         let statusSelect = "<option hidden selected value> -- Missing Status -- </option>";
         let statusDispVal;
+
         for(let x = 0; x < selectInpFields.status.data.length; x++) {
             statusDispVal = selectInpFields.status.data[x].value;
 
@@ -1865,219 +1236,176 @@
         }
     }
 
-    function repopulateDriverResultsDropdowns(driver, availableDrivers, json) {
-        for(let x = 0; x < json.results.length; x++) {
-            let driverSelect = "<option hidden selected value> -- Missing ID -- </option>";
-            let driverDispVal;
-            let driverCol = document.getElementById(`driverSelect${x}`);
+    function reflectFastestLap(selectedValue, points, additionalDetailsStore, supportingVariables, i) {
+        if(points[supportingVariables.currentPointsSchemeSelected - 1] !== undefined) {
+            supportingVariables.isPointsUndefined = false;
+        }
 
-            for(let y = 0; y < driver.length; y++) {
-                if(driver[y].id === json.results[x].driver_id) {
-                    driverDispVal = driver[y].name;
-                    driverSelect += `<option selected value=${driver[y].id}>${driverDispVal}</option>`;
+        if(
+            supportingVariables.isNoPointsForFastestLap && 
+            !supportingVariables.isPointsUndefined && 
+            supportingVariables.isResultImported.currentVal !== 1
+        ) {
+            if(
+                selectedValue === 1 && 
+                points[supportingVariables.currentPointsSchemeSelected - 1]['P' + supportingVariables.indexPosMap[i]] > 0
+            ) {
+                if(additionalDetailsStore.resultsPoints[i] == 0) {
+                    alert(`'Row ${supportingVariables.indexPosMap[i]}' - Additional 'points' reset to -1 as it is a scoring position`);
+                    
+                    additionalDetailsStore.resultsPoints[supportingVariables.indexPosMap[i] - 1] = -1;
+                    
+                    $(`#addMore${i}`).removeClass('bg-white text-green-500');
+                    $(`#addMore${i}`).addClass('bg-green-500 text-white');
                 }
             }
 
-            for(let y = 0; y < availableDrivers.length; y++) {
-                driverDispVal = availableDrivers[y].name;  
-                driverSelect += `<option value=${availableDrivers[y].id}>${driverDispVal}</option>`;
-                driverCol.innerHTML = driverSelect;
+            if(
+                selectedValue === 1 && 
+                points[supportingVariables.currentPointsSchemeSelected - 1]['P' + supportingVariables.indexPosMap[i]] == 0
+            ) {
+                if(additionalDetailsStore.resultsPoints[i] == 0) {
+                    alert(`'Row ${supportingVariables.indexPosMap[i]}' - Additional 'points' reset to 0 as its a non scoring position`);
+                    
+                    additionalDetailsStore.resultsPoints[supportingVariables.indexPosMap[i] - 1] = 0;
+                    
+                    $(`#addMore${i}`).removeClass('bg-green-500 text-white');
+                    $(`#addMore${i}`).addClass('bg-white text-green-500');
+                }
             }
         }
-        // console.log(driverCol)
-    }
-    function repopulateConstructorResultsDropdowns(availableConstructors, json) {
-        const e = new Event("change");
-
-        for(let x = 0; x < json.results.length; x++) {
-            let constructorSelect = "<option hidden selected value> -- Missing ID -- </option>";
-            let constructorDispVal;
-            let constructorCol = document.getElementById(`constructorSelect${x}`);
-
-            for(let y = 0; y < availableConstructors.length; y++) {
-                constructorDispVal = `${availableConstructors[y].id} - ${availableConstructors[y].name}`;
-
-                if(availableConstructors[y].id !== json.results[x].constructor_id) {
-                    constructorSelect += `<option value=${availableConstructors[y].id}>${constructorDispVal}</option>`;
+        else if(!supportingVariables.isPointsUndefined) {
+            if(selectedValue === 1 && supportingVariables.indexPosMap[i] > 10) {
+                $('#warningFlBelowP10Alert').html(
+                    `<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${supportingVariables.indexPosMap[i]}</strong> [ensure -1 is added to additional attribute <strong>POINTS</strong>]</p>`
+                );
+                
+                if(points[supportingVariables.currentPointsSchemeSelected - 1]['P' + supportingVariables.indexPosMap[i]] != 0) {
+                    $(`#resultsBodyStatus${supportingVariables.indexPosMap[i] - 1}`).addClass('bg-yellow-600');
+                    $('#warningFlBelowP10Alert').slideDown(500);
                 }
                 else {
-                    constructorSelect += `<option selected value=${availableConstructors[y].id}>${constructorDispVal}</option>`;
+                    $(`#resultsBodyStatus${supportingVariables.indexPosMap[i] - 1}`).removeClass('bg-yellow-600');
+                    $('#warningFlBelowP10Alert').slideUp(500);
                 }
-                constructorCol.innerHTML = constructorSelect;
             }
-            constructorCol.dispatchEvent(e);
+            else {
+                $('#warningFlBelowP10Alert').slideUp(500);
+            }
         }
-    }
-
-    function populatePointsOverlay(points) {
-        let headerFill = "";
-
-        for(let i = 0; i < points.length; i++) {
-            headerFill += "<th class='border rounded font-bold px-4 py-2'> <input type='checkbox' class='transform scale-125 cursor-pointer' id='select"+ (i+1) +"'><p>" + points[i].id + "</p></th>";
-        }
-
-        let pointsHeader = `<tr>
-        <th class='border rounded font-bold px-4 py-2'>Pos</th>
-                                ${headerFill}
-                            </tr>`;
-        $('#pointsTableHeaders').append(pointsHeader);
         
-        for(let i = 0; i < Object.keys(points[0]).length - 3; i++) {
-            let columnFill = "";
-
-            for(let j = 0; j < points.length; j++) {
-                columnFill += "<td class='border text-center rounded py-1 px-3' contenteditable='false'>" + points[j]['P' + (i+1)] + "</td>";
-            }
-
-            let pointsRow = `<tr>
-            <td class='border text-center font-semibold rounded p-1' contenteditable='false'>P${i+1}</td>
-            ${columnFill}
-            </tr>`;
-
-            $('#pointsTableBody').append(pointsRow);
+        if(selectedValue === 1) {
+            $(`#resultsRow${i}`).addClass('text-purple-600');
+        }
+        else {
+            $(`#resultsRow${i}`).removeClass('text-purple-600');
         }
     }
 
-    function updateJSONFromTable(json, additionalRaceDistance, raceTimeInAbsolutes, originalStatusMinusUnitsPlace, additionalResultsPoints, submitFlag = 0) {
-        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'));
-        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'));
-
-        delete trackContent[0].undefined;
-
-        if(submitFlag) {
-            let tempNum, resultString, raceTimeInIntervals = false;
-            // if(!$('.raceTimeCol').hasClass('absoluteTime')) raceTimeInIntervals = true;
+    function openTrackMoreDetailsOverlay(additionalDetailsStore) {
+        $('#addMoreTrack').click(function(event) {
+            let seasonIndex = $('#seasonSelect')[0].selectedIndex;
+            let circuitIndex = $('#tracksSelect')[0].selectedIndex;
             
-            if(additionalRaceDistance.distance != '') trackContent[0].distance = additionalRaceDistance.distance;
+            let selectedSeason = $('#seasonSelect')[0][seasonIndex].innerText;
+            let selectedCircuit = $('#tracksSelect')[0][circuitIndex].innerText;
+            let selectedPoints = $('#pointsBtn').html();
 
-            for(let i = 0; i < json.results.length; i++) {
-                // tempNum = Math.abs(originalStatusMinusUnitsPlace[i] - json.results[i].status);
-                // if(resultsContent[i].status >= 0) resultString = (tempNum + resultsContent[i].status).toFixed(2);
-                // else resultString = (-tempNum + resultsContent[i].status).toFixed(2);
+            setInfoDetails('Race details', 'Season', 'Track', 'Points', 'Distance', selectedSeason, selectedCircuit, selectedPoints, additionalDetailsStore.raceDistance);
+        });
 
-                if(resultsContent[i].status >= 0) resultString = (originalStatusMinusUnitsPlace[i] + resultsContent[i].status).toFixed(2);
-                else resultString = (-originalStatusMinusUnitsPlace[i] + resultsContent[i].status).toFixed(2);
-
-                resultsContent[i].status = parseFloat(resultString);
-                
-                if(additionalResultsPoints[i] !== 0) resultsContent[i].points = additionalResultsPoints[i];
-                
-                resultsContent[i].time = raceTimeInAbsolutes[i];
-                
-                if(!isNaN(resultsContent[i].fastestlaptime)) {
-                    resultsContent[i].fastestlaptime = resultsContent[i].fastestlaptime.toFixed(3);
-                }
-            }
+        if(additionalDetailsStore.raceDistance == 0) {
+            additionalDetailsStore.raceDistance = '';
         }
-    
-        return {track: trackContent[0], results: resultsContent};
+
+        if(additionalDetailsStore.raceDistance != '') {
+            $('#addMoreTrack').removeClass('bg-white text-green-500');
+            $('#addMoreTrack').addClass('bg-green-500 text-white');
+        }
     }
 
-    function tableToJSON(table) {
-        let data = [];
-        let headers = [];
-        let jsonKeyHeaders = [
-                                {
-                                    tableHeader: 'Season',
-                                    jsonHeader: 'season_id'
-                                },
-                                {
-                                    tableHeader: 'Round Number',
-                                    jsonHeader: 'round'
-                                },
-                                {
-                                    tableHeader: 'Circuit',
-                                    jsonHeader: 'circuit_id'
-                                },
-                                {
-                                    tableHeader: 'Points Scheme',
-                                    jsonHeader: 'points'
-                                },
-                                {
-                                    tableHeader: 'Position',
-                                    jsonHeader: 'position'
-                                },
-                                {
-                                    tableHeader: 'Driver',
-                                    jsonHeader: 'driver'
-                                },
-                                {
-                                    tableHeader: 'Driver ID',
-                                    jsonHeader: 'driver_id'
-                                },
-                                {
-                                    tableHeader: 'Constructor',
-                                    jsonHeader: 'constructor_id'
-                                },
-                                {
-                                    tableHeader: 'Starting Grid',
-                                    jsonHeader: 'grid'
-                                },
-                                {
-                                    tableHeader: 'Laps Completed',
-                                    jsonHeader: 'stops'
-                                },
-                                {
-                                    tableHeader: 'Fastest Lap',
-                                    jsonHeader: 'fastestlaptime'
-                                },
-                                {
-                                    tableHeader: 'Race Time',
-                                    jsonHeader: 'time'
-                                },
-                                {
-                                    tableHeader: 'Status',   
-                                    jsonHeader: 'status'
-                                }
-                            ];
-        let statusMap = [0, 1, -2, -3];
+    function setInfoDetails(title, header1, header2, header3, infoName, infoValue1, infoValue2, infoValue3, attrValue) {
+        $('#infoTitle').html(title);
 
-        for(let i = 0; i < table.rows[0].cells.length; i++) {
-            for(let j = 0; j < jsonKeyHeaders.length; j++) {
-                let temp = table.rows[0].cells[i].innerText;
-                if(table.rows[0].cells[i].children[0] !== undefined) temp = table.rows[0].cells[i].children[0].innerText;
+        $('#infoHeader1').html(header1);
+        $('#infoHeader2').html(header2);
+        $('#infoHeader3').html(header3);
 
-                if(temp == jsonKeyHeaders[j].tableHeader) {
-                    tableHeader = jsonKeyHeaders[j].jsonHeader;
-                    headers[i] = tableHeader;
-                }
-            }
-        }
+        $('#attributeName').html(infoName);
 
-        for(let i = 1; i < table.rows.length; i++) {
-            let tableRow = table.rows[i];
-            let rowData = {};
-            let rowContent, treeTraversal, status;
-            for(let j = 0; j < tableRow.cells.length; j++) {
-                if(tableRow.cells[j].children[0].children.length != 0) {
-                    treeTraversal = tableRow.cells[j].children[0].children[0].options;
-                    if(headers[j] == 'driver'){
-                        rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
-                    } else if(headers[j] == 'status') {
-                        tempRow = treeTraversal.selectedIndex - 1;
-                        rowContent = statusMap[tempRow];
-                    } else if(headers[j] == 'points') {
-                        rowContent = tableRow.cells[j].children[0].children[0].innerHTML;
-                    } else if(headers[j] == 'position') {
-                        rowContent = tableRow.cells[j].children[0].children[2].value;
-                    } else {
-                        rowContent = tableRow.cells[j].children[0].children[0].value;
-                    }
-                } else if(headers[j] == 'driver_id') {
-                    leftCellTraversal = tableRow.cells[1].children[0].children[0].options;
-                    rowContent = parseInt(leftCellTraversal[1].value);
-                } else {
-                    rowContent = tableRow.cells[j].innerHTML;
-                }
-                status = Number(rowContent);
-                rowData[headers[j]] = (isNaN(status)) ? rowContent : status;
-            }
-            data.push(rowData);
-        }
-        return data;
+        $('#infoValue1').html(infoValue1);
+        $('#infoValue2').html(infoValue2);
+        $('#infoValue3').html(infoValue3);
+
+        $('#attributeValue').val(attrValue);
+
+        $('#additionalDetailsInputOverlay').removeClass('hidden');
+        $('#additionalDetailsInputOverlay').addClass('flex');
     }
 
-    function checkAndMonitorTrackData(json, isResultImported, trackDetailsStore, isPointsUndefined, noPointsForFL, season, tracks, points, constructor, raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, indexPosMap, additionalResultsPoints) {
+    function openResultsMoreDetailsOverlay(json, additionalDetailsStore, supportingVariables, i = 0) {
+        let upperLimit = i === 0 ? json.results.length - 1 : i;
+
+        for(let x = i; x <= upperLimit; x++) {
+            $(`#addMore${x}`).click(function(event) {
+                let index = parseInt($(this).closest('tr')[0].querySelector('.selectDriver').selectedIndex);
+                let statusIndex = parseInt($(this).closest('tr')[0].querySelector('.selectStatus').selectedIndex);
+                
+                let currentPos = parseInt($(this).closest('tr')[0].querySelector('.inputPos').value);
+                let currentDriver = $(this).closest('tr')[0].querySelector('.selectDriver')[index].innerText;
+                let currentStatus = $(this).closest('tr')[0].querySelector('.selectStatus')[statusIndex].innerText;
+
+                setInfoDetails('Current Driver', 'Position', 'Driver', 'Status', 'Points', currentPos, currentDriver, currentStatus, additionalDetailsStore.resultsPoints[supportingVariables.indexPosMap[x] - 1]);
+
+                supportingVariables.currentAddRowSelected = x;
+            });
+
+            if(additionalDetailsStore.resultsPoints[x] != 0) {
+                $(`#addMore${x}`).removeClass('bg-white text-green-500');
+                $(`#addMore${x}`).addClass('bg-green-500 text-white');
+            }
+        }
+    }
+
+    function editMoreDetails(additionalDetailsStore, supportingVariables) {
+        let selectedVal = $('#attributeValue').val();
+        let attr = $('#attributeName').html();
+        
+        if(selectedVal !== '') {
+            if(attr === 'Points') {
+                additionalDetailsStore.resultsPoints[supportingVariables.indexPosMap[supportingVariables.currentAddRowSelected] - 1] = parseInt(selectedVal);
+                
+                if(selectedVal != 0) {
+                    $(`#addMore${supportingVariables.currentAddRowSelected}`).removeClass('bg-white text-green-500');
+                    $(`#addMore${supportingVariables.currentAddRowSelected}`).addClass('bg-green-500 text-white');
+                }
+                else {
+                    $(`#addMore${supportingVariables.currentAddRowSelected}`).addClass('bg-white text-green-500');
+                    $(`#addMore${supportingVariables.currentAddRowSelected}`).removeClass('bg-green-500 text-white');
+                }
+            }
+
+            if(attr === 'Distance') {
+                additionalDetailsStore.raceDistance = +selectedVal;
+
+                if(selectedVal == 0) {
+                    selectedVal = '';
+                    additionalDetailsStore.raceDistance = '';
+                }
+
+                if(selectedVal != '') {
+                    $('#addMoreTrack').removeClass('bg-white text-green-500');
+                    $('#addMoreTrack').addClass('bg-green-500 text-white');
+                }
+                else {
+                    $('#addMoreTrack').addClass('bg-white text-green-500');
+                    $('#addMoreTrack').removeClass('bg-green-500 text-white');
+                }
+            }
+        }
+    }
+
+    function checkAndMonitorTrackData(json, season, tracks, points, constructor, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
         let dataToCheck = {
             season: {
                 jsonValue: json.track.season_id,
@@ -2113,101 +1441,511 @@
             }
         }
 
-        checkIfSeasonAndRoundCombinationAreExisting(isResultImported, trackDetailsStore, dataToCheck.season.jsonValue, dataToCheck.round.jsonValue);
+        checkIfSeasonAndRoundCombinationAreExisting(dataToCheck.season.jsonValue, dataToCheck.round.jsonValue, jsonTrackDetailsStore, supportingVariables);
 
+        checkAndMonitorSeasonId(json, dataToCheck, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, supportingVariables);
+
+        checkAndMonitorRoundNumber(json, dataToCheck, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, supportingVariables);
+
+        checkAndMonitorCircuitId(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+
+        checkAndMonitorPointsScheme(json, points, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+    }
+
+    function checkIfSeasonAndRoundCombinationAreExisting(jsonSeasonValue, jsonRoundValue, jsonTrackDetailsStore, supportingVariables) {
+        if(supportingVariables.isResultImported.originalVal === 1) {
+            let currentSeasonCheck = jsonTrackDetailsStore.season === jsonSeasonValue;
+            let currentRoundCheck = jsonTrackDetailsStore.round === jsonRoundValue;
+
+            if(currentSeasonCheck && currentRoundCheck) {
+                $('#warningSeasonRoundSameAsInitialAlert').slideDown(500);
+            }
+            else {
+                $('#warningSeasonRoundSameAsInitialAlert').slideUp(500);
+            }
+        }
+    }
+
+    function checkAndMonitorSeasonId(json, dataToCheck, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, supportingVariables) {
         let seasonValidCheck = dataToCheck.season.allValues.find(item => {return item.id === dataToCheck.season.jsonValue});
+        
         if(seasonValidCheck === undefined) {
             $(dataToCheck.season.parentNode).addClass('bg-red-600');
             $(dataToCheck.season.alertNode).slideDown(500);
         }
+
         $(dataToCheck.season.selectInpNode).change(function(event) {
             let selectedValue = $(dataToCheck.season.selectInpNode).val();
-            trackDetailsStore.season = parseInt(selectedValue);
+            
+            jsonTrackDetailsStore.season = parseInt(selectedValue);
 
             clearSelectWarning(dataToCheck.season.selectInpNode, dataToCheck.season.allValues, selectedValue, dataToCheck.season.parentNode, dataToCheck.season.alertNode);
-            let availableConstructors;
-            if($('#bypassConstructorsCheck').is(':not(:checked)')) {
-                availableConstructors = constructor;
-                for(let i = 0; i < season.length; i++) {
-                    if(season[i].id === parseInt(selectedValue)) availableConstructors = season[i].constructors;
-                }
-                repopulateConstructorResultsDropdowns(availableConstructors, json);
-            }
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-            checkIfSeasonAndRoundCombinationAreExisting(isResultImported, trackDetailsStore, dataToCheck.season.jsonValue, dataToCheck.round.jsonValue);
-        })
-        // test(dataToCheck.season.selectInpNode, dataToCheck.season.allValues, dataToCheck.season.jsonValue, dataToCheck.season.parentNode, dataToCheck.season.alertNode);
-        resetField(dataToCheck.season.undoBtn, dataToCheck.season.selectInpNode, dataToCheck.season.jsonValue);
 
+            if(!supportingVariables.isShowAllConstructorsChecked) {
+                for(let i = 0; i < dataToCheck.season.allValues.length; i++) {
+                    if(dataToCheck.season.allValues[i].id === jsonTrackDetailsStore.season) {
+                        supportingVariables.availableConstructors = dataToCheck.season.allValues[i].constructors;
+                    }
+                }
+
+                repopulateConstructorResultsDropdowns(json, supportingVariables);
+            }
+            
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+            checkIfSeasonAndRoundCombinationAreExisting(dataToCheck.season.jsonValue, dataToCheck.round.jsonValue, jsonTrackDetailsStore, supportingVariables);
+        });
+
+        resetField(dataToCheck.season.undoBtn, dataToCheck.season.selectInpNode, dataToCheck.season.jsonValue);
+    }
+
+    function clearSelectWarning(selectInpNode, allValues, selectedValue, parentNode, alertNode) {
+        let validityCheck = allValues.find(item => {return item.id === selectedValue});
+
+        if(validityCheck === undefined) {
+            if(selectedValue === null || selectedValue === '') {
+                $(parentNode).removeClass('bg-yellow-600');
+                $(parentNode).addClass('bg-red-600');
+                $(alertNode).slideDown(500);
+            }
+            else {
+                $(parentNode).removeClass('bg-red-600');
+                $(alertNode).slideUp(500);
+            }
+        }
+    }
+
+    function repopulateConstructorResultsDropdowns(json, supportingVariables) {
+        const e = new Event("change");
+
+        for(let x = 0; x < json.results.length; x++) {
+            let constructorSelect = "<option hidden selected value> -- Missing ID -- </option>";
+            let constructorDispVal;
+            let constructorCol = document.getElementById(`constructorSelect${x}`);
+
+            for(let y = 0; y < supportingVariables.availableConstructors.length; y++) {
+                constructorDispVal = `${supportingVariables.availableConstructors[y].id} - ${supportingVariables.availableConstructors[y].name}`;
+
+                if(supportingVariables.availableConstructors[y].id !== json.results[x].constructor_id) {
+                    constructorSelect += `<option value=${supportingVariables.availableConstructors[y].id}>${constructorDispVal}</option>`;
+                }
+                else {
+                    constructorSelect += `<option selected value=${supportingVariables.availableConstructors[y].id}>${constructorDispVal}</option>`;
+                }
+                constructorCol.innerHTML = constructorSelect;
+            }
+            constructorCol.dispatchEvent(e);
+        }
+    }
+
+    function checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables) {
+        let postStatus = {
+            track: 1,
+            results: 1
+        }
+
+        checkEachCellValueForError(json, postStatus);
+
+        if(
+            isValidTimeFormat(json, regexValidationStrings, jsonResultsDetailsStore) && 
+            (postStatus.track === 1) && 
+            (postStatus.results === 1)
+        ) {
+            $('#errorSubmitJSONAlert').slideUp(500);
+            $('#submitJSON').removeClass('disableActionBtns');
+            $('#reviewJSON').removeClass('disableActionBtns');
+        }
+        else {
+            $('#submitJSON').addClass('disableActionBtns');
+            $('#reviewJSON').addClass('disableActionBtns');
+            $('#errorSubmitJSONAlert').html('<p>Please clear all the <strong>ERRORS</strong></p>');
+            $('#errorSubmitJSONAlert').slideDown(500);
+        }
+    }
+
+    function checkEachCellValueForError(json, postStatus) {
+        let trackOuterDivs = ['#trackBodySeason', '#trackBodyRound', '#trackBodyCircuit', '#trackBodyPoints'];
+
+        for(let i = 0; i < trackOuterDivs.length; i++) {
+            postStatus.track -= checkForError(trackOuterDivs[i]);
+        }
+
+        for(let i = 0; i < json.results.length; i++){
+            let resultsOuterDivs = [`#resultsBodyPos${i}`, `#resultsBodyDriver${i}`, `#resultsBodyConstructor${i}`, `#resultsBodyGrid${i}`, `#resultsBodyStops${i}`, `#resultsBodyFl${i}`, `#resultsBodyTime${i}`, `#resultsBodyStatus${i}`];
+            
+            for(let j = 0; j < resultsOuterDivs.length; j++) {
+                postStatus.results -= checkForError(resultsOuterDivs[j]);
+            }
+        }
+    }
+
+    function checkForError(value) {
+        let flag = 0;
         
+        if($(value).hasClass('bg-red-600')) {
+            flag = 1;
+        }
+
+        return flag;
+    }
+
+    function isValidTimeFormat(json, regexValidationStrings, jsonResultsDetailsStore) {
+        let timeCheckFastestLap = new RegExp(regexValidationStrings.regexFastestLap);
+        let timeCheckAbsolute = new RegExp(regexValidationStrings.regexTimeIsAbsolute);
+        let timeCheckInterval = new RegExp(regexValidationStrings.regexTimeIsInterval);
+        let postStatus = 1;
+        
+        for(let i = 0; i < json.results.length; i++) {
+            if(!(timeCheckFastestLap.test(json.results[i].fastestlaptime))) {
+                postStatus = 0;
+            }
+            
+            if($('.raceTimeCol').hasClass('absoluteTime')) {
+                if(i === 0) {
+                    if(!(timeCheckAbsolute.test(jsonResultsDetailsStore.raceTimeInIntervals[0]))) {
+                        postStatus = 0;
+                    }
+                }
+                else {
+                    if(!(timeCheckAbsolute.test(json.results[i].time))) {
+                        postStatus = 0;
+                    }
+                }
+            }
+            else {
+                if(i === 0) {
+                    if(!(timeCheckAbsolute.test(jsonResultsDetailsStore.raceTimeInIntervals[0]))) {
+                        postStatus = 0;
+                    }
+                }
+                else {
+                    if(!(timeCheckInterval.test(jsonResultsDetailsStore.raceTimeInIntervals[i]))) {
+                        postStatus = 0;
+                    }
+                }
+            }
+        }
+        return postStatus;
+    }
+
+    function resetField(undoBtn, node, jsonValue) {
+        $(undoBtn).click(function(event) {
+            $(node).val(jsonValue);
+
+            if($(node).val() === null) {
+                $(node).prop('selectedIndex', 0);
+            }
+            
+            const e = new Event("change");
+            const element = document.querySelector(node);
+            element.dispatchEvent(e);
+        });
+    }
+
+    function checkAndMonitorRoundNumber(json, dataToCheck, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, supportingVariables) {
         inputFormatCheck(dataToCheck.round.jsonValue, dataToCheck.round.parentNode, dataToCheck.round.inpNode, dataToCheck.round.alertNode);
+
         $(dataToCheck.round.inpNode).change(function(event) {
             let selectedRoundVal = $(dataToCheck.round.inpNode).val();
-            trackDetailsStore.round = parseInt(selectedRoundVal);
 
-            inputFormatCheck(selectedRoundVal, dataToCheck.round.parentNode, dataToCheck.round.inpNode, dataToCheck.round.alertNode);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-            checkIfSeasonAndRoundCombinationAreExisting(isResultImported, trackDetailsStore, dataToCheck.season.jsonValue, dataToCheck.round.jsonValue);
+            jsonTrackDetailsStore.round = parseInt(selectedRoundVal);
+
+            inputFormatCheck(parseInt(selectedRoundVal), dataToCheck.round.parentNode, dataToCheck.round.inpNode, dataToCheck.round.alertNode);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+            checkIfSeasonAndRoundCombinationAreExisting(dataToCheck.season.jsonValue, dataToCheck.round.jsonValue, jsonTrackDetailsStore, supportingVariables);
         });
+
         resetField(dataToCheck.round.undoBtn, dataToCheck.round.inpNode, dataToCheck.round.jsonValue);
+    }
 
+    function inputFormatCheck(inputValue, parentNode, inpNode, alertNode, minVal = 1) {
+        let isFraction = inputValue % 1;
 
+        if(isNaN(inputValue) || (inputValue < minVal) || (inputValue == '.') || (isFraction != 0)) {
+            $(parentNode).addClass('bg-red-600');
+            $(inpNode).addClass('bg-red-600');
+            $(inpNode).addClass('font-bold');
+            $(inpNode).addClass('text-white');
+            $(alertNode).slideDown(500);
+        } else {
+            $(parentNode).removeClass('bg-red-600');
+            $(inpNode).removeClass('bg-red-600');
+
+            if(!$(parentNode).hasClass('bg-yellow-600')) {
+                $(inpNode).removeClass('font-bold');
+                $(inpNode).removeClass('text-white');
+            }
+
+            $(alertNode).slideUp(500);
+        }
+    }
+
+    function checkAndMonitorCircuitId(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables) {
         let trackValidCheck = dataToCheck.track.allValues.find(item => {return item.id === dataToCheck.track.jsonValue});
+
         if(trackValidCheck === undefined) {
             $(dataToCheck.track.parentNode).addClass('bg-red-600');
             $(dataToCheck.track.alertNode).slideDown(500);
         }
+
         $(dataToCheck.track.selectInpNode).change(function(event) {
             let selectedValue = $(dataToCheck.track.selectInpNode).val();
 
             clearSelectWarning(dataToCheck.track.selectInpNode, dataToCheck.track.allValues, selectedValue, dataToCheck.track.parentNode, dataToCheck.track.alertNode);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
         });
-        // test(dataToCheck.track.selectInpNode, dataToCheck.track.allValues, dataToCheck.track.jsonValue, dataToCheck.track.parentNode, dataToCheck.track.alertNode);
+
         resetField(dataToCheck.track.undoBtn, dataToCheck.track.selectInpNode, dataToCheck.track.jsonValue);
-        
+    }
+
+    function checkAndMonitorPointsScheme(json, points, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
         let pointsValidCheck = dataToCheck.points.allValues.find(item => {return item.id === dataToCheck.points.jsonValue});
+
         if(pointsValidCheck === undefined) {
             $(dataToCheck.points.parentNode).addClass('bg-red-600');
             $(dataToCheck.points.alertNode).slideDown(500);
             $(dataToCheck.points.btnNode).html('0')
         }
-        updatePointsSelection(json, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, additionalResultsPoints, dataToCheck.points.btnNode, dataToCheck.points.overlayNode, dataToCheck.points.parentNode, dataToCheck.points.alertNode);
+
+        updatePointsSelection(json, points, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, dataToCheck.points.btnNode, dataToCheck.points.overlayNode, dataToCheck.points.parentNode, dataToCheck.points.alertNode);
+
         $(dataToCheck.points.undoBtn).click(function(event) {
             if(pointsValidCheck == undefined) {
                 $(dataToCheck.points.btnNode).html('0');
                 $('input:checkbox').not(this).prop('checked', false);
+
                 $(dataToCheck.points.parentNode).addClass('bg-red-600');
                 $(dataToCheck.points.alertNode).slideDown(500);
-                checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
+                
+                checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
 
             } else {
                 $(dataToCheck.points.btnNode).html(dataToCheck.points.jsonValue);
                 $('input:checkbox').not(this).prop('checked', false);
             }
-        });        
+        });
     }
 
-    function checkIfSeasonAndRoundCombinationAreExisting(isResultImported, trackDetailsStore, jsonSeasonValue, jsonRoundValue) {
-        if(isResultImported.originalVal === 1) {
-            let currentSeasonCheck = trackDetailsStore.season === jsonSeasonValue;
-            let currentRoundCheck = trackDetailsStore.round === jsonRoundValue;
+    function updatePointsSelection(json, points, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, btnNode, overlayNode, parentNode, alertNode) {
+        $(btnNode).click(function(event) {
+            $(overlayNode).removeClass('hidden');
+            $(overlayNode).addClass('flex');
 
-            if(currentSeasonCheck && currentRoundCheck) $('#warningSeasonRoundSameAsInitialAlert').slideDown(500);
-            else $('#warningSeasonRoundSameAsInitialAlert').slideUp(500);
+            let selectIndex = $(btnNode).html();
+            $(`#select${selectIndex}`).prop('checked', true);
+        });
+
+        for(let i = 0; i < points.length; i++) {
+            $(`#select${i+1}`).click(function(event) {
+                $('input:checkbox').not(this).prop('checked', false);
+                $(btnNode).html(i + 1);
+
+                $(parentNode).removeClass('bg-red-600');
+                $(alertNode).slideUp(500);
+                $(overlayNode).removeClass('flex');
+                $(overlayNode).addClass('hidden');
+
+                supportingVariables.currentPointsSchemeSelected = i + 1;
+                supportingVariables.isPointsUndefined = false;
+
+                let selectedValue, flAtIndex;
+                for(let x = 0; x < json.results.length; x++) {  
+                    if(parseInt($(`#statusSelect${x}`).val()) === 1) {
+                        selectedValue = parseInt($(`#statusSelect${x}`).val());
+                        flAtIndex = x;
+                    }
+                }
+
+                reflectFastestLap(selectedValue, points, additionalDetailsStore, supportingVariables, flAtIndex);
+                checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+            });
         }
     }
 
-    function checkAndMonitorResultsData(json, driver, fastestLapIndexStore, timeIsNotNumberCheck, isResultImported, isPointsUndefined, noPointsForFL, constructor, status, points, regexFl, regexTimeAbsolute, regexTimeInterval, regexTimePos1Absolute, driverIDStore, raceTimeInIntervals, raceTimeInAbsolutes, gridStore, stopsStore, additionalResultsPoints, statusStore, indexPosMap, i) {
-         
+    function checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables) {
+        let duplicateDiD = findDuplicateIds(jsonResultsDetailsStore.driverID);
+
+        for(let i = 0; i < jsonResultsDetailsStore.driverID.length; i++) {
+            if(
+                !isNaN(jsonResultsDetailsStore.driverID[i]) && 
+                jsonResultsDetailsStore.driverID[i] != null && 
+                jsonResultsDetailsStore.driverID[i] != 0
+            ) {
+                
+                
+                let j = 0;
+                for(j; j < duplicateDiD.length; j++) {
+                    if(duplicateDiD[j] === jsonResultsDetailsStore.driverID[i]) {
+                        break;
+                    }
+                }
+                
+                if(j === duplicateDiD.length) {
+                    $(`#resultsBodyDriver${i}`).removeClass('bg-red-600');
+                    $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+                    $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                        `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is missing]</p>`
+                    );
+                }
+                else {
+                    $(`#resultsBodyDriver${i}`).addClass('bg-red-600');
+                    $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                        `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is a duplicate value]</p>`
+                    );
+                    $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+                }
+            }
+            else {
+                $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                    `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is missing]</p>`
+                );
+            }
+        }
+    }
+    
+    function findDuplicateIds(array) {
+        let uniqueId = new Set(array);
+
+        let filteredEle = array.filter(ele => {
+            if(uniqueId.has(ele)) {
+                uniqueId.delete(ele)
+            }
+            else {
+                return ele;
+            }
+        })
+        
+        return [...new Set(filteredEle)];
+    }
+
+    function checkDuplicateStatus(jsonResultsDetailsStore, supportingVariables) {
+        let duplicateStatus = findDuplicateIds(jsonResultsDetailsStore.status);
+
+        for(let i = 0; i < jsonResultsDetailsStore.status.length; i++) {
+            if(
+                jsonResultsDetailsStore.status[i] != null && 
+                !isNaN(jsonResultsDetailsStore.status[i]) && 
+                supportingVariables.usedStatusNumbers.includes(jsonResultsDetailsStore.status[i])
+            ) {
+                let j = 0;
+                for(j; j < duplicateStatus.length; j++) {
+                    if(duplicateStatus[j] === jsonResultsDetailsStore.status[i] && duplicateStatus[j] === 1) {
+                        break;
+                    }
+                }
+                
+                if(j === duplicateStatus.length) {
+                    $(`#resultsBodyStatus${i}`).removeClass('bg-red-600');
+                    $(`#errorStatusAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                        `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> STATUS</strong> [invalid field]</p>`
+                    );
+                    $(`#errorStatusAlert${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+                }
+                else {
+                    $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
+                    $(`#resultsBodyStatus${i}`).addClass('bg-red-600');
+                    $(`#errorStatusAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                        `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> STATUS</strong> [field is a duplicate fastest lap value]</p>`
+                    );
+                    $(`#errorStatusAlert${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+                }
+            }
+            else {
+                $(`#errorStatusAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                    `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> STATUS</strong> [invalid field]</p>`
+                );
+            }
+        } 
+    }
+
+    function checkRaceTimeMatchesWithStatus(json, jsonResultsDetailsStore, supportingVariables, i) {
+        let currentRaceTime = json.results[supportingVariables.indexPosMap[i] - 1].time;
+        let cutoffLaps = Math.ceil(jsonResultsDetailsStore.stops[0] * 0.75);
+
+        if(currentRaceTime === 'DNF') {
+            if(
+                jsonResultsDetailsStore.status[i] !== -2 && 
+                (jsonResultsDetailsStore.stops[supportingVariables.indexPosMap[i] - 1] < cutoffLaps ||
+                cutoffLaps == 0)
+            ) {
+                statusIsNotDNFForUnclassifiedPosition(supportingVariables, i);
+            }
+            else if(
+                jsonResultsDetailsStore.status[i] === -2 && 
+                cutoffLaps > 0 &&
+                jsonResultsDetailsStore.stops[supportingVariables.indexPosMap[i] - 1] >= cutoffLaps
+            ) {
+                statusIsDNFForClassifiedPosition(jsonResultsDetailsStore, supportingVariables, i);
+            }
+            else {
+                $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
+                $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+                $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+            }
+        }
+        else if(currentRaceTime === 'DSQ') {
+            if(jsonResultsDetailsStore.status[i] !== -3) {
+                statusIsNotDSQ(supportingVariables, i);
+            }
+            else {
+                $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
+                $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+            }
+        }
+        else if(
+            jsonResultsDetailsStore.status[i] === -2 && 
+            cutoffLaps > 0 &&
+            jsonResultsDetailsStore.stops[supportingVariables.indexPosMap[i] - 1] >= cutoffLaps
+        ) {
+            statusIsDNFForClassifiedPosition(jsonResultsDetailsStore, supportingVariables, i);
+        }
+        else {
+            $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
+            $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+            $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        }
+    }
+
+    function statusIsNotDNFForUnclassifiedPosition(supportingVariables, i) {
+        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).html(
+            `Row <strong>${supportingVariables.indexPosMap[i]}</strong> with race time of <strong>DNF</strong> does not have 'DNF' <strong>STATUS</strong>`
+        );
+
+        if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) {
+            $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
+        }
+
+        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+    }
+
+    function statusIsDNFForClassifiedPosition(jsonResultsDetailsStore, supportingVariables, i) {
+        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).html(
+            `Row <strong>${supportingVariables.indexPosMap[i]}</strong> with race time of <strong>DNF</strong> having completed <strong>${jsonResultsDetailsStore.stops[i]} LAPS</strong> should not have 'DNF' <strong>STATUS</strong>`
+        );
+
+        if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) {
+            $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
+        }
+
+        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+    }
+
+    function statusIsNotDSQ(supportingVariables, i) {
+        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).html(
+            `Row <strong>${supportingVariables.indexPosMap[i]}</strong> with race time of <strong>DSQ</strong> does not have 'DSQ' <strong>STATUS</strong>`
+        );
+
+        if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) {
+            $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
+        }
+
+        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+    }
+
+    function checkAndMonitorResultsData(json, points, driver, constructor, status, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
         let dataToCheck = {
-            // position: {
-            //     jsonValue: json.results[i].position,
-            //     inpNode: `#inputPos${i}`,
-            //     parentNode: `#resultsBodyPos${i}`,
-            //     alertNode: `#errorPosAlert${i}`,
-            //     undoBtn: `#undoPos${i}`
-            // },
             driverID: {
                 jsonValue: json.results[i].driver_id,
                 allValues: driver,
@@ -2262,475 +2000,124 @@
             }
         }
 
-        // inputFormatCheck(dataToCheck.position.jsonValue, dataToCheck.position.parentNode, dataToCheck.position.inpNode, dataToCheck.position.alertNode);
-        // $(dataToCheck.position.inpNode).change(function(event) {
-        //     let selectedPosVal = $(dataToCheck.position.inpNode).val();
-        //     dataToCheck.position.alertNode = `#errorPosAlert${indexPosMap[i] - 1}`;
-        //     inputFormatCheck(selectedPosVal, dataToCheck.position.parentNode, dataToCheck.position.inpNode, dataToCheck.position.alertNode);
-        // });
-        // resetField(dataToCheck.position.undoBtn, dataToCheck.position.inpNode, dataToCheck.position.jsonValue);
+        checkAndMonitorDriverId(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i);
 
-        // Driver ID Checks
+        checkAndMonitorConstructorId(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i);
+        
+        checkAndMonitorStartingGrid(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i);
+
+        checkAndMonitorLapsCompleted(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i);
+        
+        checkAndMonitorFastestLap(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i);
+        
+        checkAndMonitorRaceTime(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i);
+        
+        checkAndMonitorStatus(json, points, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+    }
+
+    function checkAndMonitorDriverId(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i) {
         let driverIDValidCheck = dataToCheck.driverID.allValues.find(item => {return item.id === dataToCheck.driverID.jsonValue});
+
         if(driverIDValidCheck === undefined) {
             $(dataToCheck.driverID.parentNode).addClass('bg-red-600');
             $(dataToCheck.driverID.alertNode).slideDown(500);
         }
+
         $(dataToCheck.driverID.selectInpNode).change(function(event) {
             let selectedValue = $(dataToCheck.driverID.selectInpNode).val();
-            json.results[i].driver_id = parseInt(selectedValue)
-            driverIDStore[i] = parseInt(selectedValue);
 
-            dataToCheck.driverID.alertNode = `#errorDriverAlert${indexPosMap[i] - 1}`;
+            json.results[i].driver_id = parseInt(selectedValue);
+            jsonResultsDetailsStore.driverID[i] = parseInt(selectedValue);
 
-            availableDrivers = driver.filter(ele => !driverIDStore.includes(ele.id));
-            repopulateDriverResultsDropdowns(driver, availableDrivers, json);
+            supportingVariables.availableDrivers = dataToCheck.driverID.allValues.filter(ele => !jsonResultsDetailsStore.driverID.includes(ele.id));
+
+            dataToCheck.driverID.alertNode = `#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`;
+
+            repopulateDriverResultsDropdowns(json, dataToCheck.driverID.allValues, supportingVariables);
             
-            checkDuplicateDiD(driverIDStore, indexPosMap);
+            checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables);
             clearSelectWarning(dataToCheck.driverID.selectInpNode, dataToCheck.driverID.allValues, selectedValue, dataToCheck.driverID.parentNode, dataToCheck.driverID.alertNode);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        })
-        // test(dataToCheck.driverID.selectInpNode, dataToCheck.driverID.allValues, dataToCheck.driverID.jsonValue, dataToCheck.driverID.parentNode, dataToCheck.driverID.alertNode);
-        resetField(dataToCheck.driverID.undoBtn, dataToCheck.driverID.selectInpNode, dataToCheck.driverID.jsonValue);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        });
 
-        // Constructor ID Checks
+        resetField(dataToCheck.driverID.undoBtn, dataToCheck.driverID.selectInpNode, dataToCheck.driverID.jsonValue);
+    }
+
+    function repopulateDriverResultsDropdowns(json, driver, supportingVariables) {
+        for(let x = 0; x < json.results.length; x++) {
+            let driverSelect = "<option hidden selected value> -- Missing ID -- </option>";
+            let driverDispVal;
+            let driverCol = document.getElementById(`driverSelect${x}`);
+
+            for(let y = 0; y < driver.length; y++) {
+                if(driver[y].id === json.results[x].driver_id) {
+                    driverDispVal = driver[y].name;
+                    driverSelect += `<option selected value=${driver[y].id}>${driverDispVal}</option>`;
+                }
+            }
+
+            for(let y = 0; y < supportingVariables.availableDrivers.length; y++) {
+                driverDispVal = supportingVariables.availableDrivers[y].name;  
+                driverSelect += `<option value=${supportingVariables.availableDrivers[y].id}>${driverDispVal}</option>`;
+                driverCol.innerHTML = driverSelect;
+            }
+        }
+    }
+
+    function checkAndMonitorConstructorId(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i) {
         let constructorIDValidCheck = dataToCheck.constructorID.allValues.find(item => {return item.id === dataToCheck.constructorID.jsonValue});
+
         if(constructorIDValidCheck === undefined) {
             $(dataToCheck.constructorID.parentNode).addClass('bg-red-600');
             $(dataToCheck.constructorID.alertNode).slideDown(500);
         }
+
         $(dataToCheck.constructorID.selectInpNode).change(function(event) {
             let selectedValue = $(dataToCheck.constructorID.selectInpNode).val();
             
-            dataToCheck.constructorID.alertNode = `#errorConstructorAlert${indexPosMap[i] - 1}`;
+            dataToCheck.constructorID.alertNode = `#errorConstructorAlert${supportingVariables.indexPosMap[i] - 1}`;
 
             clearSelectWarning(dataToCheck.constructorID.selectInpNode, dataToCheck.constructorID.allValues, selectedValue, dataToCheck.constructorID.parentNode, dataToCheck.constructorID.alertNode);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        })
-        // test(dataToCheck.constructorID.selectInpNode, dataToCheck.constructorID.allValues, dataToCheck.constructorID.jsonValue, dataToCheck.constructorID.parentNode, dataToCheck.constructorID.alertNode);
-        resetField(dataToCheck.constructorID.undoBtn, dataToCheck.constructorID.selectInpNode, dataToCheck.constructorID.jsonValue);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        });
 
-        // Starting Grid Checks
+        resetField(dataToCheck.constructorID.undoBtn, dataToCheck.constructorID.selectInpNode, dataToCheck.constructorID.jsonValue);
+    }
+
+    function checkAndMonitorStartingGrid(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i) {
         inputFormatCheck(dataToCheck.grid.jsonValue, dataToCheck.grid.parentNode, dataToCheck.grid.inpNode, dataToCheck.grid.alertNode);
+
         $(dataToCheck.grid.inpNode).change(function(event) {
             let selectedGridVal = $(dataToCheck.grid.inpNode).val();
 
-            gridStore[i] = parseInt(selectedGridVal);
+            jsonResultsDetailsStore.grid[i] = parseInt(selectedGridVal);
 
-            dataToCheck.grid.alertNode = `#errorGridAlert${indexPosMap[i] - 1}`;
+            dataToCheck.grid.alertNode = `#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`;
             
-            inputFormatCheck(selectedGridVal, dataToCheck.grid.parentNode, dataToCheck.grid.inpNode, dataToCheck.grid.alertNode);
-            checkDuplicateGrid(gridStore, indexPosMap);
-            checkGridValueGreaterThanArraySize(gridStore, indexPosMap);
-            checkGridValuesStartWith1(gridStore, indexPosMap);
-            checkGridValuesForBreakInSequence(gridStore, indexPosMap);
-            isAllGridValues0(gridStore, indexPosMap);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
+            inputFormatCheck(parseInt(selectedGridVal), dataToCheck.grid.parentNode, dataToCheck.grid.inpNode, dataToCheck.grid.alertNode);
+            checkDuplicateGrid(jsonResultsDetailsStore, supportingVariables);
+            checkGridValueGreaterThanArraySize(jsonResultsDetailsStore, supportingVariables);
+            checkGridValuesStartWith1(jsonResultsDetailsStore, supportingVariables);
+            checkGridValuesForBreakInSequence(jsonResultsDetailsStore, supportingVariables);
+            isAllGridValues0(jsonResultsDetailsStore, supportingVariables);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
         });
+
         resetField(dataToCheck.grid.undoBtn, dataToCheck.grid.inpNode, dataToCheck.grid.jsonValue);
-
-        
-        // Laps Completed Checks
-        inputFormatCheck(dataToCheck.stops.jsonValue, dataToCheck.stops.parentNode, dataToCheck.stops.inpNode, dataToCheck.stops.alertNode, 0);
-        $(dataToCheck.stops.inpNode).change(function(event) {
-            let selectedStopsVal = $(dataToCheck.stops.inpNode).val();
-            let nextRow = $(this).closest('tr').next();
-            
-            // json.results[i].stops = parseInt(selectedStopsVal);
-            stopsStore[indexPosMap[i] - 1] = parseInt(selectedStopsVal);
-            // console.log(stopsStore)
-            
-            dataToCheck.stops.alertNode = `#errorStopsAlert${indexPosMap[i] - 1}`;
-
-            // console.log('i check')
-            checkIfCurrentTimeLessThanPosAbove(json, timeIsNotNumberCheck, stopsStore, raceTimeInAbsolutes, indexPosMap, i);
-            
-            if (nextRow.length) {
-                let nextIndex = parseInt((nextRow[0].querySelector('.inputPos').id).match(/\d+/g)[0]);
-                // console.log('nextRow check')
-                
-                checkIfCurrentTimeLessThanPosAbove(json, timeIsNotNumberCheck, stopsStore, raceTimeInAbsolutes, indexPosMap, nextIndex);
-            }
-            inputFormatCheck(selectedStopsVal, dataToCheck.stops.parentNode, dataToCheck.stops.inpNode, dataToCheck.stops.alertNode, 0);
-            checkRaceTimeMatchesWithStatus(json, indexPosMap, statusStore, stopsStore, i);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        });
-        resetField(dataToCheck.stops.undoBtn, dataToCheck.stops.inpNode, dataToCheck.stops.jsonValue);
-        
-
-        // Fastest Lap Checks
-        timeCheck(regexFl, dataToCheck.fastestLap.jsonValue, dataToCheck.fastestLap.inpNode, dataToCheck.fastestLap.parentNode, dataToCheck.fastestLap.alertNode);
-        $(dataToCheck.fastestLap.inpNode).change(function(event) {
-            let selectedFastestLapVal = $(dataToCheck.fastestLap.inpNode).val();
-            json.results[i].fastestlaptime = selectedFastestLapVal;
-
-            dataToCheck.fastestLap.alertNode = `#errorFlAlert${indexPosMap[i] - 1}`;
-
-            timeCheck(regexFl, selectedFastestLapVal, dataToCheck.fastestLap.inpNode, dataToCheck.fastestLap.parentNode, dataToCheck.fastestLap.alertNode);
-            isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        });
-        resetField(dataToCheck.fastestLap.undoBtn, dataToCheck.fastestLap.inpNode, dataToCheck.fastestLap.jsonValue);
-        
-        // Total Time Checks
-        let originalAbsoluteRaceTime = raceTimeInAbsolutes[indexPosMap[i] - 1];
-        let originalIntervalRaceTime = raceTimeInIntervals[indexPosMap[i] - 1];
-
-        // if((indexPosMap[i] - 1) === 0) {
-        //     $(`#errorTimeAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`);
-
-        //     timeCheck(regexTimeAbsolute, dataToCheck.time.jsonValue, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-        // }
-        // else {
-        checkIfCurrentTimeLessThanPosAbove(json, timeIsNotNumberCheck, stopsStore, raceTimeInAbsolutes, indexPosMap, i);
-        if((indexPosMap[i] - 1) === 0) {
-            $(`#errorTimeAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong> or <strong>'1:06.006'</strong>`);
-
-            timeCheck(regexTimeAbsolute, dataToCheck.time.jsonValue, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-        }
-        else {
-            if($('.raceTimeCol').hasClass('absoluteTime')) {
-                timeCheck(regexTimeAbsolute, dataToCheck.time.jsonValue, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-            }
-            else {
-                timeCheck(regexTimeInterval, dataToCheck.time.jsonValue, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-            }
-        }
-        
-        disableToggleBtnsOnTimeError(json, regexTimePos1Absolute, indexPosMap);
-        $(dataToCheck.time.inpNode).change(function(event) {
-            let selectedTimeVal = $(dataToCheck.time.inpNode).val();
-            let timeCheckPos1Absolute = new RegExp(regexTimePos1Absolute);
-            
-            if($('.raceTimeCol').hasClass('absoluteTime')) {
-                raceTimeInAbsolutes[indexPosMap[i] - 1] = selectedTimeVal;
-                // regexTime = "^((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
-                // let timeCheck = new RegExp(regexTime);
-                
-                if((indexPosMap[i] - 1) === 0) {
-                    raceTimeInIntervals[0] = selectedTimeVal;
-                    raceTimeInAbsolutes[0] = selectedTimeVal;
-                    json.results[0].time = selectedTimeVal;
-                    
-                    if(timeCheckPos1Absolute.test(raceTimeInAbsolutes[0])) {
-                        $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
-                        $(`#inputTime${i}`).removeClass('bg-yellow-600');
-                        $(`#inputTime${i}`).removeClass('font-bold');
-                        $(`#inputTime${i}`).removeClass('text-white');
-                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideUp(500);
-                    }
-                    else {
-                        $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
-                        $(`#inputTime${i}`).addClass('bg-yellow-600');
-                        $(`#inputTime${i}`).addClass('font-bold');
-                        $(`#inputTime${i}`).addClass('text-white');
-                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
-                    }
-                    
-                    if(timeCheckPos1Absolute.test(selectedTimeVal)) {
-                        for(let x = 1; x < json.results.length; x++) {
-                            if(!timeIsNotNumberCheck.test(raceTimeInIntervals[x])) {
-                                raceTimeInIntervals[x] = convertAbsoluteTimeToInterval(raceTimeInAbsolutes[x], raceTimeInIntervals[0]);
-                            }
-                        }
-                    }
-                }
-                else {
-                    raceTimeInIntervals[indexPosMap[i] - 1] = selectedTimeVal;
-                    json.results[indexPosMap[i] - 1].time = selectedTimeVal;
-
-                    if(!timeIsNotNumberCheck.test(selectedTimeVal)) {
-                        raceTimeInIntervals[indexPosMap[i] - 1] = convertAbsoluteTimeToInterval(selectedTimeVal, raceTimeInIntervals[0]);
-                        // if(!timeCheck.test(selectedTimeVal)) raceTimeInIntervals[indexPosMap[i] - 1] = 'Error';
-                    }
-                }
-            }
-            else {
-                raceTimeInIntervals[indexPosMap[i] - 1] = selectedTimeVal;
-                // regexTime = "^(\\+|\\-)((\\d+\\:[0-5])|[0-5]?)\\d[.]\\d{3}$|^DNF$|^DSQ$|^DNS$|^\\+1 Lap$|^\\+[2-9][0-9]* Laps$|^\\-$";
-                // let timeCheck = new RegExp(regexTime);
-
-                if((indexPosMap[i] - 1) === 0) {
-                    raceTimeInAbsolutes[0] = selectedTimeVal;
-                    raceTimeInIntervals[0] = selectedTimeVal;
-                    json.results[0].time = selectedTimeVal;
-
-                    if(timeCheckPos1Absolute.test(raceTimeInIntervals[0])) {
-                        $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
-                        $(`#inputTime${i}`).removeClass('bg-yellow-600');
-                        $(`#inputTime${i}`).removeClass('font-bold');
-                        $(`#inputTime${i}`).removeClass('text-white');
-                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideUp(500);
-                    }
-                    else {
-                        $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
-                        $(`#inputTime${i}`).addClass('bg-yellow-600');
-                        $(`#inputTime${i}`).addClass('font-bold');
-                        $(`#inputTime${i}`).addClass('text-white');
-                        $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
-                    }
-
-                    if(timeCheckPos1Absolute.test(selectedTimeVal)) {
-                        for(let x = 1; x < json.results.length; x++) {
-                            if(!timeIsNotNumberCheck.test(raceTimeInIntervals[x])) {
-                                raceTimeInIntervals[x] = convertAbsoluteTimeToInterval(raceTimeInAbsolutes[x], raceTimeInIntervals[0]);
-                                $(`#inputTime${indexPosMap[x] - 1}`).val(raceTimeInIntervals[x]);
-                            }
-                        }
-                    }
-
-                }
-                else {
-                    raceTimeInAbsolutes[indexPosMap[i] - 1] = selectedTimeVal;
-                    json.results[indexPosMap[i] - 1].time = selectedTimeVal;
-                    
-                    if(!timeIsNotNumberCheck.test(selectedTimeVal)) {
-                        raceTimeInAbsolutes[indexPosMap[i] - 1] = convertIntervalTimeToAbsolute(selectedTimeVal, raceTimeInIntervals[0]);
-                        // if(!timeCheck.test(selectedTimeVal)) raceTimeInAbsolutes[indexPosMap[i] - 1] = 'Error';
-                    }
-                }
-            }
-
-            // console.log('time check run i')
-            checkIfCurrentTimeLessThanPosAbove(json, timeIsNotNumberCheck, stopsStore, raceTimeInAbsolutes, indexPosMap, i);
-            dataToCheck.time.alertNode = `#errorTimeAlert${indexPosMap[i] - 1}`;
-            if((indexPosMap[i] - 1) === 0) {
-                $(`#errorTimeAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong> or <strong>'1:06.006'</strong>`);
-
-                timeCheck(regexTimeAbsolute, selectedTimeVal, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-            }
-            else {
-                if($('.raceTimeCol').hasClass('absoluteTime')) {
-                    timeCheck(regexTimeAbsolute, selectedTimeVal, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-                }
-                else {
-                    timeCheck(regexTimeInterval, selectedTimeVal, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
-                }
-            }
-            disableToggleBtnsOnTimeError(json, regexTimePos1Absolute, indexPosMap);
-            checkRaceTimeMatchesWithStatus(json, indexPosMap, statusStore, stopsStore, i);
-            // isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        });
-        // resetField(dataToCheck.time.undoBtn, dataToCheck.time.inpNode, dataToCheck.time.jsonValue);
-        $(dataToCheck.time.undoBtn).click(function(event) {
-            if($('.raceTimeCol').hasClass('absoluteTime')) {
-                $(dataToCheck.time.inpNode).val(originalAbsoluteRaceTime);
-            }
-            else {
-                let oldIntervalRaceTime = convertAbsoluteTimeToInterval(originalAbsoluteRaceTime, raceTimeInIntervals[0]);
-
-                if((indexPosMap[i] - 1) === 0 || originalIntervalRaceTime === '') oldIntervalRaceTime = originalAbsoluteRaceTime;
-                if(timeIsNotNumberCheck.test($(`#inputTime${i}`).val())) {
-                    if(!timeIsNotNumberCheck.test(originalIntervalRaceTime)) {
-                        originalIntervalRaceTime = convertAbsoluteTimeToInterval(originalAbsoluteRaceTime, raceTimeInIntervals[0]);
-                    }
-                    oldIntervalRaceTime = originalIntervalRaceTime;
-                }
-
-                $(dataToCheck.time.inpNode).val(oldIntervalRaceTime);
-            }
-
-            const e = new Event("change");
-            const element = document.querySelector(dataToCheck.time.inpNode);
-            element.dispatchEvent(e);
-        });
-
-        // Status Checks
-        let statusValidCheck = dataToCheck.status.allValues.find(item => {return item.id === dataToCheck.status.jsonValue});
-        if(statusValidCheck === undefined) {
-            $(dataToCheck.status.parentNode).addClass('bg-red-600');
-            $(dataToCheck.status.alertNode).slideDown(500);
-        }
-        $(dataToCheck.status.selectInpNode).change(function(event) {
-            
-            let selectedValue = $(dataToCheck.status.selectInpNode).val();
-            statusStore[i] = parseInt(selectedValue);
-
-            dataToCheck.status.alertNode = `#errorStatusAlert${indexPosMap[i] - 1}`;
-
-            reflectFastestLap(points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, additionalResultsPoints, parseInt(selectedValue), i);
-            clearSelectWarning(dataToCheck.status.selectInpNode, dataToCheck.status.allValues, selectedValue, dataToCheck.status.parentNode, dataToCheck.status.alertNode);
-            checkDuplicateStatus(statusStore, indexPosMap);
-            checkRaceTimeMatchesWithStatus(json, indexPosMap, statusStore, stopsStore, i);
-            isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regexFl);
-            checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
-        })
-        // test(dataToCheck.status.selectInpNode, dataToCheck.status.allValues, dataToCheck.status.jsonValue, dataToCheck.status.parentNode, dataToCheck.status.alertNode);
-        resetField(dataToCheck.status.undoBtn, dataToCheck.status.selectInpNode, dataToCheck.status.jsonValue);
     }
 
-    function checkIfCurrentTimeLessThanPosAbove(json, timeIsNotNumberCheck, stopsStore, raceTimeInAbsolutes, indexPosMap, i) {
-        if(indexPosMap[i] === 1)
-            return;
+    function checkDuplicateGrid(jsonResultsDetailsStore, supportingVariables) {
+        let duplicateGrid = findDuplicateIds(jsonResultsDetailsStore.grid);
 
-        let prevRaceTime = raceTimeInAbsolutes[indexPosMap[i] - 2];
-        let currentRaceTime = raceTimeInAbsolutes[indexPosMap[i] - 1];
-        let prevRaceTimeInSeconds = convertTimeFormatToSeconds(prevRaceTime);
-        let currentRaceTimeInSeconds = convertTimeFormatToSeconds(currentRaceTime);
-        
-        let prevStops = stopsStore[indexPosMap[i] - 2];
-        let currentStops = stopsStore[indexPosMap[i] - 1];
-        // console.log(indexPosMap[i], currentStops, prevStops)
-
-        // Warning should not be displayed if:
-        // 1. Pos i has laps completed more than Pos i + 1
-        // or 2. Pos i has the same number of laps completed and lesser finishing time
-        // else, Show Warning
-
-        if(prevStops < currentStops) {
-            $(`#resultsBodyStops${i}`).addClass('bg-yellow-600');
-            $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
-            $(`#inputStops${i}`).addClass('bg-yellow-600');
-            $(`#inputTime${i}`).removeClass('bg-yellow-600');
-            $(`#inputStops${i}`).addClass('font-bold');
-            $(`#inputStops${i}`).addClass('text-white');
-            $(`#inputTime${i}`).removeClass('font-bold');
-            $(`#inputTime${i}`).removeClass('text-white');
-
-            $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> LAPS COMPLETED</strong> is more than the that of row above</p>`)
-            $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).slideDown(500);
-        }
-        else if(!timeIsNotNumberCheck.test(currentRaceTime) && !timeIsNotNumberCheck.test(prevRaceTime)) {
-            if((currentRaceTimeInSeconds < prevRaceTimeInSeconds) && (currentStops === prevStops)) {
-                $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
-                $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
-                $(`#inputTime${i}`).addClass('bg-yellow-600');
-                $(`#inputStops${i}`).removeClass('bg-yellow-600');
-                $(`#inputTime${i}`).addClass('font-bold');
-                $(`#inputTime${i}`).addClass('text-white');
-
-                if(!$(`#inputStops${i}`).hasClass('bg-red-600')) {
-                    $(`#inputStops${i}`).removeClass('font-bold');
-                    $(`#inputStops${i}`).removeClass('text-white');
-                }
-
-                $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> RACE TIME</strong> is less than the that of row above having <strong>COMPLETED ${currentStops} LAPS</stron></p>`)
-                $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).slideDown(500);
-            }
-            else {
-                $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
-                $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
-                $(`#inputTime${i}`).removeClass('bg-yellow-600');
-                $(`#inputStops${i}`).removeClass('bg-yellow-600');
-                
-                if(!$(`#inputTime${i}`).hasClass('bg-red-600')) {
-                    $(`#inputTime${i}`).removeClass('font-bold');
-                    $(`#inputTime${i}`).removeClass('text-white');
-                }
-
-                if(!$(`#inputStops${i}`).hasClass('bg-red-600')) {
-                    $(`#inputStops${i}`).removeClass('font-bold');
-                    $(`#inputStops${i}`).removeClass('text-white');
-                }
-
-                $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).slideUp(500);
-            }
-        }
-        else {
-            $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
-            $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
-            $(`#inputTime${i}`).removeClass('bg-yellow-600');
-            $(`#inputStops${i}`).removeClass('bg-yellow-600');
-            $(`#inputTime${i}`).removeClass('font-bold');
-            $(`#inputTime${i}`).removeClass('text-white');
-
-            if(!$(`#inputStops${i}`).hasClass('bg-red-600')) {
-                $(`#inputStops${i}`).removeClass('font-bold');
-                $(`#inputStops${i}`).removeClass('text-white');
-            }
-
-            $(`#warningRaceTimeFasterThanPrevPos${indexPosMap[i] - 1}`).slideUp(500);
-        }
-    }
-
-    function checkDuplicateDiD(driverIDStore, indexPosMap) {
-        let uniqueDiD = new Set(driverIDStore);
-        let filteredEle = driverIDStore.filter(ele => {
-            if(uniqueDiD.has(ele)) uniqueDiD.delete(ele)
-            else return ele;
-        })
-        
-        let duplicateDiD = [...new Set(filteredEle)];
-
-        for(let i = 0; i < driverIDStore.length; i++) {
-            if(!isNaN(driverIDStore[i]) && driverIDStore[i] != null && driverIDStore[i] != 0) {
-                let j = 0;
-                for(j; j < duplicateDiD.length; j++) {
-                    if(duplicateDiD[j] === driverIDStore[i]) {
-                        break;
-                    }
-                }
-                
-                if(j === duplicateDiD.length) {
-                    $(`#resultsBodyDriver${i}`).removeClass('bg-red-600');
-                    $(`#errorDriverAlert${indexPosMap[i] - 1}`).slideUp(500);
-                    $(`#errorDriverAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is missing]</p>`);
-                }
-                else {
-                    $(`#resultsBodyDriver${i}`).addClass('bg-red-600');
-                    $(`#errorDriverAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is a duplicate value]</p>`);
-                    $(`#errorDriverAlert${indexPosMap[i] - 1}`).slideDown(500);
-                }
-            }
-            else {
-                $(`#errorDriverAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is missing]</p>`);
-            }
-        }
-    }
-
-    function checkDuplicateStatus(statusStore, indexPosMap) {
-        let usedStatusNumbers = [-3, -2, 0, 1];
-        let uniqueStatus = new Set(statusStore);
-        let filteredEle = statusStore.filter(ele => {
-            if(uniqueStatus.has(ele)) uniqueStatus.delete(ele)
-            else return ele;
-        })
-        
-        let duplicateStatus = [...new Set(filteredEle)];
-
-        for(let i = 0; i < statusStore.length; i++) {
-            if(statusStore[i] != null && !isNaN(statusStore[i]) && usedStatusNumbers.includes(statusStore[i])) {
-                let j = 0;
-                for(j; j < duplicateStatus.length; j++) {
-                    if(duplicateStatus[j] === statusStore[i] && duplicateStatus[j] === 1) {
-                        break;
-                    }
-                }
-                
-                if(j === duplicateStatus.length) {
-                    $(`#resultsBodyStatus${i}`).removeClass('bg-red-600');
-                    $(`#errorStatusAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STATUS</strong> [invalid field]</p>`);
-                    $(`#errorStatusAlert${indexPosMap[i] - 1}`).slideUp(500);
-                }
-                else {
-                    $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-                    $(`#resultsBodyStatus${i}`).addClass('bg-red-600');
-                    $(`#errorStatusAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STATUS</strong> [field is a duplicate fastest lap value]</p>`);
-                    $(`#errorStatusAlert${indexPosMap[i] - 1}`).slideDown(500);
-                }
-            }
-            else {
-                $(`#errorStatusAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STATUS</strong> [invalid field]</p>`);
-            }
-        } 
-    }
-
-    function checkDuplicateGrid(gridStore, indexPosMap) {
-        
-        let uniqueGrid = new Set(gridStore);
-        let filteredEle = gridStore.filter(ele => {
-            if(uniqueGrid.has(ele)) uniqueGrid.delete(ele)
-            else return ele;
-        })
-        
-        let duplicateGrid = [...new Set(filteredEle)];
-
-        for(let i = 0; i < gridStore.length; i++) {
-            if(!isNaN(gridStore[i]) && gridStore[i] != null && gridStore[i] != 0) {
+        for(let i = 0; i < jsonResultsDetailsStore.grid.length; i++) {
+            if(
+                !isNaN(jsonResultsDetailsStore.grid[i]) && 
+                jsonResultsDetailsStore.grid[i] != null && 
+                jsonResultsDetailsStore.grid[i] != 0
+            ) {
                 let j = 0;
                 for(j; j < duplicateGrid.length; j++) {
-                    if(duplicateGrid[j] === gridStore[i]) {
+                    if(duplicateGrid[j] === jsonResultsDetailsStore.grid[i]) {
                         break;
                     }
                 }
@@ -2740,83 +2127,106 @@
                     $(`#inputGrid${i}`).removeClass('bg-red-600');
                     $(`#inputGrid${i}`).removeClass('font-bold');
                     $(`#inputGrid${i}`).removeClass('text-white');
-                    $(`#errorGridAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field must be a positive integer]</p>`);
-                    $(`#errorGridAlert${indexPosMap[i] - 1}`).slideUp(500);
+                    $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                        `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field must be a positive integer]</p>`
+                    );
+                    $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
                 }
                 else {
                     $(`#resultsBodyGrid${i}`).addClass('bg-red-600');
                     $(`#inputGrid${i}`).addClass('bg-red-600');
                     $(`#inputGrid${i}`).addClass('font-bold');
                     $(`#inputGrid${i}`).addClass('text-white');
-                    $(`#errorGridAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field is a duplicate starting grid value]</p>`);
-                    $(`#errorGridAlert${indexPosMap[i] - 1}`).slideDown(500);
+                    $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                        `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field is a duplicate starting grid value]</p>`
+                    );
+                    $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
                 }
             }
             else {
-                $(`#errorGridAlert${indexPosMap[i] - 1}`).html(`<p>Row<strong> ${indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field must be a positive integer]</p>`);
+                $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).html(`<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> STARTING GRID</strong> [field must be a positive integer]</p>`);
             }
         } 
     }
 
-    function checkGridValueGreaterThanArraySize(gridStore, indexPosMap) {
-        let maxGrid = gridStore[0];
-        let maxGridIdx;
+    function checkGridValueGreaterThanArraySize(jsonResultsDetailsStore, supportingVariables) {
+        let maxGrid = jsonResultsDetailsStore.grid[0];
 
-        for(let i = 0; i < gridStore.length; i++) if(gridStore[i] > maxGrid) maxGrid = gridStore[i];
+        for(let i = 0; i < jsonResultsDetailsStore.grid.length; i++) {
+            if(jsonResultsDetailsStore.grid[i] > maxGrid) {
+                maxGrid = jsonResultsDetailsStore.grid[i];
+            }
+        }
 
-        maxGridIdx = gridStore.indexOf(maxGrid);
-        if(gridStore[maxGridIdx] > gridStore.length) {
+        let maxGridIdx = jsonResultsDetailsStore.grid.indexOf(maxGrid);
+
+        if(jsonResultsDetailsStore.grid[maxGridIdx] > jsonResultsDetailsStore.grid.length) {
             $(`#resultsBodyGrid${maxGridIdx}`).addClass('bg-red-600');
             $(`#inputGrid${maxGridIdx}`).addClass('bg-red-600');
             $(`#inputGrid${maxGridIdx}`).addClass('font-bold');
             $(`#inputGrid${maxGridIdx}`).addClass('text-white');
-            $(`#errorGridAlert${indexPosMap[maxGridIdx] - 1}`).html(`<p>Row<strong> ${indexPosMap[maxGridIdx]}</strong> -<strong> STARTING GRID</strong> [field value is greater than the number of position entries]</p>`);
-            $(`#errorGridAlert${indexPosMap[maxGridIdx] - 1}`).slideDown(500);
+            $(`#errorGridAlert${supportingVariables.indexPosMap[maxGridIdx] - 1}`).html(
+                `<p>Row<strong> ${supportingVariables.indexPosMap[maxGridIdx]}</strong> -<strong> STARTING GRID</strong> [field value is greater than the number of position entries]</p>`
+            );
+            $(`#errorGridAlert${supportingVariables.indexPosMap[maxGridIdx] - 1}`).slideDown(500);
         }
-        else if(gridStore.length > 1 && gridStore[maxGridIdx] <= gridStore.length && $(`#resultsBodyGrid${maxGridIdx}`).hasClass('bg-red-600')) {
+        else if(
+            jsonResultsDetailsStore.grid.length > 1 && 
+            jsonResultsDetailsStore.grid[maxGridIdx] <= jsonResultsDetailsStore.grid.length && 
+            $(`#resultsBodyGrid${maxGridIdx}`).hasClass('bg-red-600')
+        ) {
             $(`#resultsBodyGrid${maxGridIdx}`).removeClass('bg-red-600');
             $(`#inputGrid${maxGridIdx}`).removeClass('bg-red-600');
             $(`#inputGrid${maxGridIdx}`).removeClass('font-bold');
             $(`#inputGrid${maxGridIdx}`).removeClass('text-white');
-            $(`#errorGridAlert${indexPosMap[maxGridIdx] - 1}`).slideUp(500);
+            $(`#errorGridAlert${supportingVariables.indexPosMap[maxGridIdx] - 1}`).slideUp(500);
         }
     }
 
-    // function to check whether all grid store includes 1
-    function checkGridValuesStartWith1(gridStore, indexPosMap) {
-        let minGrid = gridStore[0];
-        let minGridIdx;
+    function checkGridValuesStartWith1(jsonResultsDetailsStore, supportingVariables) {
+        let minGrid = jsonResultsDetailsStore.grid[0];
 
-        for(let i = 0; i < gridStore.length; i++) if(gridStore[i] < minGrid) minGrid = gridStore[i];
+        for(let i = 0; i < jsonResultsDetailsStore.grid.length; i++) {
+            if(jsonResultsDetailsStore.grid[i] < minGrid) {
+                minGrid = jsonResultsDetailsStore.grid[i];
+            }
+        }
 
-        minGridIdx = gridStore.indexOf(minGrid);
-        if(!gridStore.includes(1) && !$(`#resultsBodyGrid${minGrid}`).hasClass('bg-red-600')) {
+        let minGridIdx = jsonResultsDetailsStore.grid.indexOf(minGrid);
+        
+        if(!jsonResultsDetailsStore.grid.includes(1) && !$(`#resultsBodyGrid${minGrid}`).hasClass('bg-red-600')) {
             $(`#resultsBodyGrid${minGridIdx}`).addClass('bg-red-600');
             $(`#inputGrid${minGridIdx}`).addClass('bg-red-600');
             $(`#inputGrid${minGridIdx}`).addClass('font-bold');
             $(`#inputGrid${minGridIdx}`).addClass('text-white');
-            $(`#errorGridAlert${indexPosMap[minGridIdx] - 1}`).html(`<p>Row<strong> ${indexPosMap[minGridIdx]}</strong> -<strong> STARTING GRID</strong> [grid sequence should start with <strong>1</strong>]</p>`);
-            $(`#errorGridAlert${indexPosMap[minGridIdx] - 1}`).slideDown(500);
+            $(`#errorGridAlert${supportingVariables.indexPosMap[minGridIdx] - 1}`).html(
+                `<p>Row<strong> ${supportingVariables.indexPosMap[minGridIdx]}</strong> -<strong> STARTING GRID</strong> [grid sequence should start with <strong>1</strong>]</p>`
+            );
+            $(`#errorGridAlert${supportingVariables.indexPosMap[minGridIdx] - 1}`).slideDown(500);
         }
     }
 
-    // function to check a break in sequence in grid store
-    function checkGridValuesForBreakInSequence(gridStore, indexPosMap) {
+    function checkGridValuesForBreakInSequence(jsonResultsDetailsStore, supportingVariables) {
         let breakIdx, isSequenceBroken = 0, increment = 0, expectedVal = 1;
-        
-        let sortedGridStore = gridStore.slice().sort((a, b) => a - b);
-
         let previousGridVal = 0;
+        
+        let sortedGridStore = jsonResultsDetailsStore.grid.slice().sort((a, b) => a - b);
+
         for(let i = 0; i < sortedGridStore.length; i++) {
             if(sortedGridStore[i] == previousGridVal) {
                 increment++;
-                if(sortedGridStore[i] != 0) expectedVal++;
+                
+                if(sortedGridStore[i] != 0) {
+                    expectedVal++;
+                }
+
                 continue;
             }
 
             if(sortedGridStore[i] != sortedGridStore[0] + increment) {
-                breakIdx = gridStore.indexOf(sortedGridStore[i]);
+                breakIdx = jsonResultsDetailsStore.grid.indexOf(sortedGridStore[i]);
                 isSequenceBroken = 1;
+                
                 break;
             }
 
@@ -2830,138 +2240,586 @@
             $(`#inputGrid${breakIdx}`).addClass('bg-red-600');
             $(`#inputGrid${breakIdx}`).addClass('font-bold');
             $(`#inputGrid${breakIdx}`).addClass('text-white');
-            $(`#errorGridAlert${indexPosMap[breakIdx] - 1}`).html(`<p>Row<strong> ${indexPosMap[breakIdx]}</strong> -<strong> STARTING GRID</strong> [break in grid sequence, <strong>${expectedVal}</strong> is expected]</p>`);
-            $(`#errorGridAlert${indexPosMap[breakIdx] - 1}`).slideDown(500);
+            $(`#errorGridAlert${supportingVariables.indexPosMap[breakIdx] - 1}`).html(
+                `<p>Row<strong> ${supportingVariables.indexPosMap[breakIdx]}</strong> -<strong> STARTING GRID</strong> [break in grid sequence, <strong>${expectedVal}</strong> is expected]</p>`
+            );
+            $(`#errorGridAlert${supportingVariables.indexPosMap[breakIdx] - 1}`).slideDown(500);
         }
     }
 
-    function isAllGridValues0(gridStore, indexPosMap) {
-        let isAllGridValuesZero = !gridStore.some(item => item !== 0);
+    function isAllGridValues0(jsonResultsDetailsStore, supportingVariables) {
+        let isAllGridValuesZero = !jsonResultsDetailsStore.grid.some(item => item !== 0);
 
         if(isAllGridValuesZero) {
-            for(let i = 0; i < gridStore.length; i++) {
+            for(let i = 0; i < jsonResultsDetailsStore.grid.length; i++) {
                 $(`#resultsBodyGrid${i}`).removeClass('bg-red-600');
                 $(`#inputGrid${i}`).removeClass('bg-red-600');
                 $(`#inputGrid${i}`).removeClass('font-bold');
                 $(`#inputGrid${i}`).removeClass('text-white');
-                $(`#errorGridAlert${indexPosMap[i] - 1}`).slideUp(500);
+                $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
             }
         } else {
-            for(let i = 0; i < gridStore.length; i++) {
-                if(gridStore[i] === 0) {
+            for(let i = 0; i < jsonResultsDetailsStore.grid.length; i++) {
+                if(jsonResultsDetailsStore.grid[i] === 0) {
                     $(`#resultsBodyGrid${i}`).addClass('bg-red-600');
                     $(`#inputGrid${i}`).addClass('bg-red-600');
                     $(`#inputGrid${i}`).addClass('font-bold');
                     $(`#inputGrid${i}`).addClass('text-white');
-                    $(`#errorGridAlert${indexPosMap[i] - 1}`).slideDown(500);
+                    $(`#errorGridAlert${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
                 }
             }
         }
     }
 
-    function serialiseRowReorderControls(json, originalStatusMinusUnitsPlace, raceTimeInAbsolutes, stopsStore, additionalResultsPoints, indexPosMap, i) {
+    function checkAndMonitorLapsCompleted(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i) {
+        inputFormatCheck(dataToCheck.stops.jsonValue, dataToCheck.stops.parentNode, dataToCheck.stops.inpNode, dataToCheck.stops.alertNode, 0);
+
+        $(dataToCheck.stops.inpNode).change(function(event) {
+            let selectedStopsVal = $(dataToCheck.stops.inpNode).val();
+            let nextRow = $(this).closest('tr').next();
+            
+            jsonResultsDetailsStore.stops[supportingVariables.indexPosMap[i] - 1] = parseInt(selectedStopsVal);
+            
+            dataToCheck.stops.alertNode = `#errorStopsAlert${supportingVariables.indexPosMap[i] - 1}`;
+
+            checkIfCurrentTimeLessThanPosAbove(json, jsonResultsDetailsStore, supportingVariables, i);
+            
+            if(nextRow.length) {
+                let nextIndex = parseInt((nextRow[0].querySelector('.inputPos').id).match(/\d+/g)[0]);
+                
+                checkIfCurrentTimeLessThanPosAbove(json, jsonResultsDetailsStore, supportingVariables, nextIndex);
+            }
+            
+            inputFormatCheck(parseInt(selectedStopsVal), dataToCheck.stops.parentNode, dataToCheck.stops.inpNode, dataToCheck.stops.alertNode, 0);
+            
+            if((supportingVariables.indexPosMap[i] - 1) === 0) {
+                for(let x = 0; x < json.results.length; x++) {
+                    checkRaceTimeMatchesWithStatus(json, jsonResultsDetailsStore, supportingVariables, x);
+                }  
+            }
+            else {
+                checkRaceTimeMatchesWithStatus(json, jsonResultsDetailsStore, supportingVariables, i);
+            }
+            
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        });
+
+        resetField(dataToCheck.stops.undoBtn, dataToCheck.stops.inpNode, dataToCheck.stops.jsonValue);
+    }
+
+    function checkIfCurrentTimeLessThanPosAbove(json, jsonResultsDetailsStore, supportingVariables, i) {
+        // Skipping check for first row
+        if(supportingVariables.indexPosMap[i] === 1) {
+            if($(`#resultsBodyStops${i}`).hasClass('bg-yellow-600')) {
+                $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
+                $(`#inputStops${i}`).removeClass('bg-yellow-600');
+            }
+
+            return;
+        }
+
+        let prevRaceTime = jsonResultsDetailsStore.raceTimeInAbsolutes[supportingVariables.indexPosMap[i] - 2];
+        let currentRaceTime = jsonResultsDetailsStore.raceTimeInAbsolutes[supportingVariables.indexPosMap[i] - 1];
+
+        let prevRaceTimeInSeconds = convertTimeFormatToSeconds(prevRaceTime);
+        let currentRaceTimeInSeconds = convertTimeFormatToSeconds(currentRaceTime);
+        
+        let prevStops = jsonResultsDetailsStore.stops[supportingVariables.indexPosMap[i] - 2];
+        let currentStops = jsonResultsDetailsStore.stops[supportingVariables.indexPosMap[i] - 1];
+
+        if(prevStops < currentStops) {
+            currentLapsCompletedIsGreaterThanRowAbove(supportingVariables, i);
+        }
+        else if(
+            !supportingVariables.isTimeNotNumber.test(currentRaceTime) && 
+            !supportingVariables.isTimeNotNumber.test(prevRaceTime)
+        ) {
+            if((currentRaceTimeInSeconds < prevRaceTimeInSeconds) && (currentStops === prevStops)) {
+                currentRaceTimeIsLessThanRowAboveWithSameLapsCompleted(supportingVariables, currentStops, i);
+            }
+            else {
+                removeAllTimeAndLapsRelatedWarnings(supportingVariables, i);
+
+                if(!$(`#inputTime${i}`).hasClass('bg-red-600')) {
+                    $(`#inputTime${i}`).removeClass('font-bold');
+                    $(`#inputTime${i}`).removeClass('text-white');
+                }
+            }
+        }
+        else {
+            removeAllTimeAndLapsRelatedWarnings(supportingVariables, i);
+
+            $(`#inputTime${i}`).removeClass('font-bold');
+            $(`#inputTime${i}`).removeClass('text-white');
+        }
+    }
+
+    function currentLapsCompletedIsGreaterThanRowAbove(supportingVariables, i) {
+        $(`#resultsBodyStops${i}`).addClass('bg-yellow-600');
+        $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
+        $(`#inputStops${i}`).addClass('bg-yellow-600');
+        $(`#inputTime${i}`).removeClass('bg-yellow-600');
+        $(`#inputStops${i}`).addClass('font-bold');
+        $(`#inputStops${i}`).addClass('text-white');
+        $(`#inputTime${i}`).removeClass('font-bold');
+        $(`#inputTime${i}`).removeClass('text-white');
+
+        $(`#warningRaceTimeFasterThanPrevPos${supportingVariables.indexPosMap[i] - 1}`).html(
+            `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> LAPS COMPLETED</strong> is more than the that of row above</p>`
+        );
+        $(`#warningRaceTimeFasterThanPrevPos${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+    }
+
+    function currentRaceTimeIsLessThanRowAboveWithSameLapsCompleted(supportingVariables, currentStops, i) {
+        $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
+        $(`#inputStops${i}`).removeClass('bg-yellow-600');
+        $(`#inputTime${i}`).addClass('font-bold');
+        $(`#inputTime${i}`).addClass('text-white');
+        
+        if(!$(`#resultsBodyTime${i}`).hasClass('bg-red-600')) {
+            $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
+            $(`#inputTime${i}`).addClass('bg-yellow-600');
+        }
+
+        if(!$(`#inputStops${i}`).hasClass('bg-red-600')) {
+            $(`#inputStops${i}`).removeClass('font-bold');
+            $(`#inputStops${i}`).removeClass('text-white');
+        }
+
+        $(`#warningRaceTimeFasterThanPrevPos${supportingVariables.indexPosMap[i] - 1}`).html(
+            `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> RACE TIME</strong> is less than the that of row above having <strong>COMPLETED ${currentStops} LAPS</stron></p>`
+        );
+        $(`#warningRaceTimeFasterThanPrevPos${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+    }
+
+    function removeAllTimeAndLapsRelatedWarnings(supportingVariables, i) {
+        $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
+        $(`#resultsBodyStops${i}`).removeClass('bg-yellow-600');
+        $(`#inputTime${i}`).removeClass('bg-yellow-600');
+        $(`#inputStops${i}`).removeClass('bg-yellow-600');
+
+        if(!$(`#inputStops${i}`).hasClass('bg-red-600')) {
+            $(`#inputStops${i}`).removeClass('font-bold');
+            $(`#inputStops${i}`).removeClass('text-white');
+        }
+
+        $(`#warningRaceTimeFasterThanPrevPos${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+    }
+
+    function checkAndMonitorFastestLap(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i) {
+        timeCheck(regexValidationStrings.regexFastestLap, dataToCheck.fastestLap.jsonValue, dataToCheck.fastestLap.inpNode, dataToCheck.fastestLap.parentNode, dataToCheck.fastestLap.alertNode);
+
+        $(dataToCheck.fastestLap.inpNode).change(function(event) {
+            let selectedFastestLapVal = $(dataToCheck.fastestLap.inpNode).val();
+            
+            json.results[i].fastestlaptime = selectedFastestLapVal;
+
+            dataToCheck.fastestLap.alertNode = `#errorFlAlert${supportingVariables.indexPosMap[i] - 1}`;
+
+            timeCheck(regexValidationStrings.regexFastestLap, selectedFastestLapVal, dataToCheck.fastestLap.inpNode, dataToCheck.fastestLap.parentNode, dataToCheck.fastestLap.alertNode);
+            isFastestLapPresentAndMatchingWithStatus(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        });
+
+        resetField(dataToCheck.fastestLap.undoBtn, dataToCheck.fastestLap.inpNode, dataToCheck.fastestLap.jsonValue);
+    }
+
+    function timeCheck(regex, value, inpNode, parentNode, alertNode) {
+        let timeCheck = new RegExp(regex);
+
+        if(!timeCheck.test(value)) {
+            if($(parentNode).hasClass('bg-yellow-600')) {
+                $(parentNode).removeClass('bg-yellow-600');
+                $(inpNode).removeClass('bg-yellow-600');
+            }
+
+            $(parentNode).addClass('bg-red-600');
+            $(inpNode).addClass('bg-red-600');
+            $(inpNode).addClass('font-bold');
+            $(inpNode).addClass('text-white');
+            $(alertNode).slideDown(500);   
+        } else {
+            $(parentNode).removeClass('bg-red-600');
+            $(inpNode).removeClass('bg-red-600');
+            $(inpNode).removeClass('font-bold');
+
+            if(!$(parentNode).hasClass('bg-yellow-600')) {
+                $(inpNode).removeClass('text-white');
+            }
+
+            $(alertNode).slideUp(500);    
+        }
+    }
+
+    function isFastestLapPresentAndMatchingWithStatus(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables) {
+        let flFormatCheck = new RegExp(regexValidationStrings.regexFastestLap);
+        let shortestTime = Number.MAX_VALUE;
+        let isFastestLapPresent = jsonResultsDetailsStore.status.includes(1);
+        let fastestLapRowPosition, isAtleastOneFlTImeValid = 0;
+        
+        for(let i = 0; i < json.results.length; i++) {
+            let currentFl = json.results[i].fastestlaptime;
+
+            if(flFormatCheck.test(currentFl)) {
+                let currentFastestLapInSeconds = convertTimeFormatToSeconds(json.results[i].fastestlaptime);
+
+                if(currentFastestLapInSeconds <= shortestTime) {
+                    shortestTime = currentFastestLapInSeconds;
+                    fastestLapRowPosition = supportingVariables.indexPosMap[i];
+                    supportingVariables.fastestLapIndex.current = i;
+                }
+
+                isAtleastOneFlTImeValid = 1;
+            }
+        }
+
+        if(
+            isAtleastOneFlTImeValid && 
+            jsonResultsDetailsStore.status[supportingVariables.fastestLapIndex.current] === 0
+        ) {
+            $('#warningFlStatusNotMatchingAlert').html(
+                `Row <strong>${fastestLapRowPosition}</strong> with fastest lap time does not have 'Fastest Lap' <strong>STATUS</strong>`
+            );
+            $(`#resultsBodyStatus${supportingVariables.fastestLapIndex.previous}`).removeClass('bg-yellow-600');
+            $(`#resultsBodyStatus${supportingVariables.fastestLapIndex.current}`).addClass('bg-yellow-600');
+            $('#warningFlStatusNotMatchingAlert').slideDown(500);
+        }
+        else {
+            $(`#resultsBodyStatus${supportingVariables.fastestLapIndex.previous}`).removeClass('bg-yellow-600');
+            $(`#resultsBodyStatus${supportingVariables.fastestLapIndex.current}`).removeClass('bg-yellow-600');
+            $('#warningFlStatusNotMatchingAlert').slideUp(500);
+        }
+
+        if(!isFastestLapPresent) {
+            $('#warningNoPosWithStatus1Alert').slideDown(500);
+        }
+        else {
+            $('#warningNoPosWithStatus1Alert').slideUp(500);
+        }
+
+        supportingVariables.fastestLapIndex.previous = supportingVariables.fastestLapIndex.current;
+    }
+
+    function checkAndMonitorRaceTime(json, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, supportingVariables, i) {
+        let originalAbsoluteRaceTime = jsonResultsDetailsStore.raceTimeInAbsolutes[supportingVariables.indexPosMap[i] - 1];
+        let originalIntervalRaceTime = jsonResultsDetailsStore.raceTimeInIntervals[supportingVariables.indexPosMap[i] - 1];
+
+        checkRaceTimeMatchesWithStatus(json, jsonResultsDetailsStore, supportingVariables, i);
+
+        checkIfCurrentTimeLessThanPosAbove(json, jsonResultsDetailsStore, supportingVariables, i);
+
+        checkTimeFormatForAllPositions(dataToCheck, dataToCheck.time.jsonValue, regexValidationStrings, supportingVariables, i);
+
+        disableToggleBtnsOnTimeError(json, regexValidationStrings, supportingVariables);
+
+        $(dataToCheck.time.inpNode).change(function(event) {
+            let selectedTimeVal = $(dataToCheck.time.inpNode).val();
+            
+            if($('.raceTimeCol').hasClass('absoluteTime')) {
+                jsonResultsDetailsStore.raceTimeInAbsolutes[supportingVariables.indexPosMap[i] - 1] = selectedTimeVal;
+                
+                if((supportingVariables.indexPosMap[i] - 1) === 0) {
+                    changeInRaceTimeOfPosition1(json, selectedTimeVal, jsonResultsDetailsStore, jsonResultsDetailsStore.raceTimeInAbsolutes, supportingVariables, i);
+                }
+                else {
+                    jsonResultsDetailsStore.raceTimeInIntervals[supportingVariables.indexPosMap[i] - 1] = selectedTimeVal;
+                    json.results[supportingVariables.indexPosMap[i] - 1].time = selectedTimeVal;
+
+                    if(!supportingVariables.isTimeNotNumber.test(selectedTimeVal)) {
+                        jsonResultsDetailsStore.raceTimeInIntervals[supportingVariables.indexPosMap[i] - 1] = convertAbsoluteTimeToInterval(selectedTimeVal, jsonResultsDetailsStore.raceTimeInIntervals[0]);
+                    }
+                }
+            }
+            else {
+                jsonResultsDetailsStore.raceTimeInIntervals[supportingVariables.indexPosMap[i] - 1] = selectedTimeVal;
+
+                if((supportingVariables.indexPosMap[i] - 1) === 0) {
+                    changeInRaceTimeOfPosition1(json, selectedTimeVal, jsonResultsDetailsStore, jsonResultsDetailsStore.raceTimeInIntervals, supportingVariables, i);
+                }
+                else {
+                    jsonResultsDetailsStore.raceTimeInAbsolutes[supportingVariables.indexPosMap[i] - 1] = selectedTimeVal;
+                    json.results[supportingVariables.indexPosMap[i] - 1].time = selectedTimeVal;
+                    
+                    if(!supportingVariables.isTimeNotNumber.test(selectedTimeVal)) {
+                        jsonResultsDetailsStore.raceTimeInAbsolutes[supportingVariables.indexPosMap[i] - 1] = convertIntervalTimeToAbsolute(selectedTimeVal, jsonResultsDetailsStore.raceTimeInIntervals[0]);
+                    }
+                }
+            }
+
+            checkIfCurrentTimeLessThanPosAbove(json, jsonResultsDetailsStore, supportingVariables, i);
+
+            dataToCheck.time.alertNode = `#errorTimeAlert${supportingVariables.indexPosMap[i] - 1}`;
+
+            checkTimeFormatForAllPositions(dataToCheck, selectedTimeVal, regexValidationStrings, supportingVariables, i);
+
+            disableToggleBtnsOnTimeError(json, regexValidationStrings, supportingVariables);
+            checkRaceTimeMatchesWithStatus(json, jsonResultsDetailsStore, supportingVariables, i);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        });
+
+        $(dataToCheck.time.undoBtn).click(function(event) {
+            if($('.raceTimeCol').hasClass('absoluteTime')) {
+                $(dataToCheck.time.inpNode).val(originalAbsoluteRaceTime);
+            }
+            else {
+                let oldIntervalRaceTime = convertAbsoluteTimeToInterval(originalAbsoluteRaceTime, jsonResultsDetailsStore.raceTimeInIntervals[0]);
+
+                if((supportingVariables.indexPosMap[i] - 1) === 0 || originalIntervalRaceTime === '') {
+                    oldIntervalRaceTime = originalAbsoluteRaceTime;
+                }
+                
+                if(supportingVariables.isTimeNotNumber.test($(`#inputTime${i}`).val())) {
+                    if(!supportingVariables.isTimeNotNumber.test(originalIntervalRaceTime)) {
+                        originalIntervalRaceTime = convertAbsoluteTimeToInterval(originalAbsoluteRaceTime, jsonResultsDetailsStore.raceTimeInIntervals[0]);
+                    }
+                    oldIntervalRaceTime = originalIntervalRaceTime;
+                }
+
+                $(dataToCheck.time.inpNode).val(oldIntervalRaceTime);
+            }
+
+            const e = new Event("change");
+            const element = document.querySelector(dataToCheck.time.inpNode);
+            element.dispatchEvent(e);
+        });
+    }
+
+    function checkTimeFormatForAllPositions(dataToCheck, value, regexValidationStrings, supportingVariables, i) {
+        if((supportingVariables.indexPosMap[i] - 1) === 0) {
+            $(`#errorTimeAlert${supportingVariables.indexPosMap[i] - 1}`).html(
+                `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong> or <strong>'1:06.006'</strong>`
+            );
+
+            timeCheck(regexValidationStrings.regexTimeIsAbsolute, value, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
+        }
+        else {
+            if($('.raceTimeCol').hasClass('absoluteTime')) {
+                timeCheck(regexValidationStrings.regexTimeIsAbsolute, value, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
+            }
+            else {
+                timeCheck(regexValidationStrings.regexTimeIsInterval, value, dataToCheck.time.inpNode, dataToCheck.time.parentNode, dataToCheck.time.alertNode);
+            }
+        }
+    }
+
+    function disableToggleBtnsOnTimeError(json, regexValidationStrings, supportingVariables) {
+        let noTimeErrors = 1;
+        let raceTimePos1 = json.results[0].time;
+
+        for(let i = 0; i < json.results.length; i++) {
+            noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
+        }
+
+        if(noTimeErrors === 1) {
+            if(
+                supportingVariables.isTimeInPosition1Absolute.test(raceTimePos1) && 
+                !$('#rowReorderToggleBtn').hasClass('editing')
+            ) {
+                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
+            }
+            
+            if(!$('#rowReorderToggleBtn').hasClass('editing')) {
+                $(("#rowReorderToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#rowReorderBtnWrapper").removeClass('tooltip');
+                $(("#rowReorderToggleBtn")).addClass('text-orange-700');
+            }
+        }
+        else {
+            $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+            $("#raceTimeFormatBtnWrapper").addClass('tooltip');
+            $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
+
+            $(("#rowReorderToggleBtn")).addClass('disableActionBtns text-white');
+            $("#rowReorderBtnWrapper").addClass('tooltip');
+            $(("#rowReorderToggleBtn")).removeClass('text-orange-700');
+        }
+
+
+        if(!supportingVariables.isTimeInPosition1Absolute.test(raceTimePos1)) {
+            $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
+            $("#raceTimeFormatBtnWrapper").addClass('tooltip');
+            $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
+
+            if(!$('.raceTimeCol').hasClass('absoluteTime')) {
+                const e = new Event("click");
+                const element = document.querySelector("#raceTimeFormatToggleBtn");
+                element.dispatchEvent(e);
+            }
+        }
+        else {
+            if(noTimeErrors === 1 && (!$('#rowReorderToggleBtn').hasClass('editing'))) {
+                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
+                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
+            }
+        }
+    }
+
+    function changeInRaceTimeOfPosition1(json, selectedTimeVal, jsonResultsDetailsStore, timeFormat, supportingVariables, i) {
+        jsonResultsDetailsStore.raceTimeInAbsolutes[0] = selectedTimeVal;
+        jsonResultsDetailsStore.raceTimeInIntervals[0] = selectedTimeVal;
+        json.results[0].time = selectedTimeVal;
+
+        if(supportingVariables.isTimeInPosition1Absolute.test(timeFormat[0])) {
+            $(`#resultsBodyTime${i}`).removeClass('bg-yellow-600');
+            $(`#inputTime${i}`).removeClass('bg-yellow-600');
+            $(`#inputTime${i}`).removeClass('font-bold');
+            $(`#inputTime${i}`).removeClass('text-white');
+            $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideUp(500);
+        }
+        else {
+            $(`#resultsBodyTime${i}`).addClass('bg-yellow-600');
+            $(`#inputTime${i}`).addClass('bg-yellow-600');
+            $(`#inputTime${i}`).addClass('font-bold');
+            $(`#inputTime${i}`).addClass('text-white');
+            $('#warningRaceTimeFirstPosNotAbsoluteAlert').slideDown(500);
+        }
+
+        if(supportingVariables.isTimeInPosition1Absolute.test(selectedTimeVal)) {
+            for(let x = 1; x < json.results.length; x++) {
+                if(!supportingVariables.isTimeNotNumber.test(jsonResultsDetailsStore.raceTimeInIntervals[x])) {
+                    jsonResultsDetailsStore.raceTimeInIntervals[x] = convertAbsoluteTimeToInterval(jsonResultsDetailsStore.raceTimeInAbsolutes[x], jsonResultsDetailsStore.raceTimeInIntervals[0]);
+
+                    if(!$('.raceTimeCol').hasClass('absoluteTime')) {
+                        $(`#inputTime${supportingVariables.indexPosMap[x] - 1}`).val(jsonResultsDetailsStore.raceTimeInIntervals[x]);
+                    }
+                }
+            }
+        }
+    }
+
+    function convertIntervalTimeToAbsolute(interval, firstPosTime) {
+        let firstPosTimeInSeconds = convertTimeFormatToSeconds(firstPosTime);
+        let timeToAdd = '';
+
+        if(interval.includes('+')) {
+            timeToAdd = interval.split('+')[1];
+        }
+
+        if(interval.includes('-')) {
+            timeToAdd = interval.split('-')[1];
+        }
+
+        let secondsToAdd = +(convertTimeFormatToSeconds(timeToAdd));
+        let absoluteTime = (firstPosTimeInSeconds + secondsToAdd).toFixed(3);
+
+        if(interval.includes('-')) {
+            absoluteTime = (firstPosTimeInSeconds - secondsToAdd).toFixed(3);
+        }
+
+        if(+absoluteTime > 60) {
+            let minutes = Math.floor(absoluteTime / 60);
+            let seconds = (absoluteTime % 60).toFixed(3);
+
+            if(parseFloat(+seconds) < 10) {
+                seconds = '0' + seconds;
+            }
+    
+            absoluteTime = [minutes, seconds].join(':');
+        }
+
+        return absoluteTime;
+    }
+
+    function checkAndMonitorStatus(json, points, dataToCheck, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
+        let statusValidCheck = dataToCheck.status.allValues.find(item => {return item.id === dataToCheck.status.jsonValue});
+        
+        if(statusValidCheck === undefined) {
+            $(dataToCheck.status.parentNode).addClass('bg-red-600');
+            $(dataToCheck.status.alertNode).slideDown(500);
+        }
+
+        $(dataToCheck.status.selectInpNode).change(function(event) {
+            let selectedValue = $(dataToCheck.status.selectInpNode).val();
+
+            jsonResultsDetailsStore.status[i] = parseInt(selectedValue);
+
+            dataToCheck.status.alertNode = `#errorStatusAlert${supportingVariables.indexPosMap[i] - 1}`;
+
+            reflectFastestLap(parseInt(selectedValue), points, additionalDetailsStore, supportingVariables, i);
+            clearSelectWarning(dataToCheck.status.selectInpNode, dataToCheck.status.allValues, selectedValue, dataToCheck.status.parentNode, dataToCheck.status.alertNode);
+            checkDuplicateStatus(jsonResultsDetailsStore, supportingVariables);
+            checkRaceTimeMatchesWithStatus(json, jsonResultsDetailsStore, supportingVariables, i);
+            isFastestLapPresentAndMatchingWithStatus(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+            checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+        })
+
+        resetField(dataToCheck.status.undoBtn, dataToCheck.status.selectInpNode, dataToCheck.status.jsonValue);
+    }
+
+    function serialiseRowReorderControls(jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
         $(`#moveRowUp${i}`).click(function(event) {    
             let thisRow = $(this).closest('tr');
             let prevRow = thisRow.prev();
-            if (prevRow.length) {
-                let currentPos = parseInt(thisRow[0].querySelector('.inputPos').value);
-                let prevPos = parseInt(prevRow[0].querySelector('.inputPos').value);
-                let prevIndex = parseInt((prevRow[0].querySelector('.inputPos').id).match(/\d+/g)[0]);
-                let tempStops, tempStatus, tempAddPoints;
 
-                // Swapping values between rows
-                indexPosMap[i] = prevPos;
-                indexPosMap[prevIndex] = currentPos;
-                // console.log(currentPos, prevIndex, indexPosMap)
-
-                tempRaceTimeInAbsolutes = raceTimeInAbsolutes[currentPos - 1];
-                raceTimeInAbsolutes[currentPos - 1] = raceTimeInAbsolutes[prevPos - 1];
-                raceTimeInAbsolutes[prevPos - 1] = tempRaceTimeInAbsolutes;
-                // console.log(raceTimeInAbsolutes)
-                
-                // tempStops = stopsStore[currentPos - 1];
-                // stopsStore[currentPos - 1] = stopsStore[prevPos - 1];
-                // stopsStore[prevPos - 1] = tempStops;
-
-                tempStatus = originalStatusMinusUnitsPlace[currentPos - 1];
-                originalStatusMinusUnitsPlace[currentPos - 1] = originalStatusMinusUnitsPlace[prevPos - 1];
-                originalStatusMinusUnitsPlace[prevPos - 1] = tempStatus;
-
-                tempAddPoints = additionalResultsPoints[currentPos - 1];
-                additionalResultsPoints[currentPos - 1] = additionalResultsPoints[prevPos - 1];
-                additionalResultsPoints[prevPos - 1] = tempAddPoints;
-
-                currentPos -= 1;
-                prevPos += 1;
-
-                thisRow[0].querySelector('.inputPos').value = currentPos;
-                prevRow[0].querySelector('.inputPos').value = prevPos;
-                
-                prevRow.before(thisRow);
-
-                // console.log('fire prev i', prevIndex);
-                fireChangeEvents(prevIndex);
-                // console.log('fire i', i);
-                fireChangeEvents(i);
-            }
-
-            disableFirstAndLastReorderBtns();
+            swapPreviousAndCurrentRow(thisRow, prevRow, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
         })
         
         $(`#moveRowDown${i}`).click(function(event) {            
             let thisRow = $(this).closest('tr');
             let nextRow = thisRow.next();
+            let isRowMovingUp = 0;
             
-            if (nextRow.length) {
-                let currentPos = parseInt(thisRow[0].querySelector('.inputPos').value);
-                let nextPos = parseInt(nextRow[0].querySelector('.inputPos').value);
-                let nextIndex = parseInt((nextRow[0].querySelector('.inputPos').id).match(/\d+/g)[0]);
-                let tempStops, tempStatus, tempAddPoints;
-
-                indexPosMap[i] = nextPos;
-                indexPosMap[nextIndex] = currentPos;
-                // console.log(i, nextIndex, indexPosMap)
-
-                tempRaceTimeInAbsolutes = raceTimeInAbsolutes[currentPos - 1];
-                raceTimeInAbsolutes[currentPos - 1] = raceTimeInAbsolutes[nextPos - 1];
-                raceTimeInAbsolutes[nextPos - 1] = tempRaceTimeInAbsolutes;
-                // console.log(raceTimeInAbsolutes)
-
-                // tempStops = stopsStore[currentPos - 1];
-                // stopsStore[currentPos - 1] = stopsStore[nextPos - 1];
-                // stopsStore[nextPos - 1] = tempStops;
-
-                tempStatus = originalStatusMinusUnitsPlace[currentPos - 1];
-                originalStatusMinusUnitsPlace[currentPos - 1] = originalStatusMinusUnitsPlace[nextPos - 1];
-                originalStatusMinusUnitsPlace[nextPos - 1] = tempStatus;
-
-                tempAddPoints = additionalResultsPoints[currentPos - 1];
-                additionalResultsPoints[currentPos - 1] = additionalResultsPoints[nextPos - 1];
-                additionalResultsPoints[nextPos - 1] = tempAddPoints;
-                // console.log(additionalResultsPoints)
-                
-                currentPos += 1;
-                nextPos -= 1;
-                
-                thisRow[0].querySelector('.inputPos').value = currentPos;
-                nextRow[0].querySelector('.inputPos').value = nextPos;  
-                
-                nextRow.after(thisRow);
-
-                fireChangeEvents(nextIndex);
-                fireChangeEvents(i);
-            }
-
-            disableFirstAndLastReorderBtns();
+            swapPreviousAndCurrentRow(thisRow, nextRow, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i, isRowMovingUp);
         })
 
         disableFirstAndLastReorderBtns();
+    }
+
+    function swapPreviousAndCurrentRow(currentRow, otherRow, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i, isRowMovingUp = 1) {
+        if(otherRow.length) {
+            let currentPos = parseInt(currentRow[0].querySelector('.inputPos').value);
+            let otherPos = parseInt(otherRow[0].querySelector('.inputPos').value);
+            let otherIndex = parseInt((otherRow[0].querySelector('.inputPos').id).match(/\d+/g)[0]);
+            let tempStops, tempStatus, tempAddPoints;
+
+            // Swapping 'indexPosMap' values between rows
+            supportingVariables.indexPosMap[i] = otherPos;
+            supportingVariables.indexPosMap[otherIndex] = currentPos;
+
+            swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.raceTimeInAbsolutes);
+            swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.originalStatusMinusUnitsPlace);
+            swapDetailsStoreValues(currentPos, otherPos, additionalDetailsStore.resultsPoints);
+
+            if(isRowMovingUp) {
+                currentPos -= 1;
+                otherPos += 1;
+    
+                currentRow[0].querySelector('.inputPos').value = currentPos;
+                otherRow[0].querySelector('.inputPos').value = otherPos;
+                
+                otherRow.before(currentRow);
+            }
+            else {
+                currentPos += 1;
+                otherPos -= 1;
+                
+                currentRow[0].querySelector('.inputPos').value = currentPos;
+                otherRow[0].querySelector('.inputPos').value = otherPos;  
+                
+                otherRow.after(currentRow);
+            }
+
+            fireChangeEvents(otherIndex);
+            fireChangeEvents(i);
+        }
+
+        disableFirstAndLastReorderBtns();
+    }
+
+    function swapDetailsStoreValues(currentPos, otherPos, store) {
+        let tempVal = store[currentPos - 1];
+        store[currentPos - 1] = store[otherPos - 1];
+        store[otherPos - 1] = tempVal;
     }
 
     function fireChangeEvents(index) {
         let elements = [`#inputPos${index}`, `#driverSelect${index}`, `#constructorSelect${index}`, `#inputGrid${index}`, `#inputStops${index}`, `#inputFl${index}`, `#inputTime${index}`, `#statusSelect${index}`];
 
         const e = new Event("change");
+        
         for(let i = 0; i < elements.length; i++) {
             const element = document.querySelector(elements[i]);
             element.dispatchEvent(e);
@@ -2993,355 +2851,544 @@
         $(lastDownBtn).addClass('opacity-50 cursor-not-allowed');
     }
 
-    function inputFormatCheck(inputValue, parentNode, inpNode, alertNode, minVal = 1) {
-         
-        let isFraction = inputValue % 1;
+    function addEventListenerToAllToggleBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        addEventListenerToToggleControlsBtn();
 
-        if(isNaN(inputValue) || (inputValue < minVal) || (inputValue == '') || (inputValue == '.') || (isFraction != 0)) {
-            $(parentNode).addClass('bg-red-600');
-            $(inpNode).addClass('bg-red-600');
-            $(inpNode).addClass('font-bold');
-            $(inpNode).addClass('text-white');
-            $(alertNode).slideDown(500);
-        } else {
-            $(parentNode).removeClass('bg-red-600');
-            $(inpNode).removeClass('bg-red-600');
-            if(!$(parentNode).hasClass('bg-yellow-600')) {
-                $(inpNode).removeClass('font-bold');
-                $(inpNode).removeClass('text-white');
-            }
-            $(alertNode).slideUp(500);
-        }
+        addEventListenerToRaceTimeFormatBtn(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+        
+        addEventListenerToUndoToggleBtn();
+        
+        addEventListenerToRowReorderBtn(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
     }
 
-    function clearSelectWarning(selectInpNode, allValues, selectedValue, parentNode, alertNode) {
-        let validityCheck = allValues.find(item => {return item.id === selectedValue});
-
-        if(validityCheck === undefined) {
-            if(selectedValue === null || selectedValue === '') {
-                $(parentNode).removeClass('bg-yellow-600');
-                $(parentNode).addClass('bg-red-600');
-                $(alertNode).slideDown(500);
+    function addEventListenerToToggleControlsBtn() {
+        $('#toggleControlsBtn').click(function(event) {
+            if($('#toggleControlsBtn').hasClass('editing')) {
+                $('#toggleControlsBtn').removeClass('bg-green-500 hover:bg-green-700 border-green-700');
+                $('#toggleControlsBtn').addClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
+                $('#toggleControlsBtn').removeClass('editing');
             }
             else {
-                $(parentNode).removeClass('bg-red-600');
-                $(alertNode).slideUp(500);
+                $('#toggleControlsBtn').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
+                $('#toggleControlsBtn').addClass('bg-green-500 hover:bg-green-700 border-green-700');
+                $('#toggleControlsBtn').addClass('editing');
             }
-        }
-    }
 
-    // function test(selectInpNode, allValues, jsonValue, parentNode, alertNode) {
-    //     $(selectInpNode).change(function(event) {
-    //         let selectedValue = $(selectInpNode).val();
-    //         let validityCheck = allValues.find(item => {return item.id === jsonValue});
+            $('#undoToggleBtn').toggleClass('hidden');
+            $('#rowReorderToggleBtn').toggleClass('hidden');
+
+            $('.undo').addClass('hidden');
+
+            if($('#undoToggleBtn').hasClass('editing')) {
+                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').html('Show Reset');
+                $('#undoToggleBtn').removeClass('editing');
+            }
+
+            $('.rowReorderBtn').addClass('hidden');
+
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                $('#rowReorderToggleBtn').html('Show Row Reorder');
+                $('#rowReorderToggleBtn').removeClass('editing');
+            }
             
-    //         if(validityCheck === undefined) {
-    //             if(selectedValue == null) {
-    //                 $(parentNode).addClass('bg-red-600');
-    //                 $(alertNode).slideDown(500);
-    //             }
-    //             else {
-    //                 $(parentNode).removeClass('bg-red-600');
-    //                 $(alertNode).slideUp(500);
-    //             }
-    //         }
-    //     });
-    // }
+            $('#addRemoveRowControls').toggleClass('hidden');
 
-    function timeCheck(regex, value, inpNode, parentNode, alertNode) {
-        let timeCheck = new RegExp(regex);
-
-        if(!(timeCheck.test(value))) {
-            if($(parentNode).hasClass('bg-yellow-600')) {
-                $(parentNode).removeClass('bg-yellow-600');
-                $(inpNode).removeClass('bg-yellow-600');
+            if($('.selectInp').hasClass('open')) {
+                $('.selectInp').attr('disabled', true);
+                $('.selectInp').removeClass('open');
+                $('.selectInp').addClass('cursor-not-allowed');
             }
-            $(parentNode).addClass('bg-red-600');
-            $(inpNode).addClass('bg-red-600');
-            $(inpNode).addClass('font-bold');
-            $(inpNode).addClass('text-white');
-            $(alertNode).slideDown(500);   
-        } else {
-            $(parentNode).removeClass('bg-red-600');
-            $(inpNode).removeClass('bg-red-600');
-            $(inpNode).removeClass('font-bold');
-            if(!$(parentNode).hasClass('bg-yellow-600')) $(inpNode).removeClass('text-white');
-            $(alertNode).slideUp(500);    
-        }
-
-        // if($(parentNode).hasClass('bg-red-600')) {
-        //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-        //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
-        // }
-        // else {
-        //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-        //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-        // }
+            else {
+                $('.selectInp').attr('disabled', false);
+                $('.selectInp').addClass('open');
+                $('.selectInp').removeClass('cursor-not-allowed');
+            }
+            
+            $('.numInp').toggleClass('disable');
+            $('.numInp').toggleClass('cursor-not-allowed');
+            $('.addMoreBtn').toggleClass('disable');
+            $('.addMoreBtn').toggleClass('cursor-not-allowed');
+            $('#addMoreTrack').toggleClass('disable');
+            $('#addMoreTrack').toggleClass('cursor-not-allowed');
+        });
     }
 
-    function disableToggleBtnsOnTimeError(json, regexTimePos1Absolute, indexPosMap) {
-        let noTimeErrors = 1;
-        let isTimePos1Absolute = new RegExp(regexTimePos1Absolute);
-        let raceTimePos1 = json.results[0].time;
+    function addEventListenerToRaceTimeFormatBtn(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        $('#raceTimeFormatToggleBtn').click(function(event) {
+            let updatedJSONFromTable = updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
 
-        for(let i = 0; i < json.results.length; i++) {
-            noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
+            toggleTimeFormat(updatedJSONFromTable, jsonResultsDetailsStore, supportingVariables);
+        });
+    }
+
+    function updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, submitFlag = 0) {
+        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'), supportingVariables);
+        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'), supportingVariables);
+
+        // Deleting the 'undefined' created key for the extra track table column
+        delete trackContent[0].undefined;
+
+        if(submitFlag) {
+            let tempNum, resultString;
+            
+            if(additionalDetailsStore.raceDistance != '') {
+                trackContent[0].distance = additionalDetailsStore.raceDistance;
+            }
+
+            for(let i = 0; i < json.results.length; i++) {
+                if(resultsContent[i].status >= 0) {
+                    resultString = (jsonResultsDetailsStore.originalStatusMinusUnitsPlace[i] + resultsContent[i].status).toFixed(2);
+                }
+                else {
+                    resultString = (-jsonResultsDetailsStore.originalStatusMinusUnitsPlace[i] + resultsContent[i].status).toFixed(2);
+                }
+
+                resultsContent[i].status = parseFloat(resultString);
+                
+                if(additionalDetailsStore.resultsPoints[i] !== 0) {
+                    resultsContent[i].points = additionalDetailsStore.resultsPoints[i];
+                }
+                
+                resultsContent[i].time = jsonResultsDetailsStore.raceTimeInAbsolutes[i];
+                
+                if(!isNaN(resultsContent[i].fastestlaptime)) {
+                    resultsContent[i].fastestlaptime = resultsContent[i].fastestlaptime.toFixed(3);
+                }
+            }
+        }
+    
+        return {track: trackContent[0], results: resultsContent};
+    }
+
+    function tableToJSON(table, supportingVariables) {
+        let data = [];
+        let headers = [];
+        let statusMap = [0, 1, -2, -3];
+
+        let jsonKeys = {
+            "Season": 'season_id',
+            "Round Number": 'round',
+            "Circuit": 'circuit_id',
+            "Points Scheme": 'points',
+            "Position": 'position',
+            "Driver": 'driver',
+            "Driver ID": 'driver_id',
+            "Constructor": 'constructor_id',
+            "Starting Grid": 'grid',
+            "Laps Completed": 'stops',
+            "Fastest Lap": 'fastestlaptime',
+            "Race Time": 'time',
+            "Status": 'status'
         }
 
-        // if(!isTimePos1Absolute.test(raceTimePos1)) {
-        //     $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-        //     $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
+        convertTableHeadersIntoRequiredKeyNames(headers, table, jsonKeys);
 
-        //     if(!$('.raceTimeCol').hasClass('absoluteTime')) {
-        //         const e = new Event("click");
-        //         const element = document.querySelector("#raceTimeFormatToggleBtn");
-        //         element.dispatchEvent(e);
-        //     }
-        // }
-        // else {
-        //     $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-        //     $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-        // }
+        slotCellValuesIntoAppropriateHeaders(data, headers, table, supportingVariables);
         
+        return data;
+    }
 
-        if(noTimeErrors === 1) {
-            if(isTimePos1Absolute.test(raceTimePos1) && (!$('#rowReorderToggleBtn').hasClass('editing'))) {
-                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
-                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
+    function convertTableHeadersIntoRequiredKeyNames(headers, table, jsonKeys) {
+        // Looping through cells of the first row of the table
+        for(let i = 0; i < table.rows[0].cells.length; i++) {
+            let tableHeaderText = table.rows[0].cells[i].innerText;
+
+            if(table.rows[0].cells[i].children[0] !== undefined) {
+                tableHeaderText = table.rows[0].cells[i].children[0].innerText;
             }
             
-            if(!$('#rowReorderToggleBtn').hasClass('editing')) {
-                $(("#rowReorderToggleBtn")).removeClass('disableActionBtns text-white');
-                $("#rowReorderBtnWrapper").removeClass('tooltip');
-                $(("#rowReorderToggleBtn")).addClass('text-orange-700');
+            Object.keys(jsonKeys).forEach((key) => {
+                if(tableHeaderText == key) {
+                    headers[i] = jsonKeys[key];
+                }
+            });
+        }
+    }
+
+    function slotCellValuesIntoAppropriateHeaders(data, headers, table, supportingVariables) {
+        // Starting the loop from second row of the table to last row
+        for(let i = 1; i < table.rows.length; i++) {
+            let tableRow = table.rows[i];
+            let rowContent, rowContentFormat, treeTraversal, leftCellTraversal;
+            
+            let rowData = {};
+
+            // Looping through all cells of current row
+            for(let j = 0; j < tableRow.cells.length; j++) {
+                if(tableRow.cells[j].children[0].children.length != 0) {
+                    // Traversing through the DOM tree to find the cell value
+                    treeTraversal = tableRow.cells[j].children[0].children[0].options;
+
+                    if(headers[j] == 'driver'){
+                        rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                    } 
+                    else if(headers[j] == 'status') {
+                        tempRow = treeTraversal.selectedIndex - 1;
+
+                        rowContent = supportingVariables.usedStatusNumbers[tempRow];
+                    } 
+                    else if(headers[j] == 'points') {
+                        rowContent = tableRow.cells[j].children[0].children[0].innerHTML;
+                    } 
+                    else if(headers[j] == 'position') {
+                        rowContent = tableRow.cells[j].children[0].children[2].value;
+                    } 
+                    else {
+                        rowContent = tableRow.cells[j].children[0].children[0].value;
+                    }
+                } 
+                else if(headers[j] == 'driver_id') {
+                    // Traversing through the DOM tree to find the value of the left cell
+                    leftCellTraversal = tableRow.cells[1].children[0].children[0].options;
+                    
+                    rowContent = parseInt(leftCellTraversal[1].value);
+                } 
+                else {
+                    rowContent = tableRow.cells[j].innerHTML;
+                }
+
+                rowContentFormat = Number(rowContent);
+                rowData[headers[j]] = (isNaN(rowContentFormat)) ? rowContent : rowContentFormat;
             }
+
+            data.push(rowData);
         }
-        else {
-            $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-            $("#raceTimeFormatBtnWrapper").addClass('tooltip');
-            $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
+    }
 
-            $(("#rowReorderToggleBtn")).addClass('disableActionBtns text-white');
-            $("#rowReorderBtnWrapper").addClass('tooltip');
-            $(("#rowReorderToggleBtn")).removeClass('text-orange-700');
-        }
+    function toggleTimeFormat(json, jsonResultsDetailsStore, supportingVariables) {        
+        if($('.raceTimeCol').hasClass('absoluteTime')) {
+            let headerText = '[Interval]';
+            let btnText = 'Show Absolute Times';
 
+            changeRaceTimeCellsToRequiredFormat(json, headerText, btnText,jsonResultsDetailsStore.raceTimeInIntervals, supportingVariables);
+            
+            $('.raceTimeCol').removeClass('absoluteTime');
 
-        if(!isTimePos1Absolute.test(raceTimePos1)) {
-            $(("#raceTimeFormatToggleBtn")).addClass('disableActionBtns text-white');
-            $("#raceTimeFormatBtnWrapper").addClass('tooltip');
-            $(("#raceTimeFormatToggleBtn")).removeClass('text-red-700');
-
-            if(!$('.raceTimeCol').hasClass('absoluteTime')) {
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
                 const e = new Event("click");
-                const element = document.querySelector("#raceTimeFormatToggleBtn");
+                const element = document.querySelector("#rowReorderToggleBtn");
                 element.dispatchEvent(e);
             }
         }
         else {
-            if(noTimeErrors === 1 && (!$('#rowReorderToggleBtn').hasClass('editing'))) {
-                $(("#raceTimeFormatToggleBtn")).removeClass('disableActionBtns text-white');
-                $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
-                $(("#raceTimeFormatToggleBtn")).addClass('text-red-700');
-            }
+            let headerText = '[Absolute]';
+            let btnText = 'Show Intervals';
+
+            changeRaceTimeCellsToRequiredFormat(json, headerText, btnText, jsonResultsDetailsStore.raceTimeInAbsolutes, supportingVariables);
+
+            $('.raceTimeCol').addClass('absoluteTime');
         }
     }
 
-    function resetField(undoBtn, node, jsonValue) {
-        $(undoBtn).click(function(event) {
-            $(node).val(jsonValue);
-            if($(node).val() === null) $(node).prop('selectedIndex', 0);
+    function changeRaceTimeCellsToRequiredFormat(json, headerText, btnText, store, supportingVariables) {
+        $('#raceTimeFormatText').html(headerText);
             
-            const e = new Event("change");
-            const element = document.querySelector(node);
-            element.dispatchEvent(e);
+        for(let i = 0; i < json.results.length; i++) {
+            $(`#inputTime${i}`).val(store[supportingVariables.indexPosMap[i] - 1]);
+            
+            if((supportingVariables.indexPosMap[i] - 1) > 0) {
+                changeAllRaceTimeFormatAlertMessageText(i);
+            }
+        }
+
+        $('#raceTimeFormatToggleBtn').html(btnText);
+    }
+
+    function changeAllRaceTimeFormatAlertMessageText(i) {
+        let alertMessage;
+
+        if($('.raceTimeCol').hasClass('absoluteTime')) {
+            alertMessage = `<p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>'±10.324'</strong>, <strong>'±1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`;
+        }
+        else {
+            alertMessage = `<p>Row<strong> ${i+1}</strong> -<strong> RACE TIME</strong> [field must be in one of the following formats:<strong> '-'</strong>, <strong>'1:06.006'</strong>, <strong>+X Lap(s)</strong>, <strong>DNS</strong>, <strong>DNF</strong> or <strong>DSQ</strong>]</p>`
+        }
+
+        $(`#errorTimeAlert${i}`).html(alertMessage);
+    }
+
+    function addEventListenerToUndoToggleBtn() {
+        $('#undoToggleBtn').click(function(event) {
+            if($('#undoToggleBtn').hasClass('editing')) {
+                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').html('Show Reset');
+                $('#undoToggleBtn').removeClass('editing');
+            }
+            else {
+                $('#undoToggleBtn').removeClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').addClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').html('Hide Reset');
+                $('#undoToggleBtn').addClass('editing');
+            }
+
+            $('.undo').toggleClass('hidden');
+            $('.addMoreBtn').toggleClass('hidden');
+
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
+                    $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                    $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                }
+                $('#rowReorderToggleBtn').html('Show Row Reorder');
+                $('#rowReorderToggleBtn').removeClass('editing');
+                
+                $('.rowReorderBtn').toggleClass('hidden');
+                $('.addMoreBtn').toggleClass('hidden');
+            }
         });
     }
 
-    function updatePointsSelection(json, points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, additionalResultsPoints, btnNode, overlayNode, parentNode, alertNode) {
-        $(btnNode).click(function(event) {
-            $(overlayNode).removeClass('hidden');
-            $(overlayNode).addClass('flex');
-            let selectIndex = $(btnNode).html();
-            $(`#select${selectIndex}`).prop('checked', true);
-        });
+    function addEventListenerToRowReorderBtn(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        $('#rowReorderToggleBtn').click(function(event) {
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                $('#rowReorderToggleBtn').html('Show Row Reorder');
+                $('#rowReorderToggleBtn').removeClass('editing');
 
-        for(let i = 0; i < points.length; i++) {
-            $(`#select${i+1}`).click(function(event) {
-                $('input:checkbox').not(this).prop('checked', false);
-                $(btnNode).html(i + 1);
-                $(parentNode).removeClass('bg-red-600');
-                $(alertNode).slideUp(500);
-                $(overlayNode).removeClass('flex');
-                $(overlayNode).addClass('hidden');
-
-                currentPointsSchemeSelected = i + 1;
-                isPointsUndefined = false;
-
-                let selectedValue, flAtIndex;
-                // const e = new Event("change");
-                for(let x = 0; x < json.results.length; x++) {
-                    // let selectedValue = parseInt($(`#statusSelect${x}`).val());
-                    // if(selectedValue === 1 && points[currentPointsSchemeSelected - 1]['P' + (indexPosMap[x])] == 0) {    
-                    //     alert(`Status change at 'Position ${indexPosMap[x]}' has reset 'points' attribute to '0'`);
-                    //     additionalResultsPoints[indexPosMap[x] - 1] = 0;
-                    //     $(`#addMore${x}`).removeClass('bg-green-500 text-white');
-                    //     $(`#addMore${x}`).addClass('bg-white text-green-500');
-                    // }
-                    
-                    // const element = document.querySelector(`#statusSelect${x}`);
-                    // element.dispatchEvent(e);
-                    
-                    if(parseInt($(`#statusSelect${x}`).val()) === 1) {
-                        selectedValue = parseInt($(`#statusSelect${x}`).val());
-                        flAtIndex = x;
-                    }
+                disableRaceTimeFormatBtnOnRaceTimeErrors(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+            }
+            else {
+                $('#rowReorderToggleBtn').removeClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
+                $('#rowReorderToggleBtn').addClass('bg-orange-500 text-white hover:bg-orange-700');
+                $('#rowReorderToggleBtn').html('Hide Row Reorder');
+                $('#rowReorderToggleBtn').addClass('editing');
+                
+                if(!$('.raceTimeCol').hasClass('absoluteTime')) {
+                    const e = new Event("click");
+                    const element = document.querySelector("#raceTimeFormatToggleBtn");
+                    element.dispatchEvent(e);
                 }
+            }
+            
+            $('.rowReorderBtn').toggleClass('hidden');
+            $('.addMoreBtn').toggleClass('hidden');
 
-                reflectFastestLap(points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, additionalResultsPoints, selectedValue, flAtIndex);
-                checkAllTableValueForErrors(indexPosMap, regexFl, regexTimeAbsolute, regexTimeInterval, raceTimeInIntervals, json);
+            if($('#undoToggleBtn').hasClass('editing')) {
+                $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+                $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+                $('#undoToggleBtn').html('Show Reset');
+                $('#undoToggleBtn').removeClass('editing');
+
+                $('.undo').toggleClass('hidden');
+                $('.addMoreBtn').toggleClass('hidden');
+            }
+        });
+    }
+
+    function disableRaceTimeFormatBtnOnRaceTimeErrors(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        let updatedJSONFromTable = updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+        let noTimeErrors = 1;
+        
+        let raceTimePos1 = $(`#inputTime${supportingVariables.indexPosMap[0] - 1}`).val();
+
+        for(let i = 0; i < updatedJSONFromTable.results.length; i++) {
+            noTimeErrors -= checkForError(`#resultsBodyTime${i}`);
+        }
+        
+        if(noTimeErrors === 1 && supportingVariables.isTimeInPosition1Absolute.test(raceTimePos1)) {
+            $("#raceTimeFormatToggleBtn").removeClass('disableActionBtns text-white');
+            $("#raceTimeFormatBtnWrapper").removeClass('tooltip');
+            $("#raceTimeFormatToggleBtn").addClass('text-red-700');
+        }
+    }
+
+    function addEventListenerToTrackUndoBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        let allTrackUndoBtns = ['#undoSeason', '#undoRound', '#undoCircuit', '#undoPoints'];
+
+        for(let i = 0; i < allTrackUndoBtns.length; i++) {
+            $(allTrackUndoBtns[i]).click(function(event) {
+                actionOnUndoBtnClick(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
             });
         }
-
-        // reflectFastestLap(points, isResultImported, isPointsUndefined, noPointsForFL, indexPosMap, additionalResultsPoints, parseInt(selectedValue), i);
     }
 
-    function checkForError(value) {
-        let flag = 0;
-        if($(value).hasClass('bg-red-600')) flag = 1;
-        return flag;
-    }
+    function actionOnUndoBtnClick(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        $('.undo').addClass('hidden');
 
-    function isFastestLapPresentAndMatchingWithStatus(json, fastestLapIndexStore, indexPosMap, statusStore, regex) {
-        
-        let flFormatCheck = new RegExp(regex);
-        let shortestTime = Number.MAX_VALUE;
-        let isFastestLapPresent = statusStore.includes(1);
-        let fastestLapRowPosition, isAtleastOneFlTImeValid = 0;
-        
-        for(let i = 0; i < json.results.length; i++) {
-            let currentFl = json.results[i].fastestlaptime;
+        $('#undoToggleBtn').removeClass('bg-blue-500 text-white hover:bg-blue-700');
+        $('#undoToggleBtn').addClass('bg-white text-blue-700 hover:text-white hover:bg-blue-500');
+        $('#undoToggleBtn').html('Show Reset');
+        $('#undoToggleBtn').removeClass('editing');
 
-            if(flFormatCheck.test(currentFl)) {
-                let currentFastestLapInSeconds = convertTimeFormatToSeconds(json.results[i].fastestlaptime);
-                if(currentFastestLapInSeconds <= shortestTime) {
-                    shortestTime = currentFastestLapInSeconds;
-                    fastestLapRowPosition = indexPosMap[i];
-                    fastestLapIndexStore.current = i;
-                }
+        $('.addMoreBtn').removeClass('hidden');
 
-                isAtleastOneFlTImeValid = 1;
-                // if(currentFastestLapInSeconds === shortestTime) fastestLapRowPosition = i;
-            }
+        disableRaceTimeFormatBtnOnRaceTimeErrors(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
 
-            // if(selectedValue === 1 && indexPosMap[i] > 10) {
-            //     $('#warningFlBelowP10Alert').html(`<p>'Fastest Lap' <strong>STATUS</strong> at Row <strong>${indexPosMap[i]}</strong> [ensure -1 is added to additional attribute - <strong>POINTS</strong>]</p>`);
-                
-            //     if(points[currentPointsSchemeSelected - 1]['P' + indexPosMap[i]] != 0) {
-
-            // if($(`#resultsBodyStatus${i}`).hasClass('bg-yellow-600')) {
-            //     $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-            // }
-        }
-
-        if(isAtleastOneFlTImeValid && statusStore[fastestLapIndexStore.current] === 0) {
-            $('#warningFlStatusNotMatchingAlert').html(`Row <strong>${fastestLapRowPosition}</strong> with fastest lap time does not have 'Fastest Lap' <strong>STATUS</strong>`);
-            $(`#resultsBodyStatus${fastestLapIndexStore.previous}`).removeClass('bg-yellow-600');
-            $(`#resultsBodyStatus${fastestLapIndexStore.current}`).addClass('bg-yellow-600');
-            $('#warningFlStatusNotMatchingAlert').slideDown(500);
-        }
-        else {
-            $(`#resultsBodyStatus${fastestLapIndexStore.previous}`).removeClass('bg-yellow-600');
-            $(`#resultsBodyStatus${fastestLapIndexStore.current}`).removeClass('bg-yellow-600');
-            $('#warningFlStatusNotMatchingAlert').slideUp(500);
-        }
-
-        if(!isFastestLapPresent) $('#warningNoPosWithStatus1Alert').slideDown(500);
-        else $('#warningNoPosWithStatus1Alert').slideUp(500);
-
-        fastestLapIndexStore.previous = fastestLapIndexStore.current;
-    }
-
-    function checkRaceTimeMatchesWithStatus(json, indexPosMap, statusStore, stopsStore, i) {
-        let currentRaceTime = json.results[indexPosMap[i] - 1].time;
-
-        // if((indexPosMap[i] - 1) === 0) stopsStore.maxLapsCompleted = json.results[indexPosMap[i] - 1].stops;
-
-        let cutoffLaps = Math.ceil(stopsStore[0] * 0.75);
-
-        if(currentRaceTime === 'DNF') {
-            if(statusStore[i] !== -2 && stopsStore[indexPosMap[i] - 1] < cutoffLaps) {
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).html(`Row <strong>${indexPosMap[i]}</strong> with race time of <strong>DNF</strong> does not have 'DNF' <strong>STATUS</strong>`);
-                if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
-                $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).slideUp(500);
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideDown(500);
-            }
-            else if(statusStore[i] === -2 && stopsStore[indexPosMap[i] - 1] >= cutoffLaps) {
-                $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).html(`Row <strong>${indexPosMap[i]}</strong> with race time of <strong>DNF</strong> having completed <strong>${stopsStore[i]} LAPS</strong> should not have 'DNF' <strong>STATUS</strong>`);
-                if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideUp(500);
-                $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).slideDown(500);
-            }
-            else {
-                $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideUp(500);
-                $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).slideUp(500);
-            }
-        }
-        else if(currentRaceTime === 'DSQ') {
-            if(statusStore[i] !== -3) {
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).html(`Row <strong>${indexPosMap[i]}</strong> with race time of <strong>DSQ</strong> does not have 'DSQ' <strong>STATUS</strong>`);
-                if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideDown(500);
-            }
-            else {
-                $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-                $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideUp(500);
-            }
-        }
-        else if(statusStore[i] === -2 && stopsStore[indexPosMap[i] - 1] >= cutoffLaps) {
-            $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).html(`Row <strong>${indexPosMap[i]}</strong> with race time of <strong>DNF</strong> having completed <strong>${stopsStore[i]} LAPS</strong> should not have 'DNF' <strong>STATUS</strong>`);
-            if(!$(`#resultsBodyStatus${i}`).hasClass('bg-red-600')) $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
-            $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideUp(500);
-            $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).slideDown(500);
-        }
-        else {
-            $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-            $(`#raceTimeNotMatchingStatus${indexPosMap[i] - 1}`).slideUp(500);
-            $(`#positionClassifiedForPoints${indexPosMap[i] - 1}`).slideUp(500);
+        if(!$('#rowReorderToggleBtn').hasClass('disableActionBtns')) {
+            $('#rowReorderToggleBtn').removeClass('bg-orange-500 text-white hover:bg-orange-700');
+            $('#rowReorderToggleBtn').addClass('bg-white text-orange-700 hover:text-white hover:bg-orange-500');
         }
     }
 
-    function isValidTimeFormat(raceTimeInIntervals, regexFl, regexTimeAbsolute, regexTimeInterval, json) {
-        let timeCheckFl = new RegExp(regexFl);
-        let timeCheckAbsolute = new RegExp(regexTimeAbsolute);
-        let timeCheckInterval = new RegExp(regexTimeInterval);
-        let postStatus = 1;
+    function addEventListenerToResultsUndoBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
+        let allResultsUndoBtn = [`#undoDriver${i}`, `#undoConstructor${i}`, `#undoGrid${i}`, `#undoStops${i}`, `#undoFl${i}`, `#undoTime${i}`, `#undoStatus${i}`];
 
-        // console.log(json.results, raceTimeInIntervals)
-        
-        for(let i = 0; i < json.results.length; i++) {
-            if(!(timeCheckFl.test(json.results[i].fastestlaptime))) postStatus = 0;
+        for(let j = 0; j < allResultsUndoBtn.length; j++) {
+            $(allResultsUndoBtn[j]).click(function(event) {
+                actionOnUndoBtnClick(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+            });
+        }
+    }
+
+    function addEventListenerOnAddNewRowBtn(json, season, points, driver, status, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        $('#addRow').click(function(event) {
+            let addRowTemplate = {
+                position: json.results.length + 1,
+                constructor_id: 0,
+                grid: 0,
+                stops: -1,
+                time: "",
+                fastestlaptime: "",
+                status: -2,
+                driver_id: 0,
+                driver: ""
+            };
             
-            if($('.raceTimeCol').hasClass('absoluteTime')) {
-                if(i === 0) {
-                    if(!(timeCheckAbsolute.test(raceTimeInIntervals[0]))) postStatus = 0;
+            pushNewRowValuesIntoStores(json, addRowTemplate, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+            
+            let i = json.results.length - 1;
+
+            updateResultsTable(json, points, driver, status, additionalDetailsStore, supportingVariables, i);            
+            
+            supportingVariables.availableDrivers = driver.filter(ele => !jsonResultsDetailsStore.driverID.includes(ele.id));
+
+            repopulateDriverResultsDropdowns(json, driver, supportingVariables);
+
+            addEventListenerToResultsUndoBtns(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+            
+            let updatedJSONFromTable = updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+            
+            if(!supportingVariables.isShowAllConstructorsChecked) {
+                for(let i = 0; i < season.length; i++) {
+                    if(season[i].id === updatedJSONFromTable.track.season_id) {
+                        supportingVariables.availableConstructors = season[i].constructors;
+                    }
                 }
-                else {
-                    if(!(timeCheckAbsolute.test(json.results[i].time))) postStatus = 0;
+                repopulateConstructorResultsDropdowns(updatedJSONFromTable, supportingVariables);
+            }
+
+            if((json.results.length) >= 1) {
+                $('#removeRow').removeClass('opacity-50 cursor-not-allowed');
+                $('#removeRow').addClass('hover:bg-red-700');                 
+            }
+            
+            if((updatedJSONFromTable.results.length) >= 2 && $('#toggleControlsBtn').hasClass('editing')) {
+                $('.selectInp').attr('disabled', false);
+                $('.selectInp').addClass('open');
+                $('.selectInp').removeClass('cursor-not-allowed');
+            }
+            
+            if($('#rowReorderToggleBtn').hasClass('editing')) {
+                $(`#moveRowUp${i}`).toggleClass('hidden');
+                $(`#moveRowDown${i}`).toggleClass('hidden');
+            }
+            
+            if($('#rowReorderToggleBtn').hasClass('editing') || $('#toggleRowUndo').hasClass('editing')) {
+                $(`#addMore${i}`).toggleClass('hidden');
+            }
+            
+            checkRaceTimeMatchesWithStatus(updatedJSONFromTable, jsonResultsDetailsStore, supportingVariables, i);
+            checkAndMonitorResultsData(json, points, driver, supportingVariables.availableConstructors, status, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+            serialiseRowReorderControls(jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i);
+            
+            openResultsMoreDetailsOverlay(json, additionalDetailsStore, supportingVariables, i);
+            
+            checkGridValueGreaterThanArraySize(jsonResultsDetailsStore, supportingVariables);
+            checkGridValuesStartWith1(jsonResultsDetailsStore, supportingVariables);
+            isAllGridValues0(jsonResultsDetailsStore, supportingVariables);
+        });
+    }
+
+    function pushNewRowValuesIntoStores(json, addRowTemplate, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        json.results.push(addRowTemplate);
+        supportingVariables.indexPosMap.push(addRowTemplate.position);
+        jsonResultsDetailsStore.driverID.push(addRowTemplate.driver_id);
+        jsonResultsDetailsStore.grid.push(addRowTemplate.grid);
+        jsonResultsDetailsStore.stops.push(addRowTemplate.stops);
+        jsonResultsDetailsStore.raceTimeInAbsolutes.push(addRowTemplate.time);
+        jsonResultsDetailsStore.raceTimeInIntervals.push(addRowTemplate.time);
+        jsonResultsDetailsStore.originalStatusMinusUnitsPlace.push(0);
+        jsonResultsDetailsStore.status.push(addRowTemplate.status);
+        additionalDetailsStore.resultsPoints.push(0);
+    }
+
+    function addEventListenerOnRemoveLastRowBtn(json, points, driver, regexValidationStrings, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        $('#removeRow').click(function(event) {
+            let errorIndex = json.results.length;
+            
+            if(errorIndex == 1) {
+                return alert('Cannot remove row! Finishing order should have atleast one entry.');
+            }
+
+            let choice = window.confirm('Are you sure you want to delete the last row?')
+            
+            if(choice) {
+                let updatedJSONFromTable = updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, 0);
+                
+                if(errorIndex > 1) {
+                    popLastRowValuesFromStores(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+
+                    $('.resultRow').last().remove();
+                }
+
+                supportingVariables.availableDrivers = driver.filter(ele => !jsonResultsDetailsStore.driverID.includes(ele.id));
+                
+                repopulateDriverResultsDropdowns(json, driver, supportingVariables);
+
+                slideUpAllLastRowErrorAlerts(json);
+
+                if(errorIndex <= 2) {
+                    $('#removeRow').removeClass('hover:bg-red-700');
+                    $('#removeRow').addClass('opacity-50 cursor-not-allowed');
+                }
+                
+                disableFirstAndLastReorderBtns();
+
+                checkDuplicateGrid(jsonResultsDetailsStore, supportingVariables);
+                checkGridValueGreaterThanArraySize(jsonResultsDetailsStore, supportingVariables);
+                checkGridValuesStartWith1(jsonResultsDetailsStore, supportingVariables);
+                checkGridValuesForBreakInSequence(jsonResultsDetailsStore, supportingVariables);
+                isAllGridValues0(jsonResultsDetailsStore, supportingVariables);
+
+                isFastestLapPresentAndMatchingWithStatus(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+                disableToggleBtnsOnTimeError(json, regexValidationStrings, supportingVariables);
+                checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
+
+                for(let i = 0; i < updatedJSONFromTable.results.length; i++) {
+                    reflectFastestLap(updatedJSONFromTable.results[i].status, points, additionalDetailsStore, supportingVariables, i);
                 }
             }
-            else {
-                if(i === 0) {
-                    if(!(timeCheckAbsolute.test(raceTimeInIntervals[0]))) postStatus = 0;
-                }
-                else {
-                    if(!(timeCheckInterval.test(raceTimeInIntervals[i]))) postStatus = 0;
-                }
-            }
-        }
-        return postStatus;
+        });
+    }
+
+    function popLastRowValuesFromStores(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
+        json.results.pop();
+        supportingVariables.indexPosMap.pop();
+        jsonResultsDetailsStore.driverID.pop();
+        jsonResultsDetailsStore.grid.pop();
+        jsonResultsDetailsStore.stops.pop();
+        jsonResultsDetailsStore.raceTimeInAbsolutes.pop();
+        jsonResultsDetailsStore.raceTimeInIntervals.pop();
+        jsonResultsDetailsStore.originalStatusMinusUnitsPlace.pop();
+        jsonResultsDetailsStore.status.pop();
+        additionalDetailsStore.resultsPoints.pop();
+    }
+
+    function slideUpAllLastRowErrorAlerts(json) {
+        $(`#errorPosAlert${json.results.length}`).slideUp(500);
+        $(`#errorDriverAlert${json.results.length}`).slideUp(500);
+        $(`#errorConstructorAlert${json.results.length}`).slideUp(500);
+        $(`#errorStatusAlert${json.results.length}`).slideUp(500);
+        $(`#errorGridAlert${json.results.length}`).slideUp(500);
+        $(`#errorStopsAlert${json.results.length}`).slideUp(500);
+        $(`#errorFlAlert${json.results.length}`).slideUp(500);
+        $(`#errorTimeAlert${json.results.length}`).slideUp(500);
     }
 
     function postJson(json, season) {
@@ -3351,7 +3398,6 @@
             data: json,
             contentType: "application/json",
             success: function (result) {
-                // console.log(result);
                 $('#onFailure').addClass('hidden');
                 $('#onSuccess').removeClass('hidden');
                 $('#editScreen').toggleClass('hidden');
@@ -3374,26 +3420,27 @@
                     for(let i = 0; i < result.result.length; i++) {
                         resultJSON.results.push({
                             position: result.result[i].position,
+                            driver: JSON.parse(json).results[i].driver,
+                            driver_id: result.result[i].driver_id,
                             constructor_id: result.result[i].constructor_id,
                             grid: result.result[i].grid,
                             stops: result.result[i].stops,
-                            time: result.result[i].time,
                             fastestlaptime: result.result[i].fastestlaptime,
+                            time: result.result[i].time,
                             status: result.result[i].status,
-                            driver_id: result.result[i].driver_id,
-                            driver: JSON.parse(json).results[i].driver
                         })
 
-                        if(result.result[i].points !== 0)  resultJSON.results[i].points = result.result[i].points;
+                        if(result.result[i].points !== 0) {
+                            resultJSON.results[i].points = result.result[i].points;
+                        }
                     }
                     
                     let btnName = 'download';
+
                     downloadJSON(resultJSON, btnName, season, resultJSON.track.season_id, resultJSON.track.round, result.race.id);
                 })
             },
             error: function (result, status) {
-                // console.log(result);
-                // $('#failureText').html("Something went wrong");
                 $('#failureText').html(`${result.responseJSON.message} of Position <strong>${result.responseJSON.error.position}</strong>`);
                 $('#onSuccess').addClass('hidden');
                 $('#onFailure').removeClass('hidden');
@@ -3405,96 +3452,74 @@
 
     function downloadJSON(json, btnName, season, seasonID, roundNo, raceID = 'review') {
         let tierName;
+
         for(let i = 0; i < season.length; i++) {
             if(season[i].id === seasonID) tierName = season[i].tiername.split(" ").join("_");
         }
 
         let data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json, null, 4));
+        
         $(`#${btnName}`).attr("href", "data:"+data);
         $(`#${btnName}`).attr("download", `S${seasonID}_R${roundNo}_${tierName}_${raceID}.json`);  
     }
 
-    function convertTimeFormatToSeconds(fastestLapInMinutes) {
-        let fastestLapSplit, minutes, seconds, fastestLapInSeconds;
+    function disableNumberInputsAndAddMoreBtns() {
+        $('.numInp').addClass('disable');
+        $('.numInp').addClass('cursor-not-allowed');
+        $('.addMoreBtn').addClass('disable');
+        $('.addMoreBtn').addClass('cursor-not-allowed');
+        $('#addMoreTrack').addClass('disable');
+        $('#addMoreTrack').addClass('cursor-not-allowed');
+    }
 
-        if(fastestLapInMinutes != null) {
-            if(fastestLapInMinutes.includes(":")) {
-                fastestLapSplit = fastestLapInMinutes.split(':');
-                minutes = fastestLapSplit[0] * 60;
-                seconds = +fastestLapSplit[1];
+    function enableEditOnErrorAfterLoading(json) {
+        let postStatus = {
+            track: 1,
+            results: 1
+        }
+
+        checkEachCellValueForError(json, postStatus);
+
+        if((postStatus.track !== 1) || (postStatus.results !== 1)) {
+            $('#toggleControlsBtn').removeClass('bg-blue-500 hover:bg-blue-700 border-blue-700');
+            $('#toggleControlsBtn').addClass('bg-green-500 hover:bg-green-700 border-green-700');
+            $('#toggleControlsBtn').addClass('editing');
+
+            $('.selectInp').attr('disabled', false);
+            $('.selectInp').addClass('open');
+            $('.selectInp').removeClass('cursor-not-allowed');
+            $('.numInp').removeClass('disable');
+            $('.numInp').removeClass('cursor-not-allowed');
+            $('.addMoreBtn').removeClass('disable');
+            $('.addMoreBtn').removeClass('cursor-not-allowed');
+            $('#addMoreTrack').removeClass('disable');
+            $('#addMoreTrack').removeClass('cursor-not-allowed');
+
+            $('#undoToggleBtn').removeClass('hidden');
+            $('#rowReorderToggleBtn').removeClass('hidden');
+
+            $('#addRemoveRowControls').removeClass('hidden');
+
+            if(json.results.length === 1) {
+                $('#removeRow').removeClass('hover:bg-red-700');
+                $('#removeRow').addClass('opacity-50 cursor-not-allowed');
             }
-            else {
-                minutes = 0;
-                seconds = +fastestLapInMinutes;
-            }
         }
-        fastestLapInSeconds = minutes + seconds;
-
-        return fastestLapInSeconds;
     }
 
-    function convertAbsoluteTimeToInterval(time, firstPosTime) {
-        let firstPosTimeInSeconds = convertTimeFormatToSeconds(firstPosTime);
-        let timeInSeconds = convertTimeFormatToSeconds(time);
-
-        let interval = (timeInSeconds - firstPosTimeInSeconds).toFixed(3);
-        if(Math.abs(+interval) > 60) {
-            let minutes = Math.floor(interval / 60);
-            let seconds = (interval % 60).toFixed(3);
-
-            if(+interval < 0) seconds = (Math.abs(+interval) % 60).toFixed(3);
-            if(parseFloat(+seconds) < 10) seconds = '0' + seconds;
-    
-            interval = [minutes, seconds].join(':');
-        }
-
-        if(firstPosTimeInSeconds > timeInSeconds) return `${interval}`;
-        else return `+${interval}`;
-    }
-
-    function convertIntervalTimeToAbsolute(interval, firstPosTime) {
-        let firstPosTimeInSeconds = convertTimeFormatToSeconds(firstPosTime);
-
-        let timeToAdd = '';
-        if(interval.includes('+')) timeToAdd = interval.split('+')[1];
-        if(interval.includes('-')) timeToAdd = interval.split('-')[1];
-
-        let secondsToAdd = +(convertTimeFormatToSeconds(timeToAdd));
-        
-        let absoluteTime = (firstPosTimeInSeconds + secondsToAdd).toFixed(3);
-        if(interval.includes('-')) absoluteTime = (firstPosTimeInSeconds - secondsToAdd).toFixed(3);
-
-        if(+absoluteTime > 60) {
-            let minutes = Math.floor(absoluteTime / 60);
-            let seconds = (absoluteTime % 60).toFixed(3);
-
-            if(parseFloat(+seconds) < 10) seconds = '0' + seconds;
-    
-            absoluteTime = [minutes, seconds].join(':');
-        }
-
-        return absoluteTime;
-    }
-    
     function fetchResultByIDAndPassForEdit(raceNumber, season, points, tracks, constructor, driver, status) {
         $.ajax({
             type: "GET",
             url: `/result/${raceNumber}`,
             contentType: "application/json",
             success: function (result) {
-                // console.log(result)
                 let isResultImportedOrFromScratch = 1;
 
                 result.results.sort((a,b) => a.position - b.position);
+
                 viewJSONData(result, season, points, tracks, constructor, driver, status, isResultImportedOrFromScratch);
 
-                $('.numInp').addClass('disable');
-                $('.numInp').addClass('cursor-not-allowed');
-                $('.addMoreBtn').addClass('disable');
-                $('.addMoreBtn').addClass('cursor-not-allowed');
-                $('#addMoreTrack').addClass('disable');
-                $('#addMoreTrack').addClass('cursor-not-allowed');
-
+                disableNumberInputsAndAddMoreBtns();
                 enableEditOnErrorAfterLoading(result);
             },
             error: function (result, status) {
@@ -3503,6 +3528,6 @@
                 $('#errorIncorrectRaceIDAlert').slideDown(500);
             }
         });
-    }
+    }  
 </script>
 @endsection
