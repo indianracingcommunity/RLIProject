@@ -27,7 +27,7 @@ echo "Deploying application ..."
     git pull origin "$1"
 
     # Install dependencies based on lock file
-    docker compose exec $IRC_APP composer install --no-interaction --prefer-dist --optimize-autoloader
+    docker compose exec $IRC_APP composer install --no-interaction --no-dev --no-scripts --prefer-dist --optimize-autoloader
 
     # Migrate database
     docker compose exec $IRC_APP php artisan migrate

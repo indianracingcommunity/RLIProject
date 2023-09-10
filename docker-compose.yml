@@ -97,3 +97,5 @@ services:
     volumes:
       - ./setup/${APP_ENV}/certbot/conf:/etc/letsencrypt
       - ./setup/${APP_ENV}/certbot/www:/var/www/certbot
+    networks:
+      - irc-network

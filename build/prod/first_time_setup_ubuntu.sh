@@ -89,6 +89,12 @@ REMOTE_BRANCH="$(git branch --show-current)"
 
 # Setup crons
 echo "Setting up crons"
-PRORJECT_DIR=$(awk '/PRORJECT_DIR=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
-crontab -l | { cat; echo "0 * * * * cd $PROJECT_DIR && php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
-crontab -l | { cat; echo "0 12 * * * cd $PROJECT_DIR && docker compose run --rm --entrypoint \"certbot renew\" certbot && docker compose exec $SERVER_NAME nginx -s reload >> /dev/null 2>&1"; } | crontab -
+PROJECT_DIR=$(awk '/PROJECT_DIR=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
+# Run cron: Every hour
+crontab -l | { cat; echo "0 * * * * cd $PROJECT_DIR && \
+    php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
+
+# Run cron: At 04:00, on day 5 of the month
+crontab -l | { cat; echo "0 4 5 * * cd $PROJECT_DIR && \
+    docker compose run --rm --entrypoint \"certbot renew --non-interactive\" certbot && \
+    docker compose exec $SERVER_NAME nginx -s reload >> /dev/null 2>&1"; } | crontab -

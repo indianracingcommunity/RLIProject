@@ -36,13 +36,13 @@ class FilesystemHelpers
         return true;
     }
 
-    public static function trailSlash(string $folder)
+    public static function trailSlash(string $folder = '')
     {
         $folder .= substr($folder, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
         return $folder;
     }
 
-    public static function noTrailSlash(string $folder)
+    public static function noTrailSlash(string $folder = '')
     {
         $folder = substr($folder, -1) == DIRECTORY_SEPARATOR ? substr($folder, 0, -1) : $folder;
         return $folder;
