@@ -61,9 +61,10 @@ class DatabaseDump extends Command
             foreach ($infoOutput as $line)
                 $this->info($line);
         } catch (\Exception $e) {
-            $this->error("Exception in dumping DB. Error message: " . $e->getMessage());
+            $errorMessage = 'Exception in dumping DB. Error message: ' . $e->getMessage();
+            $this->error($errorMessage);
 
-            // TODO: Send Discord notifications to Admins
+            $this->notifyAdmins($errorMessage);
 
             return 1;
         }

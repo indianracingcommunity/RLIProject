@@ -53,6 +53,7 @@ return [
         'irc_guild' => env('IRC_GUILD'),
         'profiles_channel' => env('PROFILES_CHANNEL'),
         'notification_channel' => env('NOTIFICATION_CHANNEL'),
+        'admins_notification_channel' => env('ADMINS_NOTIFICATION_CHANNEL'),
 
         'ps_role' => env('PS_ROLE'),
         'xbox_role' => env('XBOX_ROLE'),

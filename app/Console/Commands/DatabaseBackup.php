@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Actions\LocalDbDump;
+use App\Actions\NotifyAdmins;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -43,6 +44,11 @@ class DatabaseBackup extends Command
         $this->localDbDump = app()->make(LocalDbDump::class);
     }
 
+    protected function notifyAdmins($message)
+    {
+        return app()->make(NotifyAdmins::class, ['messageBody' => $message])->__invoke();
+    }
+
     /**
      * Execute the console command.
      *
@@ -79,8 +85,10 @@ class DatabaseBackup extends Command
 
             $this->info('DB dump backed up successfully.');
         } catch (\Exception $e) {
-            $this->error('Error in backing up DB. Error message: ' . $e->getMessage());
-            // TODO: Send notification to admins
+            $errorMessage = 'Error in backing up DB. Error message: ' . $e->getMessage();
+            $this->error($errorMessage);
+
+            $this->notifyAdmins($errorMessage);
 
             return 1;
         }
