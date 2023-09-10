@@ -59,11 +59,12 @@
         "thiagoalessio/tesseract_ocr": "^2.9"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9",
+        "barryvdh/laravel-ide-helper": "^2.8",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.9",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
+        "phpunit/phpunit": "^9",
         "squizlabs/php_codesniffer": "^3.6"
     },
     "config": {
@@ -96,6 +97,14 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -N"
+        ],
+        "post-install-cmd": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -N"
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"

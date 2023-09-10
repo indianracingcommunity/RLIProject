@@ -21,12 +21,15 @@ services:
     container_name: irc-server
     ports:
       - 80:80
+      - 443:443
     tty: true
     volumes:
       - .:${PROJECT_DIR}
       - irc-pma:/var/www/html
       - ./build/${APP_ENV}/nginx.conf:/etc/nginx/nginx.conf
       - ./build/${APP_ENV}/default:/etc/nginx/sites-available/default
+      - ./setup/${APP_ENV}/certbot/conf:/etc/letsencrypt
+      - ./setup/${APP_ENV}/certbot/www:/var/www/certbot
     networks:
       - irc-network
     depends_on:
@@ -68,7 +71,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_ROOT_HOST: 172.16.238.%
     volumes:
-      - ./build/${APP_ENV}/mysql_user.sh:/docker-entrypoint-initdb.d/setup.sh
+      - ./build/${APP_ENV}/mysql_user.sh:/docker-entrypoint-initdb.d/mysql_user.sh
       - ./setup/${APP_ENV}/db:/var/lib/mysql
     networks:
       - irc-network
@@ -87,3 +90,11 @@ services:
       - irc-pma:/var/www/html
     depends_on:
       - irc-db
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./setup/${APP_ENV}/certbot/conf:/etc/letsencrypt
+      - ./setup/${APP_ENV}/certbot/www:/var/www/certbot
+    networks:
+      - irc-network
