@@ -24,11 +24,13 @@
 		"ms-azuretools.vscode-docker",
 		"eamodio.gitlens",
 		"amiralizadeh9480.laravel-extra-intellisense",
-		"zobo.php-intellisense",
+		"bmewburn.vscode-intelephense-client",
+		"absszero.vscode-laravel-goto",
 		"wongjn.php-sniffer",
 		"cssho.vscode-svgviewer",
 		"pomdtr.excalidraw-editor",
-		"vivaxy.vscode-conventional-commits"
+		"vivaxy.vscode-conventional-commits",
+		"GitHub.vscode-github-actions"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

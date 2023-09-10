@@ -25,7 +25,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call('App\Http\Controllers\DiscordController@updateallusers')
-        ->everyMinute();
+                 ->dailyAt('3:00');
+
+        $schedule->command('db:backup')->dailyAt('6:00');
 
         // $schedule->call(function () {
         //     $controller = new \App\Http\Controllers\SteamController();

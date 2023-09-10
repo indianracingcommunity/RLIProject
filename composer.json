@@ -1,31 +1,70 @@
 {
-    "name": "laravel/laravel",
+    "name": "indianracingcommunity/rliproject",
+    "version": "5.0.0",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "A Website built by Indian Racing Enthusiasts",
     "keywords": [
-        "framework",
-        "laravel"
+        "website", "database", "docker",
+        "cicd", "stats", "sso", "discord", "steam"
     ],
+    "homepage": "https://indianracingcommunity.co.in/",
+    "readme": "readme.md",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "TheFreeman15",
+            "homepage": "https://github.com/TheFreeman15",
+            "role": "Project Head"
+        },
+        {
+            "name": "kapilace6",
+            "homepage": "https://github.com/kapilace6",
+            "role": "Architect"
+        },
+        {
+            "name": "sdawn29",
+            "homepage": "https://github.com/sdawn29",
+            "role": "Front-End Developer"
+        },
+        {
+            "name": "thekalpeshchoudhary",
+            "homepage": "https://github.com/thekalpeshchoudhary",
+            "role": "Front-End Developer"
+        },
+        {
+            "name": "Dipanshuprasad",
+            "homepage": "https://github.com/Dipanshuprasad",
+            "role": "Front-End Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/indianracingcommunity/RLIProject/issues",
+        "wiki": "https://github.com/indianracingcommunity/RLIProject/wiki",
+        "source": "https://github.com/indianracingcommunity/RLIProject",
+        "docs": "https://github.com/indianracingcommunity/RLIProject/blob/master/readme.md"
+    },
     "require": {
-        "php": "^7.1.3",
+        "php": "^8",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
+        "ifsnop/mysqldump-php": "^2.12",
         "intervention/image": "^2.5",
-        "kanalumaddela/laravel-steam-login": "^2.5",
-        "laravel/framework": "6.0.*",
-        "laravel/tinker": "^1.0",
-        "socialiteproviders/discord": "^2.0",
+        "kanalumaddela/laravel-steam-login": "^2",
+        "laravel-notification-channels/discord": "^1.3",
+        "laravel/framework": "^6",
+        "laravel/tinker": "^2",
+        "masbug/flysystem-google-drive-ext": "^1.0.0",
+        "socialiteproviders/discord": "^4",
         "spatie/laravel-activitylog": "^3.16",
         "thiagoalessio/tesseract_ocr": "^2.9"
     },
     "require-dev": {
-        "beyondcode/laravel-dump-server": "^1.0",
+        "barryvdh/laravel-ide-helper": "^2.8",
         "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
+        "fzaninotto/faker": "^1.9",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^9",
         "squizlabs/php_codesniffer": "^3.6"
     },
     "config": {
@@ -59,11 +98,18 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        "post-update-cmd": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -N"
+        ],
+        "post-install-cmd": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -N"
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "test": "vendor/bin/phpunit",
+        "lint": "phpcbf; phpcs"
     }
 }

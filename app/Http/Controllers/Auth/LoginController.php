@@ -46,6 +46,14 @@ class LoginController extends Controller
         return Socialite::driver('discord')->scopes(['identify', 'email', 'guilds', 'connections'])->redirect();
     }
 
+    public function logout()
+    {
+        unset(Auth::user()->roles);
+        Auth::logout();
+
+        return redirect('/');
+    }
+
     public function handleProviderCallback()
     {
         $userr = Socialite::driver('discord')->user();

@@ -1,0 +1,42 @@
+name: CD - Deploy to Prod
+
+on:
+  # Triggers the workflow on push events for the mentioned branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: build
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Extract branch name
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        id: extract_branch
+
+      - name: Deploy code via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        env:
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          envs: BRANCH_NAME
+          script: |
+            cd ~/RLIProject;
+            APP_ENV=$(awk '/APP_ENV=/' .env | awk '{split($0,a,"="); print a[2]}');
+            ./build/$APP_ENV/deploy.sh $BRANCH_NAME;

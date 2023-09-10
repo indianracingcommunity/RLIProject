@@ -43,21 +43,22 @@ class PermissionManager
                 }
             }
         }
+
         for ($i = 0; $i < count($roles); $i++) {
             $getRole = Role::select('role_id')
-            ->where($roles[$i], '1')
-            ->pluck('role_id')->toArray();
+                           ->where($roles[$i], '1')
+                           ->pluck('role_id')->toArray();
+
             $check = PermissionManager::checkRole($request, $getRole);
             if ($check == "Verified") {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
     public function checkRole(Request $request, $roles)
     {
-        
         if ($request->session()->has('userRoles') != true or $request->session()->get('userRoles') == "Invalid") {
             $discord = new Discord();
             $userArray = $discord->getMemberRoles(Auth::user()->discord_id);

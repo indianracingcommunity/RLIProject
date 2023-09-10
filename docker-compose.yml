@@ -21,25 +21,33 @@ services:
     container_name: irc-server
     ports:
       - 80:80
+      - 443:443
     tty: true
     volumes:
-      - .:/var/www/RLIProject
+      - .:${PROJECT_DIR}
       - irc-pma:/var/www/html
       - ./build/${APP_ENV}/nginx.conf:/etc/nginx/nginx.conf
       - ./build/${APP_ENV}/default:/etc/nginx/sites-available/default
+      - ./setup/${APP_ENV}/certbot/conf:/etc/letsencrypt
+      - ./setup/${APP_ENV}/certbot/www:/var/www/certbot
     networks:
       - irc-network
     depends_on:
-      irc-compose:
-        condition: service_completed_successfully
+      - irc-app
 
   irc-app:
-    build: .
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        PROJECT_DIR: ${PROJECT_DIR}
     image: rli
     container_name: irc-app
     tty: true
+    environment:
+      PROJECT_DIR: ${PROJECT_DIR}
     volumes:
-      - .:/var/www/RLIProject
+      - .:${PROJECT_DIR}
       - ./build/${APP_ENV}/php.ini:/etc/php/${PHP_VERSION}/fpm/php.ini
     networks:
       - irc-network
@@ -51,34 +59,42 @@ services:
     container_name: irc-db
     restart: unless-stopped
     tty: true
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      DB_TEST_DATABASE: ${DB_TEST_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PMA_USERNAME: ${PMA_USERNAME}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: 172.16.238.%
     volumes:
+      - ./build/${APP_ENV}/mysql_user.sh:/docker-entrypoint-initdb.d/mysql_user.sh
       - ./setup/${APP_ENV}/db:/var/lib/mysql
     networks:
       - irc-network
 
-  irc-compose:
-    image: composer:${COMPOSER_VERSION}
-    container_name: irc-compose
-    volumes:
-      - .:/app
-    command: composer install --ignore-platform-reqs
-    networks:
-      - irc-network
-    depends_on:
-      - irc-app
-
   irc-admin:
-    image: phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
+    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION}-fpm-alpine
     container_name: irc-admin
     restart: always
     environment:
       PMA_HOST: irc-db
       PMA_PORT: ${DB_PORT}
-      PMA_USER: ${PMA_USERNAME}
-      PMA_PASSWORD: ${PMA_PASSWORD}
+      PMA_USER_CONFIG_BASE64: ${PMA_USER_CONFIG}
     networks:
       - irc-network
     volumes:
       - irc-pma:/var/www/html
     depends_on:
       - irc-db
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./setup/${APP_ENV}/certbot/conf:/etc/letsencrypt
+      - ./setup/${APP_ENV}/certbot/www:/var/www/certbot
+    networks:
+      - irc-network

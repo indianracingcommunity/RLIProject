@@ -1,0 +1,58 @@
+version: '3.7'
+
+networks:
+  irc-network:
+    name: irc-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET_IPRANGE}
+          gateway: ${NETWORK_GATEWAY}
+
+volumes:
+  irc-pma:
+    driver: local
+    name: irc-pma
+
+services:
+  irc-app:
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        PROJECT_DIR: ${PROJECT_DIR}
+    image: rli
+    container_name: irc-app
+    tty: true
+    environment:
+      PROJECT_DIR: ${PROJECT_DIR}
+    volumes:
+      - .:${PROJECT_DIR}
+      - ./build/${APP_ENV}/php.ini:/etc/php/${PHP_VERSION}/fpm/php.ini
+    networks:
+      - irc-network
+    depends_on:
+      - irc-db
+
+  irc-db:
+    image: mariadb:${MARIADB_VERSION}
+    container_name: irc-db
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      DB_TEST_DATABASE: ${DB_TEST_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PMA_USERNAME: ${PMA_USERNAME}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: 172.16.238.%
+    volumes:
+      - ./build/${APP_ENV}/mysql_user.sh:/docker-entrypoint-initdb.d/mysql_user.sh
+      - ./setup/${APP_ENV}/db:/var/lib/mysql
+    networks:
+      - irc-network

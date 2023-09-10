@@ -7,3 +7,8 @@ setup/
 composer.lock
 .vscode
 .DS_Store
+service-account-credentials.json
+storage/backups/*
+storage/signups/*
+_ide_helper.php
+_ide_helper_models.php

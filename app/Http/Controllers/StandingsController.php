@@ -263,8 +263,8 @@ class StandingsController extends Controller
             if ($driver['status'] >= 0) {
                 $rpoints = 0;
                 $ps_ind = array_search($results[$k]['race']['points'], array_column($psystem, "id"));
-                if (array_key_exists((string)($pos - 1), $psystem[$ps_ind])) {
-                    $rpoints = $psystem[$ps_ind][(string)($pos - 1)];
+                if (array_key_exists('P' . $pos, $psystem[$ps_ind])) {
+                    $rpoints = $psystem[$ps_ind]['P' . $pos];
                 }
 
                 $points += $rpoints;
