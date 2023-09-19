@@ -24,6 +24,7 @@ class Result extends Model
             return $result;
         } else {
             $this->save();
+            $this->refresh();
             return $this;
         }
     }

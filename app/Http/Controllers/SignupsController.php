@@ -8,11 +8,8 @@ use App\Season;
 use App\Driver;
 use App\Signup;
 use App\Discord;
-use App\Circuit;
-use App\Constructor;
 use Storage;
 use Auth;
-use Log;
 
 class SignupsController extends Controller
 {
@@ -232,100 +229,5 @@ class SignupsController extends Controller
 
       // Returns [{id, drivername, discord_id, racenumber, steam_id, attendance, car1 ...}, {...} ...]
         return response()->json($res);
-    }
-
-    public function temp()
-    {
-        $data = '{
-        "track": {
-          "circuit_id": 13,
-          "season_id": 7,
-          "round": 9
-        },
-        "results": [{
-          "position": 1,
-          "driver": "MaranelloBaby",
-          "driver_id": 2,
-          "constructor_id": 18,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "-"
-        }, {
-          "position": 2,
-          "driver": "kapilace6",
-          "driver_id": 3,
-          "constructor_id": 16,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "-"
-        }, {
-          "position": 4,
-          "driver": "gnan20",
-          "driver_id": 40,
-          "constructor_id": 21,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "DNF",
-          "status": -2
-        }, {
-          "position": 7,
-          "driver": "Blacksheep",
-          "driver_id": 19,
-          "constructor_id": 21,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "DNF",
-          "status": -2
-        }, {
-          "position": 3,
-          "driver": "SpeedLust",
-          "driver_id": 4,
-          "constructor_id": 18,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "-"
-        }, {
-          "position": 6,
-          "driver": "vagary",
-          "driver_id": 30,
-          "constructor_id": 14,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "DNF",
-          "status": -2
-        }, {
-          "position": 5,
-          "driver": "Streeter",
-          "driver_id": 7,
-          "constructor_id": 23,
-          "grid": 0,
-          "stops": 0,
-          "fastestlaptime": "-",
-          "time": "DNF",
-          "status": -2
-        }]
-      }
-    ';
-
-
-        $season = Season::where('status', '>', 0)->get();
-
-
-        $tracks = Circuit::select('*')->get();
-        $constructor = Constructor::select('*')->get();
-        $driver = Driver::select('id', 'name')->get();
-
-        return view('standings.upload')
-        ->with('data', $data)
-        ->with('season', $season)
-        ->with('tracks', $tracks)
-        ->with('constructor', $constructor)
-        ->with('driver', $driver);
     }
 }

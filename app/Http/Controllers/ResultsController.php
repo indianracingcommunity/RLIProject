@@ -15,6 +15,8 @@ use App\Points;
 use App\Series;
 use App\Season;
 use App\Discord;
+use App\Circuit;
+use App\Constructor;
 
 class ResultsController extends Controller
 {
@@ -89,25 +91,32 @@ class ResultsController extends Controller
             // Need to seaerch from Driver List instead.
             if ($results[$i]['driver_id'] == '-1') {
                 return response()->json([
-                    "mesage" => "Please check Driver ID's",
+                    "mesage" => "Error found in Driver ID",
                     "error" => $results[$i],
-                ]);
+                ], 400);
+            }
+
+            if ($results[$i]['constructor_id'] == '-1') {
+                return response()->json([
+                    "mesage" => "Error found in Constructor ID",
+                    "error" => $results[$i],
+                ], 400);
             }
 
             $check = preg_match($regex_time, $results[$i]['time']);
             if ($check == '0') {
                 return response()->json([
-                    "message" => "Error Found in Time Format",
+                    "message" => "Error found in Time format",
                     "error" => $results[$i],
-                ]);
+                ], 400);
             }
 
             $check = preg_match($regex_fltime, $results[$i]['fastestlaptime']);
             if ($check == '0') {
                 return response()->json([
-                    "message" => "Error Found in Fastest Lap Time Format",
+                    "message" => "Error found in Fastest Lap Time format",
                     "error" => $results[$i],
-                ]);
+                ], 400);
             }
         }
 
@@ -116,8 +125,8 @@ class ResultsController extends Controller
 
             $res['race_id'] = $race['id'];
             $result = new Result($res);
-            $result->storeResult();
-            $results[$k] = $result;
+            $returned_result = $result->storeResult();
+            $results[$k] = $returned_result;
         }
 
         // Update Season Report Window & Reportable
@@ -232,5 +241,34 @@ class ResultsController extends Controller
                 ->with('nextRace', $sr[1])
                 ->with('results', $results)
                 ->with('count', $count);
+    }
+
+    public function uploadResults()
+    {
+        $season = Season::where('status', '>', 0)->get();
+        $points = Points::all();
+        $tracks = Circuit::select('id', 'name')->get();
+        $constructor = Constructor::select('id', 'name')->get();
+        $driver = Driver::select('id', 'name')->get();
+
+        return view('standings.upload')
+               ->with('season', $season)
+               ->with('points', $points)
+               ->with('tracks', $tracks)
+               ->with('constructor', $constructor)
+               ->with('driver', $driver);
+    }
+
+    public function fetchResultsByRaceId($race)
+    {
+        $track = Race::findOrFail($race);
+        $results = Result::where('race_id', $race)
+                         ->orderBy('position', 'asc')
+                         ->get()->toArray();
+
+        return response()->json([
+            "track" => $track,
+            "results" => $results
+        ]);
     }
 }
