@@ -412,12 +412,12 @@
 
 <script>
     $(document).ready(function() {
-        var season = <?php echo json_encode($season); ?>;
-        var points = <?php echo json_encode($points); ?>;
-        var tracks = <?php echo json_encode($tracks); ?>;
-        var constructor = <?php echo json_encode($constructor); ?>;
-        var driver = <?php echo json_encode($driver); ?>;
-        var status = [
+        const season = <?php echo json_encode($season); ?>;
+        const points = <?php echo json_encode($points); ?>;
+        const tracks = <?php echo json_encode($tracks); ?>;
+        const constructor = <?php echo json_encode($constructor); ?>;
+        const driver = <?php echo json_encode($driver); ?>;
+        const status = [
             {
                 id: 0,
                 value: 'Finished'
@@ -915,7 +915,7 @@
     }
 
     function updateTrackTable(json, season, tracks, points) {
-        var rowTrack = `<tr class="text-center">
+        let rowTrack = `<tr class="text-center">
                             <td class="border rounded py-2 px-1" id="trackBodySeason">
                                 <div class="flex px-2 justify-center gap-2">
                                     <select id="seasonSelect" class="bg-gray-200 p-1 font-semibold leading-tight border border-gray-500 rounded hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500 cursor-not-allowed selectInp" disabled>                    
@@ -1027,7 +1027,7 @@
         let upperLimit = i == 0 ? json.results.length - 1 : i;
 
         for(i; i <= upperLimit; i++) {
-            var rowResult = `<tr class="text-center resultRow" id="resultsRow${i}">
+            let rowResult = `<tr class="text-center resultRow" id="resultsRow${i}">
                                 <td class="border rounded p-2" id="resultsBodyPos${i}">
                                     <div class="flex px-2 justify-center gap-1">
                                         <button id="moveRowUp${i}" class="hidden bg-green-500 hover:bg-green-700 text-white font-semibold px-1 border border-green-700 rounded rowReorderBtn">
@@ -1108,7 +1108,7 @@
                             </tr>`;
             $('#resultsTableBody').append(rowResult);
 
-            var resultsAlertsCreation = `<div id="warningRaceTimeFasterThanPrevPos${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
+            let resultsAlertsCreation = `<div id="warningRaceTimeFasterThanPrevPos${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
 
                                         <div id="raceTimeNotMatchingStatus${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
                                         </div>
