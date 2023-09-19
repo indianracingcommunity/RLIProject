@@ -1595,32 +1595,17 @@
         let postStatus = 1;
         
         for(let i = 0; i < json.results.length; i++) {
-            if(!(timeCheckFastestLap.test(json.results[i].fastestlaptime))) {
-                postStatus = 0;
-            }
-            
-            if($('.raceTimeCol').hasClass('absoluteTime')) {
-                if(i === 0) {
-                    if(!(timeCheckAbsolute.test(jsonResultsDetailsStore.raceTimeInIntervals[0]))) {
-                        postStatus = 0;
-                    }
+            if (i === 0) {
+                if (!(timeCheckAbsolute.test(jsonResultsDetailsStore.raceTimeInIntervals[0]))) {
+                    postStatus = 0;
                 }
-                else {
-                    if(!(timeCheckAbsolute.test(json.results[i].time))) {
-                        postStatus = 0;
-                    }
-                }
-            }
-            else {
-                if(i === 0) {
-                    if(!(timeCheckAbsolute.test(jsonResultsDetailsStore.raceTimeInIntervals[0]))) {
-                        postStatus = 0;
-                    }
-                }
-                else {
-                    if(!(timeCheckInterval.test(jsonResultsDetailsStore.raceTimeInIntervals[i]))) {
-                        postStatus = 0;
-                    }
+            } else {
+                const timeToTest = $('.raceTimeCol').hasClass('absoluteTime') ? json.results[i].time : jsonResultsDetailsStore.raceTimeInIntervals[i];
+
+                const isValidTime = $('.raceTimeCol').hasClass('absoluteTime') ? timeCheckAbsolute.test(timeToTest) : timeCheckInterval.test(timeToTest);
+                
+                if (!isValidTime) {
+                    postStatus = 0;
                 }
             }
         }
