@@ -1502,7 +1502,7 @@
         let validityCheck = allValues.find(item => {return item.id === selectedValue});
 
         if(validityCheck === undefined) {
-            if(selectedValue === null || selectedValue === '') {
+            if(!selectedValue) {
                 $(parentNode).removeClass('bg-yellow-600');
                 $(parentNode).addClass('bg-red-600');
                 $(alertNode).slideDown(500);
