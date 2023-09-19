@@ -3004,35 +3004,34 @@
 
             // Looping through all cells of current row
             for(let j = 0; j < tableRow.cells.length; j++) {
-                if(tableRow.cells[j].children[0].children.length != 0) {
+                if (tableRow.cells[j].children[0].children.length != 0) {
                     // Traversing through the DOM tree to find the cell value
                     treeTraversal = tableRow.cells[j].children[0].children[0].options;
 
-                    if(headers[j] == 'driver'){
-                        rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
-                    } 
-                    else if(headers[j] == 'status') {
-                        tempRow = treeTraversal.selectedIndex - 1;
-
-                        rowContent = supportingVariables.usedStatusNumbers[tempRow];
-                    } 
-                    else if(headers[j] == 'points') {
-                        rowContent = tableRow.cells[j].children[0].children[0].innerHTML;
-                    } 
-                    else if(headers[j] == 'position') {
-                        rowContent = tableRow.cells[j].children[0].children[2].value;
-                    } 
-                    else {
-                        rowContent = tableRow.cells[j].children[0].children[0].value;
+                    switch(headers[j]) {
+                        case 'driver':
+                            rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                            break;
+                        case 'status':
+                            let tempRow = treeTraversal.selectedIndex - 1;
+                            rowContent = supportingVariables.usedStatusNumbers[tempRow];
+                            break;
+                        case 'points':
+                            rowContent = tableRow.cells[j].children[0].children[0].innerHTML;
+                            break;
+                        case 'position':
+                            rowContent = tableRow.cells[j].children[0].children[2].value;
+                            break;
+                        default:
+                            rowContent = tableRow.cells[j].children[0].children[0].value;
+                            break;
                     }
-                } 
-                else if(headers[j] == 'driver_id') {
+                } else if (headers[j] == 'driver_id') {
                     // Traversing through the DOM tree to find the value of the left cell
                     leftCellTraversal = tableRow.cells[1].children[0].children[0].options;
-                    
+
                     rowContent = parseInt(leftCellTraversal[1].value);
-                } 
-                else {
+                } else {
                     rowContent = tableRow.cells[j].innerHTML;
                 }
 
