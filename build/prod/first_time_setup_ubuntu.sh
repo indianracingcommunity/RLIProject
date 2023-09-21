@@ -73,7 +73,7 @@ if [ $NEW_CERT_FLAG = true ]; then
   echo
 
   echo "Starting docker containers ..."
-  docker compose -f ../../docker-compose.yml up $SERVER_NAME --build -d
+  docker compose -f ../../docker-compose.yml up --build -d
 
   echo "Deleting dummy certificate for $WEBSITE_DOMAIN ..."
   docker compose run --rm --entrypoint "\
@@ -93,7 +93,7 @@ if [ $NEW_CERT_FLAG = true ]; then
   docker compose exec $SERVER_NAME nginx -s reload
 else
   echo "Starting docker containers ..."
-  docker compose -f ../../docker-compose.yml up $SERVER_NAME --build -d
+  docker compose -f ../../docker-compose.yml up --build -d
 fi
 
 # Deploy latest changes
