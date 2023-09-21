@@ -8,7 +8,7 @@ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc;
 done
 
 sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg
+sudo apt-get install -y ca-certificates curl gnupg nano cron
 
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -29,9 +29,9 @@ sudo usermod -aG docker $USER || true
 # Check if .env & database have been added
 DB_DATABASE=$(awk '/DB_DATABASE=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
 APP_ENV=$(awk '/APP_ENV=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
-if [ -z "$DB_DATABASE" ] || [ ! -d "../../setup/$APP_ENV/db/$DB_DATABASE" ]
+if [ -z "$DB_DATABASE" ]
 then
-  echo 'Environment Variable and/or Database not setup'
+  echo 'Environment Variable not setup'
   exit 1
 fi
 
@@ -52,35 +52,49 @@ if [ ! -e "$CERTBOT_DATA_PATH/conf/options-ssl-nginx.conf" ] || [ ! -e "$CERTBOT
   curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > "$CERTBOT_DATA_PATH/conf/ssl-dhparams.pem"
 fi
 
-echo "Creating dummy certificate for $WEBSITE_DOMAIN ..."
-CERTBOT_DOCKER_PATH="/etc/letsencrypt/live/$WEBSITE_DOMAIN"
-mkdir -p "$CERTBOT_DATA_PATH/conf/live/$WEBSITE_DOMAIN"
-docker compose run --rm --entrypoint "\
-  openssl req -x509 -nodes -newkey rsa:4096 -days 1\
-    -keyout '$CERTBOT_DOCKER_PATH/privkey.pem' \
-    -out '$CERTBOT_DOCKER_PATH/fullchain.pem' \
-    -subj '/CN=localhost'" certbot
-echo
+# Create new certificate for website domain --with-new-certificate
+NEW_CERT_FLAG=false
+for arg in "$@"; do
+  if [ "$arg" = "--with-new-certificate" ]; then
+    NEW_CERT_FLAG=true
+    break
+  fi
+done
 
-echo "Starting docker containers ..."
-docker compose -f ../../docker-compose.yml up $SERVER_NAME --build -d
+if [ $NEW_CERT_FLAG = true ]; then
+  echo "Creating dummy certificate for $WEBSITE_DOMAIN ..."
+  CERTBOT_DOCKER_PATH="/etc/letsencrypt/live/$WEBSITE_DOMAIN"
+  mkdir -p "$CERTBOT_DATA_PATH/conf/live/$WEBSITE_DOMAIN"
+  docker compose run --rm --entrypoint "\
+    openssl req -x509 -nodes -newkey rsa:4096 -days 1\
+      -keyout '$CERTBOT_DOCKER_PATH/privkey.pem' \
+      -out '$CERTBOT_DOCKER_PATH/fullchain.pem' \
+      -subj '/CN=localhost'" certbot
+  echo
 
-echo "Deleting dummy certificate for $WEBSITE_DOMAIN ..."
-docker compose run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$WEBSITE_DOMAIN && \
-  rm -Rf /etc/letsencrypt/archive/$WEBSITE_DOMAIN && \
-  rm -Rf /etc/letsencrypt/renewal/$WEBSITE_DOMAIN.conf" certbot
+  echo "Starting docker containers ..."
+  docker compose -f ../../docker-compose.yml up --build -d
 
-docker compose run --rm --entrypoint "\
-  certbot certonly --webroot -w /var/www/certbot \
-    -d $WEBSITE_DOMAIN \
-    --email $WEBSITE_EMAIL \
-    --rsa-key-size 4096 \
-    --agree-tos --non-interactive \
-    --force-renewal" certbot
+  echo "Deleting dummy certificate for $WEBSITE_DOMAIN ..."
+  docker compose run --rm --entrypoint "\
+    rm -Rf /etc/letsencrypt/live/$WEBSITE_DOMAIN && \
+    rm -Rf /etc/letsencrypt/archive/$WEBSITE_DOMAIN && \
+    rm -Rf /etc/letsencrypt/renewal/$WEBSITE_DOMAIN.conf" certbot
 
-echo "Reloading nginx ..."
-docker compose exec $SERVER_NAME nginx -s reload
+  docker compose run --rm --entrypoint "\
+    certbot certonly --webroot -w /var/www/certbot \
+      -d $WEBSITE_DOMAIN \
+      --email $WEBSITE_EMAIL \
+      --rsa-key-size 4096 \
+      --agree-tos --non-interactive \
+      --force-renewal" certbot
+
+  echo "Reloading nginx ..."
+  docker compose exec $SERVER_NAME nginx -s reload
+else
+  echo "Starting docker containers ..."
+  docker compose -f ../../docker-compose.yml up --build -d
+fi
 
 # Deploy latest changes
 REMOTE_BRANCH="$(git branch --show-current)"

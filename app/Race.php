@@ -25,6 +25,7 @@ class Race extends Model
             return $race;
         } else {
             $this->save();
+            $this->refresh();
             return $this;
         }
     }

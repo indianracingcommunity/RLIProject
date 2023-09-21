@@ -12,7 +12,7 @@
              
 
                  <a href="{{route('coordinator.driverlist')}}" class="btn btn-primary btn float-left ml-2">View/Allot Drivers</a>
-                 <a href="#" class="btn btn-primary btn float-left ml-2">Update Standings</a>
+                 <a href="{{route('race.upload')}}" class="btn btn-primary btn float-left ml-2">Upload Race Results</a>
                  <a href="{{route('steward.list')}}" class="btn btn-primary btn float-left ml-2">View All Reports</a>
                  <br><br><br>
                  <p>User Panel:</p>
