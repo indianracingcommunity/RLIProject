@@ -1,6 +1,7 @@
 #!/bin/sh
 
 IRC_APP="irc-app"
+SERVER_NAME="irc-server"
 deploy() {
     REMOTE_BRANCH="$(git branch --show-current)"
 
@@ -26,19 +27,22 @@ deploy() {
         git pull origin "$1"
 
         # Install dependencies based on lock file
-        docker compose exec $IRC_APP composer install --no-interaction --prefer-dist --optimize-autoloader
+        docker compose exec $IRC_APP composer install --no-interaction --no-dev --no-scripts --prefer-dist --optimize-autoloader
 
         # Migrate database
         docker compose exec $IRC_APP php artisan migrate
 
         # Clear cache
-        docker compose exec $IRC_APP php artisan optimize
+        docker compose exec $IRC_APP php artisan optimize:clear
 
         # Reload PHP
         docker restart $IRC_APP
 
     # Waiting for service to run
     sleep 3
+
+    # Reload Nginx
+    docker compose exec $SERVER_NAME nginx -s reload
 
     # Exit maintenance mode
     docker compose exec $IRC_APP php artisan up
@@ -48,7 +52,8 @@ deploy() {
 
 deploy
 # If service is not running, notify admins
-if [ "$?" -ne 0 ] || [ "$( docker container inspect -f '{{.State.Running}}' $IRC_APP )" = "false" ]; then
+if [ "$?" -ne 0 ] || [ "$( docker container inspect -f '{{.State.Running}}' $IRC_APP )" = "false" ] || \
+   [ "$( docker container inspect -f '{{.State.Running}}' $SERVER_NAME )" = "false" ]; then
     echo "Service is down!"
 
     # Retrieve environment variables
