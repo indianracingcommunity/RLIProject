@@ -39,6 +39,7 @@ fi
 mkdir -p ../../storage/backups
 mkdir -p ../../storage/signups
 
+IRC_APP='irc-app';
 SERVER_NAME='irc-server';
 CERTBOT_DATA_PATH="../../setup/$APP_ENV/certbot"
 WEBSITE_EMAIL=$(awk '/WEBSITE_EMAIL=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
@@ -102,12 +103,12 @@ REMOTE_BRANCH="$(git branch --show-current)"
 
 # Setup crons
 echo "Setting up crons"
-PROJECT_DIR=$(awk '/PROJECT_DIR=/' ../../.env | awk '{split($0,a,"="); print a[2]}');
+LOCAL_PROJECT_DIR="~/$(awk '/APP_NAME=/' ../../.env | awk '{split($0,a,"="); print a[2]}')";
 # Run cron: Every hour
-crontab -l | { cat; echo "0 * * * * cd $PROJECT_DIR && \
-    php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
+crontab -l | { cat; echo "* * * * * cd $LOCAL_PROJECT_DIR && \
+    docker compose exec $IRC_APP php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
 
 # Run cron: At 04:00, on day 5 of the month
-crontab -l | { cat; echo "0 4 5 * * cd $PROJECT_DIR && \
+crontab -l | { cat; echo "0 4 5 * * cd $LOCAL_PROJECT_DIR && \
     docker compose run --rm --entrypoint \"certbot renew --non-interactive\" certbot && \
     docker compose exec $SERVER_NAME nginx -s reload >> /dev/null 2>&1"; } | crontab -

@@ -50,7 +50,7 @@ deploy() {
     echo "Application deployed!"
 }
 
-deploy
+deploy $1
 # If service is not running, notify admins
 if [ "$?" -ne 0 ] || [ "$( docker container inspect -f '{{.State.Running}}' $IRC_APP )" = "false" ] || \
    [ "$( docker container inspect -f '{{.State.Running}}' $SERVER_NAME )" = "false" ]; then
