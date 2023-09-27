@@ -993,9 +993,9 @@
                 else {
                     select += `<option selected value=${selectInpFields[key].upload}>${dispValue}</option>`;
                 }
-                
-                selectInpFields[key].colId.innerHTML = select;
             }
+
+            selectInpFields[key].colId.innerHTML = select;
         });
     }
 
@@ -1198,8 +1198,9 @@
         for(let x = 0; x < selectInpFields.driverID.data.length; x++) {
             driverDispVal = selectInpFields.driverID.data[x].name;         
             driverSelect += `<option value=${selectInpFields.driverID.data[x].id}>${driverDispVal}</option>`;
-            selectInpFields.driverID.colId.innerHTML = driverSelect;
         }
+
+        selectInpFields.driverID.colId.innerHTML = driverSelect;
     }
 
     function populateConstructorDropdown(selectInpFields) {
@@ -1215,8 +1216,9 @@
             else {
                 constructorSelect += `<option selected value=${selectInpFields.constructorID.data[x].id}>${constructorDispVal}</option>`;
             }
-            selectInpFields.constructorID.colId.innerHTML = constructorSelect;
         }
+
+        selectInpFields.constructorID.colId.innerHTML = constructorSelect;
     }
 
     function populateStatusDropdown(selectInpFields) {
@@ -1232,8 +1234,9 @@
             else {
                 statusSelect += `<option selected value=${selectInpFields.status.data[x].id}>${statusDispVal}</option>`;
             }
-            selectInpFields.status.colId.innerHTML = statusSelect;
         }
+
+        selectInpFields.status.colId.innerHTML = statusSelect;
     }
 
     function reflectFastestLap(selectedValue, points, additionalDetailsStore, supportingVariables, i) {
@@ -1531,8 +1534,9 @@
                 else {
                     constructorSelect += `<option selected value=${supportingVariables.availableConstructors[y].id}>${constructorDispVal}</option>`;
                 }
-                constructorCol.innerHTML = constructorSelect;
             }
+            constructorCol.innerHTML = constructorSelect;
+
             constructorCol.dispatchEvent(e);
         }
     }
@@ -2019,7 +2023,7 @@
             dataToCheck.driverID.alertNode = `#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`;
 
             repopulateDriverResultsDropdowns(json, dataToCheck.driverID.allValues, supportingVariables);
-            
+
             checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables);
             clearSelectWarning(dataToCheck.driverID.selectInpNode, dataToCheck.driverID.allValues, selectedValue, dataToCheck.driverID.parentNode, dataToCheck.driverID.alertNode);
             checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
@@ -2044,8 +2048,9 @@
             for(let y = 0; y < supportingVariables.availableDrivers.length; y++) {
                 driverDispVal = supportingVariables.availableDrivers[y].name;  
                 driverSelect += `<option value=${supportingVariables.availableDrivers[y].id}>${driverDispVal}</option>`;
-                driverCol.innerHTML = driverSelect;
             }
+
+            driverCol.innerHTML = driverSelect;
         }
     }
 
@@ -3238,7 +3243,7 @@
             
             let i = json.results.length - 1;
 
-            updateResultsTable(json, points, driver, status, additionalDetailsStore, supportingVariables, i);            
+            updateResultsTable(json, points, driver, status, additionalDetailsStore, supportingVariables, i);
             
             supportingVariables.availableDrivers = driver.filter(ele => !jsonResultsDetailsStore.driverID.includes(ele.id));
 
