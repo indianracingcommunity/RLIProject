@@ -435,9 +435,6 @@
                 value: 'DSQ'
             }
         ];
-
-        console.log(season)
-        console.log(tracks)
         
         $('#editScreen').addClass('hidden');
         $('#serverResponseScreen').addClass('hidden');
