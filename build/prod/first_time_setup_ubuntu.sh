@@ -105,7 +105,7 @@ REMOTE_BRANCH="$(git branch --show-current)"
 echo "Setting up crons"
 LOCAL_PROJECT_DIR="~/$(awk '/APP_NAME=/' ../../.env | awk '{split($0,a,"="); print a[2]}')";
 # Run cron: Every hour
-crontab -l | { cat; echo "0 * * * * cd $LOCAL_PROJECT_DIR && \
+crontab -l | { cat; echo "* * * * * cd $LOCAL_PROJECT_DIR && \
     docker compose exec $IRC_APP php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
 
 # Run cron: At 04:00, on day 5 of the month
