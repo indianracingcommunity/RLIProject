@@ -24,6 +24,7 @@
 1. League Sign Up
 1. Admin Panel
 1. Image Recogition
+1. Result Upload
 
 ***
 ### Home
@@ -51,3 +52,5 @@ Displays results and statistics of all IRC hosted events. <br><br>
 Form for drivers to register for our active seasons. <br><br>
 ### Admin Panel
 Module for Coordinators and Admins to make changes to the Database. <br><br>
+### Result Upload
+Module for Coodinators to upload race results to the website. <br><br>
