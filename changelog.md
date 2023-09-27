@@ -1,16 +1,31 @@
-[v5.0.0 - CI/CD](https://github.com/indianracingcommunity/RLIProject/commit/f34a31)
+[v5.0.0 - CI/CD](https://github.com/indianracingcommunity/RLIProject/commit/b040f7b5)
 --
+* [68ade6a6](https://github.com/indianracingcommunity/RLIProject/commit/68ade6a6) - `docs`: 📝 updated resources documentation to reflect current state
+* [35dded38](https://github.com/indianracingcommunity/RLIProject/commit/aaeb45f8) - `feat`: ✨ added upload race results module
+* [75dddf5c](https://github.com/indianracingcommunity/RLIProject/commit/75dddf5c) - `fix`: 🐛 fixed loading relationships for foreign keys `series` & `points`
+* [55d5fbf4](https://github.com/indianracingcommunity/RLIProject/commit/55d5fbf4) - `fix`: 🗃️ reformatted points table migration on renaming columns to identify current state of db
+* [e725f8f7](https://github.com/indianracingcommunity/RLIProject/commit/e725f8f7) - `build`: 🔨 modified prod docker compose setup to support fresh installation in arm64v8 system
+* [e544698f](https://github.com/indianracingcommunity/RLIProject/commit/e544698f) - `ci`: 🥅 notified admins via discord if deployment fails
+* [6e57e447](https://github.com/indianracingcommunity/RLIProject/commit/6e57e447) - `build`: 🔒 bumped JS dependencies to resolve security issues
+* [ec88360b](https://github.com/indianracingcommunity/RLIProject/commit/ec88360b) - `ci`: 🔒 added SSL encryption to prod docker compose setup
+* [e031bfce](https://github.com/indianracingcommunity/RLIProject/commit/e031bfce) - `test`: 🚚 renamed `app/report.php` to `app/Report.php` to seed database successfully
+* [64377c63](https://github.com/indianracingcommunity/RLIProject/commit/64377c63) - `feat`: ✨ added daily database backup to Google Drive
+* [c1b11020](https://github.com/indianracingcommunity/RLIProject/commit/c1b11020) - `build`: 🔨 added first time setup script to install project on ubuntu
+* [101396c8](https://github.com/indianracingcommunity/RLIProject/commit/101396c8) - `ci`: 🚀 added CD github workflow
+* [bffb680f](https://github.com/indianracingcommunity/RLIProject/commit/bffb680f) - `build`: 🛂 enforced login for phpmyadmin in prod
+* [fc33e36b](https://github.com/indianracingcommunity/RLIProject/commit/fc33e36b) - `build`: 🛂 changed PHP user & group to root to fix storage folder permission issue
+* [53fb58d3](https://github.com/indianracingcommunity/RLIProject/commit/53fb58d3) - `refactor`: 🍱 updated f1 rules pdf v7
+* [88c3ac12](https://github.com/indianracingcommunity/RLIProject/commit/88c3ac12) - `feat`: ✨ added popup for users signup account linking
+* [9236d2d9](https://github.com/indianracingcommunity/RLIProject/commit/9236d2d9) - `fix`: 🧑‍💻 updated dev docker compose with env variables
 * [216d5b93](https://github.com/indianracingcommunity/RLIProject/commit/216d5b93) - `ci`: 👷 added CI to project
 * [6abad2dc](https://github.com/indianracingcommunity/RLIProject/commit/6abad2dc) - `build`: 🧱 upgraded php to 8 and composer to 2
 * [6cd01683](https://github.com/indianracingcommunity/RLIProject/commit/6cd01683) - `refactor`: 🗑️ deprecated PermissionManager with new AuthServiceProvider
-* [6dc360b2](https://github.com/indianracingcommunity/RLIProject/commit/6dc360b2) - `ci`: 🚀 added CD github workflow
-* [c6e9c95](https://github.com/indianracingcommunity/RLIProject/commit/c6e9c95) - `build`: 🌱 completed db seeders
-* [5acbe14](https://github.com/indianracingcommunity/RLIProject/commit/5acbe14) - `build`: 🌱 added tier seeder
-* [e29a0f5](https://github.com/indianracingcommunity/RLIProject/commit/e29a0f5) - `test`: 🌱 updated season factory to create assets for valid season
+* [296aca09](https://github.com/indianracingcommunity/RLIProject/commit/296aca09) - `docs`: 📝 updated .env.example with docker constants
+* [393a36d4](https://github.com/indianracingcommunity/RLIProject/commit/393a36d4) - `docs`: 📄 added MIT license, updated readme
+* [b0662780](https://github.com/indianracingcommunity/RLIProject/commit/b0662780) - `docs`: 📝 added `changelog.md`
+* [c6e9c95](https://github.com/indianracingcommunity/RLIProject/commit/c6e9c95) - `build`: 🌱 added db seeders
+* [e29a0f5](https://github.com/indianracingcommunity/RLIProject/commit/e29a0f5) - `test`: 🌱 added factories
 * [9f7e3e8](https://github.com/indianracingcommunity/RLIProject/commit/9f7e3e8) - `feat!`: 💥 renamed points system columns
-* [ee4d801](https://github.com/indianracingcommunity/RLIProject/commit/ee4d801) - `test`: 🌱 added multi-dependency factories
-* [b18da2f](https://github.com/indianracingcommunity/RLIProject/commit/b18da2f) - `test`: 🌱 added 1 dependency factories
-* [ed8afff](https://github.com/indianracingcommunity/RLIProject/commit/ed8afff) - `test`: 🌱 added 0 dependency factories
 * [66d6f4f](https://github.com/indianracingcommunity/RLIProject/commit/66d6f4f) - `build`: 🔨 setup phpunit testing
 
 
