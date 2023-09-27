@@ -35,6 +35,6 @@ class Circuit extends Model
 
     public function series()
     {
-        return $this->belongsTo('App\Series');
+        return $this->belongsTo('App\Series', 'series');
     }
 }

@@ -46,7 +46,7 @@ class Race extends Model
 
     public function points()
     {
-        return $this->belongsTo('App\Points');
+        return $this->belongsTo('App\Points', 'points');
     }
 
     public function results()
