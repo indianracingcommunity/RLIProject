@@ -14,3 +14,4 @@ _ide_helper.php
 _ide_helper_models.php
 build/prod/db/*.sql
 build/*dev
+public/storage
