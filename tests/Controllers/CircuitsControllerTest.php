@@ -3,8 +3,9 @@
 namespace Tests\Controllers;
 
 use App\User;
-use Tests\TestCase;
+use App\Series;
 use App\Circuit;
+use Tests\TestCase;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,8 +18,9 @@ class CircuitsControllerTest extends TestCase
 
     public function testIndex()
     {
+        $seriesId = factory(Series::class)->create()->id;
         $circuits = factory(Circuit::class, 2)->create([
-            'series' => 2
+            'series' => $seriesId
         ]);
 
         // Mock API authentication

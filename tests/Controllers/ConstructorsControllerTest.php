@@ -3,6 +3,7 @@
 namespace Tests\Controllers;
 
 use App\User;
+use App\Series;
 use Tests\TestCase;
 use App\Constructor;
 use Illuminate\Http\Response;
@@ -17,8 +18,9 @@ class ConstructorsControllerTest extends TestCase
 
     public function testIndex()
     {
+        $seriesId = factory(Series::class)->create()->id;
         $constructors = factory(Constructor::class, 2)->create([
-            'series' => 2
+            'series' => $seriesId
         ]);
 
         // Mock API authentication
