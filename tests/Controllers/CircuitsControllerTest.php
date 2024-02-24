@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class ConstructorsControllerTest extends TestCase
+class CircuitsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithoutMiddleware;
