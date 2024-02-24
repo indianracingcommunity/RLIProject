@@ -28,7 +28,7 @@ class CircuitsControllerTest extends TestCase
         // Auth::shouldReceive('guard')->once()->with('api')->andReturnSelf();
         // Auth::shouldReceive('user')->once()->andReturn($user);
 
-        $this->json('GET', 'api/circuits?series=1&fields=id')
+        $this->json('GET', 'api/circuits?series=' . $seriesId . '&fields=id')
              ->assertStatus(Response::HTTP_OK)
              ->assertJsonCount(2)
              ->assertExactJson([
@@ -40,7 +40,7 @@ class CircuitsControllerTest extends TestCase
                 ],
              ]);
 
-        $this->json('GET', 'api/circuits?series=2')
+        $this->json('GET', 'api/circuits?series=999')
              ->assertStatus(Response::HTTP_OK)
              ->assertJsonCount(0);
     }

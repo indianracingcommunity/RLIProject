@@ -28,7 +28,7 @@ class ConstructorsControllerTest extends TestCase
         // Auth::shouldReceive('guard')->once()->with('api')->andReturnSelf();
         // Auth::shouldReceive('user')->once()->andReturn($user);
 
-        $this->json('GET', 'api/constructors?series=1&fields=id')
+        $this->json('GET', 'api/constructors?series=' . $seriesId . '&fields=id')
              ->assertStatus(Response::HTTP_OK)
              ->assertJsonCount(2)
              ->assertExactJson([
@@ -40,7 +40,7 @@ class ConstructorsControllerTest extends TestCase
                 ],
              ]);
 
-        $this->json('GET', 'api/constructors?series=2')
+        $this->json('GET', 'api/constructors?series=999')
              ->assertStatus(Response::HTTP_OK)
              ->assertJsonCount(0);
     }
