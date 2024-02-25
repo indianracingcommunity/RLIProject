@@ -632,6 +632,8 @@
         };
 
         let jsonResultsDetailsStore = {
+            driverName: [],
+            uploadedDriverID: [],
             driverID: [],
             grid: [],
             stops: [],
@@ -836,11 +838,12 @@
     }
 
     function pushValuesIntoStores(json, driver, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
+        let driverName = json.results[i].driver;
         let driverID = json.results[i].driver_id;
         let unitsPlace = parseInt(json.results[i].status % 10);
         let intervalValue = convertAbsoluteTimeToInterval(json.results[i].time, json.results[0].time);
 
-        if(isNaN(driverID) || driverID > driver.length || driverID === '') {
+        if(isNaN(driverID) || driverID > driver[driver.length - 1].id || driverID === '') {
             driverID = null;    
         }
 
@@ -853,6 +856,8 @@
         }
         
         // Pushing input values to respective stores
+        jsonResultsDetailsStore.driverName.push(driverName);
+        jsonResultsDetailsStore.uploadedDriverID.push(driverID);
         jsonResultsDetailsStore.driverID.push(driverID);
         jsonResultsDetailsStore.grid.push(json.results[i].grid);
         jsonResultsDetailsStore.stops.push(json.results[i].stops);
@@ -2769,6 +2774,8 @@
             supportingVariables.indexPosMap[i] = otherPos;
             supportingVariables.indexPosMap[otherIndex] = currentPos;
 
+            swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.driverName);
+            swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.uploadedDriverID);
             swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.raceTimeInAbsolutes);
             swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.originalStatusMinusUnitsPlace);
             swapDetailsStoreValues(currentPos, otherPos, additionalDetailsStore.resultsPoints);
@@ -2916,8 +2923,8 @@
     }
 
     function updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, submitFlag = 0) {
-        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'), supportingVariables);
-        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'), supportingVariables);
+        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'), jsonResultsDetailsStore, supportingVariables);
+        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'), jsonResultsDetailsStore, supportingVariables);
 
         // Deleting the 'undefined' created key for the extra track table column
         delete trackContent[0].undefined;
@@ -2954,7 +2961,7 @@
         return {track: trackContent[0], results: resultsContent};
     }
 
-    function tableToJSON(table, supportingVariables) {
+    function tableToJSON(table, jsonResultsDetailsStore, supportingVariables) {
         let data = [];
         let headers = [];
         let statusMap = [0, 1, -2, -3];
@@ -2977,7 +2984,7 @@
 
         convertTableHeadersIntoRequiredKeyNames(headers, table, jsonKeys);
 
-        slotCellValuesIntoAppropriateHeaders(data, headers, table, supportingVariables);
+        slotCellValuesIntoAppropriateHeaders(data, headers, table, jsonResultsDetailsStore, supportingVariables);
         
         return data;
     }
@@ -2999,7 +3006,7 @@
         }
     }
 
-    function slotCellValuesIntoAppropriateHeaders(data, headers, table, supportingVariables) {
+    function slotCellValuesIntoAppropriateHeaders(data, headers, table, jsonResultsDetailsStore, supportingVariables) {
         // Starting the loop from second row of the table to last row
         for(let i = 1; i < table.rows.length; i++) {
             let tableRow = table.rows[i];
@@ -3015,7 +3022,14 @@
 
                     switch(headers[j]) {
                         case 'driver':
-                            rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                            if(jsonResultsDetailsStore.uploadedDriverID[i - 1] !== null) {
+                                rowContent = jsonResultsDetailsStore.driverName[i - 1];
+                            }
+                            else {
+                                rowContent = treeTraversal[treeTraversal.selectedIndex].innerHTML;
+                                // Removing the id of driver from the string
+                                rowContent = rowContent.substring(0, rowContent.lastIndexOf('(') - 1);
+                            }
                             break;
                         case 'status':
                             let tempRow = treeTraversal.selectedIndex - 1;
@@ -3359,6 +3373,8 @@
     function popLastRowValuesFromStores(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
         json.results.pop();
         supportingVariables.indexPosMap.pop();
+        jsonResultsDetailsStore.driverName.pop();
+        jsonResultsDetailsStore.uploadedDriverID.pop();
         jsonResultsDetailsStore.driverID.pop();
         jsonResultsDetailsStore.grid.pop();
         jsonResultsDetailsStore.stops.pop();

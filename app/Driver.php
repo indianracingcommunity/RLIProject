@@ -14,19 +14,6 @@ class Driver extends Model
     protected static $logOnlyDirty = true; // Only log the fields that have been updated
 
     private const DELIMITER = '~$~';
-    public static function getAliases()
-    {
-        $alias_list = Driver::pluck('alias');
-
-        foreach ($alias_list as $i => $alias) {
-            $arr = array();
-            $arr = explode(self::DELIMITER, $alias);
-
-            $alias_list[$i] = $arr;
-        }
-
-        return $alias_list;
-    }
 
     public static function selfLearn(string $predicted, int $id)
     {
@@ -38,12 +25,6 @@ class Driver extends Model
     public static function getNames()
     {
         $driver_list = Driver::select('id', 'name', 'alias')->get();
-        foreach ($driver_list as $i => $driver) {
-            $arr = array();
-            $arr = explode(self::DELIMITER, $driver['alias']);
-
-            $driver_list[$i]['alias'] = $arr;
-        }
         return json_decode(json_encode($driver_list), true);
     }
 
@@ -54,9 +35,9 @@ class Driver extends Model
 
     public function insertAlias(string $newAlias)
     {
-        $aliases = explode(self::DELIMITER, $this->alias);
-        if (!in_array($newAlias, $aliases)) {
-            $this->alias = $this->alias . self::DELIMITER . $newAlias;
+        $aliasString = implode(self::DELIMITER, $this->alias);
+        if (!in_array($newAlias, $this->alias)) {
+            $this->alias = $aliasString . self::DELIMITER . $newAlias;
             $this->save();
             return 1;
         }
