@@ -63,6 +63,12 @@ class Driver extends Model
         return 0;
     }
 
+    // Split alias string into an array of aliases
+    public function getAliasAttribute($aliasString)
+    {
+        return explode(self::DELIMITER, $aliasString);
+    }
+
     public function results()
     {
         return $this->hasMany('App\Result');
