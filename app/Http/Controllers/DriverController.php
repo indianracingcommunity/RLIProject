@@ -95,45 +95,104 @@ class DriverController extends StandingsController
 
     public function driverData()
     {
-        $driver = Driver::select('id', 'name', 'tier', 'team', 'drivernumber', 'user_id')
-        ->get()->load('user:id,name,avatar,discord_id,steam_id,xbox')->toArray();
+        $driver = Driver::select('id', 'name', 'alias', 'drivernumber', 'user_id')
+                        ->get()
+                        ->load('user:id,avatar,discord_id,steam_id,xbox,psn')
+                        ->toArray();
 
+        $series = Series::select('id', 'name', 'code', 'games')->get()->toArray();
         $constructor = Constructor::all()->toArray();
 
         $seasons = Season::where('status', '<', 2)->get()->toArray();
         $ts = array();
 
-      // Iterate through all Active Seasons
+        // Iterate through all Active Seasons
         for ($i = 0; $i < count($seasons); ++$i) {
             for ($j = 0; $j < count($driver); ++$j) {
-                $driver[$j][$seasons[$i]['id']] = 0;
+                $driver[$j]['season_points'][$seasons[$i]['id']] = 0;
             }
             for ($j = 0; $j < count($constructor); ++$j) {
-                $constructor[$j][$seasons[$i]['id']] = 0;
+                $constructor[$j]['season_points'][$seasons[$i]['id']] = 0;
             }
 
-          // Results for this Season
+            // Results for this Season
             $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
             if ($ts['code'] != 200) {
                 continue;
             }
 
-          // Add Points to Drivers
+            // Add Points to Drivers
             for ($j = 0; $j < count($ts['drivers']); ++$j) {
                 $d_id = array_search($ts['drivers'][$j]['id'], array_column($driver, "id"));
-                $driver[$d_id][$seasons[$i]['id']] = $ts['drivers'][$j]['points'];
+                $driver[$d_id]['season_points'][$seasons[$i]['id']] = $ts['drivers'][$j]['points'];
             }
 
-          // Add Points to Constructors
+            // Add Points to Constructors
             for ($j = 0; $j < count($ts['constructors']); ++$j) {
                 $c_id = array_search($ts['constructors'][$j]['id'], array_column($constructor, "id"));
-                $constructor[$c_id][$seasons[$i]['id']] = $ts['constructors'][$j]['points'];
+                $constructor[$c_id]['season_points'][$seasons[$i]['id']] = $ts['constructors'][$j]['points'];
             }
         }
 
+        /* Returns:
+            {
+                "drivers": [
+                    {
+                        "id": 1,
+                        "name": "xyz",
+                        "alias": [
+                            "xyz",
+                            "The XYZ"
+                        ],
+                        "drivernumber": 2,
+                        "user_id": 1,
+                        "user": {
+                            "id": 1,
+                            "avatar": "https://cdn.discordapp.com/avatars/240431392834453505/855f887d5de02f5b4fc80382af094913.jpg",
+                            "discord_id": "111111",
+                            "steam_id": "12222222",
+                            "xbox": "xyzaa",
+                            "psn": "xyzps"
+                        },
+                        "season_points": {
+                            "<season_id>": 0
+                        }
+                    }
+
+                ],
+
+                "constructors: [
+                    {
+                        "id": 109,
+                        "name": "XYZ Corp",
+                        "official": "#0090ff",
+                        "game": "5",
+                        "logo": "https://cdn.discordapp.com/attachments/..../xyz.png",
+                        "car": "https://www.formula1.com/content/dam/fom-website/..../abc.png",
+                        "created_at": null,
+                        "updated_at": null,
+                        "series": 1,
+                        "title": "2023",
+                        "season_points": {
+                            "<season_id>": 0
+                        }
+                    }
+                ],
+
+                "series": [
+                    {
+                        "id": 10,
+                        "name": "F1",
+                        "code": "f1",
+                        "games": "F1 2020, F1 2021, F1 22, F1 23"
+                    }
+                ]
+            }
+        */
         return response()->json([
-        "drivers" => $driver,
-        "constructors" => $constructor
+            "drivers" => $driver,
+            "constructors" => $constructor,
+            "series" => $series
         ]);
     }
 
@@ -147,9 +206,9 @@ class DriverController extends StandingsController
         $seasons = Season::select('id', 'game', 'season', 'tier', 'name', 'series', 'constructors', 'tttracks')
                      ->where('status', '<', 2)->get()->toArray();
 
-      // Iterate through all Active Seasons
+        // Iterate through all Active Seasons
         for ($i = 0; $i < count($seasons); ++$i) {
-          // Results for this Season
+            // Results for this Season
             $ts = $this->computeStandings($seasons[$i]['series'], $seasons[$i]['tier'], $seasons[$i]['season']);
             if ($ts['code'] != 200) {
                 continue;

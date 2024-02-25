@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Driver extends Model
 {
+    use Queryable;
     use LogsActivity;
 
     protected static $logName = 'driver';  // Name for the log
@@ -61,6 +63,11 @@ class Driver extends Model
             return 1;
         }
         return 0;
+    }
+
+    public function getAliasAttribute($aliasString)
+    {
+        return explode(self::DELIMITER, $aliasString);
     }
 
     public function results()

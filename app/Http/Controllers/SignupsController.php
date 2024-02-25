@@ -164,8 +164,8 @@ class SignupsController extends Controller
         $season = Season::all();
 
         return view('admin.signups')
-        ->with('data', $data)
-        ->with('season', $season);
+               ->with('data', $data)
+               ->with('season', $season);
     }
 
     public function getSignupsApi()
@@ -182,7 +182,7 @@ class SignupsController extends Controller
 
         $res = $this->groupByField('season', 'signups', $activeSeasons, $signups, 'season');
 
-      // Returns { season: {}, signups: [{}, {}, ...] }
+        // Returns { season: {}, signups: [{}, {}, ...] }
         return response()->json($res);
     }
 
@@ -194,7 +194,7 @@ class SignupsController extends Controller
                        ->load('user.driver')
                        ->toArray();
 
-      // Assumes that the right constructors are set for a season
+        // Assumes that the right constructors are set for a season
         $constructors = Season::where('id', $season_id)->get()
                       ->pluck('constructors')
                       ->toArray();
@@ -202,7 +202,7 @@ class SignupsController extends Controller
 
         $res = array();
         foreach ($signups as $signup) {
-          // Assumes Car Preferences have been set with valid values
+            // Assumes Car Preferences have been set with valid values
             $cars = explode(',', $signup['carprefrence']);
 
             for ($i = 0; $i < count($cars); $i++) {
@@ -219,7 +219,7 @@ class SignupsController extends Controller
                 'attendance' => $signup['attendance'],
             ];
 
-          // In-game car value
+            // In-game car value
             foreach ($cars as $k => $car) {
                 $el['car' . ($k + 1)] = $car;
             }
@@ -227,7 +227,7 @@ class SignupsController extends Controller
             array_push($res, $el);
         }
 
-      // Returns [{id, drivername, discord_id, racenumber, steam_id, attendance, car1 ...}, {...} ...]
+        // Returns [{id, drivername, discord_id, racenumber, steam_id, attendance, car1 ...}, {...} ...]
         return response()->json($res);
     }
 }

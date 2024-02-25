@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
+// Index APIs - filterable, selectable
 Route::get('/constructors', 'ConstructorsController@index')->name('constructors.index');
 Route::get('/circuits', 'CircuitsController@index')->name('circuits.index');
 
