@@ -365,7 +365,7 @@
             </div>
 
             <div class="justify-center mt-2 px-4 py-2 w-full h-screen" style="max-height: 80vh">
-                <textarea name="" id="reviewJSONTextArea" class="w-full h-full px-3 py-2 rounded-md"></textarea>
+                <textarea name="" id="reviewJSONTextArea" class="w-full h-full px-3 py-2 rounded-md" readonly></textarea>
             </div>
         </div>
     </div>
@@ -633,19 +633,20 @@
 
         let jsonResultsDetailsStore = {
             driverName: [],
-            uploadedDriverID: [],
             driverID: [],
             grid: [],
             stops: [],
             raceTimeInAbsolutes: [],
             raceTimeInIntervals: [],
             originalStatusMinusUnitsPlace: [],
-            status: []
+            status: [],
+            aliasExactMatchKey: []
         };
 
         let additionalDetailsStore = {
             raceDistance: json.track.hasOwnProperty('distance') ? json.track.distance : '',
-            resultsPoints: []
+            resultsPoints: [],
+            uploadedDriverID: []
         };
 
         let supportingVariables = {
@@ -747,6 +748,7 @@
         // Validate values in all 'track' table cells based on set rules
         checkAndMonitorTrackData(json, season, tracks, points, constructor, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
         
+        checkIfDriverNameIsExactMatch(jsonResultsDetailsStore, supportingVariables);
         checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables);
         checkDuplicateStatus(jsonResultsDetailsStore, supportingVariables);
         
@@ -842,6 +844,8 @@
         let driverID = json.results[i].driver_id;
         let unitsPlace = parseInt(json.results[i].status % 10);
         let intervalValue = convertAbsoluteTimeToInterval(json.results[i].time, json.results[0].time);
+        let isAliasExactMatchKeyPresent = json.results[i].hasOwnProperty('isExactMatch') ? true : false;
+        let aliasExactMatchKeyValue = isAliasExactMatchKeyPresent ? json.results[i].isExactMatch : null;
 
         if(isNaN(driverID) || driverID > driver[driver.length - 1].id || driverID === '') {
             driverID = null;    
@@ -857,7 +861,6 @@
         
         // Pushing input values to respective stores
         jsonResultsDetailsStore.driverName.push(driverName);
-        jsonResultsDetailsStore.uploadedDriverID.push(driverID);
         jsonResultsDetailsStore.driverID.push(driverID);
         jsonResultsDetailsStore.grid.push(json.results[i].grid);
         jsonResultsDetailsStore.stops.push(json.results[i].stops);
@@ -868,6 +871,12 @@
         json.results[i].status = unitsPlace;
         jsonResultsDetailsStore.status.push(json.results[i].status);
         
+        jsonResultsDetailsStore.aliasExactMatchKey.push({
+            isPresent: isAliasExactMatchKeyPresent,
+            value: aliasExactMatchKeyValue
+        });
+        
+        additionalDetailsStore.uploadedDriverID.push(driverID);
         additionalDetailsStore.resultsPoints.push(supportingVariables.additionalResultsPointsToAdd[i]);
     }
 
@@ -1115,10 +1124,13 @@
 
             let resultsAlertsCreation = `<div id="warningRaceTimeFasterThanPrevPos${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert"></div>
 
-                                        <div id="raceTimeNotMatchingStatus${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
+                                        <div id="warningRaceTimeNotMatchingStatus${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
                                         </div>
 
-                                        <div id="positionClassifiedForPoints${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
+                                        <div id="warningPositionClassifiedForPoints${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
+                                        </div>
+
+                                        <div id="warningDriverNameNotExactMatch${i}" class="hidden w-3/4 bg-yellow-100 border-l-4 text-sm border-yellow-500 text-yellow-700 py-1 px-3 mb-2 rounded" role="alert">
                                         </div>
             
                                         <div id="errorPosAlert${i}" class="hidden w-3/4 bg-red-100 border-l-4 text-sm border-red-500 text-red-700 py-1 px-3 mb-2 rounded" role="alert">
@@ -1755,6 +1767,22 @@
         }
     }
 
+    function checkIfDriverNameIsExactMatch(jsonResultsDetailsStore, supportingVariables) {
+        for(let i = 0; i < jsonResultsDetailsStore.aliasExactMatchKey.length; i++) {
+            if(jsonResultsDetailsStore.aliasExactMatchKey[i].isPresent && jsonResultsDetailsStore.aliasExactMatchKey[i].value === false) {
+                $(`#resultsBodyDriver${i}`).addClass('bg-yellow-600');
+                $(`#warningDriverNameNotExactMatch${supportingVariables.indexPosMap[i] - 1}`).html(
+                    `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> with <strong>DRIVER</strong> name<strong> ${jsonResultsDetailsStore.driverName[i]}</strong> does not match with the names associated with ID: ${jsonResultsDetailsStore.driverID[i]}</p>`
+                );
+                $(`#warningDriverNameNotExactMatch${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+            }
+            else {
+                $(`#resultsBodyDriver${i}`).removeClass('bg-yellow-600');
+                $(`#warningDriverNameNotExactMatch${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+            }
+        }
+    }
+
     function checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables) {
         let duplicateDiD = findDuplicateIds(jsonResultsDetailsStore.driverID);
 
@@ -1764,8 +1792,6 @@
                 jsonResultsDetailsStore.driverID[i] != null && 
                 jsonResultsDetailsStore.driverID[i] != 0
             ) {
-                
-                
                 let j = 0;
                 for(j; j < duplicateDiD.length; j++) {
                     if(duplicateDiD[j] === jsonResultsDetailsStore.driverID[i]) {
@@ -1781,10 +1807,12 @@
                     );
                 }
                 else {
+                    $(`#resultsBodyDriver${i}`).removeClass('bg-yellow-600');
                     $(`#resultsBodyDriver${i}`).addClass('bg-red-600');
                     $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).html(
                         `<p>Row<strong> ${supportingVariables.indexPosMap[i]}</strong> -<strong> DRIVER</strong> [field is a duplicate value]</p>`
                     );
+                    $(`#warningDriverNameNotExactMatch${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
                     $(`#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
                 }
             }
@@ -1872,8 +1900,8 @@
             }
             else {
                 $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-                $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
-                $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+                $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+                $(`#warningPositionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
             }
         }
         else if(currentRaceTime === 'DSQ') {
@@ -1882,7 +1910,7 @@
             }
             else {
                 $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-                $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+                $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
             }
         }
         else if(
@@ -1894,13 +1922,13 @@
         }
         else {
             $(`#resultsBodyStatus${i}`).removeClass('bg-yellow-600');
-            $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
-            $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+            $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+            $(`#warningPositionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
         }
     }
 
     function statusIsNotDNFForUnclassifiedPosition(supportingVariables, i) {
-        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).html(
+        $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).html(
             `Row <strong>${supportingVariables.indexPosMap[i]}</strong> with race time of <strong>DNF</strong> does not have 'DNF' <strong>STATUS</strong>`
         );
 
@@ -1908,12 +1936,12 @@
             $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
         }
 
-        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
-        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+        $(`#warningPositionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
     }
 
     function statusIsDNFForClassifiedPosition(jsonResultsDetailsStore, supportingVariables, i) {
-        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).html(
+        $(`#warningPositionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).html(
             `Row <strong>${supportingVariables.indexPosMap[i]}</strong> with race time of <strong>DNF</strong> having completed <strong>${jsonResultsDetailsStore.stops[i]} LAPS</strong> should not have 'DNF' <strong>STATUS</strong>`
         );
 
@@ -1921,12 +1949,12 @@
             $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
         }
 
-        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
-        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+        $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        $(`#warningPositionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
     }
 
     function statusIsNotDSQ(supportingVariables, i) {
-        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).html(
+        $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).html(
             `Row <strong>${supportingVariables.indexPosMap[i]}</strong> with race time of <strong>DSQ</strong> does not have 'DSQ' <strong>STATUS</strong>`
         );
 
@@ -1934,8 +1962,8 @@
             $(`#resultsBodyStatus${i}`).addClass('bg-yellow-600');
         }
 
-        $(`#positionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
-        $(`#raceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
+        $(`#warningPositionClassifiedForPoints${supportingVariables.indexPosMap[i] - 1}`).slideUp(500);
+        $(`#warningRaceTimeNotMatchingStatus${supportingVariables.indexPosMap[i] - 1}`).slideDown(500);
     }
 
     function checkAndMonitorResultsData(json, points, driver, constructor, status, regexValidationStrings, jsonTrackDetailsStore, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, i) {
@@ -1946,6 +1974,7 @@
                 selectInpNode: `#driverSelect${i}`,
                 parentNode: `#resultsBodyDriver${i}`,
                 alertNode: `#errorDriverAlert${i}`,
+                warningNode: `#warningDriverNameNotExactMatch${i}`,
                 undoBtn: `#undoDriver${i}`
             },
             constructorID: {
@@ -2013,7 +2042,10 @@
         let driverIDValidCheck = dataToCheck.driverID.allValues.find(item => {return item.id === dataToCheck.driverID.jsonValue});
 
         if(driverIDValidCheck === undefined) {
+            $(dataToCheck.driverID.parentNode).removeClass('bg-yellow-600');
             $(dataToCheck.driverID.parentNode).addClass('bg-red-600');
+
+            $(dataToCheck.driverID.warningNode).slideUp(500);
             $(dataToCheck.driverID.alertNode).slideDown(500);
         }
 
@@ -2028,7 +2060,8 @@
             dataToCheck.driverID.alertNode = `#errorDriverAlert${supportingVariables.indexPosMap[i] - 1}`;
 
             repopulateDriverResultsDropdowns(json, dataToCheck.driverID.allValues, supportingVariables);
-
+            
+            checkIfDriverNameIsExactMatch(jsonResultsDetailsStore, supportingVariables);
             checkDuplicateDiD(jsonResultsDetailsStore, supportingVariables);
             clearSelectWarning(dataToCheck.driverID.selectInpNode, dataToCheck.driverID.allValues, selectedValue, dataToCheck.driverID.parentNode, dataToCheck.driverID.alertNode);
             checkAllTableValuesForErrors(json, regexValidationStrings, jsonResultsDetailsStore, supportingVariables);
@@ -2775,9 +2808,10 @@
             supportingVariables.indexPosMap[otherIndex] = currentPos;
 
             swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.driverName);
-            swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.uploadedDriverID);
             swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.raceTimeInAbsolutes);
             swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.originalStatusMinusUnitsPlace);
+            swapDetailsStoreValues(currentPos, otherPos, jsonResultsDetailsStore.aliasExactMatchKey);
+            swapDetailsStoreValues(currentPos, otherPos, additionalDetailsStore.uploadedDriverID);
             swapDetailsStoreValues(currentPos, otherPos, additionalDetailsStore.resultsPoints);
 
             if(isRowMovingUp) {
@@ -2923,8 +2957,8 @@
     }
 
     function updateJSONFromTableValues(json, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables, submitFlag = 0) {
-        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'), jsonResultsDetailsStore, supportingVariables);
-        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'), jsonResultsDetailsStore, supportingVariables);
+        let trackContent = tableToJSON(document.getElementById('trackDetailsTable'), jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
+        let resultsContent = tableToJSON(document.getElementById('resultsDetailsTable'), jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
 
         // Deleting the 'undefined' created key for the extra track table column
         delete trackContent[0].undefined;
@@ -2955,13 +2989,17 @@
                 if(!isNaN(resultsContent[i].fastestlaptime)) {
                     resultsContent[i].fastestlaptime = resultsContent[i].fastestlaptime.toFixed(3);
                 }
+
+                if(jsonResultsDetailsStore.aliasExactMatchKey[i].isPresent) {
+                    resultsContent[i].isExactMatch = jsonResultsDetailsStore.aliasExactMatchKey[i].value;
+                }
             }
         }
     
         return {track: trackContent[0], results: resultsContent};
     }
 
-    function tableToJSON(table, jsonResultsDetailsStore, supportingVariables) {
+    function tableToJSON(table, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
         let data = [];
         let headers = [];
         let statusMap = [0, 1, -2, -3];
@@ -2984,7 +3022,7 @@
 
         convertTableHeadersIntoRequiredKeyNames(headers, table, jsonKeys);
 
-        slotCellValuesIntoAppropriateHeaders(data, headers, table, jsonResultsDetailsStore, supportingVariables);
+        slotCellValuesIntoAppropriateHeaders(data, headers, table, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables);
         
         return data;
     }
@@ -3006,7 +3044,7 @@
         }
     }
 
-    function slotCellValuesIntoAppropriateHeaders(data, headers, table, jsonResultsDetailsStore, supportingVariables) {
+    function slotCellValuesIntoAppropriateHeaders(data, headers, table, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
         // Starting the loop from second row of the table to last row
         for(let i = 1; i < table.rows.length; i++) {
             let tableRow = table.rows[i];
@@ -3022,7 +3060,7 @@
 
                     switch(headers[j]) {
                         case 'driver':
-                            if(jsonResultsDetailsStore.uploadedDriverID[i - 1] !== null) {
+                            if(additionalDetailsStore.uploadedDriverID[i - 1] !== null) {
                                 rowContent = jsonResultsDetailsStore.driverName[i - 1];
                             }
                             else {
@@ -3374,7 +3412,6 @@
         json.results.pop();
         supportingVariables.indexPosMap.pop();
         jsonResultsDetailsStore.driverName.pop();
-        jsonResultsDetailsStore.uploadedDriverID.pop();
         jsonResultsDetailsStore.driverID.pop();
         jsonResultsDetailsStore.grid.pop();
         jsonResultsDetailsStore.stops.pop();
@@ -3382,6 +3419,8 @@
         jsonResultsDetailsStore.raceTimeInIntervals.pop();
         jsonResultsDetailsStore.originalStatusMinusUnitsPlace.pop();
         jsonResultsDetailsStore.status.pop();
+        jsonResultsDetailsStore.aliasExactMatchKey.pop();
+        additionalDetailsStore.uploadedDriverID.pop();
         additionalDetailsStore.resultsPoints.pop();
     }
 
