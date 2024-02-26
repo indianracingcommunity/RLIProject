@@ -57,25 +57,19 @@
    </div>
    <div class="flex flex-col md:flex-row">
       <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">
-         @if($season['season'] == (int)$season['season'])
          <div class="font-bold text-gray-800 leading-none flex items-center">
             <div class="mr-4">
                <i class="fas fa-chess-king text-5xl text-purple-600"></i>
             </div>
             <div>
                <div class="text-3xl">
-                  Tier {{$season['tier']}}
+                  {{$season['tiername']}}
                </div>
                <div class="text-2xl font-semibold text-gray-700 leading-none">
-                  Season {{$season['season']}}
+                  Season {{(int)$season['season']}}
                </div>
             </div>
          </div>
-         @else
-         <div class="text-4xl font-bold text-gray-800 leading-none">
-            <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
-         </div>
-         @endif
       </div>
       <div class="md:ml-4 md:w-2/3 flex justify-between flex-col md:flex-row md:gap-4">
          @for ($i = 0, $k = 0; $i < $count && $k < 3; $i++, $k++) @php if((abs($res[$i]['status'])>= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name']=='Reserve' ) { $k--; continue; } @endphp @if($k==0) <div class="bg-white p-4 rounded-lg border md:w-1/3 mb-4 md:m-0">

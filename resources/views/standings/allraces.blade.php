@@ -16,48 +16,37 @@
 @section('content')
 <div class="container mx-auto px-4 md:p-0">
    <div class="bg-white p-4 rounded-lg border mb-4 md:m-0 md:hidden block">
-      @if($season['season'] == (int)$season['season'])
       <div class="font-bold text-gray-800 leading-none flex items-center">
          <div class="mr-4">
             <i class="fas fa-chess-king text-5xl text-purple-600"></i>
          </div>
          <div>
             <div class="text-3xl">
-               Tier {{$season['tier']}}
+               {{$season['tiername']}}
             </div>
             <div class="text-2xl font-semibold text-gray-700 leading-none">
-               Season {{$season['season']}}
+               Season {{(int)$season['season']}}
             </div>
          </div>
       </div>
-      @else
-      <div class="text-4xl font-bold text-gray-800 leading-none">
-         <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
-      </div>
-      @endif
    </div>
+
    <div class="flex flex-col-reverse md:flex-row md:gap-4">
       <div class="md:w-1/3 ">
          <div class="bg-white p-4 rounded-lg border mb-4 md:m-0 hidden md:block">
-            @if($season['season'] == (int)$season['season'])
             <div class="font-bold text-gray-800 leading-none flex items-center">
                <div class="mr-4">
                   <i class="fas fa-chess-king text-5xl text-purple-600"></i>
                </div>
                <div>
                   <div class="text-3xl">
-                     Tier {{$season['tier']}}
+                     {{$season['tiername']}}
                   </div>
                   <div class="text-2xl font-semibold text-gray-700 leading-none">
-                     Season {{$season['season']}}
+                     Season {{(int)$season['season']}}
                   </div>
                </div>
             </div>
-            @else
-            <div class="text-4xl font-bold text-gray-800 leading-none">
-               <i class="fas fa-chess-king text-purple-600"></i> {{$season['name']}}
-            </div>
-            @endif
          </div>
          <div class="bg-white p-4 rounded-lg border mb-4 md:my-4">
             <div class="font-semibold my-2 leading-none uppercase tracking-widest text-xs border-b pb-4">

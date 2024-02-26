@@ -369,14 +369,14 @@
                 @auth
     
                     @if (session()->has('error'))
-                        <div class="container mx-auto">
+                        <div class="container mx-auto my-4">
                             <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
                                 <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
                             </div>
                         </div>
                     @endif
                     @if (session()->has('success'))
-                        <div class="container mx-auto">
+                        <div class="container mx-auto my-4">
                             <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
                                 <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
                             </div>
@@ -390,7 +390,7 @@
                     </main>
                 @endauth
                 @guest
-                    <main class="container mx-auto">
+                    <main class="container mx-auto my-4">
                         @yield('content')
                     </main>
                     <main class="w-full">

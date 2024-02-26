@@ -1,5 +1,6 @@
-[v5.1.0 - Index APIs](https://github.com/indianracingcommunity/RLIProject/commit/b040f7b5)
+[v5.1.0 - Index APIs](https://github.com/indianracingcommunity/RLIProject/commit/7aa0cd55)
 --
+* [7aa0cd55](https://github.com/indianracingcommunity/RLIProject/commit/7aa0cd55) - `style`: 💄 display tier name and season for standings and all races pages
 * [28a3f7d6](https://github.com/indianracingcommunity/RLIProject/commit/28a3f7d6) - `feat`: ✨ handled isExactMatch in input json in upload race results portal and made the review area readonly
 * [00d2da01](https://github.com/indianracingcommunity/RLIProject/commit/00d2da01) - `fix`: 🐛 fixed driver name being sent for upload race result through portal
 * [1c101b19](https://github.com/indianracingcommunity/RLIProject/commit/1c101b19) - `feat`: 🍱 added alias, season_points, psn and series to `/drivers/data` API
