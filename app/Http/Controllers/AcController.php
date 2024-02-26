@@ -94,9 +94,9 @@ class AcController extends ImageController
         $results = array();
         // Check for Fastest Time, get ID
 
+        $drList = Driver::getNames();
         foreach ($rcsv as $k => $driver) {
             // Search for Closest Matching Driver
-            $drList = Driver::getNames();
             $drName = array_column($drList, 'name');
 
             $index = $this->closestMatch($driver[1], $drName);

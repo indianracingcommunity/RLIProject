@@ -97,6 +97,9 @@ else
   docker compose -f ../../docker-compose.yml up --build -d
 fi
 
+# Create a symbolic link from "public/storage" to "storage/app/public"
+docker compose exec $IRC_APP php artisan storage:link
+
 # Deploy latest changes
 REMOTE_BRANCH="$(git branch --show-current)"
 ./deploy.sh $REMOTE_BRANCH
