@@ -1,3 +1,21 @@
+[v5.1.0 - Index APIs](https://github.com/indianracingcommunity/RLIProject/commit/b040f7b5)
+--
+* [28a3f7d6](https://github.com/indianracingcommunity/RLIProject/commit/28a3f7d6) - `feat`: ✨ handled isExactMatch in input json in upload race results portal and made the review area readonly
+* [00d2da01](https://github.com/indianracingcommunity/RLIProject/commit/00d2da01) - `fix`: 🐛 fixed driver name being sent for upload race result through portal
+* [1c101b19](https://github.com/indianracingcommunity/RLIProject/commit/1c101b19) - `feat`: 🍱 added alias, season_points, psn and series to `/drivers/data` API
+* [20d3a3aa](https://github.com/indianracingcommunity/RLIProject/commit/20d3a3aa) - `feat`: ✨ added Constructors & Circuits index APIs
+* [2175c062](https://github.com/indianracingcommunity/RLIProject/commit/2175c062) - `feat`: 🗃️ added series, title fields to Constructors table & title to Circuits table
+* [61e1abf0](https://github.com/indianracingcommunity/RLIProject/commit/61e1abf0) - `feat`: ✨ added Queryable trait for filtering and selecting fields through query params
+
+
+[v5.0.1](https://github.com/indianracingcommunity/RLIProject/commit/a2113491)
+--
+* [441b1f6c](https://github.com/indianracingcommunity/RLIProject/commit/441b1f6c) - `refactor`: 🍱 updated f1 rulebook file v8
+* [d56fb0b8](https://github.com/indianracingcommunity/RLIProject/commit/d56fb0b8) -  `refactor`: ♻️ provided additional information along with names for select dropdowns in upload race results portal
+* [f3c9ef32](https://github.com/indianracingcommunity/RLIProject/commit/f3c9ef32) - `perf`: ⚡ removed lag while driver selection and row addition in upload race results portal
+* [867677f1](https://github.com/indianracingcommunity/RLIProject/commit/867677f1) - `ci`: 🚀 added production environment to deployment github action
+
+
 [v5.0.0 - CI/CD](https://github.com/indianracingcommunity/RLIProject/commit/b040f7b5)
 --
 * [68ade6a6](https://github.com/indianracingcommunity/RLIProject/commit/68ade6a6) - `docs`: 📝 updated resources documentation to reflect current state
