@@ -14,6 +14,7 @@ $factory->define(Circuit::class, function (Faker $faker, $params) {
 
     return [
         'series' => $seriesId,
+        'title' => $faker->company,
 
         'name' => $faker->country . " Grand Prix",
         'official' => $faker->state,

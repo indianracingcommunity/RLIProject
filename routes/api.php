@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+// Index APIs - filterable, selectable
+Route::get('/constructors', 'ConstructorsController@index')->name('constructors.index');
+Route::get('/circuits', 'CircuitsController@index')->name('circuits.index');
+
 // Fetch Driver & Constructor Details - Telemetry API
 Route::get('/drivers/data', 'DriverController@seasonData')->name('telemetry.drivers');
 Route::post('/report/submit', 'ReportsController@bulkCreate')->name('steward.upload');
