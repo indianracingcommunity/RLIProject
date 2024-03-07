@@ -35,13 +35,6 @@
   text-align: center;
   padding: 0px 0;
 }
-.popover__wrapper {
-  position: fixed;
-  bottom: 34px;
-  right: 0;
-  margin-top: 1.5rem;
-  display: inline-block;
-}
 .popover__content {
   opacity: 0;
   visibility: hidden;
@@ -79,9 +72,6 @@
 }
 .clearfixFooter {
   height: 130px;
-}
-.mainContent{
-  min-height: 72vh;
 }
 @media only screen and (max-width: 600px) {
   .clearfixFooter {

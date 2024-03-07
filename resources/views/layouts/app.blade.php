@@ -15,10 +15,7 @@
         @endif
         <meta property="og:url" content="https://indianracingcommunity.co.in">
         <title>Indian Racing Community</title>
-        <!-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-         -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('js/scripts.js') }}" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('/css/custom.css')}}">
@@ -29,12 +26,38 @@
             * {
                 font-family: 'Inter', sans-serif;
             }
+
+            .discord {
+                color: #7289da
+            }
+
+            .youtube {
+                color: #FF0000
+            }
+
+            .instagram {
+                color: #E1306C
+            }
+
+            .facebook {
+                color: #4267B2
+            }
+
+            .steam {
+                color: #1f3d7a
+            }
+
+            .twitter {
+                color: #1DA1F2
+            }
+
+            #footer i:hover, .discord:hover, .youtube:hover, .instagram:hover, .steam:hover, .twitter:hover, .facebook:hover {
+                color: #1a202c
+            }
         </style>
     </head>
 
-
     <body class="bodyClass">
-
         <div class="" id="screen">
             <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
                 <div class="h-screen py-2 text-black">
@@ -42,7 +65,6 @@
                         <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-800 cursor-pointer">
                             <a href="{{route('home')}}"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" style='height:45px;' width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
                         </div>
-                        <div class="items-center py-4 px-2 flex-shrink-0 cursor-pointer" onclick="menu()"></div>
                     </div>
                     <div>
                         <div class="my-8" id="main-menu">
@@ -79,8 +101,6 @@
                                     <a href="{{route('coordinator.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
                                     @endcan
                                 </div>
-                                
-                                
                             @endauth
                         </div>
 
@@ -146,42 +166,47 @@
                 </div>
             </div>
         </div>
-
-        <div class="md:w-full" id="content">
+        
+        <div class="flex flex-col justify-between md:w-full min-h-screen" id="content">
             <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
                 <div class="flex items-center">
-                    <div class="items-center p-4 flex-shrink-0 cursor-pointer menuButton" onclick="menu()"><i class="fas fa-bars"></i></div>
+                    <div id="leftSidebarMenu" class="items-center p-4 flex-shrink-0 cursor-pointer" onclick="handleLeftMenuClick()"><i class="fas fa-bars"></i></div>
+                    
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                        <a href="{{route('home')}}" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 "><img src="/img/IRC_logo/logo_square.png" class="h-10 mt-1"> <span class="py-3 pl-2  md:block hidden">Indian Racing Community</span></a>
+                        <a href="{{route('home')}}" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 ">
+                            <img src="/img/IRC_logo/logo_square.png" class="h-12"> 
+                            <span class="hidden py-3 pl-2 navXl:block">Indian Racing Community</span>
+                        </a>
                     </div>
-                    {{-- <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
-                        </button>
-                    </div>
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button data-origin='race' class="subMenuShow font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span><i class="fa fa-flag-checkered mx-1 text-black-500"></i> Race Results</span>
-                        </button>
-                    </div> --}}
 
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
                         </button>
-                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 17.1rem;">
+                        
+                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width:18rem">
                             @foreach($topBarSeasons as $series)
-                                <li class="dropdown">
-                                    <a class="bg-indigo-100 cursor-default hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['website']}}</a>
-                                    <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 17rem; width: 7.5rem;">
+                                <li class="dropdown border-r border-b border-indigo-200 rounded">
+                                    <p class="bg-indigo-100 cursor-default hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded">
+                                        <i class='fas fa-caret-right pr-3 text-green-500'></i>
+                                        {{$series['name']['website']}}
+                                    </p>
+
+                                    <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left:18rem">
                                         @foreach($series['tier'] as $tier)
-                                        <li class="dropdown">
-                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
-                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}} </a>
-                                            <ul class="dropdown-content absolute hidden text-gray-700 pl-10 -mt-10" style="margin-left:210px">
+                                        <li class="dropdown border-r border-b border-orange-300 rounded">
+                                            <a class="bg-orange-100 hover:bg-orange-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}">
+                                                <i class='fas fa-caret-right pr-3 text-blue-500'></i>
+                                                {{$tier[0]['tiername']}}
+                                            </a>
+
+                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:16.05rem">
                                                 @foreach($tier as $season)
-                                                <li>
-                                                    <a class="bg-purple-100 hover:bg-orange-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
+                                                <li class="border-r border-b border-purple-300 rounded">
+                                                    <a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}">
+                                                        <i class='fas fa-caret-right pr-3 text-red-400'></i>
+                                                        Season {{floor($season['season'])}}
+                                                    </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -192,23 +217,31 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <span><i class="fa fa-flag-checkered mx-1 text-dark-500"></i> Race Results</span>
                         </button>
-                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 11.2rem;">
+
+                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 12rem;">
                             @foreach($topBarSeasons as $series)
-                                <li class="dropdown">
-                                    <a class="bg-indigo-100 hover:bg-blue-300 cursor-default py-2 px-4 block whitespace-no-wrap rounded" href="#"><i class='fas fa-caret-right pr-3 text-green-500'></i> {{$series['name']['website']}}</a>
-                                    <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 11.1rem; width: 7.5rem;">
+                                <li class="dropdown border-r border-b border-indigo-200 rounded">
+                                    <p class="bg-indigo-100 hover:bg-blue-300 cursor-default py-2 px-4 block whitespace-no-wrap rounded">
+                                        <i class='fas fa-caret-right pr-3 text-green-500'></i>
+                                        {{$series['name']['website']}}
+                                    </p>
+
+                                    <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 12rem">
                                         @foreach($series['tier'] as $tier)
-                                        <li class="dropdown">
-                                            <!-- <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> Tier {{$tier[0]['tier']}}</a> -->
-                                            <a class="bg-orange-100 hover:bg-green-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}"><i class='fas fa-caret-right pr-3 text-blue-500'></i> {{$tier[0]['tiername']}}</a>
-                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:250px">
+                                        <li class="dropdown border-r border-b border-orange-300 rounded">
+                                            <a class="bg-orange-100 hover:bg-orange-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}">
+                                                <i class='fas fa-caret-right pr-3 text-blue-500'></i>
+                                                {{$tier[0]['tiername']}}
+                                            </a>
+
+                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:16.05rem">
                                                 @foreach($tier as $season)
-                                                <li>
-                                                    <a class="bg-purple-100 hover:bg-orange-300 px-4 py-2 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
+                                                <li class="border-r border-b border-purple-300 rounded">
+                                                    <a class="bg-purple-100 hover:bg-purple-300 px-4 py-2 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -219,87 +252,64 @@
                             @endforeach
                         </ul>
                     </div>
+
                     @guest
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('faq')}}"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQ</span></a>
+                            <a href="{{route('faq')}}"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQs</span></a>
                         </button>
                     </div>
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+
+                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <a href="{{route('ourteam')}}"><span><i class="mr-1 text-purple-700 far fas fa-user-friends"></i> Our Team</span></a>
                         </button>
                     </div>
-                    <div class="hidden md:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
+
+                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
                         <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
                             <a href="{{route('aboutus')}}"><span><i class="mr-1 text-teal-700 far fa-address-card"></i> About us</span></a>
                         </button>
                     </div>
                     @endguest
                 </div>
-                <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-1 text-xl md:hidden rounded inline-flex items-center">
+
+                <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-1 text-xl xl:hidden rounded inline-flex items-center">
                     <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i></span>
                 </button>
-                <button data-origin='race' class="subMenuShow font-semibold cursor-default px-1 text-xl md:hidden rounded inline-flex items-center">
+
+                <button data-origin='race' class="subMenuShow font-semibold cursor-default px-1 text-xl xl:hidden rounded inline-flex items-center">
                     <span><i class="fa fa-flag-checkered mx-1 text-black-500"></i></span>
                 </button>
+
                 @guest
-                    <div class="px-4 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
-                        <a href="{{route('login.discord')}}"><i class='far fa-user mr-2'></i>Login</a>
+                    <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
+                        <a href="{{route('faq')}}" style="cursor:default"><span><i class='far fa-question-circle mx-1 text-blue-700'></i></span></a>
+                    </button>
+
+                    <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
+                        <a href="{{route('ourteam')}}" style="cursor:default"><span><i class='far fas fa-user-friends mx-1 text-purple-700'></i></span></a>
+                    </button>
+
+                    <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
+                        <a href="{{route('aboutus')}}" style="cursor:default"><span><i class='far fa-address-card mx-1 text-teal-700'></i></span></a>
+                    </button>
+
+                    <div class="px-4 mr-2 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
+                        <a href="{{route('login.discord')}}" class="flex flex-row gap-2 items-center justify-center">
+                            <i class="far fa-user py-2 px-1 md:px-0"></i> 
+                            <span class="hidden md:block">Login</span>
+                        </a>
                     </div>
                 @endguest
                 
-                @auth
-                <div class="flex items-center">
-                    <div class="py-2 items-center flex-shrink-0 font-semibold px-4 dropdown cursor-pointer">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <img src="{{Auth::user()->avatar}}" class="rounded-full w-10" alt="">
-                        </button>
-                        <div class="dropdown-content profileDropdown bg-white shadow-lg border rounded-md cursor p-4">
-                            <div class="flex items-center mb-4">
-                                <div class="w-10">
-                                    <img src="{{Auth::user()->avatar}}" class="rounded-full w-10" alt="">
-                                </div>
-                                <div class="ml-2 leading-none">
-                                    <div class="font-bold uppercase">
-                                        {{Auth::user()->name}}
-                                    </div>
-                                    <div class="font-semibold text-sm text-gray-700">
-                                        {{Auth::user()->name}}#{{Auth::user()->discord_discrim}}
-                                    </div>
-                                </div>
-
-                            </div>
-                            <a href="{{route('user.home')}}" class="flex items-center py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><i class="ml-2 far fa-user"></i></div>
-                                <div>Profile</div>
-                            </a>
-                            <a href="{{route('faq')}}" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><i class="ml-2 far fa-question-circle"></i></div>
-                                <div>FAQ</div>
-                            </a>
-                            <a href="{{route('aboutus')}}" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><i class="ml-2 far fa-address-card"></i></div>
-                                <div>About us</div>
-                            </a>
-                            <a href="{{route('ourteam')}}" class="flex items-center  py-2 px-1 hover:bg-gray-900 hover:text-white rounded">
-                                <div class="w-10"><i class="ml-2 fas fa-user-friends"></i></div>
-                                <div>Our Team</div>
-                            </a>
-                            <div class="flex items-center  py-2 px-1 hover:bg-red-600 hover:text-white rounded text-red-600" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                <div class="w-10"><i class="ml-2 fas fa-sign-out-alt"></i></div>
-                                    <div><a>
-                                        Logout
-                                    </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                                    {{ csrf_field() }}
-                                </form></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @auth    
+                    <button class="font-semibold cursor-default px-4 rounded inline-flex items-center cursor-pointer rightSidebarMenu mr-2" onclick="handleRightMenuClick()" style="outline:none">
+                        <img src="{{Auth::user()->avatar}}" class="rounded-full w-12 border-2 border-purple-500 rightSidebarMenu" alt="P">
+                    </button>
                 @endauth
             </nav>
+            
             <div class="fixed z-50 inset-0 overflow-y-auto champResModal" style='display:none;'>
                 <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -367,22 +377,21 @@
             </div>
             <div class='mainContent'>
                 @auth
-    
                     @if (session()->has('error'))
-                        <div class="container mx-auto my-4">
+                        <div class="mx-auto my-4">
                             <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
                                 <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
                             </div>
                         </div>
                     @endif
                     @if (session()->has('success'))
-                        <div class="container mx-auto my-4">
+                        <div class="mx-auto my-4">
                             <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
                                 <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
                             </div>
                         </div>
                     @endif
-                    <main class="container mx-auto my-4">
+                    <main class="mx-auto my-4">
                         @yield('content')
                     </main>
                     <main class="w-full">
@@ -390,7 +399,7 @@
                     </main>
                 @endauth
                 @guest
-                    <main class="container mx-auto my-4">
+                    <main class="mx-auto my-4">
                         @yield('content')
                     </main>
                     <main class="w-full">
@@ -398,61 +407,54 @@
                     </main>
                 @endguest
             </div>
-            <!-- <div class='clearfixFooter'></div> -->
-            <footer class="border-t p-8 justify-between md:items-center bg-white flex flex-col md:flex-row mt-10 w-full">
-                <div class="leading-tight">
+            <footer id="footer" class="flex flex-col lg:flex-row items-center justify-center lg:justify-between px-8 py-5 gap-4 bg-white w-full border-t">
+                <div class="leading-tight text-center lg:text-left">
                     <div class="text-gray-700 font-bold">Indian Racing Community</div>
-                    <div class="text-gray-600 font-semibold text-sm">A place for every racing enthusiast.</div>
+                    <div class="text-gray-600 font-semibold text-sm">A place for every Indian racing enthusiast.</div>
                 </div>
-                <div class="text-sm font-bold text-gray-600 md:my-0 my-0">
-                    <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                        <a href="{{route('faq')}}">FAQ</a>
-                    </span>
-                    <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                        <a href="{{route('aboutus')}}"> About Us</a>
-                    </span>
-                    <span class="mr-4 hover:text-gray-900 cursor-pointer">
-                        <a href="{{route('ourteam')}}">Our Team</a>
-                    </span>
+
+                <div class="grid grid-cols-3 lg:flex lg:flex-row gap-8 lg:gap-5 text-center text-sm font-bold text-gray-600">
+                    <a href="{{route('faq')}}" class="hover:text-gray-800">FAQs</a>
+                    <a href="{{route('aboutus')}}" class="hover:text-gray-800">About Us</a>
+                    <a href="{{route('ourteam')}}" class="hover:text-gray-800">Our Team</a>
                 </div>
-                <div>
-                    <span class="mr-2 text-xl text-pink-800 hover:text-gray-900 cursor-pointer">
-                        <a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </span>
-                    <span class="mr-2 text-xl text-pink-800 hover:text-gray-900 cursor-pointer">
-                        <a href="https://www.facebook.com/indianracingcommunity/" target="_blank">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                    </span>
-                    <span class="mr-2 text-xl text-blue-600 hover:text-gray-900 cursor-pointer">
-                        <a href="https://twitter.com/racing_indian" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </span>
-                    <span class="mr-2 text-xl text-red-600 hover:text-gray-900 cursor-pointer">
-                        <a href="https://www.youtube.com/channel/UC2Li3g3zak9gQ6YtE3YThXw" target="_blank">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </span>
-                    <span class="mr-2 text-xl text-blue-800 hover:text-gray-900 cursor-pointer">
-                        <a href="https://steamcommunity.com/groups/indianracingcommunity" target="_blank">
-                            <i class="fab fa-steam"></i>
-                        </a>
-                    </span>
-                    {{-- <span class="text-xl text-gray-600 hover:text-gray-900 cursor-pointer">
+
+                <div class="flex flex-row items-center justify-center gap-4 text-xl">
+                    <a href="https://discord.gg/ngvX9Mm" target="_blank">
+                        <i class="fab fa-discord discord"></i>
+                    </a>
+
+                    <a href="https://www.youtube.com/channel/UC2Li3g3zak9gQ6YtE3YThXw" target="_blank">
+                        <i class="fab fa-youtube youtube"></i>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/indianracingcommunity/" target="_blank">
+                        <i class="fab fa-instagram instagram"></i>
+                    </a>
+
+                    <a href="https://steamcommunity.com/groups/indianracingcommunity" target="_blank">
+                        <i class="fab fa-steam steam"></i>
+                    </a>
+
+                    <a href="https://twitter.com/racing_indian" target="_blank">
+                        <i class="fab fa-twitter twitter"></i>
+                    </a>
+
+                    <a href="https://www.facebook.com/indianracingcommunity/" target="_blank">
+                        <i class="fab fa-facebook facebook"></i>
+                    </a>
+                    {{-- <span class="text-xl cursor-pointer">
                         <a href="https://www.reddit.com/r/IndianRacingCommunity/" target="_blank">
-                            <i class="fab fa-reddit" style="color: #ff581a"></i>
+                            <i style="color:#ff581a" class="fab fa-reddit"></i>
                         </a>
                     </span> --}}
                 </div>
             </footer>
         </div>
-
     </body>
-    <script src="{{ asset('js/scripts.js') }}" type="text/javascript">
-    </script>
+
+    <script src="{{ asset('js/scripts.js') }}" type="text/javascript"></script>
+    
     @if ("{{Auth::user()->mothertongue}}" == "")
         <script>
             $( document ).ready(function() {
