@@ -3356,6 +3356,11 @@
         jsonResultsDetailsStore.raceTimeInIntervals.push(addRowTemplate.time);
         jsonResultsDetailsStore.originalStatusMinusUnitsPlace.push(0);
         jsonResultsDetailsStore.status.push(addRowTemplate.status);
+        jsonResultsDetailsStore.aliasExactMatchKey.push({
+            isPresent: false,
+            value: null
+        });
+        additionalDetailsStore.uploadedDriverID.push(addRowTemplate.driver_id);
         additionalDetailsStore.resultsPoints.push(0);
     }
 
