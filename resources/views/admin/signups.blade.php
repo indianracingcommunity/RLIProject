@@ -43,7 +43,6 @@
         
         var assist = "";
         var assisttext = "<strong>Assist Used :</strong> None <br>";
-        console.log(data[index]);
         if (data[index].assists != "")
         {assist = PHPUnserialize.unserialize(data[index].assists);
         assisttext = "<strong>Assists Used : </strong><br>";}

@@ -60,7 +60,7 @@ class LoginController extends Controller
         // dd($userr);
         $authUser = $this->findOrCreateUser($userr);
         if ($authUser == 'false') {
-            session()->flash('error', 'Please join the IRC Discord Server before signing up on the site');
+            session()->flash('error', 'Please join the IRC discord server before signing up on the site');
             return redirect('/login');
         } else {
             Auth::login($authUser, true);

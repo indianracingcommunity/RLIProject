@@ -106,17 +106,36 @@ $( document ).ready(function() {
     });
 
     $(document).on('click', '#content', function(e) {
-        // for sidebarmenu
-        let notTheDiv = $("#sidebar");
-        let notThisEither = $(".menuButton");
-        if (!notTheDiv.is(e.target)  && notTheDiv.has(e.target).length === 0 && !notThisEither.is(e.target)  && notThisEither.has(e.target).length === 0 )
-        {
-            sidebarVisible = 1
-            $('#sidebar').hide('slow', function() {});
+        // for sidebarmenus
+        let leftSidebar = $("#sidebar");
+        let rightSidebar = $("#sidebarRight");
+        let leftMenuBtn = $("#leftSidebarMenu");
+        let rightMenuBtn = $(".rightSidebarMenu");
+
+        if(
+            !leftSidebar.is(e.target) && 
+            leftSidebar.has(e.target).length === 0 &&
+            !leftMenuBtn.is(e.target) && 
+            leftMenuBtn.has(e.target).length === 0
+        ) {
+            sidebarVisible = 1;
+            $('#sidebar').animate({left: '-330px', opacity: '0'});
         }
+
+        if(
+            !rightSidebar.is(e.target) && 
+            rightSidebar.has(e.target).length === 0 &&
+            !rightMenuBtn.is(e.target) && 
+            rightMenuBtn.has(e.target).length === 0
+        ) {
+            sidebarRightVisible = 1
+            $('#sidebarRight').animate({right: '-330px', opacity: '0'});
+        }
+
         // for popovers
         let notThePop = $(".popOverBtn");
         let notThisPop = $(".insidePopDiv");
+
         if (!notThePop.is(e.target)  && notThePop.has(e.target).length === 0 && !notThisPop.is(e.target)  && notThisPop.has(e.target).length === 0 )
         {
             $('.insidePopDiv').addClass('hidden');
@@ -125,15 +144,27 @@ $( document ).ready(function() {
 });
 
 let sidebarVisible = 1;
-function menu() {
+function handleLeftMenuClick() {
     $('#main-menu').show();
-    let element = document.getElementById("sidebar");
-    let element2 = document.getElementById("customMargin");
+
     if (sidebarVisible == 1) {
-        $('#sidebar').show('slow', function() {});
-        sidebarVisible = 0
+        $('#sidebar').animate({left: '0px', opacity: '1'});
+        sidebarVisible = 0;
     } else {
-        $('#sidebar').hide('slow', function() {});
-        sidebarVisible = 1
+        $('#sidebar').animate({left: '-330px', opacity: '0'});
+        sidebarVisible = 1;
+    }
+}
+
+let sidebarRightVisible = 1;
+function handleRightMenuClick() {
+    $('#main-menu-right').show();
+
+    if (sidebarRightVisible == 1) {
+        $('#sidebarRight').animate({right: '0px', opacity: '1'});
+        sidebarRightVisible = 0;
+    } else {
+        $('#sidebarRight').animate({right: '-330px', opacity: '0'});
+        sidebarRightVisible = 1;
     }
 }

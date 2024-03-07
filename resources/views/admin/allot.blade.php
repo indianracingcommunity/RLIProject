@@ -15,9 +15,11 @@
                 <div class="font-bold text-gray-700">{{$user->email}}</div>
             </div>
             <div class="flex flex-col-reverse">
-                <div class="font-bold text-gray-700 text-xl flex flex-row-reverse cursor-pointer" onclick="copyDiscordId()">
-                    <i class="far fa-clipboard mt-2 text-base ml-2"></i> #{{$user->discord_discrim}}
-                </div>
+                @if ($user->discord_discrim != "0")
+                    <div class="font-bold text-gray-700 text-xl flex flex-row-reverse cursor-pointer" onclick="copyDiscordId()">
+                        <i class="far fa-clipboard mt-2 text-base ml-2"></i> #{{$user->discord_discrim}}
+                    </div>
+                @endif
                 <div>
                     <a href="https://steamcommunity.com/profiles/{{$user->steam_id}}" target="_blank">
                         <span class="px-2 pt-3 rounded cursor-pointer hover:bg-blue-700 pb-2 bg-blue-800">

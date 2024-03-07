@@ -29,10 +29,10 @@
 ***
 ### Home
 Public pages of the website. <br>
-Consists of FAQ, IRC Team, League Rules for the various seasons, and links to join the Community Discord Server. <br><br>
+Consists of FAQ, IRC Team, League Rules for the various seasons, and links to join the Community discord server. <br><br>
 ### Profile
 The website uses Single Sign-On using Discord. <br>
-Registration of a new user. Users enter their details, including the platform and racing games. Depending on their input, user is assigned appropriate roles in the Discord Server. <br>
+Registration of a new user. Users enter their details, including the platform and racing games. Depending on their input, user is assigned appropriate roles in the discord server. <br>
 For PC Users, user's steam profile is stored through the Steam Integration. <br><br>
 
 ### External APIs
