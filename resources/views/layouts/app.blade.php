@@ -136,68 +136,69 @@
             </div>
         </div>
 
+        @auth    
+            <div id="screenRight">
+                <div class="md:w-auto bg-white z-50 fixed shadow-lg opacity-0 rounded-bl-md" style="min-width:200px; max-width:200px; right:-330px" id="sidebarRight">
+                    <div class="text-black">
+                        <div>
+                            <div class="my-5 flex flex-col gap-5 px-5" id="main-menu-right">
+                                <div class="flex flex-col items-center text-center gap-5">
+                                    <img src="{{Auth::user()->avatar}}" class="rounded-full w-24" alt="">
 
-                        <!-- <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
+                                    <div class="flex flex-col gap-1">
+                                        <div class="font-bold uppercase tracking-wide break-all">
+                                            {{Auth::user()->name}}
+                                        </div>
 
-                            <div class="font-bold text-sm px-5 mt-4 mb-2 tracking-wide cursor-pointer goBackMainMenu"><i class="fas fa-arrow-left"></i> Main Menu</div>
+                                        @if (Auth::user()->discord_discrim != "0")    
+                                            <div class="font-semibold text-sm text-gray-700 tracking-wide break-all">
+                                                {{ Auth::user()->name . "#" . Auth::user()->discord_discrim }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
 
-                            <hr>
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
-                            <div class="px-5 w-full">
-                                <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                    <option class="" selected value="">Choose Series</option>
-                                    @foreach($topBarSeasons as $series)
-                                        <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                                <div class="grid grid-cols-1 gap-1 font-semibold tracking-wide">
+                                    <a href="{{route('user.home')}}" class="flex flex-row items-center gap-3 pl-3 py-2 rounded hover:bg-gray-900 hover:text-white">
+                                        <i class="far fa-user w-5"></i>
+                                        <span>Profile</span>
+                                    </a>
 
-                            <div id="tierSelectDiv" style="display: none;">
-                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
-                                <div class="px-5 w-full">
-                                    <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                        <option class="" selected value="">Choose Tier</option>
-                                        @foreach($topBarSeasons as $series)
-                                            @foreach($series['tier'] as $tier)
-                                                <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
-                                            @endforeach
-                                        @endforeach
-                                    </select>
+                                    <a href="{{route('faq')}}" class="flex flex-row items-center gap-3 pl-3 py-2 rounded hover:bg-gray-900 hover:text-white">
+                                        <i class="far fa-question-circle w-5"></i>
+                                        <span>FAQs</span>
+                                    </a>
+
+                                    <a href="{{route('aboutus')}}" class="flex flex-row items-center gap-3 pl-3 py-2 rounded hover:bg-gray-900 hover:text-white">
+                                        <i class="far fa-address-card w-5"></i>
+                                        <span>About Us</span>
+                                    </a>
+
+                                    <a href="{{route('ourteam')}}" class="flex flex-row items-center gap-3 pl-3 py-2 rounded hover:bg-gray-900 hover:text-white">
+                                        <i class="fas fa-user-friends w-5"></i>
+                                        <span>Our Team</span>
+                                    </a>
+
+                                    <div class="flex flex-row items-center gap-3 pl-3 py-2 hover:bg-red-600 hover:text-white rounded text-red-600 cursor-pointer" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                        
+                                        <div>
+                                            <a>
+                                                Logout
+                                            </a>
+                                            
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="seasonSelectDiv" style="display: none;">
-                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
-                                <div class="px-5 w-full">
-                                    <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                        <option class="" selected value="">Choose Season</option>
-                                        @foreach($topBarSeasons as $series)
-                                            @foreach($series['tier'] as $tier)
-                                                @foreach($tier as $season)
-                                                    <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
-                                                @endforeach
-                                            @endforeach
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="text-center my-2 mx-6 font-semibold">
-                                <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
-                                    <button id="lickAndSend" type="button" class="text-center">Send It!</button>
-                                </div>
-                                <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
-                            </div>
-                            <a style="display: none;" id="redirectLickAndSend" href=""></a>
-
-                        </div> -->
-
-                        <div id="race-menu">
-
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endauth
         
         <div class="flex flex-col justify-between md:w-full min-h-screen" id="content">
             <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">

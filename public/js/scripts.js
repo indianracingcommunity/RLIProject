@@ -108,7 +108,9 @@ $( document ).ready(function() {
     $(document).on('click', '#content', function(e) {
         // for sidebarmenus
         let leftSidebar = $("#sidebar");
+        let rightSidebar = $("#sidebarRight");
         let leftMenuBtn = $("#leftSidebarMenu");
+        let rightMenuBtn = $(".rightSidebarMenu");
 
         if(
             !leftSidebar.is(e.target) && 
@@ -118,6 +120,16 @@ $( document ).ready(function() {
         ) {
             sidebarVisible = 1;
             $('#sidebar').animate({left: '-330px', opacity: '0'});
+        }
+
+        if(
+            !rightSidebar.is(e.target) && 
+            rightSidebar.has(e.target).length === 0 &&
+            !rightMenuBtn.is(e.target) && 
+            rightMenuBtn.has(e.target).length === 0
+        ) {
+            sidebarRightVisible = 1
+            $('#sidebarRight').animate({right: '-330px', opacity: '0'});
         }
 
         // for popovers
@@ -141,5 +153,18 @@ function handleLeftMenuClick() {
     } else {
         $('#sidebar').animate({left: '-330px', opacity: '0'});
         sidebarVisible = 1;
+    }
+}
+
+let sidebarRightVisible = 1;
+function handleRightMenuClick() {
+    $('#main-menu-right').show();
+
+    if (sidebarRightVisible == 1) {
+        $('#sidebarRight').animate({right: '0px', opacity: '1'});
+        sidebarRightVisible = 0;
+    } else {
+        $('#sidebarRight').animate({right: '-330px', opacity: '0'});
+        sidebarRightVisible = 1;
     }
 }
