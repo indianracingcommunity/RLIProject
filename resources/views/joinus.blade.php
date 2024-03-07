@@ -1,36 +1,31 @@
 @extends('layouts.app')
-<!-- <style>
-      body {
-         min-height: 100vh;
-         background-image:url('https://cdn.dribbble.com/users/1189560/screenshots/5795496/alfa-romeo-f1_4x.png?compress=1&resize=800x600');
-         background-size: 950px;
-         background-repeat:no-repeat;
-         background-position:right bottom;
-      }
-    </style> -->
 @section('body')
-<div class="sm:block md:flex lg:flex xl:flex items-center w-full">
-	<div class="sm:block md:inline-block lg:inline-block xl:inline-block p-5 sm:px-5 md:pl-20 lg:pl-20 xl:pl-20 pt-16 sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
-		<h2 class="text-4xl font-bold text-gray-900 mb-4">Join Us</h2>
-		<p class="font-semibold text-3xl text-gray-800 mb-2">Before You Join</p> 
-		<div class="flex">
-			<div class="font-semibold text-xl bg-blue-100 rounded-md p-2 my-1 text-green-800"><span class="text-green-600 ml-2 mr-2">●</span>Permanent Membership of IRC requires you to be an Indian.</div>
+
+<div class="flex flex-col xl:flex-row items-center justify-center mb-10 w-full">
+	<div class="flex flex-col items-center xl:items-start justify-center gap-8 xl:gap-6 p-5 md:px-10 xl:px-14 xl:w-full">
+		<h2 class="text-center md:text-left text-4xl xl:px-2 font-bold text-gray-900">Join Us</h2>
+
+		<div class="font-semibold bg-blue-100 p-3 rounded-md text-green-800 xl:text-xl">
+			<p>Membership in IRC requires you to be <u>an Indian or of Indian origin</u>, irrespective of whether you reside in India.</p>
 		</div>
-		<div class="flex">
-			<div class="font-semibold bg-blue-100 text-xl rounded-md p-2 my-1 text-green-800"><span class="text-green-600 ml-2 mr-2">●</span>Indians residing overseas are also eligible for Permanent Membership.</div>
-		</div>
-		<div class="my-8">
-			<p class="font-semibold mb-2 rounded p-3 text-xl bg-gray-100 text-gray-700"><strong>You may now proceed by joining our Discord Server below.</strong></p>
-			<p class="mb-2 rounded p-3 text bg-gray-100 text-teal-700"><strong>If you already are on our Discord Server, please <a class="hover:underline text-blue-800" href="{{route('login.discord')}}">login</a> and complete your basic profile.</strong></p>
-			<div class="block rounded mt-3">
-			<a href="https://discord.gg/ngvX9Mm">
-				<img class="rounded-md" src="https://discord.com/api/guilds/{{$irc_guild}}/widget.png?style=banner1">
-			</a>
+
+		<div class="flex flex-col items-center justify-center gap-3">
+			<p class="p-3 xl:text-xl bg-gray-100 rounded-md font-bold text-gray-800">You may proceed by joining our discord server below.</p>
+
+			<div class="flex">
+				<a href="https://discord.gg/ngvX9Mm">
+					<img class="rounded-md" src="https://discord.com/api/guilds/{{$irc_guild}}/widget.png?style=banner4">
+				</a>
 			</div>	
+			
+			<p class="p-3 xl:px-0 xl:py-2 text-gray-600">
+				<strong>Already in our discord server? <a class="capitalize underline text-purple-700" href="{{route('login.discord')}}">login</a> to complete your profile.</strong>
+			</p>
 		</div>
 	</div>
-	<div class="sm:flex md:inline-flex lg:inline-flex xl:inline-flex items-center justify-center w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2 pr-10">
-		<img class="object-fill object-right-bottom" src='https://cdn.dribbble.com/users/1189560/screenshots/5795496/alfa-romeo-f1_4x.png?compress=1&resize=800x600'>
+	
+	<div class="flex items-center justify-center w-full 2xl:w-1/2">
+		<img class="object-fill object-right-bottom" src='https://cdn.dribbble.com/users/2463018/screenshots/13930887/media/29d55ec7c88c76ee8291fcae19d7149a.jpg?compress=1&resize=800x300'>
 	</div>
 </div>
 
