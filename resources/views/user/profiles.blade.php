@@ -99,7 +99,13 @@ $device = isset($user->device) && $user->device != '' ? unserialize($user->devic
 
             <tr>
                 <td class="font-semibold text-gray-600">DISCORD</td>
-                <td class=" font-bold text-gray-800 px-4 py-1">{{$user->name}}#{{$user->discord_discrim}}</td>
+                @php
+                    $discordFullUsername = $user->name;
+                    if ($user->discord_discrim != "0") {
+                        $discordFullUsername .= "#" . $user->discord_discrim;
+                    }
+                @endphp
+                <td class=" font-bold text-gray-800 px-4 py-1">{{ $discordFullUsername }}</td>
             </tr>
             @if ($user->psn != NULL)
             <tr>

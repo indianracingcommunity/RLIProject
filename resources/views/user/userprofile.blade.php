@@ -108,7 +108,13 @@
                 </tr>
                 <tr>
                     <td class="font-semibold text-gray-600">DISCORD</td>
-                    <td class=" font-bold text-gray-800 px-4 py-1">{{Auth::user()->name}}#{{Auth::user()->discord_discrim}}</td>
+                    @php
+                        $discordFullUsername = Auth::user()->name;
+                        if (Auth::user()->discord_discrim != "0") {
+                            $discordFullUsername .= "#" . Auth::user()->discord_discrim;
+                        }
+                    @endphp
+                    <td class=" font-bold text-gray-800 px-4 py-1">{{ $discordFullUsername }}</td>
                 </tr>
             </table>
         </div>
