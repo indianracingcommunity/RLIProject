@@ -1,3 +1,14 @@
+[v5.1.1 - Public Pages RWD](https://github.com/indianracingcommunity/RLIProject/commit/44f7c313)
+--
+* [44f7c313](https://github.com/indianracingcommunity/RLIProject/commit/44f7c313) - `style`: 💄 redesigned profile popover in navbar to a right sidebar
+* [249417cb](https://github.com/indianracingcommunity/RLIProject/commit/249417cb) - `fix`: 🐛 fixed displaying discord username without discriminator
+* [f0e4dae1](https://github.com/indianracingcommunity/RLIProject/commit/f0e4dae1) - `style`: 💄 redesigned animation & header content for left sidebar in the navbar
+* [04a6fb44](https://github.com/indianracingcommunity/RLIProject/commit/04a6fb44) - `chore`: 🔇 renamed Discord Server to discord server and removed console logs
+* [b6e03707](https://github.com/indianracingcommunity/RLIProject/commit/b6e03707) - `style`: 💄 improved responsiveness for navbar & footer for screens smaller than desktop
+* [2dfabc27](https://github.com/indianracingcommunity/RLIProject/commit/2dfabc27) - `style`: 💄 fixed text content & alignment for public facing pages for screens smaller than desktop
+* [354b8081](https://github.com/indianracingcommunity/RLIProject/commit/354b8081) - `style`: 💄 redesigned FAQs page
+* [7d1cce5f](https://github.com/indianracingcommunity/RLIProject/commit/7d1cce5f) - `fix`: 🐛 fixed populating `driver` field when adding/removing rows in uploading results
+
 [v5.1.0 - Index APIs](https://github.com/indianracingcommunity/RLIProject/commit/7aa0cd55)
 --
 * [7aa0cd55](https://github.com/indianracingcommunity/RLIProject/commit/7aa0cd55) - `style`: 💄 display tier name and season for standings and all races pages
