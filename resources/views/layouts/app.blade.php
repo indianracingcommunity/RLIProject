@@ -59,20 +59,27 @@
 
     <body class="bodyClass">
         <div class="" id="screen">
-            <div class="md:w-auto bg-white z-50 hidden min-h-full fixed border-r border-gray-400 shadow-lg" style="min-width:250px" id="sidebar">
-                <div class="h-screen py-2 text-black">
-                    <div class="flex items-center px-4">
-                        <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-800 cursor-pointer">
-                            <a href="{{route('home')}}"   class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700"><img src="/img/IRC_logo/logo_square.png" style='height:45px;' width="45"> <span class="py-3 pl-2">Indian Racing Community</span></a>
+            <div class="md:w-auto bg-white z-50 min-h-full fixed shadow-lg opacity-0" style="min-width:250px; left:-330px" id="sidebar">
+                <div class="h-screen text-black">
+                    <div class="flex rounded-br-md py-3 md:px-3 bg-gray-800">
+                        <div class="md:mx-3 text-white font-bold rounded-md">
+                            <p class="flex px-3 mx-2 text-white font-bold rounded-md">
+                                <img src="/img/IRC_logo/logo_square.png" class="h-12">
+                                <span class="py-3 pl-3">Indian Racing Community</span>
+                            </p>
                         </div>
                     </div>
+
                     <div>
                         <div class="my-8" id="main-menu">
                             <div class="font-bold text-sm px-5 tracking-wide">LEAGUE RACING</div>
+                            
                             <div class="my-1">
                                 <a href="{{route('driver.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-edit"></i></div>All sign ups</a>
                             </div>
+                            
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
+                            
                             <div class="my-1">
                                 <a href="/IRC_Rules_Regs_V8.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
                                 <a href="/IRC_ACC_Rules__Regs_V3.pdf" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
@@ -80,29 +87,54 @@
                             </div>
 
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
+                            
                             <div class="my-1 ">
                                 <div data-origin='champ' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class='fas fa-trophy'></i></div>Championship Standings</div>
                                 <div data-origin='race' class="subMenuShow py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-flag-checkered"></i></div>Race Results</div>
                             </div>
+                            
                             @auth
                                 @can('admin|coordinator|steward|signup')
-                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">ADMIN CONTROLS</div>
+                                    <div class="font-bold text-sm px-5 mt-4 tracking-wide">ADMIN CONTROLS</div>
                                 @endcan
+                                
                                 <div class="my-1">
                                     @can('admin|coordinator')
-                                    <a href="{{route('coordinator.driverlist')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-sort"></i></div>View/Allot Drivers</a>
-                                    <a href="{{route('race.upload')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-upload"></i></div>Upload Race Results</a>
+                                    <a href="{{route('coordinator.driverlist')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center">
+                                        <div class="items-center flex-shrink-0 w-12 text-center">
+                                            <i class="fas fa-sort"></i>
+                                        </div>
+                                        View/Allot Drivers
+                                    </a>
+
+                                    <a href="{{route('race.upload')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center">
+                                        <div class="items-center flex-shrink-0 w-12 text-center">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        Upload Race Results
+                                    </a>
                                     @endcan
+
                                     @can('steward|coordinator')
                                     {{-- Enable this route later when we need it otherwise it breaks the site --}}
                                     {{-- <a href="{{route('steward.list')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-exclamation"></i></div>View Reports</a> --}}
                                     @endcan
+
                                     @can('admin|signup')
-                                    <a href="{{route('coordinator.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fa fa-eye"></i></div>View Sign Ups</a>
+                                    <a href="{{route('coordinator.signup')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center">
+                                        <div class="items-center flex-shrink-0 w-12 text-center">
+                                            <i class="fa fa-eye"></i>
+                                        </div>
+                                        View Sign Ups
+                                    </a>
                                     @endcan
                                 </div>
                             @endauth
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
                         <!-- <div style="display: none" class="my-8 mx-6 rounded-lg border" id="sub-menu">
@@ -458,8 +490,8 @@
     @if ("{{Auth::user()->mothertongue}}" == "")
         <script>
             $( document ).ready(function() {
-            $('#sidebar').show('slow', function() {});
-            sidebarVisible = 0;
+                $('#sidebar').animate({left: '0px', opacity: '1'});
+                sidebarVisible = 0;
             });
         </script>
     @endif
