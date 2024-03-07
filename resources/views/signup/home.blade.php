@@ -583,7 +583,6 @@
       for(i=0;i<data.length;i++){
         
         if(seasonid == data[i].id){
-          console.log(data[i].status);
           $('.ttSection').show();
           if(data[i].status == 0.2){
             document.getElementById("preferenceid").style.display = "none";
@@ -594,7 +593,6 @@
           }else{
             var tempVal1 = data[i].status;
           }
-          // console.log(tempVal1.toFixed(1));
 
           if(tempVal1.toFixed(1) == 0.3){
             $('.ttSection').hide();
@@ -729,13 +727,11 @@
         }
       }
 
-      console.log(formStatus);
       if(formStatus > 1){
         var tempVal3 = formStatus - Math.floor(formStatus);
       }else{
         var tempVal3 = formStatus;
       }
-      console.log(tempVal3.toFixed(1));
       if(tempVal3.toFixed(1) != 0.3){
         if (flag == 0 || (flag == 1 && imaget1 != "")){
           if (imaget1 == ""){

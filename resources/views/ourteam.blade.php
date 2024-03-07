@@ -55,7 +55,6 @@
 
 <script type="text/javascript">
     var data = <?php echo json_encode($data); ?>;
-    // console.log(data);
     function displayThis(roleId,dev){
         if(roleId == 'null'){
             roleId = $('.roleSelectOptions').val();

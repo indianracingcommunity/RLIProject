@@ -380,7 +380,6 @@
       $('.openDriver').click(function(e) {
          e.preventDefault();
          var linkId = $(this).attr('data-driverLink');
-         console.log(linkId);
          window.open('/user/profile/view/' + linkId, '_blank');
       });
    });
