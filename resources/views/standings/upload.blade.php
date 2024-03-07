@@ -518,7 +518,7 @@
                         time: "",
                         fastestlaptime: "",
                         status: -2,
-                        driver_id: 0,
+                        driver_id: null,
                         driver: ""
                     }
                 ]
@@ -3060,7 +3060,7 @@
 
                     switch(headers[j]) {
                         case 'driver':
-                            if(additionalDetailsStore.uploadedDriverID[i - 1] !== null) {
+                            if(additionalDetailsStore.uploadedDriverID[i - 1] !== null && supportingVariables.isResultImported.originalVal !== 1) {
                                 rowContent = jsonResultsDetailsStore.driverName[i - 1];
                             }
                             else {
@@ -3287,7 +3287,7 @@
                 time: "",
                 fastestlaptime: "",
                 status: -2,
-                driver_id: 0,
+                driver_id: null,
                 driver: ""
             };
             
@@ -3349,6 +3349,7 @@
     function pushNewRowValuesIntoStores(json, addRowTemplate, jsonResultsDetailsStore, additionalDetailsStore, supportingVariables) {
         json.results.push(addRowTemplate);
         supportingVariables.indexPosMap.push(addRowTemplate.position);
+        jsonResultsDetailsStore.driverName.push(addRowTemplate.driver);
         jsonResultsDetailsStore.driverID.push(addRowTemplate.driver_id);
         jsonResultsDetailsStore.grid.push(addRowTemplate.grid);
         jsonResultsDetailsStore.stops.push(addRowTemplate.stops);
