@@ -82,7 +82,7 @@
                             
                             <div class="my-1">
                                 <a href="/IRC_Rules_Regs_V8.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
-                                <a href="/IRC_ACC_Rules__Regs_V3.pdf" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
+                                <a href="/IRC_ACC_Rules__Regs_V3.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
                                 <!-- <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a> -->
                             </div>
 
@@ -344,70 +344,78 @@
             </nav>
             
             <div class="fixed z-50 inset-0 overflow-y-auto champResModal" style='display:none;'>
-                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                     <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                     </div>
+
                     <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
                     <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                    <div class='bg-gray-900 mb-3 p-1 flex justify-end'>
-                        <div class="modalTitle text-white w-full p-1 pl-4">
-                        </div>
-                        <button id='closeModal' class="rounded-full text-white font-bold h-8 w-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="mb-8 mx-6 rounded-lg border" id="sub-menu">
-                        <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
-                        <div class="px-5 w-full">
-                            <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                <option class="" selected value="">Choose Series</option>
-                                @foreach($topBarSeasons as $series)
-                                    <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
-                                @endforeach
-                            </select>
+                        <div class='bg-gray-900 mb-3 p-1 flex justify-end'>
+                            <div class="modalTitle text-white w-full p-1 pl-4"></div>
+
+                            <button id='closeModal' class="rounded-full text-white font-bold h-8 w-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
                         </div>
 
-                        <div id="tierSelectDiv" style="display: none;">
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
+                        <div class="mb-8 mx-6 rounded-lg border" id="sub-menu">
+                            <div class="font-bold text-sm px-5 pt-2 tracking-wide">Select Series</div>
+
                             <div class="px-5 w-full">
-                                <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                    <option class="" selected value="">Choose Tier</option>
+                                <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                    <option class="" selected value="">Choose Series</option>
                                     @foreach($topBarSeasons as $series)
-                                        @foreach($series['tier'] as $tier)
-                                            <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
-                                        @endforeach
+                                        <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
 
-                        <div id="seasonSelectDiv" style="display: none;">
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
-                            <div class="px-5 w-full">
-                                <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                    <option class="" selected value="">Choose Season</option>
-                                    @foreach($topBarSeasons as $series)
-                                        @foreach($series['tier'] as $tier)
-                                            @foreach($tier as $season)
-                                                <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
+                            <div id="tierSelectDiv" style="display: none;">
+                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
+
+                                <div class="px-5 w-full">
+                                    <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                        <option class="" selected value="">Choose Tier</option>
+                                        @foreach($topBarSeasons as $series)
+                                            @foreach($series['tier'] as $tier)
+                                                <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
                                             @endforeach
                                         @endforeach
-                                    @endforeach
-                                </select>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="text-center my-2 mx-6 font-semibold">
-                            <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
-                                <button id="lickAndSend" type="button" class="text-center">Send It!</button>
+                            <div id="seasonSelectDiv" style="display: none;">
+                                <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
+
+                                <div class="px-5 w-full">
+                                    <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                        <option class="" selected value="">Choose Season</option>
+                                        @foreach($topBarSeasons as $series)
+                                            @foreach($series['tier'] as $tier)
+                                                @foreach($tier as $season)
+                                                    <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
+                                                @endforeach
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                            <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
-                        </div>
-                        <a style="display: none;" id="redirectLickAndSend" href=""></a>
 
-                    </div>
+                            <div class="text-center mx-5 my-4 font-semibold">
+                                <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
+                                    <button id="lickAndSend" type="button" class="text-center">Send It!</button>
+                                </div>
+                                
+                                <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
+                            </div>
+
+                            <a style="display: none;" id="redirectLickAndSend" href=""></a>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <div class='mainContent'>
                 @auth
                     @if (session()->has('error'))
