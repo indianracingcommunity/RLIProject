@@ -403,7 +403,7 @@
                     Back
                 </button>
 
-                <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded homeBtn">Start Over</button>
+                <button class="w-32 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded homeBtn">Start Over</button>
             </div>
         </div>
     </div>
@@ -3491,7 +3491,11 @@
                 })
             },
             error: function (result, status) {
-                $('#failureText').html(`${result.responseJSON.message} of Position <strong>${result.responseJSON.error.position}</strong>`);
+                if(result.responseJSON.error === undefined) {
+                    $('#failureText').html('Someting went wrong.');
+                } else {
+                    $('#failureText').html(`${result.responseJSON.message} of Position <strong>${result.responseJSON.error.position}</strong>`);
+                }
                 $('#onSuccess').addClass('hidden');
                 $('#onFailure').removeClass('hidden');
                 $('#editScreen').toggleClass('hidden');
