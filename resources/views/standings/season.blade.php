@@ -50,6 +50,12 @@
          display: none;
       }
    }
+
+   @media only screen and (min-width: 1024px) {
+      .extraPosCol {
+         display: none;
+      }
+   }
 </style>
 @section('content')
 <div class="container mx-auto p-3 lg:p-0 lg:pb-6">
@@ -153,12 +159,16 @@
          <table>
             <thead>
                <tr>
+                  <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center extraPosCol">Pos.</th>
                   <th class="w-2/3 xl:w-7/12 border-2 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-white">Teams</th>
                   <th class="w-1/3 xl:w-5/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Points</th>
                </tr>
             </thead>
             <tbody>
                @for ($i = 0; $i < $ccount; $i++) @php if($cres[$i]['name']=='Reserve' ) continue; @endphp <tr class="">
+                  <td class="pr-2 break-words font-semibold rounded-lg border border-white text-center extraPosCol">
+                     {{$i+1}}
+                  </td>
                   <td class="w-2/3 xl:w-7/12 pr-2 break-words font-semibold rounded-lg border border-white">
                      {{$cres[$i]['name']}}
                   </td>
@@ -180,12 +190,16 @@
       <table>
          <thead>
             <tr>
+               <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center extraPosCol">Pos.</th>
                <th class="w-2/3 xl:w-7/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                <th class="w-1/3 xl:w-5/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Fastest Laps</th>
             </tr>
          </thead>
          <tbody>
             @for ($i = 0; $i < count($flaps); $i++) @if($flaps !=0 && $flaps !='0' ) <tr class="">
+               <td class="pr-2 break-words font-semibold rounded-lg border border-white text-center extraPosCol">
+                  {{$i+1}}
+               </td>
                <td class="w-2/3 xl:w-7/12 pr-2 break-all font-semibold rounded-lg border border-white">
                   {{$flaps[$i]['name']}}
                </td>
@@ -208,12 +222,16 @@
       <table>
          <thead>
             <tr>
+               <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center extraPosCol">Pos.</th>
                <th class="w-2/3 xl:w-7/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                <th class="w-1/3 xl:w-5/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 text-center border-white">Points/Warning</th>
             </tr>
          </thead>
          <tbody>
             @for ($i = 0; $i < count($penalties); $i++) @php $penalty=$penalties[$i]['penalties']; $warnings=0; if(floor( $penalty ) !=$penalties[$i]['penalties']){ $warnings=1; } @endphp @if($penalty !=0 && $penalty !='0' ) <tr class="">
+               <td class="pr-2 break-words font-semibold rounded-lg border border-white text-center extraPosCol">
+                  {{$i+1}}
+               </td>
                <td class="w-2/3 xl:w-7/12 pr-2 break-all font-semibold rounded-lg border border-white">
                   {{$penalties[$i]['name']}}
                </td>
