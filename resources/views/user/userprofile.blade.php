@@ -43,21 +43,23 @@
 </style>
 
 <div class="flex flex-col items-center xl:items-start justify-center gap-8 xl:gap-6 p-5 md:px-10 xl:px-14">
-    <div class="flex flex-row items-start md:items-center justify-center gap-1 text-sm font-semibold text-orange-800 bg-orange-200 p-3 w-full rounded-md profileAlert" style="display:none">
-        <i class="fa fa-exclamation-circle my-1 md:my-0" aria-hidden="true"></i>
+    <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-orange-800 bg-orange-200 lg:text-lg tracking-wide font-semibold w-full profileAlert" style="display:none">
+        <i class="fa fa-exclamation-circle my-1" aria-hidden="true"></i>
         <p>Welcome to <strong>Indian Racing Community!</strong> Please complete your profile.</p>
     </div>
 
     @if(SESSION('savedProfile'))
-    <div class="font-semibold text-center text-sm text-green-800 bg-blue-100 py-3 rounded-md w-full">
-        <i class="fa fa-check-circle" aria-hidden="true"></i> {{session('savedProfile')}}
+    <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-green-800 bg-green-200 lg:text-lg tracking-wide font-semibold w-full">
+        <i class="fa fa-check-circle my-1" aria-hidden="true"></i>
+        <p>{{session('savedProfile')}}</p>
         @php Session::forget('savedProfile'); @endphp
     </div>
     @endif
 
     @if(SESSION('steamSuccess'))
-    <div class="font-semibold text-center text-sm text-green-800 bg-blue-100 py-3 rounded-md w-full">
-        <i class="fa fa-check-circle" aria-hidden="true"></i> {{session('steamSuccess')}}
+    <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-green-800 bg-green-200 lg:text-lg tracking-wide font-semibold w-full">
+        <i class="fa fa-check-circle my-1" aria-hidden="true"></i>
+        <p>{{session('steamSuccess')}}</p>
         @php Session::forget('steamSuccess'); @endphp
     </div>
     @endif
@@ -88,7 +90,21 @@
     </div>
 
     <div class="flex flex-col xl:flex-row gap-8 xl:gap-6 w-full">
-        <div class="flex flex-col gap-5 xl:w-1/3">
+        <div class="flex flex-col gap-5 xl:w-2/5">
+            <div class="hidden xl:flex items-center justify-start pl-3">
+                <div class="grid navXl:grid-cols-2 gap-1">
+                    <div class="flex flex-row items-center gap-2 font-semibold text-gray-700">
+                        <span class="text-red-600 mr-1 pb-1">●</span>
+                        <span>Mandatory Fields</span>
+                    </div>
+    
+                    <div class="flex flex-row items-center gap-2 font-semibold text-gray-700">
+                        <i class="fas fa-globe-americas text-gray-600"></i>
+                        <span>Publicly visible fields</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="flex flex-col items-start justify-center bg-gray-800 rounded-md py-2 px-4">
                 <div class="flex items-center justify-center gap-2 font-bold xl:text-lg text-white tracking-wide text-sm border-b pb-2 uppercase w-full">
                     <i class="fab fa-discord text-gray-100"></i>
@@ -137,6 +153,20 @@
                     </ul>
                 @endif
             </form>
+
+            <div class="flex xl:hidden items-center justify-start pl-3 md:pl-1">
+                <div class="grid md:grid-cols-2 gap-1 md:gap-2">
+                    <div class="flex flex-row items-center lg:justify-center gap-2 font-semibold text-gray-700">
+                        <span class="text-red-600 mr-1 pb-1">●</span>
+                        <span>Mandatory Fields</span>
+                    </div>
+    
+                    <div class="flex flex-row items-center lg:justify-center gap-2 font-semibold text-gray-700">
+                        <i class="fas fa-globe-americas text-gray-600"></i>
+                        <span>Publicly visible fields</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <form action="{{route('user.saveprofile', ['user' => Auth::user()->id])}}" method="POST" id="submitProfileForm" class="w-full">
@@ -452,20 +482,6 @@
                                 <input maxlength="100" type="text" name="devicename" id="deviceName" class="border text-gray-700 shadow-inner px-2 py-1 w-full rounded border-gray-700" placeholder="Fanatec/T300/G29/XBOX controller" value="{{Auth::user()->devicename}}">
 
                                 <span class="errormsg errormsgDeviceName text-sm px-1">Please enter device details.</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col items-start justify-center gap-8 mt-4 w-full">
-                        <div class="flex flex-col items-start justify-center gap-1">
-                            <div class="font-semibold text-gray-700 text-center">
-                                <span class="text-red-600 mx-1">●</span>
-                                Mandatory Fields
-                            </div>
-    
-                            <div class="font-semibold text-gray-700 text-center">
-                                <i class="fas fa-globe-americas text-gray-600"></i>
-                                Publicly visible fields
                             </div>
                         </div>
                     </div>
