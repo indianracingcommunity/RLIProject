@@ -27,6 +27,11 @@ class SignupsController extends Controller
             }
         }
 
+        if (count($seasons) == 0) {
+            session()->flash('info', 'Hey, sorry! We are not currently accepting new signups for any ongoing seasons.');
+            return redirect('/');
+        }
+
         return view('signup.home')
              ->with('seasons', $seasons)
              ->with('signup', $signups);

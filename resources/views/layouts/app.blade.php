@@ -54,6 +54,12 @@
             #footer i:hover, .discord:hover, .youtube:hover, .instagram:hover, .steam:hover, .twitter:hover, .facebook:hover {
                 color: #1a202c
             }
+
+            .profileImage:hover {
+                filter: grayscale(100%);
+                -webkit-filter: grayscale(100%);
+                opacity: 90%;
+            }
         </style>
     </head>
 
@@ -81,10 +87,10 @@
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE RULES</div>
                             
                             <div class="my-1">
-                                <a href="/IRC_Rules_Regs_V8.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
-                                <a href="/IRC_ACC_Rules__Regs_V3.pdf" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
+                                <a href="/F1_Rulebook_v8.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
+                                <a href="/IRC_ACC_Rules__Regs_V3.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
                                 <!-- <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a> -->
-                            </div>
+                            </div>  
 
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             
@@ -201,244 +207,264 @@
         @endauth
         
         <div class="flex flex-col justify-between md:w-full min-h-screen" id="content">
-            <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
-                <div class="flex items-center">
-                    <div id="leftSidebarMenu" class="items-center p-4 flex-shrink-0 cursor-pointer" onclick="handleLeftMenuClick()"><i class="fas fa-bars"></i></div>
-                    
-                    <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
-                        <a href="{{route('home')}}" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 ">
-                            <img src="/img/IRC_logo/logo_square.png" class="h-12"> 
-                            <span class="hidden py-3 pl-2 navXl:block">Indian Racing Community</span>
-                        </a>
-                    </div>
-
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
-                        </button>
+            <div class="flex flex-col">
+                <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
+                    <div class="flex items-center">
+                        <div id="leftSidebarMenu" class="items-center px-4 py-3 rounded-md flex-shrink-0 cursor-pointer hover:text-white hover:bg-gray-900" onclick="handleLeftMenuClick()"><i class="fas fa-bars"></i></div>
                         
-                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width:18rem">
-                            @foreach($topBarSeasons as $series)
-                                <li class="dropdown border-r border-b border-indigo-200 rounded">
-                                    <p class="bg-indigo-100 cursor-default hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded">
-                                        <i class='fas fa-caret-right pr-3 text-green-500'></i>
-                                        {{$series['name']['website']}}
-                                    </p>
-
-                                    <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left:18rem">
-                                        @foreach($series['tier'] as $tier)
-                                        <li class="dropdown border-r border-b border-orange-300 rounded">
-                                            <a class="bg-orange-100 hover:bg-orange-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}">
-                                                <i class='fas fa-caret-right pr-3 text-blue-500'></i>
-                                                {{$tier[0]['tiername']}}
-                                            </a>
-
-                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:16.05rem">
-                                                @foreach($tier as $season)
-                                                <li class="border-r border-b border-purple-300 rounded">
-                                                    <a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}">
-                                                        <i class='fas fa-caret-right pr-3 text-red-400'></i>
-                                                        Season {{floor($season['season'])}}
-                                                    </a>
-                                                </li>
-                                                @endforeach
-                                            </ul>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <span><i class="fa fa-flag-checkered mx-1 text-dark-500"></i> Race Results</span>
-                        </button>
-
-                        <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 12rem;">
-                            @foreach($topBarSeasons as $series)
-                                <li class="dropdown border-r border-b border-indigo-200 rounded">
-                                    <p class="bg-indigo-100 hover:bg-blue-300 cursor-default py-2 px-4 block whitespace-no-wrap rounded">
-                                        <i class='fas fa-caret-right pr-3 text-green-500'></i>
-                                        {{$series['name']['website']}}
-                                    </p>
-
-                                    <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 12rem">
-                                        @foreach($series['tier'] as $tier)
-                                        <li class="dropdown border-r border-b border-orange-300 rounded">
-                                            <a class="bg-orange-100 hover:bg-orange-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}">
-                                                <i class='fas fa-caret-right pr-3 text-blue-500'></i>
-                                                {{$tier[0]['tiername']}}
-                                            </a>
-
-                                            <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:16.05rem">
-                                                @foreach($tier as $season)
-                                                <li class="border-r border-b border-purple-300 rounded">
-                                                    <a class="bg-purple-100 hover:bg-purple-300 px-4 py-2 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
-                                                </li>
-                                                @endforeach
-                                            </ul>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    @guest
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('faq')}}"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQs</span></a>
-                        </button>
-                    </div>
-
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('ourteam')}}"><span><i class="mr-1 text-purple-700 far fas fa-user-friends"></i> Our Team</span></a>
-                        </button>
-                    </div>
-
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('aboutus')}}"><span><i class="mr-1 text-teal-700 far fa-address-card"></i> About us</span></a>
-                        </button>
-                    </div>
-                    @endguest
-                </div>
-
-                <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-1 text-xl xl:hidden rounded inline-flex items-center">
-                    <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i></span>
-                </button>
-
-                <button data-origin='race' class="subMenuShow font-semibold cursor-default px-1 text-xl xl:hidden rounded inline-flex items-center">
-                    <span><i class="fa fa-flag-checkered mx-1 text-black-500"></i></span>
-                </button>
-
-                @guest
-                    <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
-                        <a href="{{route('faq')}}" style="cursor:default"><span><i class='far fa-question-circle mx-1 text-blue-700'></i></span></a>
-                    </button>
-
-                    <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
-                        <a href="{{route('ourteam')}}" style="cursor:default"><span><i class='far fas fa-user-friends mx-1 text-purple-700'></i></span></a>
-                    </button>
-
-                    <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
-                        <a href="{{route('aboutus')}}" style="cursor:default"><span><i class='far fa-address-card mx-1 text-teal-700'></i></span></a>
-                    </button>
-
-                    <div class="px-4 mr-2 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
-                        <a href="{{route('login.discord')}}" class="flex flex-row gap-2 items-center justify-center">
-                            <i class="far fa-user py-2 px-1 md:px-0"></i> 
-                            <span class="hidden md:block">Login</span>
-                        </a>
-                    </div>
-                @endguest
-                
-                @auth    
-                    <button class="font-semibold cursor-default px-4 rounded inline-flex items-center cursor-pointer rightSidebarMenu mr-2" onclick="handleRightMenuClick()" style="outline:none">
-                        <img src="{{Auth::user()->avatar}}" class="rounded-full w-12 border-2 border-purple-500 rightSidebarMenu" alt="P">
-                    </button>
-                @endauth
-            </nav>
-            
-            <div class="fixed z-50 inset-0 overflow-y-auto champResModal" style='display:none;'>
-                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                    </div>
-                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                    <div class='bg-gray-900 mb-3 p-1 flex justify-end'>
-                        <div class="modalTitle text-white w-full p-1 pl-4">
+                        <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
+                            <a href="{{route('home')}}" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 ">
+                                <img src="/img/IRC_logo/logo_square.png" class="h-12"> 
+                                <span class="hidden py-3 pl-2 navXl:block">Indian Racing Community</span>
+                            </a>
                         </div>
-                        <button id='closeModal' class="rounded-full text-white font-bold h-8 w-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="mb-8 mx-6 rounded-lg border" id="sub-menu">
-                        <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Series</div>
-                        <div class="px-5 w-full">
-                            <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                <option class="" selected value="">Choose Series</option>
+    
+                        <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 hover:bg-gray-900 hover:text-white dropdown">
+                            <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
+                                <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i> Championship Standings</span>
+                            </button>
+                            
+                            <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width:18rem">
                                 @foreach($topBarSeasons as $series)
-                                    <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div id="tierSelectDiv" style="display: none;">
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
-                            <div class="px-5 w-full">
-                                <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                    <option class="" selected value="">Choose Tier</option>
-                                    @foreach($topBarSeasons as $series)
-                                        @foreach($series['tier'] as $tier)
-                                            <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
-                                        @endforeach
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="seasonSelectDiv" style="display: none;">
-                            <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
-                            <div class="px-5 w-full">
-                                <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
-                                    <option class="" selected value="">Choose Season</option>
-                                    @foreach($topBarSeasons as $series)
-                                        @foreach($series['tier'] as $tier)
-                                            @foreach($tier as $season)
-                                                <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
+                                    <li class="dropdown border-r border-b border-indigo-200 rounded">
+                                        <p class="bg-indigo-100 cursor-default hover:bg-blue-300 py-2 px-4 block whitespace-no-wrap rounded">
+                                            <i class='fas fa-caret-right pr-3 text-green-500'></i>
+                                            {{$series['name']['website']}}
+                                        </p>
+    
+                                        <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left:18rem">
+                                            @foreach($series['tier'] as $tier)
+                                            <li class="dropdown border-r border-b border-orange-300 rounded">
+                                                <a class="bg-orange-100 hover:bg-orange-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}">
+                                                    <i class='fas fa-caret-right pr-3 text-blue-500'></i>
+                                                    {{$tier[0]['tiername']}}
+                                                </a>
+    
+                                                <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:16.05rem">
+                                                    @foreach($tier as $season)
+                                                    <li class="border-r border-b border-purple-300 rounded">
+                                                        <a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap rounded" href="{{route('standings', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}">
+                                                            <i class='fas fa-caret-right pr-3 text-red-400'></i>
+                                                            Season {{floor($season['season'])}}
+                                                        </a>
+                                                    </li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
                                             @endforeach
-                                        @endforeach
-                                    @endforeach
-                                </select>
-                            </div>
+                                        </ul>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-
-                        <div class="text-center my-2 mx-6 font-semibold">
-                            <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
-                                <button id="lickAndSend" type="button" class="text-center">Send It!</button>
-                            </div>
-                            <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
+                        <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 hover:bg-gray-900 hover:text-white dropdown">
+                            <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
+                                <span><i class="fa fa-flag-checkered mx-1 text-dark-500"></i> Race Results</span>
+                            </button>
+    
+                            <ul class="dropdown-content absolute hidden text-gray-700 -ml-4 pt-3" style="width: 12rem;">
+                                @foreach($topBarSeasons as $series)
+                                    <li class="dropdown border-r border-b border-indigo-200 rounded">
+                                        <p class="bg-indigo-100 hover:bg-blue-300 cursor-default py-2 px-4 block whitespace-no-wrap rounded">
+                                            <i class='fas fa-caret-right pr-3 text-green-500'></i>
+                                            {{$series['name']['website']}}
+                                        </p>
+    
+                                        <ul class="dropdown-content hidden absolute text-gray-700 -mt-10" style="margin-left: 12rem">
+                                            @foreach($series['tier'] as $tier)
+                                            <li class="dropdown border-r border-b border-orange-300 rounded">
+                                                <a class="bg-orange-100 hover:bg-orange-300 py-2 px-4 w-64 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $tier[0]['tier'], 'season' => $tier[0]['season']])}}">
+                                                    <i class='fas fa-caret-right pr-3 text-blue-500'></i>
+                                                    {{$tier[0]['tiername']}}
+                                                </a>
+    
+                                                <ul class="dropdown-content absolute hidden text-gray-700 -mt-10" style="margin-left:16.05rem">
+                                                    @foreach($tier as $season)
+                                                    <li class="border-r border-b border-purple-300 rounded">
+                                                        <a class="bg-purple-100 hover:bg-purple-300 px-4 py-2 block whitespace-no-wrap rounded" href="{{route('allraces', ['code' => $series['name']['code'], 'tier' => $season['tier'], 'season' => $season['season']])}}"><i class='fas fa-caret-right pr-3 text-red-400'></i> Season {{floor($season['season'])}} </a>
+                                                    </li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <a style="display: none;" id="redirectLickAndSend" href=""></a>
-
+    
+                        @guest
+                        <div class="flex flex-row items-center justify-center gap-4">
+                            <a href="{{route('faq')}}">
+                                <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white">
+                                    <i class="mr-1 text-blue-700 far fa-question-circle"></i> 
+                                    FAQs
+                                </div>
+                            </a>
+        
+                            <a href="{{route('ourteam')}}">
+                                <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white">
+                                    <i class="mr-1 text-purple-700 far fas fa-user-friends"></i> 
+                                    Our Team
+                                </div>
+                            </a>
+    
+                            <a href="{{route('aboutus')}}">
+                                <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white">
+                                    <i class="mr-1 text-teal-700 far fa-address-card"></i> 
+                                    About us
+                                </div>
+                            </a>
+                        </div>
+                        @endguest
                     </div>
+    
+                    <button data-origin='champ' class="subMenuShow font-semibold cursor-default px-1 text-xl xl:hidden rounded inline-flex items-center">
+                        <span> <i class='fas fa-trophy mx-1 text-yellow-500'></i></span>
+                    </button>
+    
+                    <button data-origin='race' class="subMenuShow font-semibold cursor-default px-1 text-xl xl:hidden rounded inline-flex items-center">
+                        <span><i class="fa fa-flag-checkered mx-1 text-black-500"></i></span>
+                    </button>
+    
+                    @guest
+                        <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
+                            <a href="{{route('faq')}}" style="cursor:default"><span><i class='far fa-question-circle mx-1 text-blue-700'></i></span></a>
+                        </button>
+    
+                        <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
+                            <a href="{{route('ourteam')}}" style="cursor:default"><span><i class='far fas fa-user-friends mx-1 text-purple-700'></i></span></a>
+                        </button>
+    
+                        <button class="font-semibold cursor-default px-1 text-xl xl:hidden rounded hidden md:inline-flex items-center">
+                            <a href="{{route('aboutus')}}" style="cursor:default"><span><i class='far fa-address-card mx-1 text-teal-700'></i></span></a>
+                        </button>
+    
+                        <div class="px-4 mr-2 flex py-2 bg-purple-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-gray-900 hover:text-white hover:shadow-none">
+                            <a href="{{route('login.discord')}}" class="flex flex-row gap-2 items-center justify-center">
+                                <i class="far fa-user py-2 px-1 md:px-0"></i> 
+                                <span class="hidden md:block">Login</span>
+                            </a>
+                        </div>
+                    @endguest
+                    
+                    @auth
+                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center cursor-pointer rightSidebarMenu mr-2" onclick="handleRightMenuClick()" style="outline:none">
+                            <img src="{{Auth::user()->avatar}}" class="rounded-full w-12 border-2 border-purple-500 hover:border-gray-900 rightSidebarMenu profileImage" alt="P">
+                        </button>
+                    @endauth
+                </nav>
+                
+                <div class="fixed z-50 inset-0 overflow-y-auto champResModal" style='display:none;'>
+                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+    
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                            <div class='bg-gray-900 p-1 flex justify-end'>
+                                <div class="modalTitle text-white w-full p-1 pl-4"></div>
+    
+                                <button id='closeModal' class="rounded-full text-white font-bold h-8 w-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                            </div>
+    
+                            <div class="my-5 mx-6 rounded-lg border" id="sub-menu">
+                                <div class="font-bold text-sm px-5 pt-2 tracking-wide">Select Series</div>
+    
+                                <div class="px-5 w-full">
+                                    <select class="seriesOptions border-2 rounded w-full border-gray-800 hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                        <option class="" selected value="">Choose Series</option>
+                                        @foreach($topBarSeasons as $series)
+                                            <option value='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$series['name']['website']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+    
+                                <div id="tierSelectDiv" style="display: none;">
+                                    <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Tier</div>
+    
+                                    <div class="px-5 w-full">
+                                        <select class="tierOptions border-2 w-full border-gray-800 rounded hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                            <option class="" selected value="">Choose Tier</option>
+                                            @foreach($topBarSeasons as $series)
+                                                @foreach($series['tier'] as $tier)
+                                                    <option value="{{$tier[0]['tier']}}" class="allTierOptions tiersOf_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-tier='{{$tier[0]['tier']}}' data-series='{{str_replace(' ', '_',strtolower($series['name']['website']))}}'>{{$tier[0]['tiername']}}</option>
+                                                @endforeach
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div id="seasonSelectDiv" style="display: none;">
+                                    <div class="font-bold text-sm px-5 mt-4 tracking-wide">Select Season</div>
+    
+                                    <div class="px-5 w-full">
+                                        <select class="seasonOptions border-2 border-gray-800 rounded w-full hover:bg-gray-900 bg-white text-black hover:text-white p-1 my-2">
+                                            <option class="" selected value="">Choose Season</option>
+                                            @foreach($topBarSeasons as $series)
+                                                @foreach($series['tier'] as $tier)
+                                                    @foreach($tier as $season)
+                                                        <option class="allSeasonOptions seasonOf_{{$tier[0]['tier']}}_{{str_replace(' ', '_',strtolower($series['name']['website']))}}" data-champLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/standings' data-raceLink='/{{$series['name']['code']}}/{{$season['tier']}}/{{$season['season']}}/races'>Season {{floor($season['season'])}}</option>
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="text-center mx-5 my-4 font-semibold">
+                                    <div style="display: none;" class="lickAndSend px-4 py-2 bg-blue-600 text-white rounded font-semibold shadow-md cursor-pointer hover:bg-blue-700 hover:text-white hover:shadow-none">
+                                        <button id="lickAndSend" type="button" class="text-center">Send It!</button>
+                                    </div>
+                                    
+                                    <span style="display: none;" id="optionError" class="text-red-800"><i class="fa fa-exclamation-triangle pt-2 pr-2" aria-hidden="true"></i> Please select all the options</span>
+                                </div>
+    
+                                <a style="display: none;" id="redirectLickAndSend" href=""></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class='mainContent'>
-                @auth
-                    @if (session()->has('error'))
-                        <div class="mx-auto my-4">
-                            <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
-                                <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
+                
+                <div class='mainContent'>
+                    @auth
+                        @if (session()->has('error'))
+                            <div class="mx-auto mt-4">
+                                <div class="xl:gap-6 px-5 md:px-10 xl:px-14">
+                                    <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-red-800 bg-red-200 lg:text-lg tracking-wide font-semibold w-full">
+                                        <i class="fa fa-exclamation-circle my-1"></i>
+                                        <p>{{session()->get('error')}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                    @if (session()->has('success'))
-                        <div class="mx-auto my-4">
-                            <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
-                                <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
+                        @endif
+                        @if (session()->has('success'))
+                            <div class="mx-auto mt-4">
+                                <div class="xl:gap-6 px-5 md:px-10 xl:px-14">
+                                    <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-green-800 bg-green-200 lg:text-lg tracking-wide font-semibold w-full">
+                                        <i class="far fa-check-circle my-1"></i>
+                                        <p>{{session()->get('success')}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                    <main class="mx-auto my-4">
+                        @endif
+                        @if (session()->has('info'))
+                            <div class="mx-auto mt-4">
+                                <div class="xl:gap-6 px-5 md:px-10 xl:px-14">
+                                    <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-blue-800 bg-blue-200 lg:text-lg tracking-wide font-semibold w-full">
+                                        <i class="fa fa-exclamation-circle my-1"></i>
+                                        <p>{{session()->get('info')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
+                    <main class="mx-auto my-8 w-full">
                         @yield('content')
                     </main>
-                    <main class="w-full">
-                        @yield('body')
-                    </main>
-                @endauth
-                @guest
-                    <main class="mx-auto my-4">
-                        @yield('content')
-                    </main>
-                    <main class="w-full">
-                        @yield('body')
-                    </main>
-                @endguest
+                </div>
             </div>
             <footer id="footer" class="flex flex-col lg:flex-row items-center justify-center lg:justify-between px-8 py-5 gap-4 bg-white w-full border-t">
                 <div class="leading-tight text-center lg:text-left">
