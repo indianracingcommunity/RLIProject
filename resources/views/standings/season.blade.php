@@ -224,7 +224,7 @@
             <tr>
                <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center extraPosCol">Pos.</th>
                <th class="w-2/3 xl:w-7/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
-               <th class="w-1/3 xl:w-5/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 text-center border-white">Points/Warning</th>
+               <th class="w-1/3 xl:w-5/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 text-center border-white break-words">Points / Warning</th>
             </tr>
          </thead>
          <tbody>
@@ -235,7 +235,7 @@
                <td class="w-2/3 xl:w-7/12 pr-2 break-all font-semibold rounded-lg border border-white">
                   {{$penalties[$i]['name']}}
                </td>
-               <td class="w-1/3 xl:w-5/12 pr-2 font-semibold text-center rounded-lg border border-white">
+               <td class="w-1/3 xl:w-5/12 pr-2 font-semibold text-center rounded-lg border border-white break-words">
                   @if (floor( $penalty ) != 0)
                   {{floor( $penalty )}}
                   @endif
