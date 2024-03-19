@@ -431,15 +431,21 @@
                 @auth
                     @if (session()->has('error'))
                         <div class="mx-auto my-4">
-                            <div class="rounded text-red-600 p-4 mb-3 border-2 border-red-600 font-semibold my-4">
-                                <i class="fas fa-exclamation-circle mr-2"></i>{{session()->get('error')}}
+                            <div class="flex flex-row items-center justify-center xl:gap-6 px-5 md:px-10 xl:px-14">
+                                <div class="flex flex-row items-center justify-center gap-3 py-2 rounded-md text-red-600 border-2 border-red-600 font-semibold w-full">
+                                    <i class="far fa-exclamation-circle"></i>
+                                    <p>{{session()->get('error')}}</p>
+                                </div>
                             </div>
                         </div>
                     @endif
                     @if (session()->has('success'))
                         <div class="mx-auto my-4">
-                            <div class="rounded text-green-600 p-4 mb-3 border-2 border-green-600 font-semibold my-4">
-                                <i class="far fa-check-circle mr-2"></i>{{session()->get('success')}}
+                            <div class="flex flex-row items-center justify-center xl:gap-6 px-5 md:px-10 xl:px-14">
+                                <div class="flex flex-row items-center justify-center gap-3 py-2 rounded-md text-green-600 border-2 border-green-600 font-semibold w-full">
+                                    <i class="far fa-check-circle"></i>
+                                    <p>{{session()->get('success')}}</p>
+                                </div>
                             </div>
                         </div>
                     @endif
