@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('body')
+@section('content')
 @component('layouts.slickCarousal')@endcomponent
 
 <style>

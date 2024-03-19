@@ -459,21 +459,10 @@
                             </div>
                         </div>
                     @endif
-                    <main class="mx-auto my-4">
-                        @yield('content')
-                    </main>
-                    <main class="w-full">
-                        @yield('body')
-                    </main>
                 @endauth
-                @guest
-                    <main class="mx-auto my-4">
-                        @yield('content')
-                    </main>
-                    <main class="w-full">
-                        @yield('body')
-                    </main>
-                @endguest
+                <main class="mx-auto my-4 w-full">
+                    @yield('content')
+                </main>
             </div>
             <footer id="footer" class="flex flex-col lg:flex-row items-center justify-center lg:justify-between px-8 py-5 gap-4 bg-white w-full border-t">
                 <div class="leading-tight text-center lg:text-left">
