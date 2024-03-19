@@ -90,7 +90,7 @@
                                 <a href="/F1_Rulebook_v8.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>F1</a>
                                 <a href="/IRC_ACC_Rules__Regs_V3.pdf" target="_blank" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fas fa-desktop"></i></div>PC ACC</a>
                                 <!-- <a href="{{route('rules.xboxf1')}}" class="py-2 text-black cursor-pointer pr-4 mx-4 rounded-md hover:bg-gray-900 font-medium hover:text-white flex items-center"><div class="items-center flex-shrink-0 w-12 text-center"><i class="fab fa-xbox"></i></div>XBOX F1</a> -->
-                            </div>
+                            </div>  
 
                             <div class="font-bold text-sm px-5 mt-4 tracking-wide">LEAGUE INFO</div>
                             
@@ -293,22 +293,27 @@
                     </div>
 
                     @guest
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('faq')}}"><span><i class="mr-1 text-blue-700 far fa-question-circle"></i> FAQs</span></a>
-                        </button>
-                    </div>
+                    <div class="flex flex-row items-center justify-center gap-4">
+                        <a href="{{route('faq')}}">
+                            <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white">
+                                <i class="mr-1 text-blue-700 far fa-question-circle"></i> 
+                                FAQs
+                            </div>
+                        </a>
+    
+                        <a href="{{route('ourteam')}}">
+                            <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white">
+                                <i class="mr-1 text-purple-700 far fas fa-user-friends"></i> 
+                                Our Team
+                            </div>
+                        </a>
 
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('ourteam')}}"><span><i class="mr-1 text-purple-700 far fas fa-user-friends"></i> Our Team</span></a>
-                        </button>
-                    </div>
-
-                    <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white dropdown">
-                        <button class="font-semibold cursor-default px-4 rounded inline-flex items-center">
-                            <a href="{{route('aboutus')}}"><span><i class="mr-1 text-teal-700 far fa-address-card"></i> About us</span></a>
-                        </button>
+                        <a href="{{route('aboutus')}}">
+                            <div class="hidden xl:block rounded-md py-3 items-center flex-shrink-0 font-semibold px-4 cursor-pointer hover:bg-gray-900 hover:text-white">
+                                <i class="mr-1 text-teal-700 far fa-address-card"></i> 
+                                About us
+                            </div>
+                        </a>
                     </div>
                     @endguest
                 </div>
