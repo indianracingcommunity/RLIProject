@@ -138,7 +138,7 @@
 </div>
 
 <!-- Screen to edit details in the uploaded JSON with validation checks -->
-<div id="editScreen" class="mx-64">
+<div id="editScreen" class="mx-40">
     <div class="flex flex-row justify-between items-center">
         <p class="mt-5 text-4xl font-bold">Review all fields</p>
         
