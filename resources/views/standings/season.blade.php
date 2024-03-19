@@ -305,7 +305,7 @@
          <table>
             <thead>
                <tr>
-                  <th class="w-1/5 md:w-1/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Pos.</th>
+                  <th class="w-1/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Pos.</th>
                   <th class="w-1/2 md:w-2/5 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                   @if($season['season'] - (int)$season['season'] < 0.75)
                      <th class="md:w-auto rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white teamCol">Team</th> 
@@ -316,9 +316,9 @@
             <tbody>
                @for ($i = 0, $k = 0; $i < $count; $i++, $k++) @php if((abs($res[$i]['status'])>= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name']=='Reserve' ) { $k--; continue; } @endphp <tr>
                      @if ($res[$i]['user'] == Auth::id())
-                     <td class="w-1/5 md:w-1/12 pr-2 font-semibold rounded border border-white text-white text-center tracking-widest" style="background-color:#2f4353">{{$k+1}}</td>
+                     <td class="w-1/12 pr-2 font-semibold rounded border border-white text-white text-center tracking-widest" style="background-color:#2f4353">{{$k+1}}</td>
                      @else
-                     <td class="w-1/5 md:w-1/12 pr-2 font-semibold rounded-lg border border-white text-center tracking-widest">{{$k+1}}</td>
+                     <td class="w-1/12 pr-2 font-semibold rounded-lg border border-white text-center tracking-widest">{{$k+1}}</td>
                      @endif
                      @if ($res[$i]['user'] == Auth::id())
                      <td class="w-1/2 md:w-2/5 pr-2 font-bold rounded border border-white text-white hover:underline cursor-pointer break-all openDriver" data-driverLink="{{$res[$i]['user']}}" style="background-color:#2f4353"><a class="hover:underline" href="#">{{$res[$i]['name']}}</a></td>
@@ -357,7 +357,7 @@
          <table>
             <thead>
                <tr>
-                  <th class="w-1/5 md:w-1/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Pos.</th>
+                  <th class="w-1/12 rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white text-center">Pos.</th>
                   <th class="rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white">Driver</th>
                   @if($season['season'] - (int)$season['season'] < 0.75) <th class="md:w-auto rounded-lg bg-gray-800 tracking-widest text-gray-100 border-2 border-white teamCol">Team</th>
                      @endif
@@ -366,7 +366,7 @@
             </thead>
             <tbody>
                @for ($i = 0, $k = 0; $i < $count; $i++, $k++) @php if(!((abs($res[$i]['status'])>= 10 && abs($res[$i]['status']) < 20) || $res[$i]['team']['name']=='Reserve' )) { $k--; continue; } @endphp <tr class="cursor-pointer">
-                     <td class="w-1/5 md:w-1/12 pr-2 font-semibold rounded-lg border border-white text-center tracking-widest" @if ($res[$i]['user']==Auth::id()) style="background-color:#2f4353; color:white;" @endif>
+                     <td class="w-1/12 pr-2 font-semibold rounded-lg border border-white text-center tracking-widest" @if ($res[$i]['user']==Auth::id()) style="background-color:#2f4353; color:white;" @endif>
                         {{$k+1}}
                      </td>
                      <td class="w-1/2 md:w-2/5 pr-2 font-bold rounded-lg border border-white tracking-wide break-all" @if ($res[$i]['user']==Auth::id()) style="background-color:#2f4353; color:white;" @endif>
