@@ -88,7 +88,7 @@ class ResultsController extends Controller
         $regex_fltime = '/^(\d+\:)?[0-5]?\d[.]\d{3}$|^\-$/';
 
         for ($i = 0; $i < count($results); $i++) {
-            // Need to seaerch from Driver List instead.
+            // Need to search from Driver List instead.
             if ($results[$i]['driver_id'] == '-1') {
                 return response()->json([
                     "mesage" => "Error found in Driver ID",
@@ -121,7 +121,9 @@ class ResultsController extends Controller
         }
 
         foreach ($results as $k => $res) {
-            Driver::selfLearn($res['driver'], $res['driver_id']);
+            if (array_key_exists('driver', $res)) {
+                Driver::selfLearn($res['driver'], $res['driver_id']);
+            }
 
             $res['race_id'] = $race['id'];
             $result = new Result($res);
