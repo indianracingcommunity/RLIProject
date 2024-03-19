@@ -38,8 +38,8 @@
             @foreach($indData['users'] as $insideUsers)
             <div class="role_{{$indData['role_id']}} userPills flex items-center shadow-xl shadow-gray-800 border-2 border-gray-200 rounded-full" style="border-color:#{{$indData['role_color']}}">
                 <img src="{{$insideUsers['avatar']}}" onerror="this.onerror=null;this.src='https://cdn.discordapp.com/embed/avatars/3.png';" class="object-cover w-24 h-24 m-4 rounded-full shadow"/>
-                <div class="m-4 mr-6">
-                    <p class="text-lg font-bold text-gray-800">{{$insideUsers['name']}}</p>
+                <div class="m-4 mr-8">
+                    <p class="text-lg font-bold text-gray-800 break-all">{{$insideUsers['name']}}</p>
                     @php
                         $theRole = trim($indData['role_name']);
                         $roleIs = str_ends_with($theRole, 's') ? substr($theRole,0,-1) : $theRole;
