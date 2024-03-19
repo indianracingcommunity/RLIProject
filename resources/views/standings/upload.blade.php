@@ -64,7 +64,7 @@
 </style>
 
 <!-- Screen to show various JSON selection methods for upload -->
-<div id="homeScreen">
+<div id="homeScreen" class="mx-64">
     <div id="missingTrackAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 py-2 px-4 my-4 rounded" role="alert">
         <p><strong>Track Key</strong> [track] is missing in the uploaded JSON</p>
     </div>
@@ -138,7 +138,7 @@
 </div>
 
 <!-- Screen to edit details in the uploaded JSON with validation checks -->
-<div id="editScreen">
+<div id="editScreen" class="mx-64">
     <div class="flex flex-row justify-between items-center">
         <p class="mt-5 text-4xl font-bold">Review all fields</p>
         
@@ -273,7 +273,7 @@
     </div>
 
     <div class="flex justify-center items-center gap-3">
-        <button id="submitJSON" class="hidden bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded">Submit</button>
+        <button id="submitJSON" class="hidden w-24 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded">Submit</button>
 
         <a id="reviewJSON" class="hidden bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-700 rounded cursor-pointer">Review JSON</a>
     </div>
@@ -372,7 +372,7 @@
 </div>
 
 <!-- Screen 3 to show server response and post result upload scenario -->
-<div id="serverResponseScreen">
+<div id="serverResponseScreen" class="mx-64">
     <div class="flex justify-center items-center my-10">
         <div id="onSuccess" class="flex flex-col items-center justify-center gap-3 w-full text-center text-lg bg-green-100 border-l-4 border-r-4 border-green-500 text-green-700 px-2 py-24 rounded" role="alert">
             <i class="text-6xl mb-2 fa fa-check-circle" aria-hidden="true"></i> 
@@ -382,7 +382,7 @@
             <div id="raceID" class="text-3xl mb-2"></div>
 
             <div class="flex flex-row justify-center items-center gap-5 mt-5">
-                <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded homeBtn">Upload more</button>
+                <button class="w-40 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 border border-red-700 rounded homeBtn">Upload more</button>
 
                 <a id="download" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-700 rounded cursor-pointer">Download result</a>
             </div>
