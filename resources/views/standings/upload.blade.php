@@ -93,14 +93,14 @@
 
     <div class="flex flex-row mt-10 mb-8 justify-center gap-10">
         <!-- Upload an existing valid JSON -->
-        <div class="flex flex-col align-items justify-center border-solid border-4 border-purple-500 py-32 px-24 rounded-md">
+        <div class="flex flex-col align-items justify-center border-solid border-4 border-purple-500 py-32 px-24 rounded-md w-1/2">
             <p class="text-3xl font-semibold mb-3 text-gray-500">Edit a new valid JSON</p>
             <input id="fileInput" type="file" class="hidden"/>
             <label id="fileInputLabel" for="fileInput" class="text-center bg-purple-500 hover:bg-purple-700 text-white font-semibold py-2 px-4 border border-purple-700 rounded cursor-pointer">Upload JSON</label>
         </div>
 
         <!-- Import an uploaded race JSON -->
-        <div class="flex flex-col align-items justify-end border-solid border-4 border-red-500 py-32 px-24 rounded-md">
+        <div class="flex flex-col align-items justify-end border-solid border-4 border-red-500 py-32 px-24 rounded-md w-1/2">
             <p class="text-3xl font-semibold mb-4 text-gray-500">Import uploaded race result</p>
             <div class="flex flex-row gap-2 mb-1">
                 <p class="text-xl text-gray-700 font-semibold">Enter race id: </p>
