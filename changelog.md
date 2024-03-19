@@ -1,4 +1,23 @@
-[v5.1.1 - Public Pages RWD](https://github.com/indianracingcommunity/RLIProject/commit/44f7c313)
+[v5.1.2 - RWD](https://github.com/indianracingcommunity/RLIProject/commit/95edd468)
+--
+* [95edd468](https://github.com/indianracingcommunity/RLIProject/commit/95edd468) - fix: 🐛 handled 500 server error while uploading race result
+* [079a335b](https://github.com/indianracingcommunity/RLIProject/commit/079a335b) - style: 💄 aligned the content for all pages to the top in the layout file
+* [f764b884](https://github.com/indianracingcommunity/RLIProject/commit/f764b884) - refactor: ♻️ removed unused body section from the layout of pages
+* [2c1c9fc9](https://github.com/indianracingcommunity/RLIProject/commit/2c1c9fc9) - style: 💄 redesigned signups page for all screens
+* [8f3d1a97](https://github.com/indianracingcommunity/RLIProject/commit/8f3d1a97) - style: 💄 fixed alignment and increased font size and boldness for user profile pages.
+* [213c2708](https://github.com/indianracingcommunity/RLIProject/commit/213c2708) - style: 💄 added pos column for left column tables smaller than lg of seasons page
+* [0c5a5a1a](https://github.com/indianracingcommunity/RLIProject/commit/0c5a5a1a) - style: 💄 fixed alignment of results upload page
+* [79a82714](https://github.com/indianracingcommunity/RLIProject/commit/79a82714) - fix: 🐛 added redirect to homepage when no signups are open
+* [fc2bdc92](https://github.com/indianracingcommunity/RLIProject/commit/fc2bdc92) - style: 💄 fixed alignment of success and failure banners for all pages
+* [122901a4](https://github.com/indianracingcommunity/RLIProject/commit/122901a4) - fix: 🐛 fixed deadzone of buttons on navbar
+* [1c15c82e](https://github.com/indianracingcommunity/RLIProject/commit/1c15c82e) - style: 💄 fixed alignment and text overflow of race results, all races and champ standings pages for smaller screens
+* [fa786f75](https://github.com/indianracingcommunity/RLIProject/commit/fa786f75) - fix: 🐛 updated PDF metadata name for F1 rulebook
+* [0cf57cb4](https://github.com/indianracingcommunity/RLIProject/commit/0cf57cb4) - style: 💄 added hover indication on hamburger and profile icons
+* [9584e249](https://github.com/indianracingcommunity/RLIProject/commit/9584e249) - fix: 🐛 handled driver field when optional in result upload API
+* [6d5c61ae](https://github.com/indianracingcommunity/RLIProject/commit/6d5c61ae) - fix: 🐛 fixed overflow for long usernames on small screens for ourteam page
+* [95684bdd](https://github.com/indianracingcommunity/RLIProject/commit/95684bdd) - style: 💄 fixed alignment of series stat selection popup for screens smaller than md
+
+[v5.1.1 - Public Pages RWD](https://github.com/indianracingcommunity/RLIProject/commit/7fb69c38)
 --
 * [44f7c313](https://github.com/indianracingcommunity/RLIProject/commit/44f7c313) - `style`: 💄 redesigned profile popover in navbar to a right sidebar
 * [249417cb](https://github.com/indianracingcommunity/RLIProject/commit/249417cb) - `fix`: 🐛 fixed displaying discord username without discriminator
