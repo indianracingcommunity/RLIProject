@@ -45,13 +45,22 @@
     height: 0.5rem;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    box-shadow: inset 1rem 1rem blue;
+    box-shadow: inset 1rem 1rem white;
+    /* box-shadow: inset 1rem 1rem blue; */
     border-radius: 0.1rem;
     background-color: CanvasText;
+    
+    transform-origin: center;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
   }
 
   input[type="checkbox"]:checked::before {
     transform: scale(1);
+  }
+
+  input[type="checkbox"]:checked {
+    background-color: blue;
+    border-color: blue;
   }
 
 </style>
@@ -78,7 +87,7 @@
         </div>
 
         <div class="flex flex-col items-center justify-center gap-12 lg:gap-16 xl:gap-20 w-full">
-          <div class="flex flex-col gap-12">
+          <!-- <div class="flex flex-col gap-12">
             <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-12 xl:gap-32 lg:ml-6 xl:ml-2 w-full">
               <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-start gap-1 lg:gap-3 w-full lg:w-1/3 xl:w-2/5">
                 <label class="font-semibold text-gray-800">
@@ -149,6 +158,83 @@
                   <input class="w-full text-center appearance-none border shadow-inner border-gray-500 rounded-md w-20 py-1 px-2 text-gray-700 leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="speedlinkid" type="link" name="speedtest" placeholder="https://www.speedtest.net/result/">
     
                   <div class="hidden text-blue-600 text-sm italic text-sm px-1 break-words" id="errorspeed">
+                    Ensure you perform the speed test on one of the popular platforms. The server should be set to Bangalore/Mumbai.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="flex items-center justify-center">
+
+            <div class="grid lg:grid-cols-2 gap-12 w-full lg:items-start xl:mt-6">
+              <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-start gap-1 lg:gap-3">
+                <label class="font-semibold text-gray-800">
+                  Select season:
+                </label>
+    
+                <div class="flex flex-col items-start justify-center gap-1 w-full lg:w-1/2">
+                  <select id="seasonnum" name="seas" onchange="javascript:updateconstructor()" class="bg-gray-200 w-full px-2 py-1 font-semibold leading-tight border shadow-inner border-gray-500 rounded-md cursor-pointer hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-gray-500 text-center">
+                    @foreach ($seasons as $value)
+                      <option value="{{$value->id}}">{{$value->name}}</option>
+                    @endforeach
+                  </select>
+    
+                  <div class="hidden text-red-600 text-sm italic text-sm px-1 break-words" id="errorseason">
+                    It is fun to go in the past but we dont have a time machine! Select season 5 or later.
+                  </div>
+                </div>
+              </div>
+  
+              <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-start gap-3">
+                <label class="font-semibold text-gray-800 text-center lg:text-left">
+                  Will you be able to attend atleast 75% of races?
+                </label>
+      
+                <div class="flex flex-row items-center justify-center gap-8 lg:gap-4">
+                  <div class="flex flex-row items-center justify-center gap-1">
+                    <input id="radio3" type="radio" name="attendance" class="hidden cursor-pointer" value="YES"/>
+                    
+                    <label for="radio3" class="flex items-center font-medium tracking-wider cursor-pointer">
+                      <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
+                      Yes
+                    </label>
+                  </div>
+    
+                  <div class="flex flex-row items-center justify-center gap-1">
+                    <input id="radio4" type="radio" name="attendance" class="hidden cursor-pointer" value="NO" checked/>
+    
+                    <label for="radio4" class="flex items-center font-medium tracking-wider cursor-pointer">
+                      <span class="w-3 h-3 inline-block mr-1 rounded-full border border-grey"></span>
+                      No
+                    </label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="flex flex-col items-center lg:items-start justify-center gap-1 w-full">
+                <div class="flex flex-row items-center lg:items-start justify-center lg:justify-start gap-3 w-full">
+                  <label class="font-semibold text-gray-800">
+                    Enter driver number:
+                  </label>
+    
+                  <input class="appearance-none border shadow-inner border-gray-500 rounded-md w-24 py-1 px-2 text-gray-700 leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500 text-center" id="drivernum" type="number" name="drivernumber">
+                </div>
+    
+                <div class="hidden text-red-600 text-sm italic text-sm px-5 lg:px-0 break-words" id="errordrivernum">
+                  Well can't escape without filling this mandatory field!
+                </div>
+              </div>
+  
+              <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-start gap-1 lg:gap-3 w-full">
+                <label class="font-semibold text-gray-800 xl:w-full">
+                  Internet speed test link:
+                </label>
+    
+                <div class="flex flex-col items-start justify-center gap-1 w-full pl-6">
+                  <input class="w-full xl:w-64 text-center lg:text-left appearance-none border shadow-inner border-gray-500 rounded-md w-20 py-1 px-2 text-gray-700 leading-tight hover:border-purple-600 hover:bg-purple-100 focus:outline-none focus:bg-white focus:border-purple-500" id="speedlinkid" type="link" name="speedtest" placeholder="https://www.speedtest.net/result/">
+    
+                  <div class="hidden xl:w-64 text-blue-600 text-sm italic text-sm px-1 break-words" id="errorspeed">
                     Ensure you perform the speed test on one of the popular platforms. The server should be set to Bangalore/Mumbai.
                   </div>
                 </div>
