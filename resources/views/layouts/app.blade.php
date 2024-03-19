@@ -54,6 +54,12 @@
             #footer i:hover, .discord:hover, .youtube:hover, .instagram:hover, .steam:hover, .twitter:hover, .facebook:hover {
                 color: #1a202c
             }
+
+            .profileImage:hover {
+                filter: grayscale(100%);
+                -webkit-filter: grayscale(100%);
+                opacity: 90%;
+            }
         </style>
     </head>
 
@@ -203,7 +209,7 @@
         <div class="flex flex-col justify-between md:w-full min-h-screen" id="content">
             <nav class="flex items-center border-b border-gray-400 justify-between px-2 py-2 bg-white z-100">
                 <div class="flex items-center">
-                    <div id="leftSidebarMenu" class="items-center p-4 flex-shrink-0 cursor-pointer" onclick="handleLeftMenuClick()"><i class="fas fa-bars"></i></div>
+                    <div id="leftSidebarMenu" class="items-center px-4 py-3 rounded-md flex-shrink-0 cursor-pointer hover:text-white hover:bg-gray-900" onclick="handleLeftMenuClick()"><i class="fas fa-bars"></i></div>
                     
                     <div class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 cursor-pointer">
                         <a href="{{route('home')}}" class="flex" class="px-3 bg-gray-800 mx-2 text-white font-bold rounded-md hover:bg-gray-700 ">
@@ -336,9 +342,9 @@
                     </div>
                 @endguest
                 
-                @auth    
+                @auth
                     <button class="font-semibold cursor-default px-4 rounded inline-flex items-center cursor-pointer rightSidebarMenu mr-2" onclick="handleRightMenuClick()" style="outline:none">
-                        <img src="{{Auth::user()->avatar}}" class="rounded-full w-12 border-2 border-purple-500 rightSidebarMenu" alt="P">
+                        <img src="{{Auth::user()->avatar}}" class="rounded-full w-12 border-2 border-purple-500 hover:border-gray-900 rightSidebarMenu profileImage" alt="P">
                     </button>
                 @endauth
             </nav>
@@ -352,13 +358,13 @@
                     <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
                     <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                        <div class='bg-gray-900 mb-3 p-1 flex justify-end'>
+                        <div class='bg-gray-900 p-1 flex justify-end'>
                             <div class="modalTitle text-white w-full p-1 pl-4"></div>
 
                             <button id='closeModal' class="rounded-full text-white font-bold h-8 w-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
                         </div>
 
-                        <div class="mb-8 mx-6 rounded-lg border" id="sub-menu">
+                        <div class="my-5 mx-6 rounded-lg border" id="sub-menu">
                             <div class="font-bold text-sm px-5 pt-2 tracking-wide">Select Series</div>
 
                             <div class="px-5 w-full">
