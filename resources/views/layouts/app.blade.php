@@ -430,21 +430,31 @@
             <div class='mainContent'>
                 @auth
                     @if (session()->has('error'))
-                        <div class="mx-auto my-4">
-                            <div class="flex flex-row items-center justify-center xl:gap-6 px-5 md:px-10 xl:px-14">
-                                <div class="flex flex-row items-center justify-center gap-3 py-2 rounded-md text-red-600 border-2 border-red-600 font-semibold w-full">
-                                    <i class="far fa-exclamation-circle"></i>
+                        <div class="mx-auto mt-4">
+                            <div class="xl:gap-6 px-5 md:px-10 xl:px-14">
+                                <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-red-800 bg-red-200 lg:text-lg tracking-wide font-semibold w-full">
+                                    <i class="fa fa-exclamation-circle my-1"></i>
                                     <p>{{session()->get('error')}}</p>
                                 </div>
                             </div>
                         </div>
                     @endif
                     @if (session()->has('success'))
-                        <div class="mx-auto my-4">
-                            <div class="flex flex-row items-center justify-center xl:gap-6 px-5 md:px-10 xl:px-14">
-                                <div class="flex flex-row items-center justify-center gap-3 py-2 rounded-md text-green-600 border-2 border-green-600 font-semibold w-full">
-                                    <i class="far fa-check-circle"></i>
+                        <div class="mx-auto mt-4">
+                            <div class="xl:gap-6 px-5 md:px-10 xl:px-14">
+                                <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-green-800 bg-green-200 lg:text-lg tracking-wide font-semibold w-full">
+                                    <i class="far fa-check-circle my-1"></i>
                                     <p>{{session()->get('success')}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if (session()->has('info'))
+                        <div class="mx-auto mt-4">
+                            <div class="xl:gap-6 px-5 md:px-10 xl:px-14">
+                                <div class="flex flex-row items-start justify-center gap-3 break-words p-4 rounded-md text-blue-800 bg-blue-200 lg:text-lg tracking-wide font-semibold w-full">
+                                    <i class="fa fa-exclamation-circle my-1"></i>
+                                    <p>{{session()->get('info')}}</p>
                                 </div>
                             </div>
                         </div>
