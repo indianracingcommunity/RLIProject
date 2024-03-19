@@ -72,7 +72,7 @@
 
         <div class="flex flex-col lg:flex-row gap-8 xl:gap-6 w-full">
             <div class="lg:w-3/5 flex flex-col items-center xl:items-start justify-start px-8 py-2 rounded-md border gap-3">
-                <div class="flex items-center justify-center gap-2 font-semibold text-gray-600 tracking-wide text-sm border-b pb-2 uppercase w-full">
+                <div class="flex items-center justify-center gap-2 font-bold xl:text-lg text-gray-600 tracking-wide text-sm border-b pb-2 uppercase w-full">
                     <i class="far fa-edit"></i>
                     user details
                 </div>
@@ -141,7 +141,7 @@
             </div>
 
             <div class="lg:w-2/5 flex flex-col items-start justify-start bg-gray-800 rounded-md py-2 px-4">
-                <div class="flex items-center justify-center gap-2 font-semibold text-white tracking-wide text-sm border-b pb-2 uppercase w-full">
+                <div class="flex items-center justify-center gap-2 font-bold xl:text-lg text-white tracking-wide text-sm border-b pb-2 uppercase w-full">
                     <i class="fab fa-discord text-gray-100"></i>
                     user roles
                 </div>

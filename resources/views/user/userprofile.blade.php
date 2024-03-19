@@ -90,7 +90,7 @@
     <div class="flex flex-col xl:flex-row gap-8 xl:gap-6 w-full">
         <div class="flex flex-col gap-5 xl:w-1/3">
             <div class="flex flex-col items-start justify-center bg-gray-800 rounded-md py-2 px-4">
-                <div class="flex items-center justify-center gap-2 font-semibold text-white tracking-wide text-sm border-b pb-2 uppercase w-full">
+                <div class="flex items-center justify-center gap-2 font-bold xl:text-lg text-white tracking-wide text-sm border-b pb-2 uppercase w-full">
                     <i class="fab fa-discord text-gray-100"></i>
                     user roles
                 </div>
@@ -143,7 +143,7 @@
             @csrf
             <div class="flex flex-col md:flex-row gap-5">
                 <div class="md:w-1/2 flex flex-col items-center justify-start px-5 py-2 rounded-md border gap-6">
-                    <div class="flex items-center justify-center gap-2 font-semibold text-gray-600 tracking-wide text-sm border-b pb-2 uppercase w-full">
+                    <div class="flex items-center justify-center gap-2 font-bold xl:text-lg text-gray-600 tracking-wide text-sm border-b pb-2 uppercase w-full">
                         <i class="far fa-edit"></i>
                         Personal details
                     </div>
@@ -344,7 +344,7 @@
                 </div>
 
                 <div class="md:w-1/2 flex flex-col items-center justify-start px-5 py-2 pb-4 rounded-md border gap-4 mb-auto">
-                    <div class="flex items-center justify-center gap-2 font-semibold text-gray-600 tracking-wide text-sm border-b pb-2 uppercase w-full">
+                    <div class="flex items-center justify-center gap-2 font-bold xl:text-lg text-gray-600 tracking-wide text-sm border-b pb-2 uppercase w-full">
                         <i class="fas fa-gamepad"></i>
                         gamer profile
                     </div>
