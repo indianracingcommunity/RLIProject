@@ -33,6 +33,19 @@
    <form method="post" action="{{route('acc.parseupload')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group">
+    <script>
+      $(document).ready(function() {
+        $('form').on('submit', function(e) {
+          var quali = $("input[name='quali']").val();
+          var race1 = $("input[name='race1']").val();
+          if (!quali || !race1) {
+            alert('Quali and Race 1 files are required!');
+            e.preventDefault();
+            return false;
+          }
+        });
+      });
+    </script>
      <div class="form-group">
      <label for="exampleFormControlSelect1">Season Select</label>
       <select class="form-control" style="width:350px" name="season" id="exampleFormControlSelect1">
@@ -58,7 +71,8 @@
       <tr>
        <td width="40%" align="right"><label>Select File for Upload</label></td>
        <td width="30">Quali : <input type="file" name="quali" /></td>
-       <td width="30">Race : <input type="file" name="race" /></td>
+       <td width="30">Race 1: <input type="file" name="race1" /></td>
+       <td width="30">Race 2: <input type="file" name="race2" /></td>
        <td width="30">Class Split : <input type="file" name="classses" /></td>
        <td width="30%" align="left"><input type="submit" name="upload" class="btn btn-primary" value="Upload"></td>
       </tr>

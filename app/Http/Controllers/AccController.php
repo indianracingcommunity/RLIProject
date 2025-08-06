@@ -40,18 +40,30 @@ class AccController extends Controller
                ->with('seasons', $seasons);
     }
 
-    // TODO: Accept other encodings. Currently only supports UTF-8
-    // ACC Result File are in UTF-16LE encoding
     public function parseJson(Request $request)
     {
-
-        $race = request()->file('race');
+        $race1 = request()->file('race1');
+        $race2 = request()->file('race2');
         $quali = request()->file('quali');
         $classes = request()->file('classes');
 
-        // 1 for Multi-Session Single Driver
-        // 0 for Single Session
-        $mode = request()->has('mode') ? request()->mode : 0;
+        // Mode input not needed as it is set implicitly based on file uploads
+        //$mode = request()->has('mode') ? request()->mode : 0;
+
+        // First call for parseResults with quali, race1, class and mode as true
+        $this->parseResults($quali, $race1, $classes, false);
+
+        // Second call for parseResults with race1, race2, class and mode as false
+        if ($race2 && $race2->isValid() && $race2->getSize() > 0) {
+            $this->parseResults($race1, $race2, $classes, true);
+        }
+    }
+
+    // TODO: Accept other encodings. Currently only supports UTF-8
+    // ACC Result File are in UTF-16LE encoding
+    // UTF-8 conversion is handled. To be tested
+    public function parseResults($quali, $race, $classes, $mode)
+    {
 
         // Helper to get file contents as UTF-8
         $getUtf8 = function($file) {
