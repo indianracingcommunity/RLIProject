@@ -58,7 +58,8 @@
       <tr>
        <td width="40%" align="right"><label>Select File for Upload</label></td>
        <td width="30">Quali : <input type="file" name="quali" /></td>
-       <td width="30">Race  : <input type="file" name="race" /></td>
+       <td width="30">Race : <input type="file" name="race" /></td>
+       <td width="30">Class Split : <input type="file" name="classses" /></td>
        <td width="30%" align="left"><input type="submit" name="upload" class="btn btn-primary" value="Upload"></td>
       </tr>
       <tr>

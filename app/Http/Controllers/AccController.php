@@ -40,31 +40,33 @@ class AccController extends Controller
                ->with('seasons', $seasons);
     }
 
-    public function fileGetContentsUtf8($fn)
-    {
-        $content = file_get_contents($fn);
-         return mb_convert_encoding(
-             $content,
-             'UTF-8',
-             mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true)
-         );
-    }
-
     // TODO: Accept other encodings. Currently only supports UTF-8
     // ACC Result File are in UTF-16LE encoding
     public function parseJson(Request $request)
     {
+
         $race = request()->file('race');
         $quali = request()->file('quali');
+        $classes = request()->file('classes');
 
         // 1 for Multi-Session Single Driver
         // 0 for Single Session
         $mode = request()->has('mode') ? request()->mode : 0;
 
-        // $fileEndEnd = mb_convert_encoding($file, 'UTF-8', "UTF-16LE");
-        // $file8 = mb_convert_encoding($file16, 'utf-8');
-        $race_content = file_get_contents($race);
-        $quali_content = file_get_contents($quali);
+        // Helper to get file contents as UTF-8
+        $getUtf8 = function($file) {
+            if (!$file) return null;
+            $content = file_get_contents($file);
+            $encoding = mb_detect_encoding($content, 'UTF-8, UTF-16LE, UTF-16BE, ISO-8859-1, ISO-8859-15, Windows-1252', true);
+            if ($encoding !== 'UTF-8') {
+                $content = mb_convert_encoding($content, 'UTF-8', $encoding);
+            }
+            return $content;
+        };
+
+        $race_content = $getUtf8($race);
+        $quali_content = $getUtf8($quali);
+        $classes_content = $getUtf8($classes);
 
         $jq = json_decode($quali_content, true);
         $json = json_decode($race_content, true);
@@ -175,6 +177,70 @@ class AccController extends Controller
             ));
         }
 
-        return response()->json(["track" => $track, "results" => $results]);
+        // Prepare the base JSON structure
+        $overall = ["track" => $track, "results" => $results];
+        $overall['results'] = array_values($overall['results']);
+        usort($overall['results'], function($a, $b) {
+            return $a['position'] <=> $b['position'];
+        });
+
+        // If classes file is not provided, only download overall.json
+        if (!$classes) {
+            $tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'acc_json_' . uniqid();
+            mkdir($tmpDir);
+            file_put_contents($tmpDir . '/overall.json', json_encode($overall, JSON_PRETTY_PRINT));
+            return response()->download($tmpDir . '/overall.json', 'overall.json')->deleteFileAfterSend(true);
+        }
+
+        // Otherwise, do the class split and zip logic
+        $pro = null;
+        $silver = null;
+        $am = null;
+        $class_json = [];
+        if ($classes_content) {
+            $class_json = json_decode($classes_content, true);
+        }
+        if (is_array($class_json) && isset($class_json['pro']) && isset($class_json['silver']) && isset($class_json['am'])) {
+            foreach (["pro", "silver", "am"] as $classKey) {
+                $classDrivers = isset($class_json[$classKey]['drivers']) ? $class_json[$classKey]['drivers'] : [];
+                $classSeason = isset($class_json[$classKey]['season']) ? $class_json[$classKey]['season'] : $track['season_id'];
+                $classTrack = $track;
+                $classTrack['season_id'] = $classSeason;
+                $filteredResults = array_filter($results, function($r) use ($classDrivers) {
+                    return in_array($r['driver_id'], $classDrivers);
+                });
+                $filteredResults = array_values($filteredResults);
+                usort($filteredResults, function($a, $b) {
+                    return $a['position'] <=> $b['position'];
+                });
+                if ($classKey === 'pro') {
+                    $pro = ["track" => $classTrack, "results" => $filteredResults];
+                } elseif ($classKey === 'silver') {
+                    $silver = ["track" => $classTrack, "results" => $filteredResults];
+                } elseif ($classKey === 'am') {
+                    $am = ["track" => $classTrack, "results" => $filteredResults];
+                }
+            }
+        } else {
+            $pro = ["track" => $track, "results" => $results];
+            $silver = ["track" => $track, "results" => $results];
+            $am = ["track" => $track, "results" => $results];
+        }
+        $tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'acc_json_' . uniqid();
+        mkdir($tmpDir);
+        file_put_contents($tmpDir . '/overall.json', json_encode($overall, JSON_PRETTY_PRINT));
+        file_put_contents($tmpDir . '/pro.json', json_encode($pro, JSON_PRETTY_PRINT));
+        file_put_contents($tmpDir . '/silver.json', json_encode($silver, JSON_PRETTY_PRINT));
+        file_put_contents($tmpDir . '/am.json', json_encode($am, JSON_PRETTY_PRINT));
+        $zipPath = $tmpDir . '/results.zip';
+        $zip = new \ZipArchive();
+        if ($zip->open($zipPath, \ZipArchive::CREATE) === TRUE) {
+            $zip->addFile($tmpDir . '/overall.json', 'overall.json');
+            $zip->addFile($tmpDir . '/pro.json', 'pro.json');
+            $zip->addFile($tmpDir . '/silver.json', 'silver.json');
+            $zip->addFile($tmpDir . '/am.json', 'am.json');
+            $zip->close();
+        }
+        return response()->download($zipPath, 'results.zip')->deleteFileAfterSend(true);
     }
 }
