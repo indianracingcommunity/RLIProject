@@ -37,6 +37,14 @@ class SignupsController extends Controller
              ->with('signup', $signups);
     }
 
+    // Decimal part of a season status is its signup mode:
+    // .2 - no team preferences, .3 - no time trials, .4 - no team preferences and no time trials
+    private function hasTimeTrials($status)
+    {
+        $mode = (int)round(($status - floor($status)) * 10);
+        return $mode != 3 && $mode != 4;
+    }
+
     public function store(Request $request)
     {
         $data = request()->all();
@@ -66,9 +74,7 @@ class SignupsController extends Controller
         $signup->user_id = Auth::user()->id;
         $signup->season = $data['seas'];
         $signup->speedtest = $data['speedtest'];
-        $statCheck = $data['statusCheck'] - floor($data['statusCheck']);
-        $statCheck = round($statCheck, 1);
-        if ($statCheck != 0.3) {
+        if ($this->hasTimeTrials($data['statusCheck'])) {
             $signup->timetrial1 = $data['t1'];
             $signup->timetrial2 = $data['t2'];
             $signup->timetrial3 = $data['t3'];
@@ -123,9 +129,7 @@ class SignupsController extends Controller
 
             $signup->season = $data['seas'];
             $signup->speedtest = $data['speedtest'];
-            $statCheck = $data['statusCheck'] - floor($data['statusCheck']);
-            $statCheck = round($statCheck, 1);
-            if ($statCheck != 0.3) {
+            if ($this->hasTimeTrials($data['statusCheck'])) {
                 $signup->timetrial1 = $data['t1'];
                 $signup->timetrial2 = $data['t2'];
                 $signup->timetrial3 = $data['t3'];

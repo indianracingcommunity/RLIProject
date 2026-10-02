@@ -514,7 +514,23 @@
 </div>
 
 <script>
-  $(document).ready(function() {        
+  // Decimal part of a season status is its signup mode:
+  // .2 - no team preferences, .3 - no time trials, .4 - no team preferences and no time trials
+  function signupMode(status) {
+    return Math.round((status - Math.floor(status)) * 10);
+  }
+
+  function hasTimeTrials(status) {
+    var mode = signupMode(status);
+    return mode != 3 && mode != 4;
+  }
+
+  function hasPreferences(status) {
+    var mode = signupMode(status);
+    return mode != 2 && mode != 4;
+  }
+
+  $(document).ready(function() {
     $('#drivernum').keydown(function(event) {
       let evt = (event) ? event : window.event;
       let charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -805,7 +821,9 @@
       if(seasonid == data[i].id) {
         $('.ttSection').show();
 
-        if(data[i].status == 0.2) {
+        if(hasPreferences(data[i].status)) {
+          $('#preferenceid').show('fast');
+        } else {
           $('#preferenceid').hide('fast');
 
           $('#errorteam').hide('fast');
@@ -817,16 +835,8 @@
           $('#preference3').removeClass('border-red-500');
         }
 
-        if(data[i].status > 1) {
-          var tempVal1 = data[i].status - Math.floor(data[i].status);
-        } else {
-          var tempVal1 = data[i].status;
-        }
-
-        if(tempVal1.toFixed(1) == 0.3) {
+        if(!hasTimeTrials(data[i].status)) {
           $('.ttSection').hide();
-        } else {
-          $('#preferenceid').show('fast');
         }
 
         for(j = 0; j < data[i].constructors.length; j++) {
@@ -901,14 +911,8 @@
     }
 
     $('#statusCheck').val(formStatus);
-    
-    if(formStatus > 1) {
-      var tempVal = formStatus - Math.floor(formStatus);
-    } else {
-      var tempVal = formStatus;
-    }
 
-    if(tempVal.toFixed(1) != 0.3) {
+    if(hasTimeTrials(formStatus)) {
       res = patt.test(t1);
       if(t1 == "") {
         $('#errort1').html("Well, you can't escape without filling this mandatory field!");
@@ -995,13 +999,7 @@
       }
     }
 
-    if(formStatus > 1) {
-      var tempVal3 = formStatus - Math.floor(formStatus);
-    } else {
-      var tempVal3 = formStatus;
-    }
-
-    if(tempVal3.toFixed(1) != 0.3) {
+    if(hasTimeTrials(formStatus)) {
       if(flag == 0 || (flag == 1 && imaget1 != "")) {
         if(imaget1 == "") {
           $('#errorimgt1').html("FBI needs your image for verification! This is a mandatory Field.");
@@ -1181,9 +1179,9 @@
     }
       
     flag = 0;
-    for(i = 0; i < data.length; i++) { 
+    for(i = 0; i < data.length; i++) {
       if(seasonid == data[i].id) {
-        if(data[i].status == 0.2) {
+        if(!hasPreferences(data[i].status)) {
           flag = 1;
         }
       }
