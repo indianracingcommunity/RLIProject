@@ -3,7 +3,7 @@ FROM php:$PHP_VERSION-fpm
 
 # Debian bullseye security updates have been removed from the mirrors, so fetch them from a snapshot instead
 RUN if grep -q bullseye /etc/os-release; then \
-        sed -i 's#^deb http://deb.debian.org/debian-security #deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260915T000000Z #' /etc/apt/sources.list; \
+        sed -i 's#^deb http://deb.debian.org/debian-security #deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260901T000000Z #' /etc/apt/sources.list; \
     fi
 
 RUN apt-get update -y && apt-get install -y git curl unzip libxslt-dev \
